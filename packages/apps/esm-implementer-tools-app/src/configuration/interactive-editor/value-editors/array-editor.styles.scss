@@ -1,0 +1,25 @@
+@use '@carbon/layout';
+@use '@carbon/styles/scss/components/button';
+
+.arrayEditor {
+  :global(.cds--structured-list) {
+    margin-bottom: layout.$spacing-02;
+  }
+  :global(.cds--structured-list-td) {
+    padding: layout.$spacing-02 layout.$spacing-09 layout.$spacing-02 layout.$spacing-05;
+  }
+  :global(.cds--btn--primary) {
+    background-color: button.$button-primary;
+    &:hover {
+      background-color: button.$button-primary-hover;
+    }
+  }
+}
+
+.buttonCell {
+  text-align: right;
+}
+
+/* .valueCell {
+  display: inline-flex;
+} */

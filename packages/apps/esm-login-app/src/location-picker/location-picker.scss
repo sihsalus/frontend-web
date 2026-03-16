@@ -1,0 +1,94 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.bodyLong01 {
+  @include type.type-style('body-01');
+}
+
+.productiveHeading03 {
+  @include type.type-style('heading-03');
+}
+
+.backButton {
+  height: layout.$spacing-09;
+  padding-left: 0;
+
+  svg {
+    margin-right: layout.$spacing-03;
+    order: 1;
+  }
+
+  span {
+    order: 2;
+  }
+}
+
+.locationPickerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.paddedContainer {
+  padding: layout.$spacing-06 layout.$spacing-06 layout.$spacing-05;
+}
+
+.locationCard {
+  display: flex;
+  flex-direction: column;
+  width: 23rem;
+  background-color: $ui-02;
+  margin: 0;
+  border: 1px solid $ui-03;
+}
+
+.welcomeTitle {
+  @extend .productiveHeading03;
+  text-transform: capitalize;
+}
+
+.welcomeMessage {
+  @extend .bodyLong01;
+  margin-top: layout.$spacing-03;
+  color: $color-gray-70;
+}
+
+.footerContainer {
+  padding: layout.$spacing-05 layout.$spacing-06 layout.$spacing-06;
+
+  .savePreferenceCheckbox {
+    padding-bottom: layout.$spacing-05 !important;
+  }
+
+  .confirmButton {
+    width: 100%;
+  }
+}
+
+.cancelButton {
+  margin-top: layout.$spacing-02;
+}
+
+.loadingContainer {
+  margin-top: layout.$spacing-06;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: layout.$spacing-06 auto 0;
+}
+
+.loader {
+  min-height: fit-content;
+}
+
+.errorNotification {
+  margin-inline-start: -(layout.$spacing-06);
+  margin-inline-end: -(layout.$spacing-06);
+}

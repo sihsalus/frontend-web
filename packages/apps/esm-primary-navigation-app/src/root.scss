@@ -1,0 +1,5 @@
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.primaryNavContainer {
+  height: var(--omrs-topnav-height);
+}

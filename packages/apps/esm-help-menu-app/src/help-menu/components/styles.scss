@@ -1,0 +1,13 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.helpButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black !important;
+  &:focus {
+    outline: none;
+  }
+}

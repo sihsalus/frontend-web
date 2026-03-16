@@ -1,0 +1,25 @@
+@use '@carbon/layout';
+@use '@carbon/react/scss/theme';
+
+.labelCell {
+  width: 12rem;
+}
+
+.label {
+  scroll-margin-top: layout.$spacing-12;
+}
+
+.structuredList {
+  margin-bottom: layout.$spacing-05;
+}
+
+.structuredListRow {
+  border-left: 2px solid #c0c0c0;
+  :global(.cds--number input[type='number']:focus) {
+    outline: 2px solid theme.$focus;
+  }
+}
+
+.subtreeCell {
+  left: -(layout.$spacing-12);
+}

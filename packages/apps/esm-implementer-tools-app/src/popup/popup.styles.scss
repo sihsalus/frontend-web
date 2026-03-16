@@ -1,0 +1,78 @@
+@use '@carbon/layout';
+@use '@carbon/react/scss/themes';
+@use '@carbon/react/scss/theme';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.popup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100000;
+  border-top: 2px solid $ui-05;
+  box-sizing: border-box;
+
+  tr {
+    th,
+    td {
+      color: theme.$text-secondary;
+    }
+  }
+}
+
+.content {
+  width: 100%;
+  height: 50vh;
+}
+
+.tabs {
+  min-width: 30rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+
+  :global(.cds--content-switcher-btn) {
+    min-width: fit-content;
+    border: none;
+    &::after {
+      display: none;
+    }
+
+    &::before {
+      display: none;
+    }
+
+    &:last-child {
+      border-right: none !important;
+      border-radius: 0 !important;
+    }
+
+    &:first-child {
+      border-left: none !important;
+      border-radius: 0 !important;
+    }
+  }
+}
+
+.topBar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.closeButton {
+  svg {
+    fill: theme.$icon-primary;
+  }
+}
+
+.contentSwitcher {
+  outline: none;
+
+  :first-child,
+  :last-child {
+    box-shadow: none !important;
+  }
+}

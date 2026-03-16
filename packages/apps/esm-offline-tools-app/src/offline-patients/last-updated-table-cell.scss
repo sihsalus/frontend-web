@@ -1,0 +1,16 @@
+@use '@carbon/layout';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.errorIcon {
+  color: $danger;
+}
+
+.pendingIcon {
+  color: #ff832b;
+}
+
+.cellContainer {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-02;
+}

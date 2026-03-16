@@ -1,0 +1,15 @@
+@use '@carbon/react/scss/theme';
+
+.fullWidthAccordion {
+  :global(.cds--accordion__content) {
+    padding-right: 0;
+  }
+
+  background-color: theme.$background;
+  button {
+    color: theme.$text-secondary;
+    &:hover {
+      color: theme.$text-primary;
+    }
+  }
+}

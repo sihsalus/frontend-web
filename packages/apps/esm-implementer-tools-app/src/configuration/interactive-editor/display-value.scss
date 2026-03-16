@@ -1,0 +1,6 @@
+@use '@carbon/layout';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.smallListCell {
+  padding: layout.$spacing-03;
+}

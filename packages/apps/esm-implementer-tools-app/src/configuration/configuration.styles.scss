@@ -1,0 +1,92 @@
+@use '@carbon/layout';
+@use '@carbon/styles/scss/theme';
+@use '@carbon/styles/scss/themes';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.tools {
+  width: 100%;
+  border-bottom: 1px solid theme.$border-subtle-00;
+  border-top: 1px solid theme.$border-subtle-00;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.toolbar {
+  padding: layout.$spacing-05 layout.$spacing-05 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 (-(layout.$spacing-05));
+
+  :global(.cds--col) {
+    max-width: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+    width: 100%;
+    padding: 0 layout.$spacing-05;
+  }
+}
+
+.downloadLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.mainContent {
+  max-height: 50vh;
+  background-color: $ui-01;
+  width: 100%;
+  display: flex;
+  overflow-y: auto;
+}
+
+.configTreePane {
+  width: 65%;
+  // overflow-wrap: break-word;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: theme.$background;
+}
+
+.descriptionPane {
+  width: 35%;
+  background-color: theme.$background;
+  color: theme.$text-secondary;
+  padding: layout.$spacing-05 layout.$spacing-07;
+  font-size: 12pt;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+}
+
+.configTreePane :global(.cds--text-input-wrapper) {
+  min-width: 8rem;
+}
+
+.toggleToolbarButton {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: layout.$spacing-02;
+}
+
+.toggleButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  > button {
+    margin: 0 layout.$spacing-05;
+  }
+}

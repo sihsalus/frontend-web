@@ -1,0 +1,43 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.primaryNavContainer {
+  height: var(--omrs-topnav-height);
+}
+
+.languageOptionsContainer {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: layout.$spacing-05;
+  max-height: 28rem;
+}
+
+.languageRadioButton {
+  display: flex;
+  height: layout.$spacing-09;
+  align-items: center;
+  @include type.type-style('body-compact-01');
+}
+
+.updateDefaultLocaleContainer {
+  padding-top: layout.$spacing-03;
+  padding-left: layout.$spacing-05;
+  padding-right: layout.$spacing-05;
+  padding-bottom: layout.$spacing-06;
+}
+
+.updateDefaultLocaleExplainer {
+  @include type.type-style('body-compact-01');
+  color: $text-02;
+}
+
+.submitButton {
+  :global(.cds--inline-loading) {
+    min-height: layout.$spacing-05 !important;
+  }
+
+  :global(.cds--inline-loading__text) {
+    font-size: unset !important;
+  }
+}

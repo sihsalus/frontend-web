@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": ">=2.2.0"
+  },
+  "pages": [
+    {
+      "component": "root",
+      "route": "login",
+      "online": true,
+      "offline": true
+    },
+    {
+      "component": "root",
+      "route": "logout",
+      "online": true,
+      "offline": true
+    },
+    {
+      "component": "root",
+      "route": "change-password",
+      "online": true,
+      "offline": true
+    }
+  ],
+  "extensions": [
+    {
+      "name": "location-picker",
+      "slot": "location-picker",
+      "component": "locationPicker",
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "logout-button",
+      "slot": "user-panel-bottom-slot",
+      "component": "logoutButton",
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "password-changer",
+      "slot": "user-panel-slot",
+      "component": "changePasswordLink",
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "location-changer",
+      "slot": "top-nav-info-slot",
+      "component": "changeLocationLink",
+      "online": true,
+      "offline": true,
+      "order": 1
+    }
+  ],
+  "modals": [
+    {
+      "name": "change-password-modal",
+      "component": "changePasswordModal"
+    }
+  ]
+}

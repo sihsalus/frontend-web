@@ -1,0 +1,14 @@
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.panelItemContainer {
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+}

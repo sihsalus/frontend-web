@@ -1,0 +1,30 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+
+.secretButton {
+  background: none;
+  color: #474b6b;
+  border: none;
+  font: inherit;
+  text-align: left;
+}
+
+.error {
+  margin-left: layout.$spacing-05;
+  color: orange;
+  font-size: 11pt;
+}
+
+.overriddenValue {
+  color: #2020a0;
+}
+
+.elementValue {
+  display: flex;
+  align-items: center;
+}
+
+.editValueButton {
+  margin-left: layout.$spacing-05;
+}
