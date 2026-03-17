@@ -123,13 +123,13 @@ yargs.command(
     }
 
     runCommand('runDebug', {
-      configUrls: args['config-url'],
+      configUrls: args['config-url'] as string[],
       ...args,
       port,
       ...proxyImportmapAndRoutes(
         await mergeImportmapAndRoutes(
           await getImportmapAndRoutes(args.importmap, args.routes, port),
-          await runProject(port, args.sources),
+          await runProject(port, args.sources as string[]),
         ),
         args.backend,
         args.spaPath,
@@ -235,14 +235,14 @@ yargs.command(
     }
 
     runCommand('runDevelop', {
-      configUrls: args['config-url'],
-      configFiles: args['config-file'],
+      configUrls: args['config-url'] as string[],
+      configFiles: args['config-file'] as string[],
       ...args,
       port,
       ...proxyImportmapAndRoutes(
         await mergeImportmapAndRoutes(
           await getImportmapAndRoutes(args.importmap, args.routes, port),
-          await runProject(port, args.sources, args['use-rspack']),
+          await runProject(port, args.sources as string[], args['use-rspack']),
           args.backend,
           args.spaPath,
         ),
@@ -345,7 +345,7 @@ yargs.command(
   async (args) =>
     runCommand('runBuild', {
       ...args,
-      configUrls: args['config-url'],
+      configUrls: args['config-url'] as string[],
       configPaths: args['config-path'],
       assets: args['asset'],
     }),
