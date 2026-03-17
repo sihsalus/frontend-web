@@ -278,7 +278,7 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
       optimizationConfig,
     ),
     plugins: [
-      new TsCheckerRspackPlugin(),
+      mode !== production && new TsCheckerRspackPlugin(),
       new CleanWebpackPlugin(),
       new BundleAnalyzerPlugin({
         analyzerMode: env && env.analyze ? 'server' : 'disabled',

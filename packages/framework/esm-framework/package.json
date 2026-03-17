@@ -32,8 +32,8 @@
     "test": "cross-env TZ=UTC vitest run --passWithNoTests",
     "test:watch": "cross-env TZ=UTC vitest watch",
     "coverage": "cross-env TZ=UTC vitest run --coverage --passWithNoTests",
-    "build": "concurrently \"rspack --mode=production\" \"tsc --project tsconfig.build.json\"",
-    "build:development": "concurrently \"rspack --mode=development\" \"tsc --project tsconfig.build.json\"",
+    "build": "rspack --mode=production",
+    "build:development": "rspack --mode=development",
     "analyze": "rspack --mode=production --env analyze=true",
     "typescript": "tsc --project tsconfig.build.json",
     "lint": "eslint src --ext ts,tsx"
