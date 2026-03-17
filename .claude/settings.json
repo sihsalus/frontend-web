@@ -109,8 +109,20 @@
       "mcp__playwright__browser_take_screenshot",
       "mcp__playwright__browser_close",
       "mcp__playwright__browser_console_messages",
-      "mcp__playwright__browser_network_requests"
+      "mcp__playwright__browser_network_requests",
+      "Bash(__NEW_LINE_1ad84d14ea950bd5__ echo \"\")",
+      "Bash(__NEW_LINE_35ca8e53091bff90__ echo \"\")",
+      "Bash(__NEW_LINE_55d347d32b054f1b__ echo \"\")",
+      "Bash(__NEW_LINE_464801c3dd7cc699__ echo \"\")",
+      "Bash(__NEW_LINE_add86cc1937ac8fe__ echo \"\")",
+      "Bash(__NEW_LINE_57a882193d3eaedb__ echo \"\")",
+      "Read(//dev/**)",
+      "Bash(# Check what the backend has in its importmap for home curl -s http://hii1sc-dev.inf.pucp.edu.pe/openmrs/spa/importmap.json)"
     ],
-    "deny": []
+    "deny": [],
+    "additionalDirectories": [
+      "/home/duvet05/frontend-web/packages/apps",
+      "/tmp/esm-pm-mocks/__mocks__"
+    ]
   }
 }

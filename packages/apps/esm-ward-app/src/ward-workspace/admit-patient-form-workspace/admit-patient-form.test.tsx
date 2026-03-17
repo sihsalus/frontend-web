@@ -92,6 +92,8 @@ describe('Testing AdmitPatientForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
+    mockedUseAdmitPatient.mockReturnValue(mockUseAdmitPatientObj);
+
     mockedUseSession.mockReturnValue({
       currentProvider: {
         uuid: 'current-provider-uuid',
@@ -163,7 +165,7 @@ describe('Testing AdmitPatientForm', () => {
   });
 
   it('should block the form if emr configuration is not fetched properly', () => {
-    mockedUseAdmitPatient.mockReturnValueOnce({
+    mockedUseAdmitPatient.mockReturnValue({
       admitPatient: mockedAdmitPatient,
       isLoadingEmrConfiguration: false,
       errorFetchingEmrConfiguration: true,
@@ -171,7 +173,7 @@ describe('Testing AdmitPatientForm', () => {
 
     renderAdmissionForm();
 
-    const admitButton = screen.getByText('Admit');
+    const admitButton = screen.getByRole('button', { name: /admit/i });
     expect(admitButton).toBeDisabled();
   });
 
@@ -196,7 +198,7 @@ describe('Testing AdmitPatientForm', () => {
     expect(mockedAssignPatientToBed).toHaveBeenCalledWith(3, mockPatientAlice.uuid, 'encounter-uuid');
     expect(mockedShowSnackbar).toHaveBeenCalledWith({
       kind: 'success',
-      subtitle: '{{patientName}} has been successfully admitted and assigned to bed bed3',
+      subtitle: 'Alice Johnson has been successfully admitted and assigned to bed bed3',
       title: 'Patient admitted successfully',
     });
   });
