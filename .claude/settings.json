@@ -117,7 +117,13 @@
       "Bash(__NEW_LINE_add86cc1937ac8fe__ echo \"\")",
       "Bash(__NEW_LINE_57a882193d3eaedb__ echo \"\")",
       "Read(//dev/**)",
-      "Bash(# Check what the backend has in its importmap for home curl -s http://hii1sc-dev.inf.pucp.edu.pe/openmrs/spa/importmap.json)"
+      "Bash(# Check what the backend has in its importmap for home curl -s http://hii1sc-dev.inf.pucp.edu.pe/openmrs/spa/importmap.json)",
+      "Bash(do if ! grep -q \"$mock\" /home/duvet05/frontend-web/packages/__mocks__/index.ts)",
+      "Bash(then echo \"NOT EXPORTED IN INDEX: $mock\" fi done)",
+      "Bash(do if ! grep -q \"export.*\\\\b$mock\\\\b\" /home/duvet05/frontend-web/packages/__mocks__/*.ts)",
+      "Bash(then echo \"$mock\" fi done)",
+      "Bash(do if ! grep -q \"\\\\./$file\\\\|\\\\./$file\\\\.mock\" /home/duvet05/frontend-web/packages/__mocks__/index.ts)",
+      "Bash(then echo \"$file\" fi done)"
     ],
     "deny": [],
     "additionalDirectories": [
