@@ -123,7 +123,8 @@
       "Bash(do if ! grep -q \"export.*\\\\b$mock\\\\b\" /home/duvet05/frontend-web/packages/__mocks__/*.ts)",
       "Bash(then echo \"$mock\" fi done)",
       "Bash(do if ! grep -q \"\\\\./$file\\\\|\\\\./$file\\\\.mock\" /home/duvet05/frontend-web/packages/__mocks__/index.ts)",
-      "Bash(then echo \"$file\" fi done)"
+      "Bash(then echo \"$file\" fi done)",
+      "Read(//home/duvet05/frontend-web/packages/__mocks__/**)"
     ],
     "deny": [],
     "additionalDirectories": [
