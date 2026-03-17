@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
-import { type ConfigObject, configSchema } from '../../../esm-patient-tests-app/src/config-schema';
+import { type ConfigObject, configSchema } from '../../../../apps/esm-patient-tests-app/src/config-schema';
 import { useOrderableConceptSets } from './useOrderableConceptSets';
 
 const mockOpenrsFetch = openmrsFetch as jest.Mock;

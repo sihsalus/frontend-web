@@ -14,14 +14,22 @@ declare global {
 window.openmrsBase = '/openmrs';
 window.spaBase = '/spa';
 window.getOpenmrsSpaBase = () => '/openmrs/spa/';
+window.URL.createObjectURL = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 window.HTMLFormElement.prototype.requestSubmit = jest.fn();
-window.matchMedia = jest.fn().mockImplementation(() => {
-  return {
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
-    addEventListener: () => {},
-    removeEventListener: () => {},
-  };
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
 });
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({

@@ -41,9 +41,11 @@ const renderWithRouter = (component: React.ReactElement, initialRoute = '/') => 
 };
 
 function waitForLoadingToFinish() {
-  return waitForElementToBeRemoved(() => [...screen.queryAllByRole('progressbar')], {
-    timeout: 4000,
-  });
+  if (screen.queryAllByRole('progressbar').length) {
+    return waitForElementToBeRemoved(() => [...screen.queryAllByRole('progressbar')], {
+      timeout: 4000,
+    });
+  }
 }
 
 // Custom matcher that queries elements split up by multiple HTML elements by text

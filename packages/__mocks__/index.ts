@@ -22,7 +22,7 @@ export * from './visits.mock';
 export * from './wardBeds.mock';
 export * from './wards.mock';
 
-// --- patient-chart mocks ---
+// --- patient-chart mocks (non-conflicting) ---
 export * from './allergies.mock';
 export * from './chart-widgets-config.mock';
 export * from './conditions.mock';
@@ -31,7 +31,6 @@ export * from './forms.mock';
 export * from './generic-widgets.mock';
 export * from './groupedResults.mock';
 export * from './immunizations.mock';
-export * from './location.mock';
 export * from './medication.mock';
 export * from './mockBasePanel.mock';
 export * from './mockDeceasedPatient';
@@ -39,7 +38,6 @@ export * from './mockOrders.mock';
 export * from './order-price-data.mock';
 export * from './order-stock-data.mock';
 export * from './patient-flags.mock';
-export * from './patient-pc.mock';
 export * from './programs.mock';
 export * from './relationships.mock';
 export * from './results.mock';
@@ -49,3 +47,7 @@ export * from './visitQueueEntry.mock';
 export * from './visits-pc.mock';
 export * from './vitals-and-biometrics.mock';
 export * from './vitals-concept-metadata.mock';
+
+// --- Conflicting mocks (not re-exported, import directly from file) ---
+// location.mock.ts — conflicts with locations.mock.ts on 'mockLocations'
+// patient-pc.mock.ts — conflicts with patient.mock.ts on 'mockPatientAlice'
