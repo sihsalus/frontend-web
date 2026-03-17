@@ -17,6 +17,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "resolveJsonModule": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
