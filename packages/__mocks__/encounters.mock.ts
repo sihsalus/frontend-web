@@ -144,6 +144,86 @@ export const mockEncountersAlice: Array<Encounter> = [
   },
 ];
 
+/**
+ * MappedEncounter array used by visits-table.test.tsx.
+ * Shape mirrors the output of mapEncounters() in visit.resource.tsx.
+ */
+export const mockEncounters = [
+  {
+    id: '979d38e3-fb68-47cf-843f-2b0263690f49',
+    datetime: '2022-01-18T16:25:27.000+0000',
+    encounterType: 'Admission',
+    editPrivilege: null,
+    form: { uuid: '17e3bc1a-d319-408f-8b57-73e367f7fa80', display: 'POC Consent Form' },
+    obs: [],
+    provider: '--',
+    visitUuid: 'd6e042c2-16db-11f0-8ab9-00155db2a7da',
+    visitType: 'Facility Visit',
+    visitTypeUuid: '073dca16-16dc-11f0-8494-00155db2a7da',
+    visitStartDatetime: '2022-01-18T12:25:27.000+0000',
+    visitStopDatetime: '2022-01-18T17:25:27.000+0000',
+  },
+  {
+    id: '09eadbdd-6924-4126-8a3b-c92aac04b8e7',
+    datetime: '2021-08-03T00:47:48.000+0000',
+    encounterType: 'Visit Note',
+    editPrivilege: null,
+    form: null,
+    obs: [],
+    provider: 'User One',
+    visitUuid: '7b0f5697-27e3-40c4-8bae-f4049abfb4ed',
+    visitType: 'Facility Visit',
+    visitTypeUuid: '073dca16-16dc-11f0-8494-00155db2a7da',
+    visitStartDatetime: '2021-08-03T00:27:48.000+0000',
+    visitStopDatetime: '2021-08-03T00:57:48.000+0000',
+  },
+  {
+    id: 'ff9a0035-8698-47dc-b608-bd6ec2646e5c',
+    datetime: '2021-07-05T10:07:18.000+0000',
+    encounterType: 'Consultation',
+    editPrivilege: 'edit',
+    form: { uuid: '9e1a0c68-ca19-3482-9ffb-0a6b4e591c2a', display: 'Covid 19' },
+    obs: [],
+    provider: 'Dennis The Doctor',
+    visitUuid: '7b0f5697-27e3-40c4-8bae-f4049abfb4ed',
+    visitType: 'Facility Visit',
+    visitTypeUuid: '073dca16-16dc-11f0-8494-00155db2a7da',
+    visitStartDatetime: '2021-07-05T09:07:18.000+0000',
+    visitStopDatetime: '2021-07-05T11:07:18.000+0000',
+  },
+];
+
+/**
+ * Raw encounter array used by encounters-table.test.tsx.
+ * Shape matches what the encounters-table component receives via its `encounters` prop.
+ */
+export const mockEncounters2 = [
+  {
+    uuid: 'enc2-uuid-1',
+    encounterDatetime: '2022-01-18T16:25:27.000+0000',
+    datetime: '2022-01-18T16:25:27.000+0000',
+    display: 'Admission 01/18/2022',
+    encounterType: { uuid: mockEncounterTypeAdmission.uuid, display: 'Admission' },
+    obs: [],
+  },
+  {
+    uuid: 'enc2-uuid-2',
+    encounterDatetime: '2021-08-03T00:47:48.000+0000',
+    datetime: '2021-08-03T00:47:48.000+0000',
+    display: 'Consultation 08/03/2021',
+    encounterType: { uuid: mockEncounterTypeConsultation.uuid, display: 'Consultation' },
+    obs: [],
+  },
+  {
+    uuid: 'enc2-uuid-3',
+    encounterDatetime: '2021-07-05T10:07:18.000+0000',
+    datetime: '2021-07-05T10:07:18.000+0000',
+    display: 'Visit Note 07/05/2021',
+    encounterType: { uuid: mockEncounterTypeVisitNote.uuid, display: 'Visit Note' },
+    obs: [],
+  },
+];
+
 export const mockEncounter: Encounter = {
   uuid: '3b4daf81-7372-475c-ba5d-13c9c21d8ab1',
   display: 'Consultation 09/23/2022',

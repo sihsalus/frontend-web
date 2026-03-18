@@ -96,7 +96,6 @@ const mockPatient = {
       use: 'usual',
       family: 'Wilson',
       given: ['John'],
-      text: 'Wilson, John',
     },
   ],
   gender: 'male',
@@ -113,7 +112,6 @@ const mockPatientWithLongName = {
       use: 'usual',
       family: 'family name',
       given: ['Some very long given name'],
-      text: 'family name, Some very long given name',
     },
   ],
 };

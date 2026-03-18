@@ -205,7 +205,7 @@ describe('Visit form', () => {
       patientUuid: mockPatient.id,
     });
     mockUseVisitTypes.mockReturnValue(mockVisitTypes);
-    mockUseLocations.mockReturnValue(mockLocations);
+    mockUseLocations.mockReturnValue(mockLocations.data.results);
     mockUseEmrConfiguration.mockReturnValue({
       emrConfiguration: {
         atFacilityVisitType: null,
@@ -312,7 +312,7 @@ describe('Visit form', () => {
     expect(mockSaveVisit).toHaveBeenCalledTimes(1);
     expect(mockSaveVisit).toHaveBeenCalledWith(
       expect.objectContaining({
-        location: mockLocations[1].uuid,
+        location: mockLocations.data.results[1].uuid,
         patient: mockPatient.id,
         visitType: 'some-uuid1',
       }),
@@ -355,7 +355,7 @@ describe('Visit form', () => {
     expect(mockSaveVisit).toHaveBeenCalledTimes(1);
     expect(mockSaveVisit).toHaveBeenCalledWith(
       expect.objectContaining({
-        location: mockLocations[1].uuid,
+        location: mockLocations.data.results[1].uuid,
         patient: mockPatient.id,
         visitType: 'some-uuid1',
       }),
@@ -429,7 +429,7 @@ describe('Visit form', () => {
     expect(mockUpdateVisit).toHaveBeenCalledWith(
       mockVisitWithAttributes.uuid,
       expect.objectContaining({
-        location: mockLocations[1].uuid,
+        location: mockLocations.data.results[1].uuid,
         visitType: 'some-uuid1',
       }),
       expect.any(Object),
@@ -488,7 +488,7 @@ describe('Visit form', () => {
     expect(mockUpdateVisit).toHaveBeenCalledWith(
       mockVisitWithAttributes.uuid,
       expect.objectContaining({
-        location: mockLocations[1].uuid,
+        location: mockLocations.data.results[1].uuid,
         visitType: 'some-uuid1',
       }),
       expect.any(Object),

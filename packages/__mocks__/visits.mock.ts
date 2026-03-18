@@ -53,11 +53,6 @@ export const mockVisitTypes = [
     name: 'Mental Health Visit',
     display: 'Mental Health Visit',
   },
-  {
-    uuid: 'some-uuid6',
-    name: 'TB Clinic Visit',
-    display: 'TB Clinic Visit',
-  },
 ];
 
 export const mockVisitAlice: Visit = {

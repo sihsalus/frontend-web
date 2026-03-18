@@ -13,9 +13,13 @@ console.error = (...args: any[]) => {
   originalError.call(console, ...args);
 };
 
-import { afterAll, afterEach } from 'vitest';
-import '@testing-library/jest-dom/vitest';
+import * as matchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
+import { afterAll, afterEach, expect } from 'vitest';
+
+// Extend Vitest's expect with @testing-library/jest-dom matchers.
+// The '/vitest' import path is incompatible with Vitest v4; use expect.extend() instead.
+expect.extend(matchers);
 import type {} from '@openmrs/esm-globals';
 
 declare global {
@@ -46,6 +50,28 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 window.openmrsBase = '/openmrs';
 window.spaBase = '/spa';
 window.getOpenmrsSpaBase = () => '/openmrs/spa/';
+
+// happy-dom v20 doesn't always expose localStorage as callable methods at the global scope;
+// provide a simple in-memory shim so modules that call localStorage.setItem/getItem work.
+const _localStorageData: Record<string, string> = {};
+const _localStorageShim: Storage = {
+  getItem: (key) => _localStorageData[key] ?? null,
+  setItem: (key, value) => {
+    _localStorageData[key] = String(value);
+  },
+  removeItem: (key) => {
+    delete _localStorageData[key];
+  },
+  clear: () => {
+    Object.keys(_localStorageData).forEach((k) => delete _localStorageData[k]);
+  },
+  get length() {
+    return Object.keys(_localStorageData).length;
+  },
+  key: (index) => Object.keys(_localStorageData)[index] ?? null,
+};
+Object.defineProperty(globalThis, 'localStorage', { value: _localStorageShim, writable: true });
+Object.defineProperty(window, 'localStorage', { value: _localStorageShim, writable: true });
 const { getComputedStyle } = window;
 window.getComputedStyle = (elt) => getComputedStyle(elt);
 

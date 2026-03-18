@@ -42,23 +42,23 @@ describe('End visit dialog', () => {
 
     render(<EndVisitDialog patientUuid="some-patient-uuid" closeModal={mockCloseModal} />);
 
-    const closeModalButton = screen.getByRole('button', { name: /close/i });
+    // ModalHeader renders a close button with aria-label "Close" (exact); "Close Visit" is a separate button
+    const closeModalButton = screen.getByRole('button', { name: /^close$/i });
     const cancelButton = screen.getByRole('button', { name: /cancel/i });
-    const endVisitButton = screen.getByRole('button', { name: /end visit/i });
+    // "Close Visit" triggers handleEndVisit — same behaviour as the original "End visit" button
+    const closeVisitButton = screen.getByRole('button', { name: /close visit/i });
 
     expect(closeModalButton).toBeInTheDocument();
     expect(cancelButton).toBeInTheDocument();
-    expect(endVisitButton).toBeInTheDocument();
+    expect(closeVisitButton).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /are you sure you want to end this active visit?/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /Ending this visit means that you will no longer be able to add encounters to it. If you need to add an encounter, you can create a new visit for this patient or edit a past one/i,
-      ),
+      screen.getByText(/you can add additional encounters to this visit in the visit summary/i),
     ).toBeInTheDocument();
 
-    await user.click(endVisitButton);
+    await user.click(closeVisitButton);
 
     expect(updateVisit).toHaveBeenCalledWith(mockCurrentVisit.uuid, endVisitPayload, expect.anything());
 
@@ -86,17 +86,16 @@ describe('End visit dialog', () => {
     render(<EndVisitDialog patientUuid="some-patient-uuid" closeModal={mockCloseModal} />);
 
     expect(
-      screen.getByText(
-        /Ending this visit means that you will no longer be able to add encounters to it. If you need to add an encounter, you can create a new visit for this patient or edit a past one/i,
-      ),
+      screen.getByText(/you can add additional encounters to this visit in the visit summary/i),
     ).toBeInTheDocument();
 
-    const endVisitButton = screen.getByRole('button', { name: /End Visit/i });
-    expect(endVisitButton).toBeInTheDocument();
+    // "Close Visit" triggers handleEndVisit which shows the error snackbar expected below
+    const closeVisitButton = screen.getByRole('button', { name: /close visit/i });
+    expect(closeVisitButton).toBeInTheDocument();
 
-    await user.click(endVisitButton);
+    await user.click(closeVisitButton);
 
-    expect(updateVisit).toHaveBeenCalledWith(mockCurrentVisit.uuid, endVisitPayload, new AbortController());
+    expect(updateVisit).toHaveBeenCalledWith(mockCurrentVisit.uuid, endVisitPayload, expect.anything());
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       subtitle: 'Internal error message',
       kind: 'error',

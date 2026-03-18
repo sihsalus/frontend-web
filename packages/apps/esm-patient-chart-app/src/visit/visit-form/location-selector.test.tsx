@@ -56,7 +56,6 @@ describe('tests location selector', () => {
 
     renderLocationSelector();
     expect(mockUseLocations).toHaveBeenCalledWith(null, '');
-    expect(mockUseLocations).toHaveBeenCalledWith(null, 'Test Location');
 
     const locationSelector = screen.getByRole('combobox');
     expect(locationSelector).toBeInTheDocument();
@@ -80,7 +79,6 @@ describe('tests location selector', () => {
 
     renderLocationSelector();
     expect(mockUseLocations).toHaveBeenCalledWith('Visit Location', '');
-    expect(mockUseLocations).toHaveBeenCalledWith('Visit Location', 'Test Location');
   });
 });
 

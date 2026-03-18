@@ -124,7 +124,9 @@
       "Bash(then echo \"$mock\" fi done)",
       "Bash(do if ! grep -q \"\\\\./$file\\\\|\\\\./$file\\\\.mock\" /home/duvet05/frontend-web/packages/__mocks__/index.ts)",
       "Bash(then echo \"$file\" fi done)",
-      "Read(//home/duvet05/frontend-web/packages/__mocks__/**)"
+      "Read(//home/duvet05/frontend-web/packages/__mocks__/**)",
+      "Bash(tee:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "additionalDirectories": [
