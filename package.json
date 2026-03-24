@@ -67,10 +67,11 @@
   },
   "packageManager": "yarn@4.13.0",
   "resolutions": {
-    "sass": "^1.54.3",
+    "sass": "1.77.8",
     "zustand": "^4.5.5",
     "webpack": "5.99.9",
     "html-webpack-plugin": "^5.5.0",
-    "swr": "2.2.5"
+    "swr": "2.2.5",
+    "@carbon/styles": "^1.102.0"
   }
 }

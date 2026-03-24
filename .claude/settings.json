@@ -133,7 +133,8 @@
       "Bash(npm pack:*)",
       "Read(//home/duvet05/frontend-web/**)",
       "WebFetch(domain:yarnpkg.com)",
-      "WebFetch(domain:gist.github.com)"
+      "WebFetch(domain:gist.github.com)",
+      "Bash(# Check if there''s a different @carbon/styles used by esm-styleguide find /home/duvet05/frontend-web/packages/framework/esm-styleguide -path \"\"*/node_modules/@carbon/styles/package.json\"\")"
     ],
     "deny": [],
     "additionalDirectories": [
