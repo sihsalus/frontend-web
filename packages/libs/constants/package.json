@@ -11,5 +11,8 @@
     "typescript": "tsc",
     "lint": "eslint src --ext ts,tsx",
     "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

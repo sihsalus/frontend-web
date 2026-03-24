@@ -6256,6 +6256,8 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -6326,7 +6328,9 @@ __metadata:
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
     formik: "npm:^2.2.9"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     react-hook-form: "npm:^7.54.0"
     xlsx: "npm:^0.18.5"
@@ -6351,6 +6355,8 @@ __metadata:
     "@hookform/resolvers": "npm:^3.9.1"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     react-hook-form: "npm:^7.54.0"
     zod: "npm:^3.24.1"
@@ -6497,6 +6503,8 @@ __metadata:
     "@openmrs/esm-form-engine-lib": "npm:latest"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-error-boundary: "npm:^4.0.13"
   peerDependencies:
@@ -6644,7 +6652,9 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
     d3: "npm:^7.6.1"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -6823,6 +6833,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -6843,6 +6855,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     linkify-react: "npm:^4.2.0"
     linkifyjs: "npm:^4.2.0"
     lodash-es: "npm:^4.17.21"
@@ -6867,6 +6881,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-barcode: "npm:^1.5.3"
     react-to-print: "npm:^3.0.4"
@@ -6889,6 +6905,7 @@ __metadata:
     "@rspack/cli": "npm:1.3.15"
     "@types/uuid": "npm:^9.0.4"
     eslint: "npm:^9.24.0"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     uuid: "npm:^8.3.2"
   peerDependencies:
@@ -6912,6 +6929,8 @@ __metadata:
   resolution: "@openmrs/esm-patient-common-lib@workspace:packages/libs/esm-patient-common-lib"
   dependencies:
     "@carbon/react": "npm:^1.12.0"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     uuid: "npm:^8.3.2"
   peerDependencies:
@@ -6928,6 +6947,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -6948,6 +6969,8 @@ __metadata:
     "@carbon/react": "npm:^1.33.1"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
     "@openmrs/esm-patient-common-lib": "workspace:*"
@@ -6967,7 +6990,9 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
     fuzzy: "npm:^0.1.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7061,6 +7086,8 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.1"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.46.2"
     zod: "npm:^3.22.2"
@@ -7083,8 +7110,10 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
     dexie: "npm:^3.0.3"
     fuzzy: "npm:^0.1.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7102,6 +7131,8 @@ __metadata:
     "@carbon/react": "npm:^1.33.1"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
     "@openmrs/esm-patient-common-lib": "workspace:*"
@@ -7121,6 +7152,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7140,6 +7173,8 @@ __metadata:
   dependencies:
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7160,6 +7195,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7180,6 +7217,8 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7200,10 +7239,12 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
     formik: "npm:^2.1.5"
     husky: "npm:^8.0.3"
     i18next: "npm:^21.10.0"
     i18next-parser: "npm:^9.0.2"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     uuid: "npm:^8.3.2"
     yup: "npm:^0.29.1"
@@ -7224,7 +7265,9 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
     i18next: "npm:^24.2.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     react-hook-form: "npm:^7.54.0"
   peerDependencies:
@@ -7245,8 +7288,10 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
     d3: "npm:^7.6.1"
     fuzzy: "npm:^0.1.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7267,7 +7312,9 @@ __metadata:
     "@carbon/react": "npm:^1.12.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
     d3: "npm:^7.6.1"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
@@ -7362,6 +7409,8 @@ __metadata:
     "@hookform/resolvers": "npm:^3.9.1"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     react-hook-form: "npm:^7.54.0"
     zod: "npm:^3.24.1"
@@ -7601,6 +7650,8 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.3.2"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     react-hook-form: "npm:^7.54.0"
     zod: "npm:^3.24.1"
@@ -10300,6 +10351,8 @@ __metadata:
 "@sihsalus/audit-logger@workspace:packages/libs/audit-logger":
   version: 0.0.0-use.local
   resolution: "@sihsalus/audit-logger@workspace:packages/libs/audit-logger"
+  dependencies:
+    vitest: "npm:^4.0.18"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
   languageName: unknown
@@ -10308,6 +10361,8 @@ __metadata:
 "@sihsalus/constants@workspace:packages/libs/constants":
   version: 0.0.0-use.local
   resolution: "@sihsalus/constants@workspace:packages/libs/constants"
+  dependencies:
+    vitest: "npm:^4.0.18"
   languageName: unknown
   linkType: soft
 
@@ -10383,6 +10438,8 @@ __metadata:
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.5.1"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.56.1"
     xlsx: "npm:^0.18.5"
@@ -10416,6 +10473,8 @@ __metadata:
     "@rspack/cli": "npm:1.3.15"
     "@types/webpack-env": "npm:^1.18.0"
     classnames: "npm:^2.5.1"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.56.1"
     xlsx: "npm:^0.18.5"
@@ -10484,6 +10543,8 @@ __metadata:
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.5.1"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.56.1"
     xlsx: "npm:^0.18.5"
@@ -10516,6 +10577,8 @@ __metadata:
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
     classnames: "npm:^2.5.1"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.56.1"
     xlsx: "npm:^0.18.5"
@@ -10545,6 +10608,8 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.1"
     "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.3.15"
+    cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     react-hook-form: "npm:^7.56.1"
     zod: "npm:^3.24.1"
@@ -10564,6 +10629,8 @@ __metadata:
 "@sihsalus/fhir-client@workspace:packages/libs/fhir-client":
   version: 0.0.0-use.local
   resolution: "@sihsalus/fhir-client@workspace:packages/libs/fhir-client"
+  dependencies:
+    vitest: "npm:^4.0.18"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
   languageName: unknown
@@ -10611,6 +10678,8 @@ __metadata:
 "@sihsalus/keycloak-auth@workspace:packages/libs/keycloak-auth":
   version: 0.0.0-use.local
   resolution: "@sihsalus/keycloak-auth@workspace:packages/libs/keycloak-auth"
+  dependencies:
+    vitest: "npm:^4.0.18"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
   languageName: unknown
@@ -10619,6 +10688,8 @@ __metadata:
 "@sihsalus/rbac@workspace:packages/libs/rbac":
   version: 0.0.0-use.local
   resolution: "@sihsalus/rbac@workspace:packages/libs/rbac"
+  dependencies:
+    vitest: "npm:^4.0.18"
   peerDependencies:
     "@openmrs/esm-framework": 9.0.2
   languageName: unknown
