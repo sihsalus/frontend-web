@@ -13,6 +13,6 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "workspace:*"
+    "@openmrs/esm-framework": "9.0.2"
   }
 }

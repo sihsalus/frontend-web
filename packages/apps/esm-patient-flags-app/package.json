@@ -40,7 +40,7 @@
     "@carbon/react": "^1.33.1"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "workspace:*",
+    "@openmrs/esm-framework": "9.0.2",
     "@openmrs/esm-patient-common-lib": "workspace:*",
     "dayjs": "1.x",
     "react": "18.x",

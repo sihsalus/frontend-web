@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/shell/*",
-    "packages/framework/*",
     "packages/tooling/*",
     "packages/apps/*",
     "packages/libs/*"
@@ -12,7 +10,6 @@
   "scripts": {
     "build": "turbo run build",
     "build:apps": "turbo run build --filter='./packages/apps/*'",
-    "build:framework": "turbo run build --filter='./packages/framework/*'",
     "assemble": "node scripts/assemble-importmap.js",
     "dev": "turbo run dev",
     "start": "openmrs develop",
