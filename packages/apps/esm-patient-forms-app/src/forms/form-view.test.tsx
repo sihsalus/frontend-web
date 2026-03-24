@@ -1,11 +1,13 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showModal, useConfig } from '@openmrs/esm-framework';
 import { launchFormEntryOrHtmlForms, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
-import { configSchema, type ConfigObject } from '../config-schema';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockCurrentVisit, mockForms } from '__mocks__';
+import React from 'react';
 import { mockPatient } from 'tools';
+
+import { configSchema, type ConfigObject } from '../config-schema';
+
 import FormView from './form-view.component';
 
 const mockLaunchFormEntryOrHtmlForms = launchFormEntryOrHtmlForms as jest.Mock;

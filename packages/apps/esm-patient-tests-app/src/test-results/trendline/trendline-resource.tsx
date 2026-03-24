@@ -1,8 +1,9 @@
+import { type FetchResponse, openmrsFetch, showSnackbar, restBaseUrl } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { type FetchResponse, openmrsFetch, showSnackbar, restBaseUrl } from '@openmrs/esm-framework';
-import { assessValue } from '../loadPatientTestData/helpers';
+
 import { type TreeNode } from '../filter/filter-types';
+import { assessValue } from '../loadPatientTestData/helpers';
 
 function computeTrendlineData(treeNode: TreeNode): Array<TreeNode> {
   const tests: Array<TreeNode> = [];

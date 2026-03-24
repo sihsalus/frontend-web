@@ -1,4 +1,5 @@
 import type { OBSERVATION_INTERPRETATION } from '@openmrs/esm-patient-common-lib';
+
 import { type RowData, type TreeNode } from '../filter/filter-types';
 
 export interface PanelNameCornerProps {

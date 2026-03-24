@@ -8,6 +8,7 @@ import {
 } from '@openmrs/esm-framework';
 import { useEffect, useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
+
 import type { Concept } from './types';
 
 type ConceptResult = FetchResponse<Concept>;

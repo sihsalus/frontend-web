@@ -6,10 +6,11 @@ import {
   registerFeatureFlag,
   restBaseUrl,
 } from '@openmrs/esm-framework';
-import { configSchema } from './config-schema';
-import deceasedPatientTagComponent from './banner-tags/deceased-patient-tag.extension';
+
 import patientBannerComponent from './banner/patient-banner.component';
+import deceasedPatientTagComponent from './banner-tags/deceased-patient-tag.extension';
 import visitTagComponent from './banner-tags/visit-tag.extension';
+import { configSchema } from './config-schema';
 
 const moduleName = '@openmrs/esm-patient-banner-app';
 

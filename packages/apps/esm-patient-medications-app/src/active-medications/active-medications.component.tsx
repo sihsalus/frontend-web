@@ -1,9 +1,10 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton } from '@carbon/react';
 import { EmptyState, ErrorState, useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
-import MedicationsDetailsTable from '../components/medications-details-table.component';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActivePatientOrders } from '../api/api';
+import MedicationsDetailsTable from '../components/medications-details-table.component';
 
 interface ActiveMedicationsProps {
   patient: fhir.Patient;

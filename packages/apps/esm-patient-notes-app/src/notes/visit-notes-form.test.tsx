@@ -1,8 +1,6 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, render } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showSnackbar, useConfig, useSession } from '@openmrs/esm-framework';
-import { fetchDiagnosisConceptsByName, saveVisitNote } from './visit-notes.resource';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   ConfigMock,
   diagnosisSearchResponse,
@@ -10,9 +8,13 @@ import {
   mockFetchProviderByUuidResponse,
   mockSessionDataResponse,
 } from '__mocks__';
-import { configSchema, type ConfigObject } from '../config-schema';
+import React from 'react';
 import { mockPatient, getByTextWithMarkup } from 'tools';
+
+import { configSchema, type ConfigObject } from '../config-schema';
+
 import VisitNotesForm from './visit-notes-form.workspace';
+import { fetchDiagnosisConceptsByName, saveVisitNote } from './visit-notes.resource';
 
 const defaultProps = {
   patientUuid: mockPatient.id,

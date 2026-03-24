@@ -1,12 +1,5 @@
-import React, { type ComponentProps, useCallback } from 'react';
-import {
-  launchPatientWorkspace,
-  useOrderBasket,
-  type OrderBasketItem,
-  useOrderableConceptSets,
-  type OrderableConcept,
-} from '@openmrs/esm-patient-common-lib';
-import { useTranslation } from 'react-i18next';
+import { Tile, Button, SkeletonText, ButtonSkeleton } from '@carbon/react';
+import { ShoppingCartArrowUp } from '@carbon/react/icons';
 import {
   ArrowRightIcon,
   type DefaultWorkspaceProps,
@@ -14,12 +7,21 @@ import {
   useLayoutType,
   useSession,
 } from '@openmrs/esm-framework';
-import { ShoppingCartArrowUp } from '@carbon/react/icons';
-import { useMemo } from 'react';
+import {
+  launchPatientWorkspace,
+  useOrderBasket,
+  type OrderBasketItem,
+  useOrderableConceptSets,
+  type OrderableConcept,
+} from '@openmrs/esm-patient-common-lib';
 import classNames from 'classnames';
-import { Tile, Button, SkeletonText, ButtonSkeleton } from '@carbon/react';
-import styles from './search-results.scss';
+import React, { type ComponentProps, useCallback } from 'react';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { createEmptyOrder, prepOrderPostData } from '../resources';
+
+import styles from './search-results.scss';
 
 interface OrderableConceptSearchResultsProps {
   searchTerm: string;

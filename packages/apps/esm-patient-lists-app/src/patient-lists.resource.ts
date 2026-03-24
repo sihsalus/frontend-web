@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import { formatDate, openmrsFetch, parseDate, restBaseUrl } from '@openmrs/esm-framework';
+import useSWR from 'swr';
 
 /**
  * Represents a cohort object returned by the OpenMRS Cohort resource https://github.com/openmrs/openmrs-module-cohort#readme.

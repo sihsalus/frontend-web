@@ -1,7 +1,9 @@
-import useSWR from 'swr';
 import { type FetchResponse, fhirBaseUrl, openmrsFetch } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
+import useSWR from 'swr';
+
 import { type OrderStockData } from '../types/order';
+
 import { useAreBackendModuleInstalled } from './useAreBackendModuleInstalled';
 
 export const useOrderStockInfo = (orderItemUuid: string) => {

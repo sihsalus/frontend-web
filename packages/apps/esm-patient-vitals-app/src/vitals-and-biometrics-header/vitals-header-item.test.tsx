@@ -1,5 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+
 import VitalsHeaderItem from './vitals-header-item.component';
 
 const testProps = { unitName: 'Temp', value: '36.5', unitSymbol: '°C' };

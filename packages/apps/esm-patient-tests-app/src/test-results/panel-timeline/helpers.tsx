@@ -1,9 +1,11 @@
-import * as React from 'react';
-import classNames from 'classnames';
 import { formatDate, formatTime, parseDate, showModal } from '@openmrs/esm-framework';
 import { type OBSERVATION_INTERPRETATION, getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
-import { type ParsedTimeType } from '../filter/filter-types';
+import classNames from 'classnames';
+import * as React from 'react';
+
 import type { ObsRecord } from '../../types';
+import { type ParsedTimeType } from '../filter/filter-types';
+
 import styles from './timeline.scss';
 
 export const parseTime: (sortedTimes: Array<string>) => ParsedTimeType = (sortedTimes) => {

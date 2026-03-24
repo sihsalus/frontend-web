@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, Tag, Toggletip, ToggletipButton, ToggletipContent } from '@carbon/react';
 import { CloseIcon, EditIcon } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { usePatientFlags } from './hooks/usePatientFlags';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './flags.scss';
+import { usePatientFlags } from './hooks/usePatientFlags';
 
 interface FlagsProps {
   patientUuid: string;

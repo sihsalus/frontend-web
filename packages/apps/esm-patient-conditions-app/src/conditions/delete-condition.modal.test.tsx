@@ -1,9 +1,10 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
-import { mockPatient } from 'tools';
-import { deleteCondition } from './conditions.resource';
 import { showSnackbar, type FetchResponse } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { mockPatient } from 'tools';
+
+import { deleteCondition } from './conditions.resource';
 import DeleteConditionModal from './delete-condition.modal';
 
 const mockDeleteCondition = jest.mocked(deleteCondition);

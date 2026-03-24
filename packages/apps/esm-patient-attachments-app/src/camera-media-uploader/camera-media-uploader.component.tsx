@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 import { InlineNotification, ModalBody, ModalHeader, Tab, TabList, TabPanel, TabPanels, Tabs } from '@carbon/react';
 import { type FetchResponse, type UploadedFile } from '@openmrs/esm-framework';
 import { useAllowedFileExtensions } from '@openmrs/esm-patient-common-lib';
-import CameraComponent from './camera.component';
+import React, { useState, useCallback, useMemo, useEffect, useRef, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import CameraMediaUploaderContext from './camera-media-uploader-context.resources';
+import styles from './camera-media-uploader.scss';
+import CameraComponent from './camera.component';
 import FileReviewContainer from './file-review.component';
 import MediaUploaderComponent from './media-uploader.component';
 import UploadStatusComponent from './upload-status.component';
-import styles from './camera-media-uploader.scss';
 
 interface CameraMediaUploaderModalProps {
   cameraOnly?: boolean;

@@ -1,11 +1,13 @@
-import React, { Fragment, useId, useState } from 'react';
-import classNames from 'classnames';
-import { type Control, Controller } from 'react-hook-form';
 import { FormLabel, NumberInput, TextArea } from '@carbon/react';
 import { Warning } from '@carbon/react/icons';
-import { useTranslation } from 'react-i18next';
 import { useLayoutType, ResponsiveWrapper } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { Fragment, useId, useState } from 'react';
+import { type Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
 import { generatePlaceholder } from '../common';
+
 import { type VitalsBiometricsFormData } from './vitals-biometrics-form.workspace';
 import styles from './vitals-biometrics-input.scss';
 
@@ -109,7 +111,7 @@ const VitalsAndBiometricsInput: React.FC<VitalsAndBiometricsInputProps> = ({
         <section className={styles.labelContainer}>
           <span className={styles.label}>{label}</span>
 
-          {Boolean(hasAbnormalValue) ? (
+          {hasAbnormalValue ? (
             <span className={styles[interpretation.replace('_', '-')]} title={t('abnormalValue', 'Abnormal value')} />
           ) : null}
 

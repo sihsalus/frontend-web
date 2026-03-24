@@ -1,7 +1,8 @@
-import React from 'react';
+import { clinicalFormsWorkspace, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { clinicalFormsWorkspace, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import React from 'react';
+
 import FormError from './form-error.component';
 
 const mocklaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);

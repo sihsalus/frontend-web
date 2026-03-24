@@ -1,7 +1,10 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import FormRenderer from './form-renderer.component';
+import React from 'react';
+
 import useFormSchema from '../hooks/useFormSchema';
+
+import FormRenderer from './form-renderer.component';
+
 
 const mockUseFormSchema = jest.mocked(useFormSchema);
 

@@ -1,5 +1,3 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -17,9 +15,11 @@ import {
   TableRow,
   Tile,
 } from '@carbon/react';
-import { useReactToPrint } from 'react-to-print';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import React, { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useReactToPrint } from 'react-to-print';
 dayjs.extend(isBetween);
 import {
   age,
@@ -31,7 +31,9 @@ import {
   useSession,
   ResponsiveWrapper,
 } from '@openmrs/esm-framework';
+
 import usePanelData from '../panel-view/usePanelData';
+
 import styles from './print-modal.scss';
 
 function PrintModal({ patientUuid, closeDialog }) {

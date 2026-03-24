@@ -1,13 +1,15 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig, useLayoutType, usePatient } from '@openmrs/esm-framework';
-import { mockPatient } from 'tools';
+import { render, screen } from '@testing-library/react';
 import { mockGroupedResults, mockResults } from '__mocks__';
+import React from 'react';
+import { mockPatient } from 'tools';
+
 import { type ConfigObject, configSchema } from '../../config-schema';
+import FilterContext from '../filter/filter-context';
 import { type FilterContextProps } from '../filter/filter-types';
 import { useGetManyObstreeData } from '../grouped-timeline';
+
 import TreeViewWrapper from './tree-view-wrapper.component';
-import FilterContext from '../filter/filter-context';
 
 const mockUsePatient = jest.mocked(usePatient);
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);

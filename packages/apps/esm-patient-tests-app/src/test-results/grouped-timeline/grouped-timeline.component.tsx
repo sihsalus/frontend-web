@@ -1,10 +1,13 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { EmptyState } from '@openmrs/esm-patient-common-lib';
 import { showModal } from '@openmrs/esm-framework';
-import { Grid, ShadowBox } from '../panel-timeline/helpers';
+import { EmptyState } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import FilterContext from '../filter/filter-context';
 import { makeThrottled } from '../helpers';
+import { Grid, ShadowBox } from '../panel-timeline/helpers';
+
 import type {
   DateHeaderGridProps,
   PanelNameCornerProps,
@@ -13,7 +16,6 @@ import type {
   NewRowStartCellProps,
   TimelineDataGroupProps,
 } from './grouped-timeline-types';
-import FilterContext from '../filter/filter-context';
 import styles from './grouped-timeline.scss';
 
 const TimeSlots: React.FC<{

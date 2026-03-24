@@ -1,7 +1,9 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { launchPatientWorkspace } from '..';
+
 import { EmptyState } from '.';
 
 jest.mock('@openmrs/esm-patient-common-lib', () => {

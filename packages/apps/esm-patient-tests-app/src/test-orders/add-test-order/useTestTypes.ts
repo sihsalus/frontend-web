@@ -12,7 +12,7 @@ export function useTestTypes(
   orderableConceptSets: Array<string>,
 ): {
   testTypes: Array<TestType>;
-  isLoading: Boolean;
+  isLoading: boolean;
   error: Error;
 } {
   const { concepts, isLoading, error } = useOrderableConceptSets(searchTerm, orderableConceptSets);

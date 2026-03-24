@@ -1,7 +1,7 @@
-import { useCallback, useMemo } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
 import { type FetchResponse, openmrsFetch, type OpenmrsResource, restBaseUrl } from '@openmrs/esm-framework';
 import { useSystemVisitSetting, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
+import { useCallback, useMemo } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
 
 export const careSettingUuid = '6f0c9a92-6f24-11e3-af88-005056821db0';
 

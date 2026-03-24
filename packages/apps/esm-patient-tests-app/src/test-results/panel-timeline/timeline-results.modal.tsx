@@ -1,6 +1,7 @@
-import React from 'react';
 import { ModalHeader, ModalBody } from '@carbon/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { basePath } from '../../constants';
 import Trendline from '../trendline/trendline.component';
 

@@ -1,6 +1,7 @@
+import { formatDate, useConfig, useSession } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatDate, useConfig, useSession } from '@openmrs/esm-framework';
+
 import styles from './print.scss';
 
 interface PrintComponentProps {

@@ -1,11 +1,12 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { mockPatient } from 'tools';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockPatientFlags } from '__mocks__';
-import { usePatientFlags } from './hooks/usePatientFlags';
+import React from 'react';
+import { mockPatient } from 'tools';
+
 import FlagsHighlightBar from './flags-highlight-bar.component';
+import { usePatientFlags } from './hooks/usePatientFlags';
 
 const mockUsePatientFlags = jest.mocked(usePatientFlags);
 

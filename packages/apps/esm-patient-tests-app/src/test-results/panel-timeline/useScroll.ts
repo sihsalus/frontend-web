@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { makeThrottled } from '../helpers';
 
 const useScrollIndicator = (xThreshold: number, yThreshold: number): [boolean, boolean, React.Ref<HTMLElement>] => {

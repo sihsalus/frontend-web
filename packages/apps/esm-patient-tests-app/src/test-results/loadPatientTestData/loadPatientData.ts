@@ -1,4 +1,3 @@
-import { uniq } from 'lodash-es';
 import {
   type PatientData,
   type ObsRecord,
@@ -6,6 +5,8 @@ import {
   type ObsUuid,
   type ObsMetaInfo,
 } from '@openmrs/esm-patient-common-lib';
+import { uniq } from 'lodash-es';
+
 import {
   getEntryConceptClassUuid,
   getUserDataFromCache,

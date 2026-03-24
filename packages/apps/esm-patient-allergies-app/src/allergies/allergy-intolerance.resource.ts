@@ -1,7 +1,8 @@
-import useSWR from 'swr';
-import { map } from 'rxjs/operators';
-import capitalize from 'lodash-es/capitalize';
 import { fhirBaseUrl, openmrsFetch, openmrsObservableFetch, restBaseUrl } from '@openmrs/esm-framework';
+import capitalize from 'lodash-es/capitalize';
+import { map } from 'rxjs/operators';
+import useSWR from 'swr';
+
 import { type FHIRAllergy, type FHIRAllergyResponse, type ReactionSeverity } from '../types';
 
 export type Allergy = {

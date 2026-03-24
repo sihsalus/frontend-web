@@ -1,6 +1,3 @@
-import React, { useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   TableContainer,
@@ -12,9 +9,14 @@ import {
   TableCell,
   Layer,
 } from '@carbon/react';
-import { getClass } from './helper';
-import type { ObsRecord } from '../../types';
 import { formatDate, isDesktop, useLayoutType } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import type { ObsRecord } from '../../types';
+
+import { getClass } from './helper';
 import styles from './result-panel.scss';
 
 interface LabSetPanelProps {

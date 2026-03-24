@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+
 import { type DashboardLinkConfig } from '../types';
+
 import { DashboardExtension } from './DashboardExtension';
 
 export const createDashboardLink = (db: DashboardLinkConfig) => {

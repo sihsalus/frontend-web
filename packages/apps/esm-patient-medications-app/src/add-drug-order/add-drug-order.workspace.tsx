@@ -1,5 +1,3 @@
-import React, { type ComponentProps, useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
 import { ArrowLeftIcon, useLayoutType, useSession } from '@openmrs/esm-framework';
 import {
@@ -7,12 +5,16 @@ import {
   launchPatientWorkspace,
   useOrderBasket,
 } from '@openmrs/esm-patient-common-lib';
+import React, { type ComponentProps, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { careSettingUuid, prepMedicationOrderPostData } from '../api/api';
-import { ordersEqual } from './drug-search/helpers';
 import type { DrugOrderBasketItem } from '../types';
+
+import styles from './add-drug-order.scss';
 import { DrugOrderForm } from './drug-order-form.component';
 import DrugSearch from './drug-search/drug-search.component';
-import styles from './add-drug-order.scss';
+import { ordersEqual } from './drug-search/helpers';
 
 export interface AddDrugOrderWorkspaceAdditionalProps {
   order: DrugOrderBasketItem;

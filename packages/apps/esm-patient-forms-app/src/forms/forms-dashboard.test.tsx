@@ -1,9 +1,11 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
-import { configSchema, type ConfigObject } from '../config-schema';
+import { render, screen } from '@testing-library/react';
 import { mockCurrentVisit } from '__mocks__';
+import React from 'react';
+
+import { configSchema, type ConfigObject } from '../config-schema';
+
 import FormsDashboard from './forms-dashboard.component';
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);

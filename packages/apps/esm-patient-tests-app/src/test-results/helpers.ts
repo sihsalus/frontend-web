@@ -1,4 +1,5 @@
 import { navigate } from '@openmrs/esm-framework';
+
 import { dashboardMeta } from './dashboard.meta';
 
 export const makeThrottled = <T extends (...args: any[]) => any>(

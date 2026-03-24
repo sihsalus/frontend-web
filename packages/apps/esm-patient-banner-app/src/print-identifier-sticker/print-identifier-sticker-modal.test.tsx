@@ -1,12 +1,14 @@
+import { age, getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import Barcode from 'react-barcode';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
 import { useReactToPrint } from 'react-to-print';
-import { age, getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { getByTextWithMarkup } from 'tools';
+
 import { mockFhirPatient } from '../../../../__mocks__/patient.mock';
 import { type ConfigObject, configSchema } from '../config-schema';
-import { getByTextWithMarkup } from 'tools';
+
 import PrintIdentifierSticker from './print-identifier-sticker.modal';
 
 const mockedCloseModal = jest.fn();

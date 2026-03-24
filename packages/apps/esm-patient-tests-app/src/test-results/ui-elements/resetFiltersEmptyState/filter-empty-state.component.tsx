@@ -1,6 +1,7 @@
-import React from 'react';
 import { Layer, Tile } from '@carbon/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import FilterEmptyDataIllustration from './filter-empty-data-illustration';
 import styles from './index.scss';
 

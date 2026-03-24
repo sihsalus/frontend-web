@@ -1,6 +1,4 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Search } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import {
   ArrowLeftIcon,
   ResponsiveWrapper,
@@ -16,11 +14,15 @@ import {
   useOrderType,
   usePatientChartStore,
 } from '@openmrs/esm-patient-common-lib';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { type ConfigObject } from '../../../config-schema';
 import { OrderForm } from '../general-order-form/general-order-form.component';
 import { prepOrderPostData } from '../resources';
-import { type ConfigObject } from '../../../config-schema';
-import OrderableConceptSearchResults from './search-results.component';
+
 import styles from './orderable-concept-search.scss';
+import OrderableConceptSearchResults from './search-results.component';
 
 interface OrderableConceptSearchWorkspaceProps extends DefaultWorkspaceProps {
   order: OrderBasketItem;

@@ -1,4 +1,5 @@
 import { defineExtensionConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
+
 import { configSchema } from './config-schema';
 import obsSwitchableComponent from './obs-switchable/obs-switchable.component';
 

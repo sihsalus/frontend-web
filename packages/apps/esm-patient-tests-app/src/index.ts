@@ -6,11 +6,12 @@ import {
   messageOmrsServiceWorker,
 } from '@openmrs/esm-framework';
 import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
+
 import { configSchema } from './config-schema';
+import { moduleName } from './constants';
 import { dashboardMeta } from './test-results/dashboard.meta';
 import externalOverviewComponent from './test-results/overview/external-overview.extension';
 import resultsViewerComponent from './test-results/results-viewer';
-import { moduleName } from './constants';
 
 const options = {
   featureName: 'patient-tests',

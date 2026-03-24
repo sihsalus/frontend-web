@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import { last } from 'lodash-es';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
+
 import styles from './dashboard-extension.scss';
 
 export interface DashboardExtensionProps {

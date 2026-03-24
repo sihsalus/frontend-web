@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
-import { useOrderPrice } from '../hooks/useOrderPrice';
-import styles from './order-price-details.scss';
 import { SkeletonText, Tooltip } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { getLocale, InformationIcon } from '@openmrs/esm-framework';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useOrderPrice } from '../hooks/useOrderPrice';
+
+import styles from './order-price-details.scss';
 
 interface OrderPriceDetailsComponentProps {
   orderItemUuid: string;

@@ -1,6 +1,3 @@
-import React, { useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -16,10 +13,15 @@ import {
 } from '@carbon/react';
 import { AddIcon, formatDate, parseDate, useLayoutType } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { patientAllergiesFormWorkspace } from '../constants';
-import { useAllergies } from './allergy-intolerance.resource';
+
 import { AllergiesActionMenu } from './allergies-action-menu.component';
 import styles from './allergies-detailed-summary.scss';
+import { useAllergies } from './allergy-intolerance.resource';
 
 interface AllergiesDetailedSummaryProps {
   patient: fhir.Patient;

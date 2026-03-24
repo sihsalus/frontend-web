@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useContext, type MutableRefObject } from 'react';
 import Camera from 'react-html5-camera-photo';
+
 import CameraMediaUploaderContext from './camera-media-uploader-context.resources';
 import 'react-html5-camera-photo/build/css/index.css';
 

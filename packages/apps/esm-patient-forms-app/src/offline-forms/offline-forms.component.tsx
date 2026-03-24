@@ -1,5 +1,3 @@
-import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   type DataTableCustomRenderProps,
@@ -28,10 +26,14 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { EmptyState } from '@openmrs/esm-patient-common-lib';
-import { useDynamicFormDataEntries } from './offline-form-helpers';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type Form } from '../types';
-import { useValidOfflineFormEncounters } from './use-offline-form-encounters';
+
+import { useDynamicFormDataEntries } from './offline-form-helpers';
 import styles from './offline-forms.scss';
+import { useValidOfflineFormEncounters } from './use-offline-form-encounters';
 
 export interface OfflineFormsProps {}
 

@@ -1,13 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
 import { Accordion, AccordionItem, Button, Checkbox } from '@carbon/react';
 import { useConfig, useLayoutType } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ConfigObject } from '../../config-schema';
-import type { FilterNodeProps, FilterLeafProps } from './filter-types';
 import { FilterEmptyState } from '../ui-elements/resetFiltersEmptyState/filter-empty-state.component';
+
 import FilterContext from './filter-context';
 import styles from './filter-set.scss';
+import type { FilterNodeProps, FilterLeafProps } from './filter-types';
 
 const isIndeterminate = (kids, checkboxes) => {
   return kids && !kids?.every((kid) => checkboxes[kid]) && !kids?.every((kid) => !checkboxes[kid]);

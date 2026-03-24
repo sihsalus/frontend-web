@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   DataTable,
   Table,
@@ -11,9 +10,12 @@ import {
 } from '@carbon/react';
 import { usePagination, useConfig, formatDatetime, formatDate, formatTime } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import { useObs } from '../resources/useObs';
-import styles from './obs-table.scss';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { useObs } from '../resources/useObs';
+
+import styles from './obs-table.scss';
 
 interface ObsTableProps {
   patientUuid: string;

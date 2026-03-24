@@ -1,10 +1,11 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { ContentSwitcher, Switch, Button } from '@carbon/react';
+import { navigate, RenewIcon, useConfig, useLayoutType } from '@openmrs/esm-framework';
+import { EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
 import classNames from 'classnames';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { type TFunction, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { ContentSwitcher, Switch, Button } from '@carbon/react';
-import { EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
-import { navigate, RenewIcon, useConfig, useLayoutType } from '@openmrs/esm-framework';
+
 import { type ConfigObject } from '../../config-schema';
 import { type viewOpts } from '../../types';
 import { FilterContext, FilterProvider } from '../filter';
@@ -14,6 +15,7 @@ import PanelView from '../panel-view/panel-view.component';
 import TabletOverlay from '../tablet-overlay';
 import TreeViewWrapper from '../tree-view/tree-view-wrapper.component';
 import Trendline from '../trendline/trendline.component';
+
 import styles from './results-viewer.scss';
 
 type panelOpts = 'tree' | 'panel';

@@ -1,8 +1,11 @@
-import { act, renderHook } from '@testing-library/react';
 import { type FetchResponse, openmrsFetch } from '@openmrs/esm-framework';
-import { type OrderPriceData } from '../types/order';
-import { useOrderPrice } from './useOrderPrice';
+import { act, renderHook } from '@testing-library/react';
 import { mockOrderPriceData } from '__mocks__';
+
+import { type OrderPriceData } from '../types/order';
+
+import { useOrderPrice } from './useOrderPrice';
+
 
 const mockedOpenmrsFetch = jest.mocked(openmrsFetch);
 

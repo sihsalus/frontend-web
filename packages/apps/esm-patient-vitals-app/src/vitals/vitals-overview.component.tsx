@@ -1,9 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useReactToPrint } from 'react-to-print';
 import { Button, ContentSwitcher, DataTableSkeleton, IconSwitch, InlineLoading } from '@carbon/react';
 import { Add, Analytics, Table, Printer } from '@carbon/react/icons';
-import { CardHeader, EmptyState, ErrorState, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import {
   age,
   getPatientName,
@@ -13,12 +9,18 @@ import {
   useLayoutType,
   usePatient,
 } from '@openmrs/esm-framework';
+import { CardHeader, EmptyState, ErrorState, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useReactToPrint } from 'react-to-print';
+
+import { useVitalsAndBiometrics, useVitalsConceptMetadata, withUnit } from '../common';
 import type { ConfigObject } from '../config-schema';
 import { launchVitalsAndBiometricsForm } from '../utils';
-import { useVitalsAndBiometrics, useVitalsConceptMetadata, withUnit } from '../common';
-import type { VitalsTableHeader, VitalsTableRow } from './types';
+
 import PaginatedVitals from './paginated-vitals.component';
 import PrintComponent from './print/print.component';
+import type { VitalsTableHeader, VitalsTableRow } from './types';
 import VitalsChart from './vitals-chart.component';
 import styles from './vitals-overview.scss';
 

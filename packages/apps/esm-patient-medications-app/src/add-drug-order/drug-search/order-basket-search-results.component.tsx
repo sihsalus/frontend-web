@@ -1,9 +1,5 @@
-import React, { type ComponentProps, useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { Button, ButtonSkeleton, SkeletonText, Tile } from '@carbon/react';
 import { ShoppingCartArrowUp } from '@carbon/react/icons';
-import { launchPatientWorkspace, useOrderBasket, usePatientChartStore } from '@openmrs/esm-patient-common-lib';
 import {
   ArrowRightIcon,
   closeWorkspace,
@@ -13,16 +9,22 @@ import {
   usePatient,
   UserHasAccess,
 } from '@openmrs/esm-framework';
-import { type ConfigObject } from '../../config-schema';
+import { launchPatientWorkspace, useOrderBasket, usePatientChartStore } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { prepMedicationOrderPostData, usePatientOrders } from '../../api/api';
-import { ordersEqual } from './helpers';
+import { type ConfigObject } from '../../config-schema';
+import type { DrugOrderBasketItem } from '../../types';
+
 import {
   type DrugSearchResult,
   getTemplateOrderBasketItem,
   useDrugSearch,
   useDrugTemplate,
 } from './drug-search.resource';
-import type { DrugOrderBasketItem } from '../../types';
+import { ordersEqual } from './helpers';
 import styles from './order-basket-search-results.scss';
 
 export interface OrderBasketSearchResultsProps {

@@ -1,10 +1,11 @@
-import React from 'react';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { openmrsFetch } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockFhirConditionsResponse } from '__mocks__';
+import React from 'react';
 import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import ConditionsDetailedSummary from './conditions-detailed-summary.component';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;

@@ -1,6 +1,3 @@
-import React, { type ChangeEvent, type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { type TFunction, useTranslation } from 'react-i18next';
-import classNames from 'classnames';
 import {
   Button,
   ButtonSet,
@@ -22,7 +19,7 @@ import {
   Toggle,
 } from '@carbon/react';
 import { Subtract } from '@carbon/react/icons';
-import { capitalize } from 'lodash-es';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   AddIcon,
   age,
@@ -35,9 +32,15 @@ import {
   useLayoutType,
   usePatient,
 } from '@openmrs/esm-framework';
+import { usePatientChartStore } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import { capitalize } from 'lodash-es';
+import React, { type ChangeEvent, type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { type Control, Controller, useController, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { type TFunction, useTranslation } from 'react-i18next';
 import { z } from 'zod';
+
+import { useRequireOutpatientQuantity } from '../api';
 import { useOrderConfig } from '../api/order-config';
 import { type ConfigObject } from '../config-schema';
 import type {
@@ -49,9 +52,9 @@ import type {
   MedicationRoute,
   QuantityUnit,
 } from '../types';
-import { useRequireOutpatientQuantity } from '../api';
+
 import styles from './drug-order-form.scss';
-import { usePatientChartStore } from '@openmrs/esm-patient-common-lib';
+
 
 export interface DrugOrderFormProps {
   initialOrderBasketItem: DrugOrderBasketItem;
@@ -792,7 +795,7 @@ const CustomNumberInput = ({ setValue, control, name, labelText, isTablet, ...in
           className={styles.customInput}
           onBlur={onBlur}
           ref={ref}
-          value={!!value ? value : '--'}
+          value={value ? value : '--'}
           size={responsiveSize}
           {...inputProps}
         />
@@ -875,7 +878,7 @@ const ControlledFieldInput = ({
           }}
           ref={ref}
           size={responsiveSize}
-          value={!!value ? value : 0}
+          value={value ? value : 0}
           {...restProps}
         />
       );

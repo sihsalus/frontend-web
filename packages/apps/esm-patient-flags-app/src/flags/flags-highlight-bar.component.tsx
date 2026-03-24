@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react';
 import { InlineLoading, Tag } from '@carbon/react';
 import { ArrowRightIcon } from '@openmrs/esm-framework';
+import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCurrentPath, usePatientFlags } from './hooks/usePatientFlags';
-import Flags from './flags.component';
+
 import styles from './flags-highlight-bar.scss';
+import Flags from './flags.component';
+import { useCurrentPath, usePatientFlags } from './hooks/usePatientFlags';
 
 interface FlagsHighlightBarProps {
   patientUuid: string;

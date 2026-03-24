@@ -1,7 +1,3 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
-import { type TFunction, useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 import {
   Button,
   ButtonSet,
@@ -17,12 +13,19 @@ import {
   SelectItem,
   Stack,
 } from '@carbon/react';
-import { z } from 'zod';
-import { useForm, Controller, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseDate, showSnackbar, useConfig, useLayoutType, useLocations, useSession } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useForm, Controller, useWatch } from 'react-hook-form';
+import { type TFunction, useTranslation } from 'react-i18next';
+import { z } from 'zod';
+
 import { type ConfigObject } from '../config-schema';
+
+import styles from './programs-form.scss';
 import {
   createProgramEnrollment,
   useAvailablePrograms,
@@ -30,7 +33,6 @@ import {
   updateProgramEnrollment,
   findLastState,
 } from './programs.resource';
-import styles from './programs-form.scss';
 
 interface ProgramsFormProps extends DefaultPatientWorkspaceProps {
   programEnrollmentId?: string;

@@ -1,7 +1,9 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { usePatientLists } from '../patient-lists.resource';
+
 import PatientListsWorkspace from './patient-lists.workspace';
 
 const mockUsePatientLists = jest.mocked(usePatientLists);

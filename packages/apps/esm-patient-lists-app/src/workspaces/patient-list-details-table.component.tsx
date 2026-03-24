@@ -1,6 +1,3 @@
-import React, { useId, useMemo, useState } from 'react';
-import fuzzy from 'fuzzy';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   type DataTableHeader,
@@ -19,7 +16,12 @@ import {
 } from '@carbon/react';
 import { useLayoutType, isDesktop, useDebounce, ConfigurableLink } from '@openmrs/esm-framework';
 import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
+import fuzzy from 'fuzzy';
+import React, { useId, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type MappedListMembers } from '../patient-lists.resource';
+
 import styles from './patient-list-details-table.scss';
 
 interface PatientListDetailsTableProps {

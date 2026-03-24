@@ -1,10 +1,12 @@
-import React from 'react';
 import { NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { type Control, Controller, type FieldErrors } from 'react-hook-form';
-import { isCoded, isNumeric, isPanel, isText, type LabOrderConcept } from './lab-results.resource';
+import { useTranslation } from 'react-i18next';
+
 import { type Observation } from '../types/encounter';
+
 import styles from './lab-results-form.scss';
+import { isCoded, isNumeric, isPanel, isText, type LabOrderConcept } from './lab-results.resource';
 
 interface ResultFormFieldProps {
   concept: LabOrderConcept;

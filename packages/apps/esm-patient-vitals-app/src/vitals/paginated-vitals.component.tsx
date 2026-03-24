@@ -1,4 +1,3 @@
-import React, { useMemo, useState } from 'react';
 import {
   DataTable,
   Table,
@@ -11,8 +10,10 @@ import {
 } from '@carbon/react';
 import { useLayoutType, usePagination } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import type { VitalsTableHeader, VitalsTableRow } from './types';
+import React, { useMemo, useState } from 'react';
+
 import styles from './paginated-vitals.scss';
+import type { VitalsTableHeader, VitalsTableRow } from './types';
 
 interface PaginatedVitalsProps {
   isPrinting?: boolean;

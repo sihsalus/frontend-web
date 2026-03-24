@@ -5,12 +5,13 @@ import {
   subscribePrecacheStaticDependencies,
   syncAllDynamicOfflineData,
 } from '@openmrs/esm-framework';
+
+import clinicalFormActionMenuComponent from './clinical-form-action-button.component';
 import { configSchema } from './config-schema';
 import { setupDynamicFormDataHandler, setupPatientFormSync } from './offline';
-import OfflineToolsNavLink from './offline-forms/offline-tools-nav-link.component';
-import clinicalFormActionMenuComponent from './clinical-form-action-button.component';
 import offlineFormOverviewCardComponent from './offline-forms/offline-forms-overview-card.component';
 import offlineFormsComponent from './offline-forms/offline-forms.component';
+import OfflineToolsNavLink from './offline-forms/offline-tools-nav-link.component';
 
 const moduleName = '@openmrs/esm-patient-forms-app';
 

@@ -1,14 +1,16 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
 import { Button, Tile } from '@carbon/react';
 import { AddIcon, ChevronDownIcon, ChevronUpIcon, closeWorkspace, useLayoutType } from '@openmrs/esm-framework';
 import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { prepMedicationOrderPostData } from '../api/api';
 import type { DrugOrderBasketItem } from '../types';
+
+import styles from './drug-order-basket-panel.scss';
 import OrderBasketItemTile from './order-basket-item-tile.component';
 import RxIcon from './rx-icon.component';
-import styles from './drug-order-basket-panel.scss';
 
 /**
  * Designs: https://app.zeplin.io/project/60d59321e8100b0324762e05/screen/62c6bb9500e7671a618efa56

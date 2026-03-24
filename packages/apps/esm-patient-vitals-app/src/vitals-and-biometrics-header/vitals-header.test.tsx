@@ -1,14 +1,16 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { type WorkspacesInfo, getDefaultsFromConfigSchema, useConfig, useWorkspaces } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockVitalsConfig, mockCurrentVisit, mockConceptUnits, mockConceptMetadata, formattedVitals } from '__mocks__';
+import dayjs from 'dayjs';
+import React from 'react';
+import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
+import { invalidateCachedVitalsAndBiometrics, useVitalsAndBiometrics } from '../common';
 import { configSchema, type ConfigObject } from '../config-schema';
 import { patientVitalsBiometricsFormWorkspace } from '../constants';
-import { invalidateCachedVitalsAndBiometrics, useVitalsAndBiometrics } from '../common';
+
 import VitalsHeader from './vitals-header.component';
 
 const testProps = {

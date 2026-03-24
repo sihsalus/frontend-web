@@ -1,10 +1,12 @@
-import React from 'react';
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { isDesktop, useLayoutType } from '@openmrs/esm-framework';
 import { type OBSERVATION_INTERPRETATION } from '@openmrs/esm-patient-common-lib';
-import { type ObsRecord } from '../../types';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockBasePanel, mockObservations, mockConceptMeta, mockObservationsWithInterpretations } from '__mocks__';
+import React from 'react';
+
+import { type ObsRecord } from '../../types';
+
 import LabSetPanel from './panel.component';
 
 const mockUseLayoutType = jest.mocked(useLayoutType);

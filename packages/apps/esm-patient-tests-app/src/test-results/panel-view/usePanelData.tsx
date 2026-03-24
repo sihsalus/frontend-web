@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo } from 'react';
 import { type FetchResponse, openmrsFetch, usePatient, restBaseUrl } from '@openmrs/esm-framework';
+import { useCallback, useEffect, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import { extractMetaInformation, getConceptUuid } from './helper';
+
 import {
   type Concept,
   type ConceptMeta,
@@ -9,6 +9,8 @@ import {
   type FhirResponse,
   type ObsRecord,
 } from '../../types';
+
+import { extractMetaInformation, getConceptUuid } from './helper';
 
 export function useObservations() {
   const { patientUuid } = usePatient();

@@ -1,5 +1,6 @@
 import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import useSWRImmutable from 'swr/immutable';
+
 import { type ConfigObject } from '../config-schema';
 import { type Patient } from '../types';
 

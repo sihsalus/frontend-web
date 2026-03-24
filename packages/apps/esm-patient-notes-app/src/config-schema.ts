@@ -1,4 +1,5 @@
 import { Type } from '@openmrs/esm-framework';
+
 import notesConfigSchema, { type VisitNoteConfigObject } from './notes/visit-note-config-schema';
 
 export const configSchema = {

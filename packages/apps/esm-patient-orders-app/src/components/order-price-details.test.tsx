@@ -1,10 +1,14 @@
-import React from 'react';
-import { screen } from '@testing-library/react';
-import OrderPriceDetailsComponent from './order-price-details.component';
-import { useOrderPrice } from '../hooks/useOrderPrice';
-import { renderWithSwr } from 'tools';
-import { mockOrderPriceData } from '__mocks__';
 import { getLocale } from '@openmrs/esm-framework';
+import { screen } from '@testing-library/react';
+import { mockOrderPriceData } from '__mocks__';
+import React from 'react';
+import { renderWithSwr } from 'tools';
+
+import { useOrderPrice } from '../hooks/useOrderPrice';
+
+import OrderPriceDetailsComponent from './order-price-details.component';
+
+
 
 const mockGetLocale = jest.mocked(getLocale);
 const mockUseOrderPrice = jest.mocked(useOrderPrice);

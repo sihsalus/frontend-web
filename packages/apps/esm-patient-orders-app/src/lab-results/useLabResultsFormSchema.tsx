@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { type LabOrderConcept, useOrderConceptByUuid } from './lab-results.resource';
 
 type SchemaRecord = Record<string, z.ZodType>;
@@ -113,7 +114,7 @@ const createNumericSchema = (
     return parsed;
   };
 
-  let baseSchema = z
+  const baseSchema = z
     .preprocess(processNumber, z.number().optional())
     .refine((val) => val === undefined || !isNaN(val), {
       message: `${display} must be a valid number`,

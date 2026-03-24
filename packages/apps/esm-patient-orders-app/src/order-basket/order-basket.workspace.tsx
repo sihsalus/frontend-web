@@ -1,6 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import classNames from 'classnames';
-import { type TFunction, useTranslation } from 'react-i18next';
 import { ActionableNotification, Button, ButtonSet, InlineLoading, InlineNotification } from '@carbon/react';
 import { ExtensionSlot, showModal, showSnackbar, useConfig, useLayoutType, useSession } from '@openmrs/esm-framework';
 import {
@@ -11,10 +8,15 @@ import {
   useOrderBasket,
   useVisitOrOfflineVisit,
 } from '@openmrs/esm-patient-common-lib';
-import { type ConfigObject } from '../config-schema';
+import classNames from 'classnames';
+import React, { useCallback, useEffect, useState } from 'react';
+import { type TFunction, useTranslation } from 'react-i18next';
+
 import { useMutatePatientOrders, useOrderEncounter } from '../api/api';
-import styles from './order-basket.scss';
+import { type ConfigObject } from '../config-schema';
+
 import GeneralOrderType from './general-order-type/general-order-type.component';
+import styles from './order-basket.scss';
 
 const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
   patientUuid,
@@ -54,7 +56,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
   const handleSave = useCallback(async () => {
     const abortController = new AbortController();
     setCreatingEncounterError('');
-    let orderEncounterUuid = encounterUuid;
+    const orderEncounterUuid = encounterUuid;
     setIsSavingOrders(true);
     // If there's no encounter present, create an encounter along with the orders.
     if (!orderEncounterUuid) {

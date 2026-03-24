@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import NotesMain from './notes-main.component';
 
 interface NotesOverviewProps {

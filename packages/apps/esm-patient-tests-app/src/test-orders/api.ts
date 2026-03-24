@@ -1,9 +1,3 @@
-import { useCallback, useMemo } from 'react';
-import { chunk } from 'lodash-es';
-import useSWR, { mutate } from 'swr';
-import useSWRImmutable from 'swr/immutable';
-import type { OrderPost, PatientOrderFetchResponse, TestOrderPost } from '@openmrs/esm-patient-common-lib';
-import type { TestOrderBasketItem } from '../types';
 import {
   type FetchResponse,
   openmrsFetch,
@@ -12,7 +6,15 @@ import {
   toOmrsIsoString,
   useConfig,
 } from '@openmrs/esm-framework';
+import type { OrderPost, PatientOrderFetchResponse, TestOrderPost } from '@openmrs/esm-patient-common-lib';
+import { chunk } from 'lodash-es';
+import { useCallback, useMemo } from 'react';
+import useSWR, { mutate } from 'swr';
+import useSWRImmutable from 'swr/immutable';
+
 import { type ConfigObject } from '../config-schema';
+import type { TestOrderBasketItem } from '../types';
+
 
 export const careSettingUuid = '6f0c9a92-6f24-11e3-af88-005056821db0';
 

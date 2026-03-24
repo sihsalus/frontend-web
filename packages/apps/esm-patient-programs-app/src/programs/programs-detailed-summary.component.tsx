@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -26,9 +23,13 @@ import {
   isDesktop as desktopLayout,
 } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { findLastState, usePrograms } from './programs.resource';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { ProgramsActionMenu } from './programs-action-menu.component';
 import styles from './programs-detailed-summary.scss';
+import { findLastState, usePrograms } from './programs.resource';
 
 interface ProgramsDetailedSummaryProps {
   patientUuid: string;

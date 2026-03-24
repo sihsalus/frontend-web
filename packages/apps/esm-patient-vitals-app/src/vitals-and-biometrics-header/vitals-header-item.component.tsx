@@ -1,7 +1,9 @@
-import React, { useId } from 'react';
 import classNames from 'classnames';
+import React, { useId } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import type { ObservationInterpretation } from '../common';
+
 import styles from './vitals-header-item.scss';
 
 interface VitalsHeaderItemProps {
@@ -23,7 +25,7 @@ const VitalsHeaderItem: React.FC<VitalsHeaderItemProps> = ({ interpretation, val
   const unitId = `omrs-patient-chart-unit-${unitName}-${generatedId}`;
 
   const displayValue =
-    Boolean(value) ? value : t('notAvailable', 'Not available');
+    value ? value : t('notAvailable', 'Not available');
 
   return (
     <section className={styles.container}>

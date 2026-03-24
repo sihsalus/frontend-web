@@ -1,6 +1,7 @@
+import { Toggle } from '@carbon/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Toggle } from '@carbon/react';
+
 import styles from './form-collapse-toggle.scss';
 
 const FormCollapseToggle = () => {

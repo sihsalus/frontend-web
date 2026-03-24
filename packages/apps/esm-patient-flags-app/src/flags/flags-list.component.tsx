@@ -1,14 +1,15 @@
-import React, { useMemo, useRef, useState } from 'react';
+import { Button, ButtonSet, Dropdown, Form, InlineLoading, Search, Tile, Toggle, Stack } from '@carbon/react';
+import { useLayoutType, showSnackbar, parseDate, formatDate, ResponsiveWrapper } from '@openmrs/esm-framework';
+import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import debounce from 'lodash-es/debounce';
 import isEmpty from 'lodash-es/isEmpty';
 import orderBy from 'lodash-es/orderBy';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonSet, Dropdown, Form, InlineLoading, Search, Tile, Toggle, Stack } from '@carbon/react';
-import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
-import { useLayoutType, showSnackbar, parseDate, formatDate, ResponsiveWrapper } from '@openmrs/esm-framework';
+
+import styles from './flags-list.scss';
 import { usePatientFlags, enablePatientFlag, disablePatientFlag } from './hooks/usePatientFlags';
 import { getFlagType } from './utils';
-import styles from './flags-list.scss';
 
 type dropdownFilter = 'A - Z' | 'Active first' | 'Retired first';
 
@@ -156,7 +157,7 @@ const FlagsList: React.FC<DefaultPatientWorkspaceProps> = ({
                       </div>
                       <Toggle
                         className={styles.flagToggle}
-                        defaultToggled={!Boolean(result.voided)}
+                        defaultToggled={!result.voided}
                         id={result.uuid}
                         labelA=""
                         labelB=""

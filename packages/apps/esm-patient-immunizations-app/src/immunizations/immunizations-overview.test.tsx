@@ -1,8 +1,9 @@
-import React from 'react';
-import { screen } from '@testing-library/react';
 import { openmrsFetch } from '@openmrs/esm-framework';
+import { screen } from '@testing-library/react';
 import { mockPatientImmunizationsSearchResponse } from '__mocks__';
+import React from 'react';
 import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import ImmunizationsOverview from './immunizations-overview.component';
 
 const testProps = {

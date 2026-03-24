@@ -1,6 +1,7 @@
-import useSWR from 'swr';
 import { getDynamicOfflineDataEntries } from '@openmrs/esm-framework';
 import { type HtmlFormEntryForm } from '@openmrs/esm-patient-common-lib';
+import useSWR from 'swr';
+
 import { type Form, type FormEncounterResource } from '../types';
 
 /**

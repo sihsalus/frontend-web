@@ -1,11 +1,13 @@
-import React, { useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { Tab, Tabs, TabList } from '@carbon/react';
 import { LineChart } from '@carbon/charts-react';
+import { Tab, Tabs, TabList } from '@carbon/react';
 import { formatDate, parseDate } from '@openmrs/esm-framework';
-import { type ConfigObject } from '../config-schema';
+import classNames from 'classnames';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type PatientVitalsAndBiometrics } from '../common';
+import { type ConfigObject } from '../config-schema';
+
 import styles from './biometrics-chart.scss';
 
 enum ScaleTypes {

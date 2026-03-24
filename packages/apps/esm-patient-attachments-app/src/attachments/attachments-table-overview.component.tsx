@@ -1,5 +1,3 @@
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -17,7 +15,11 @@ import {
 } from '@carbon/react';
 import { type Attachment, ResponsiveWrapper, useLayoutType } from '@openmrs/esm-framework';
 import { compare, EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type AttachmentTableData } from '../utils';
+
 import styles from './attachments-table-overview.scss';
 
 interface AttachmentsTableOverviewProps {

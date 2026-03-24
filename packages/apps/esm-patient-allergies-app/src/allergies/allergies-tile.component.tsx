@@ -1,8 +1,9 @@
+import { InlineLoading } from '@carbon/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { InlineLoading } from '@carbon/react';
-import { useAllergies } from './allergy-intolerance.resource';
+
 import styles from './allergies-tile.scss';
+import { useAllergies } from './allergy-intolerance.resource';
 
 interface AllergyTileInterface {
   patientUuid: string;

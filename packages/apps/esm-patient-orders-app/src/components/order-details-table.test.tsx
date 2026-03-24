@@ -1,7 +1,3 @@
-import React from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
   type ConfigObject,
   getDefaultsFromConfigSchema,
@@ -10,8 +6,15 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { useOrderTypes, usePatientOrders } from '@openmrs/esm-patient-common-lib';
-import { configSchema } from '../config-schema';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockOrders, mockSessionDataResponse } from '__mocks__';
+import React from 'react';
+import { useReactToPrint } from 'react-to-print';
+
+import { configSchema } from '../config-schema';
+
+
 import OrderDetailsTable from './orders-details-table.component';
 
 const mockUsePatientOrders = usePatientOrders as jest.Mock;

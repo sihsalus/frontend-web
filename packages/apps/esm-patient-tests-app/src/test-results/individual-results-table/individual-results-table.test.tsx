@@ -1,7 +1,10 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import IndividualResultsTable from './individual-results-table.component';
+import React from 'react';
+
 import { type GroupedObservation } from '../../types';
+
+import IndividualResultsTable from './individual-results-table.component';
+
 
 describe('IndividualResultsTable', () => {
   const mockSubRows = {

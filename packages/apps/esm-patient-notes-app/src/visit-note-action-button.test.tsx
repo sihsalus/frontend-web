@@ -1,8 +1,9 @@
-import React from 'react';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { type LayoutType, useLayoutType, useWorkspaces, ActionMenuButton } from '@openmrs/esm-framework';
 import { useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import VisitNoteActionButton from './visit-note-action-button.extension';
 
 const mockActionMenuButton = jest.mocked(ActionMenuButton);

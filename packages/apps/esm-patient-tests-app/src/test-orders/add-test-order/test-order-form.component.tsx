@@ -1,14 +1,3 @@
-import React, { type ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import {
-  type DefaultPatientWorkspaceProps,
-  launchPatientWorkspace,
-  type OrderUrgency,
-  priorityOptions,
-  useOrderBasket,
-  useOrderType,
-} from '@openmrs/esm-patient-common-lib';
-import { ExtensionSlot, OpenmrsDatePicker, useConfig, useLayoutType, useSession } from '@openmrs/esm-framework';
 import {
   Button,
   ButtonSet,
@@ -23,14 +12,27 @@ import {
   TextArea,
   TextInput,
 } from '@carbon/react';
-import { Controller, type ControllerRenderProps, type FieldErrors, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ExtensionSlot, OpenmrsDatePicker, useConfig, useLayoutType, useSession } from '@openmrs/esm-framework';
+import {
+  type DefaultPatientWorkspaceProps,
+  launchPatientWorkspace,
+  type OrderUrgency,
+  priorityOptions,
+  useOrderBasket,
+  useOrderType,
+} from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { Controller, type ControllerRenderProps, type FieldErrors, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { prepTestOrderPostData, useOrderReasons } from '../api';
-import { ordersEqual } from './test-order';
 import { z } from 'zod';
+
 import { type ConfigObject } from '../../config-schema';
 import { type TestOrderBasketItem } from '../../types';
+import { prepTestOrderPostData, useOrderReasons } from '../api';
+
+import { ordersEqual } from './test-order';
 import styles from './test-order-form.scss';
 
 export interface LabOrderFormProps extends DefaultPatientWorkspaceProps {
