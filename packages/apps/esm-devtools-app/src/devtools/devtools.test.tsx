@@ -13,7 +13,7 @@ vi.mock('./import-map.component', () => ({
 }));
 
 vi.mock('@openmrs/esm-framework', async () => {
-  const actual = await vi.importActual('@openmrs/esm-framework/mock');
+  const actual = await vi.importActual('@openmrs/esm-framework');
   return {
     ...actual,
     getCoreTranslation: (key: string) => key,

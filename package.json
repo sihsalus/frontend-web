@@ -69,6 +69,8 @@
     "webpack": "5.99.9",
     "html-webpack-plugin": "^5.5.0",
     "swr": "2.2.5",
-    "@carbon/styles": "^1.102.0"
+    "@carbon/styles": "^1.102.0",
+    "workbox-window@npm:^6.1.5": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch",
+    "workbox-window@npm:6.6.0": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch"
   }
 }

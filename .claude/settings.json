@@ -137,7 +137,11 @@
       "Bash(# Check if there''s a different @carbon/styles used by esm-styleguide find /home/duvet05/frontend-web/packages/framework/esm-styleguide -path \"\"*/node_modules/@carbon/styles/package.json\"\")",
       "Bash(script -qc 'yarn turbo test --force --concurrency=4 --continue' /tmp/turbo-test-full.log)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); deps={**d.get\\(''''dependencies'''',{}\\), **d.get\\(''''peerDependencies'''',{}\\)}; framework=[k for k in deps if ''''framework'''' in k or ''''esm-api'''' in k or ''''esm-config'''' in k]; print\\(''''\\\\n''''.join\\(framework\\) if framework else ''''No framework deps''''\\)\")",
-      "Bash(npx vitest:*)"
+      "Bash(npx vitest:*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(grep '\"\"type\"\"' /home/duvet05/frontend-web/node_modules/workbox-window/package.json)",
+      "Bash(grep '\"\"type\"\"' /home/duvet05/frontend-web/node_modules/workbox-core/package.json)"
     ],
     "deny": [],
     "additionalDirectories": [

@@ -38307,13 +38307,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-window@npm:6.6.0, workbox-window@npm:^6.1.5":
+"workbox-window@npm:6.6.0":
   version: 6.6.0
   resolution: "workbox-window@npm:6.6.0"
   dependencies:
     "@types/trusted-types": "npm:^2.0.2"
     workbox-core: "npm:6.6.0"
   checksum: 10c0/7e3fdfaa9d018644bf67ad51820838a18227ba612f8dbe13711e2ebdfd5e112ad5b165b50358eff3d0e7ced4bade49b456d4702254fcf57a3cfe193bd011e86b
+  languageName: node
+  linkType: hard
+
+"workbox-window@patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch":
+  version: 6.6.0
+  resolution: "workbox-window@patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch::version=6.6.0&hash=eae6c5"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.2"
+    workbox-core: "npm:6.6.0"
+  checksum: 10c0/30a04c0c5727320cc084a177bf34f7d58319d490e46b78568ffb13089fb79881a9af3d421d0956c4c89b29d8f042340880225cb4793514bab672a66da6900150
   languageName: node
   linkType: hard
 
