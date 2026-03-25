@@ -106,7 +106,14 @@ export async function runStart(args: StartArgs) {
 
   const mergedRoutes: Record<string, unknown> = {};
   if (backendRoutes) {
-    Object.assign(mergedRoutes, backendRoutes);
+    // Filter backend routes using the same base-name dedup logic as importmap
+    for (const [name, config] of Object.entries(backendRoutes)) {
+      const baseName = name.replace(/^@[^/]+\//, '');
+      if (localBaseNames.has(baseName)) {
+        continue;
+      }
+      mergedRoutes[name] = config;
+    }
   }
   Object.assign(mergedRoutes, localRoutes);
 
