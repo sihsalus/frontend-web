@@ -29,6 +29,9 @@ packages/libs/*/src/**/*.d.ts
 packages/libs/*/src/**/*.js.map
 packages/libs/*/src/**/*.d.ts.map
 
+# Large binary test fixtures (use Git LFS or download at test time)
+**/__mocks__/*.zip
+
 # Backup and temporary files
 *.bak
 *.orig
