@@ -106,56 +106,71 @@ async function downloadBackendModules() {
       continue;
     }
 
-    // Resolve the URL
-    const fullUrl = relUrl.startsWith('.')
-      ? `${BACKEND_URL}/openmrs/spa/${relUrl.replace(/^\.\//, '')}`
-      : relUrl;
+    // Backend modules live in subdirectories: ./openmrs-esm-foo-app-1.0.0/openmrs-esm-foo-app.js
+    // We must preserve this directory structure so chunk imports work correctly
+    const cleanRelUrl = relUrl.replace(/^\.\//, '');
+    const subDir = path.dirname(cleanRelUrl); // e.g. "openmrs-esm-foo-app-1.0.0"
+    const localSubDir = path.join(outDir, subDir);
+    const fullUrl = `${BACKEND_URL}/openmrs/spa/${cleanRelUrl}`;
 
-    // Download the entry bundle
-    const fileName = path.basename(new URL(fullUrl).pathname);
-    const destPath = path.join(outDir, fileName);
+    // Create subdirectory
+    fs.mkdirSync(localSubDir, { recursive: true });
 
-    if (!fs.existsSync(destPath)) {
+    // Download entry bundle
+    const entryFile = path.basename(cleanRelUrl);
+    const entryDest = path.join(localSubDir, entryFile);
+
+    if (!fs.existsSync(entryDest)) {
       try {
         const resp = await fetch(fullUrl);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const buffer = Buffer.from(await resp.arrayBuffer());
-        fs.writeFileSync(destPath, buffer);
+        fs.writeFileSync(entryDest, Buffer.from(await resp.arrayBuffer()));
       } catch (e) {
         console.warn(`  WARN ${name}: download failed (${e.message})`);
-        // Still add to importmap with remote URL so it can be fetched at runtime
         importmap.imports[name] = fullUrl;
         continue;
       }
     }
 
-    importmap.imports[name] = `./${fileName}`;
+    // Keep the same relative path so chunks resolve correctly
+    importmap.imports[name] = `./${cleanRelUrl}`;
     downloaded++;
 
-    // Also download the buildmanifest to find chunk dependencies
+    // Download all chunk files from the same directory using buildmanifest
     try {
       const manifestUrl = `${fullUrl}.buildmanifest.json`;
       const mResp = await fetch(manifestUrl);
       if (mResp.ok) {
         const manifest = await mResp.json();
-        // Download chunk files listed in the manifest
-        if (manifest.files) {
-          for (const chunkFile of manifest.files) {
-            const chunkDest = path.join(outDir, chunkFile);
-            if (!fs.existsSync(chunkDest)) {
-              const chunkDir = path.dirname(fullUrl);
-              const chunkUrl = `${chunkDir}/${chunkFile}`;
-              try {
-                const cResp = await fetch(chunkUrl);
-                if (cResp.ok) {
-                  fs.writeFileSync(chunkDest, Buffer.from(await cResp.arrayBuffer()));
-                }
-              } catch { /* skip failed chunks */ }
-            }
+        // Extract chunk file names from chunks[].files and chunks[].auxiliaryFiles
+        const chunkFiles = new Set();
+        for (const chunk of (manifest.chunks || [])) {
+          for (const f of (chunk.files || [])) chunkFiles.add(f);
+          for (const f of (chunk.auxiliaryFiles || [])) chunkFiles.add(f);
+        }
+        // Also check top-level files
+        for (const f of (manifest.files || [])) chunkFiles.add(f);
+
+        let dlCount = 0;
+        for (const chunkFile of chunkFiles) {
+          const chunkDest = path.join(localSubDir, chunkFile);
+          if (!fs.existsSync(chunkDest)) {
+            try {
+              const cResp = await fetch(`${BACKEND_URL}/openmrs/spa/${subDir}/${chunkFile}`);
+              if (cResp.ok) {
+                fs.writeFileSync(chunkDest, Buffer.from(await cResp.arrayBuffer()));
+                dlCount++;
+              }
+            } catch { /* skip failed chunks */ }
           }
         }
+        console.log(`  OK ${name} (${dlCount} chunks)`);
+      } else {
+        console.log(`  OK ${name} (no manifest)`);
       }
-    } catch { /* buildmanifest is optional */ }
+    } catch {
+      console.log(`  OK ${name} (no manifest)`);
+    }
 
     // Merge routes
     if (backendRoutes[name] && !routesRegistry[name]) {
