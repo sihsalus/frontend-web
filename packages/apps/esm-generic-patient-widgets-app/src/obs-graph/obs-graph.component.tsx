@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { Tab, Tabs, TabList } from '@carbon/react';
 import { LineChart } from '@carbon/charts-react';
+import { Tab, Tabs, TabList } from '@carbon/react';
 import { ExtensionSlot, formatDate, useConfig } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useObs } from '../resources/useObs';
+
 import styles from './obs-graph.scss';
 
 enum ScaleTypes {

@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/shell/*",
-    "packages/framework/*",
     "packages/tooling/*",
     "packages/apps/*",
     "packages/libs/*"
@@ -12,7 +10,6 @@
   "scripts": {
     "build": "turbo run build",
     "build:apps": "turbo run build --filter='./packages/apps/*'",
-    "build:framework": "turbo run build --filter='./packages/framework/*'",
     "assemble": "node scripts/assemble-importmap.js",
     "dev": "turbo run dev",
     "start": "openmrs develop",
@@ -41,7 +38,7 @@
     "@types/webpack-env": "^1.16.4",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.55.0",
     "eslint-plugin-import": "^2.31.0",
@@ -65,11 +62,15 @@
     "*.{ts,tsx}": "eslint --cache --fix --max-warnings 0",
     "*.{css,scss,ts,tsx}": "prettier --write --list-different"
   },
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.13.0",
   "resolutions": {
-    "sass": "^1.54.3",
+    "sass": "1.77.8",
     "zustand": "^4.5.5",
     "webpack": "5.99.9",
-    "html-webpack-plugin": "^5.5.0"
+    "html-webpack-plugin": "^5.5.0",
+    "swr": "2.2.5",
+    "@carbon/styles": "^1.102.0",
+    "workbox-window@npm:^6.1.5": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch",
+    "workbox-window@npm:6.6.0": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch"
   }
 }

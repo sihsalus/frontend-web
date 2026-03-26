@@ -1,6 +1,3 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
 import {
   type FetchResponse,
   showSnackbar,
@@ -8,16 +5,21 @@ import {
   useConfig,
   getDefaultsFromConfigSchema,
 } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockCareProgramsResponse, mockEnrolledProgramsResponse, mockLocationsResponse } from '__mocks__';
+import React from 'react';
 import { mockPatient } from 'tools';
+
+import { type ConfigObject, configSchema } from '../config-schema';
+
+import ProgramsForm from './programs-form.workspace';
 import {
   createProgramEnrollment,
   updateProgramEnrollment,
   useAvailablePrograms,
   useEnrollments,
 } from './programs.resource';
-import ProgramsForm from './programs-form.workspace';
-import { type ConfigObject, configSchema } from '../config-schema';
 
 const mockUseAvailablePrograms = jest.mocked(useAvailablePrograms);
 const mockUseEnrollments = jest.mocked(useEnrollments);

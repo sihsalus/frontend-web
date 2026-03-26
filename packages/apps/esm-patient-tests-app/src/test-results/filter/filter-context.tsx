@@ -1,6 +1,10 @@
-import React, { createContext, useReducer, useEffect, useMemo } from 'react';
 import { isObject } from 'lodash-es';
+import React, { createContext, useReducer, useEffect, useMemo } from 'react';
+
+import { type MappedObservation, type TestResult, type GroupedObservation, type Observation } from '../../types';
 import { parseTime } from '../panel-timeline/helpers';
+
+import reducer from './filter-reducer';
 import {
   type TreeNode,
   type FilterContextProps,
@@ -8,8 +12,6 @@ import {
   ReducerActionType,
   type TimelineData,
 } from './filter-types';
-import reducer from './filter-reducer';
-import { type MappedObservation, type TestResult, type GroupedObservation, type Observation } from '../../types';
 
 const initialState: ReducerState = {
   checkboxes: {},

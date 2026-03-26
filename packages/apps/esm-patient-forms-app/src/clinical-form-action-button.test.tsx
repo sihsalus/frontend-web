@@ -1,6 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { ActionMenuButton, useLayoutType, useWorkspaces } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+
 import ClinicalFormActionButton from './clinical-form-action-button.component';
 
 const mockUseLayoutType = jest.mocked(useLayoutType);

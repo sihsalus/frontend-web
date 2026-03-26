@@ -1,9 +1,10 @@
-import React from 'react';
-import capitalize from 'lodash-es/capitalize';
 import { Toggletip, ToggletipButton, ToggletipContent } from '@carbon/react';
 import { formatDate, UserIcon } from '@openmrs/esm-framework';
-import { useTranslation } from 'react-i18next';
 import { type Order } from '@openmrs/esm-patient-common-lib';
+import capitalize from 'lodash-es/capitalize';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './medication-record.scss';
 
 interface MedicationRecordProps {

@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { debounce } from 'lodash-es';
-import fuzzy from 'fuzzy';
 import { DataTableSkeleton } from '@carbon/react';
 import { formatDatetime, useLayoutType, ResponsiveWrapper } from '@openmrs/esm-framework';
+import fuzzy from 'fuzzy';
+import { debounce } from 'lodash-es';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import type { CompletedFormInfo } from '../types';
-import FormsTable from './forms-table.component';
+
 import styles from './forms-list.scss';
+import FormsTable from './forms-table.component';
 
 export type FormsListProps = {
   completedForms?: Array<CompletedFormInfo>;

@@ -1,6 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { type TFunction, useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonSet,
@@ -17,11 +14,19 @@ import {
   TextArea,
   TextInput,
 } from '@carbon/react';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type Control, Controller, useForm, type UseFormSetValue, type UseFormGetValues } from 'react-hook-form';
 import { ExtensionSlot, showSnackbar, useConfig, useLayoutType, ResponsiveWrapper } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { type Control, Controller, useForm, type UseFormSetValue, type UseFormGetValues } from 'react-hook-form';
+import { type TFunction, useTranslation } from 'react-i18next';
+import { z } from 'zod';
+
+
+import { AllergenType } from '../../types';
+import { type Allergy, useAllergies } from '../allergy-intolerance.resource';
+
 import {
   type Allergen,
   type AllergicReaction,
@@ -31,8 +36,6 @@ import {
   useAllergens,
   useAllergicReactions,
 } from './allergy-form.resource';
-import { type Allergy, useAllergies } from '../allergy-intolerance.resource';
-import { AllergenType } from '../../types';
 import styles from './allergy-form.scss';
 
 const allergyFormSchema = (t: TFunction) =>
@@ -208,7 +211,7 @@ function AllergyForm(props: AllergyFormProps) {
       } = data;
       const selectedAllergicReactions = allergicReactions.filter((value) => value !== '');
 
-      let patientAllergy: NewAllergy = {
+      const patientAllergy: NewAllergy = {
         allergen:
           allergen.uuid == otherConceptUuid
             ? {

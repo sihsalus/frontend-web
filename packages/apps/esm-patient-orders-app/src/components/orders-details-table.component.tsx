@@ -1,7 +1,3 @@
-import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { capitalize, lowerCase } from 'lodash-es';
-import { useTranslation } from 'react-i18next';
-import { useReactToPrint } from 'react-to-print';
 import {
   Button,
   DataTable,
@@ -28,6 +24,19 @@ import {
   Tile,
 } from '@carbon/react';
 import {
+  AddIcon,
+  age,
+  ExtensionSlot,
+  formatDate,
+  getCoreTranslation,
+  getPatientName,
+  PrinterIcon,
+  useConfig,
+  useLayoutType,
+  usePagination,
+  usePatient,
+} from '@openmrs/esm-framework';
+import {
   CardHeader,
   EmptyState,
   ErrorState,
@@ -42,25 +51,18 @@ import {
   useOrderTypes,
   usePatientOrders,
 } from '@openmrs/esm-patient-common-lib';
-import {
-  AddIcon,
-  age,
-  ExtensionSlot,
-  formatDate,
-  getCoreTranslation,
-  getPatientName,
-  PrinterIcon,
-  useConfig,
-  useLayoutType,
-  usePagination,
-  usePatient,
-} from '@openmrs/esm-framework';
-import { buildGeneralOrder, buildLabOrder, buildMedicationOrder } from '../utils';
-import MedicationRecord from './medication-record.component';
+import { capitalize, lowerCase } from 'lodash-es';
+import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useReactToPrint } from 'react-to-print';
+
 import PrintComponent from '../print/print.component';
-import TestOrder from './test-order.component';
-import styles from './order-details-table.scss';
+import { buildGeneralOrder, buildLabOrder, buildMedicationOrder } from '../utils';
+
 import GeneralOrderTable from './general-order-table.component';
+import MedicationRecord from './medication-record.component';
+import styles from './order-details-table.scss';
+import TestOrder from './test-order.component';
 
 interface OrderDetailsProps {
   patientUuid: string;
@@ -637,7 +639,7 @@ function OrderBasketItemActions({
   const handleCancelClick = useCallback(() => {
     if (orderItem.type === 'drugorder') {
       getDrugOrderByUuid(orderItem.uuid).then((res) => {
-        let medicationOrder = res.data;
+        const medicationOrder = res.data;
         setOrders([...orders, buildMedicationOrder(medicationOrder, 'DISCONTINUE')]);
         openOrderBasket();
       });

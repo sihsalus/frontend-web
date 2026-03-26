@@ -1,12 +1,16 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
+import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { formattedBiometrics, mockBiometricsConfig, mockConceptMetadata, mockConceptUnits } from '__mocks__';
-import { configSchema, type ConfigObject } from '../config-schema';
+import React from 'react';
 import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import { useVitalsAndBiometrics } from '../common';
+import { configSchema, type ConfigObject } from '../config-schema';
+
+
+
 import BiometricsOverview from './biometrics-overview.component';
 
 const testProps = {

@@ -1,12 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import classnames from 'classnames';
-import dayjs from 'dayjs';
-import debounce from 'lodash-es/debounce';
-import { useTranslation, type TFunction } from 'react-i18next';
-import { mutate } from 'swr';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller, type Control } from 'react-hook-form';
 import {
   Button,
   ButtonSet,
@@ -26,6 +17,7 @@ import {
   Tile,
 } from '@carbon/react';
 import { Add, WarningFilled, CloseFilled } from '@carbon/react/icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   createAttachment,
   createErrorHandler,
@@ -40,8 +32,19 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps, useAllowedFileExtensions } from '@openmrs/esm-patient-common-lib';
+import classnames from 'classnames';
+import dayjs from 'dayjs';
+import debounce from 'lodash-es/debounce';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useForm, Controller, type Control } from 'react-hook-form';
+import { useTranslation, type TFunction } from 'react-i18next';
+import { mutate } from 'swr';
+import { z } from 'zod';
+
 import type { ConfigObject } from '../config-schema';
 import type { Concept, Diagnosis, DiagnosisPayload, VisitNotePayload } from '../types';
+
+import styles from './visit-notes-form.scss';
 import {
   fetchDiagnosisConceptsByName,
   savePatientDiagnosis,
@@ -49,7 +52,6 @@ import {
   useInfiniteVisits,
   useVisitNotes,
 } from './visit-notes.resource';
-import styles from './visit-notes-form.scss';
 
 type VisitNotesFormData = Omit<z.infer<ReturnType<typeof createSchema>>, 'images'> & {
   images?: UploadedFile[];
@@ -68,7 +70,7 @@ interface DiagnosesDisplayProps {
 
 interface DiagnosisSearchProps {
   control: Control<VisitNotesFormData>;
-  error?: Object;
+  error?: object;
   handleSearch: (fieldName) => void;
   labelText: string;
   name: 'noteDate' | 'primaryDiagnosisSearch' | 'secondaryDiagnosisSearch' | 'clinicalNote';

@@ -1,19 +1,20 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
-import userEvent from '@testing-library/user-event';
+import { closeWorkspace, useSession } from '@openmrs/esm-framework';
+import { type PostDataPrepFunction, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
 import { screen, render, within, renderHook, waitFor } from '@testing-library/react';
-import { getByTextWithMarkup } from 'tools';
-import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './drug-search/drug-search.resource';
+import userEvent from '@testing-library/user-event';
 import {
   mockDrugSearchResultApiData,
   mockDrugOrderTemplateApiData,
   mockPatientDrugOrdersApiData,
   mockSessionDataResponse,
 } from '__mocks__';
-import { closeWorkspace, useSession } from '@openmrs/esm-framework';
-import { type PostDataPrepFunction, useOrderBasket } from '@openmrs/esm-patient-common-lib';
-import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
+import React from 'react';
+import { getByTextWithMarkup } from 'tools';
+
 import AddDrugOrderWorkspace from './add-drug-order.workspace';
+import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './drug-search/drug-search.resource';
 
 const mockCloseWorkspace = closeWorkspace as jest.Mock;
 const mockLaunchPatientWorkspace = jest.fn();

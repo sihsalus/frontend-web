@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { ExtensionSlot } from '@openmrs/esm-framework';
 import { Accordion, AccordionItem } from '@carbon/react';
-import { registerNavGroup } from '..';
+import { ExtensionSlot } from '@openmrs/esm-framework';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { registerNavGroup } from '..';
 
 export interface DashboardGroupExtensionProps {
   title: string;

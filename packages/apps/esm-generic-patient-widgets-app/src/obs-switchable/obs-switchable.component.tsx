@@ -1,13 +1,15 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, DataTableSkeleton, InlineLoading } from '@carbon/react';
 import { ChartLineSmooth, Table } from '@carbon/react/icons';
-import { CardHeader, EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
 import { useConfig } from '@openmrs/esm-framework';
-import { useObs } from '../resources/useObs';
+import { CardHeader, EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ConfigObject } from '../config-schema';
 import ObsGraph from '../obs-graph/obs-graph.component';
 import ObsTable from '../obs-table/obs-table.component';
+import { useObs } from '../resources/useObs';
+
 import styles from './obs-switchable.scss';
 
 interface ObsSwitchableProps {

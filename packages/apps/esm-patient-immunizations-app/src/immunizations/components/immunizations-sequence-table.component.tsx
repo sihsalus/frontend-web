@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import isEmpty from 'lodash-es/isEmpty';
 import {
   Button,
   DataTable,
@@ -13,8 +10,13 @@ import {
   TableCell,
 } from '@carbon/react';
 import { EditIcon, formatDate, getCoreTranslation, parseDate } from '@openmrs/esm-framework';
+import isEmpty from 'lodash-es/isEmpty';
+import React, { type ComponentProps, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ImmunizationGrouped } from '../../types';
 import { immunizationFormSub } from '../utils';
+
 import styles from './immunizations-sequence-table.scss';
 
 interface SequenceTableProps {

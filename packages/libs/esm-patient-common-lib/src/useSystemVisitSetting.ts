@@ -1,6 +1,6 @@
-import useSWRImmutable from 'swr/immutable';
 import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
 
 export function useSystemVisitSetting() {
   const { data, isLoading, error } = useSWRImmutable<FetchResponse<{ value: 'true' | 'false' }>, Error>(

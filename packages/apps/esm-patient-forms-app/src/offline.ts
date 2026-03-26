@@ -10,9 +10,6 @@ import {
   type Visit,
 } from '@openmrs/esm-framework';
 import { launchFormEntry } from '@openmrs/esm-patient-common-lib';
-import { type Form } from './types';
-import { isFormJsonSchema } from './offline-forms/offline-form-helpers';
-import { formEncounterUrl, formEncounterUrlPoc } from './constants';
 import escapeRegExp from 'lodash-es/escapeRegExp';
 
 // General note on the following imports and this file in general:
@@ -28,6 +25,10 @@ import escapeRegExp from 'lodash-es/escapeRegExp';
 // from `esm-form-entry-app` and/or directly migrate this file's content to the appropriate location.
 import type { PatientFormSyncItemContent } from '../../esm-form-entry-app/src/app/offline/sync';
 import type { EncounterCreate } from '../../esm-form-entry-app/src/app/types';
+
+import { formEncounterUrl, formEncounterUrlPoc } from './constants';
+import { isFormJsonSchema } from './offline-forms/offline-form-helpers';
+import { type Form } from './types';
 
 const patientFormSyncItem = 'patient-form';
 

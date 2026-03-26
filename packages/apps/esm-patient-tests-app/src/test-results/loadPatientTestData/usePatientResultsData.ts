@@ -1,11 +1,12 @@
-import React from 'react';
 import { type PatientData } from '@openmrs/esm-patient-common-lib';
+import React from 'react';
+
 import loadPatientData from './loadPatientData';
 
 type LoadingState = {
   sortedObs: PatientData;
   loaded: boolean;
-  error: Object | undefined;
+  error: object | undefined;
 };
 
 const usePatientResultsData = (patientUuid: string): LoadingState => {
@@ -19,7 +20,7 @@ const usePatientResultsData = (patientUuid: string): LoadingState => {
     let unmounted = false;
     if (patientUuid) {
       const [data, reloadedDataPromise] = loadPatientData(patientUuid);
-      if (!!data) setState({ sortedObs: data, loaded: true, error: undefined });
+      if (data) setState({ sortedObs: data, loaded: true, error: undefined });
       reloadedDataPromise.then((reloadedData) => {
         if (reloadedData !== data && !unmounted) setState({ sortedObs: reloadedData, loaded: true, error: undefined });
       });

@@ -1,9 +1,12 @@
-import React, { useMemo } from 'react';
-import { type ImmunizationSequenceDefinition } from '../../types/fhir-immunization-domain';
-import { useController, type Control } from 'react-hook-form';
 import { Dropdown, NumberInput } from '@carbon/react';
-import styles from './../immunizations-form.scss';
+import React, { useMemo } from 'react';
+import { useController, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+
+import { type ImmunizationSequenceDefinition } from '../../types/fhir-immunization-domain';
+
+import styles from './../immunizations-form.scss';
+
 
 export const DoseInput: React.FC<{
   vaccine: string;

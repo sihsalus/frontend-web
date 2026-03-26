@@ -1,9 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { BehaviorSubject } from 'rxjs';
 import { useConnectivity, usePatient } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { BehaviorSubject } from 'rxjs';
 import { mockPatient } from 'tools';
+
 import FormEntry from './form-entry.workspace';
 
 const testProps = {

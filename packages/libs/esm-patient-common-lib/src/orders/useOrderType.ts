@@ -1,6 +1,7 @@
 import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
+
 import type { OrderTypeResponse } from './types';
 
 export function useOrderType(orderTypeUuid: string) {

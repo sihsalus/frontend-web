@@ -1,9 +1,11 @@
-import React, { useMemo, useRef } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { ClickableTile, IconButton, Tile } from '@carbon/react';
 import { ExtensionSlot, TrashCanIcon, useLayoutType, WarningIcon } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type DrugOrderBasketItem } from '../types';
+
 import styles from './order-basket-item-tile.scss';
 
 export interface OrderBasketItemTileProps {
@@ -71,7 +73,7 @@ export default function OrderBasketItemTile({ orderBasketItem, onItemClick, onRe
           <span className={styles.label01}>
             <span className={styles.indicationLabel}>{t('indication', 'Indication').toUpperCase()}</span>{' '}
             <span className={styles.dosageInfo}>
-              {!!orderBasketItem.indication ? orderBasketItem.indication : <i>{t('none', 'None')}</i>}
+              {orderBasketItem.indication ? orderBasketItem.indication : <i>{t('none', 'None')}</i>}
             </span>
             {!!orderBasketItem.orderError && (
               <>

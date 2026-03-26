@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import classNames from 'classnames';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isToday from 'dayjs/plugin/isToday';
 dayjs.extend(isToday);
 dayjs.extend(duration);
-import { Trans, useTranslation } from 'react-i18next';
 import { Button, InlineLoading, Tag } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { ConfigurableLink, formatDate, parseDate, useConfig, useWorkspaces } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import isToday from 'dayjs/plugin/isToday';
+import { Trans, useTranslation } from 'react-i18next';
+
 import {
   assessValue,
   getReferenceRangesForConcept,
@@ -19,6 +20,7 @@ import {
 } from '../common';
 import { type ConfigObject } from '../config-schema';
 import { launchVitalsAndBiometricsForm as launchForm } from '../utils';
+
 import VitalsHeaderItem from './vitals-header-item.component';
 import styles from './vitals-header.scss';
 

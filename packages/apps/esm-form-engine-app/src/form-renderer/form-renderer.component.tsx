@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { InlineLoading } from '@carbon/react';
 import { FormEngine } from '@openmrs/esm-form-engine-lib';
 import { showModal, type Visit } from '@openmrs/esm-framework';
@@ -8,8 +6,12 @@ import {
   type DefaultPatientWorkspaceProps,
   launchPatientWorkspace,
 } from '@openmrs/esm-patient-common-lib';
-import FormError from './form-error.component';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import useFormSchema from '../hooks/useFormSchema';
+
+import FormError from './form-error.component';
 import styles from './form-renderer.scss';
 
 interface FormRendererProps extends DefaultPatientWorkspaceProps {

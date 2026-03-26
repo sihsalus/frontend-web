@@ -1,11 +1,14 @@
-import React from 'react';
+import { type FetchResponse, showSnackbar, useConfig, getDefaultsFromConfigSchema } from '@openmrs/esm-framework';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { type FetchResponse, showSnackbar, useConfig, getDefaultsFromConfigSchema } from '@openmrs/esm-framework';
+import { mockConceptMetadata, mockConceptRanges, mockConceptUnits, mockVitalsConfig } from '__mocks__';
+import React from 'react';
+import { mockPatient } from 'tools';
+
 import { saveVitalsAndBiometrics } from '../common';
 import { type ConfigObject, configSchema } from '../config-schema';
-import { mockConceptMetadata, mockConceptRanges, mockConceptUnits, mockVitalsConfig } from '__mocks__';
-import { mockPatient } from 'tools';
+
+
 import VitalsAndBiometricsForm from './vitals-biometrics-form.workspace';
 
 const heightValue = 180;

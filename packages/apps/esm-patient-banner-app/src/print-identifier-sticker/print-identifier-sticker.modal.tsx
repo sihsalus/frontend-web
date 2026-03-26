@@ -1,10 +1,12 @@
+import { Button, InlineLoading, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
+import { getPatientName, showSnackbar, useConfig, getCoreTranslation } from '@openmrs/esm-framework';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Barcode from 'react-barcode';
 import { useTranslation } from 'react-i18next';
 import { useReactToPrint } from 'react-to-print';
-import { Button, InlineLoading, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
-import { getPatientName, showSnackbar, useConfig, getCoreTranslation } from '@openmrs/esm-framework';
+
 import { type ConfigObject } from '../config-schema';
+
 import { defaultBarcodeParams, getPatientField } from './print-identifier-sticker.resource';
 import styles from './print-identifier-sticker.scss';
 

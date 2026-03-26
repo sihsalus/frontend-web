@@ -1,7 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ModalHeader, ModalBody, ModalFooter } from '@carbon/react';
 import { type Attachment } from '@openmrs/esm-framework';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './delete-attachment.scss';
 
 interface DeleteAttachmentConfirmationProps {

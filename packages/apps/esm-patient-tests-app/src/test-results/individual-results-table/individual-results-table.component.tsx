@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -15,8 +12,14 @@ import {
 } from '@carbon/react';
 import { ArrowRightIcon, showModal, useLayoutType, isDesktop, formatDate } from '@openmrs/esm-framework';
 import { getPatientUuidFromStore, type OBSERVATION_INTERPRETATION } from '@openmrs/esm-patient-common-lib';
-import styles from './individual-results-table.scss';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+
 import { type GroupedObservation } from '../../types';
+
+import styles from './individual-results-table.scss';
 
 interface IndividualResultsTableProps {
   isLoading: boolean;

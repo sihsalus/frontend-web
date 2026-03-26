@@ -1,5 +1,3 @@
-import React, { type ComponentProps, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -24,12 +22,16 @@ import {
   launchPatientWorkspace,
   PatientChartPagination,
 } from '@openmrs/esm-patient-common-lib';
+import { orderBy, get, first, isEmpty } from 'lodash-es';
+import React, { type ComponentProps, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useImmunizations } from '../hooks/useImmunizations';
+import { type ExistingDoses, type Sequence } from '../types';
+
+import SequenceTable from './components/immunizations-sequence-table.component';
 import styles from './immunizations-detailed-summary.scss';
 import { immunizationFormSub, latestFirst, linkConfiguredSequences } from './utils';
-import { orderBy, get, first, isEmpty } from 'lodash-es';
-import { type ExistingDoses, type Sequence } from '../types';
-import SequenceTable from './components/immunizations-sequence-table.component';
-import { useImmunizations } from '../hooks/useImmunizations';
 
 interface ImmunizationsDetailedSummaryProps {
   patientUuid: string;

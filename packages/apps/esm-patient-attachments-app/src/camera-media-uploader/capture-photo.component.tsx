@@ -1,8 +1,9 @@
-import React, { type ComponentProps, useCallback, useState } from 'react';
-import classNames from 'classnames';
 import { Button } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { EditIcon, showModal, toOmrsIsoString, useLayoutType, type UploadedFile } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './capture-photo.scss';
 
 export interface CapturePhotoProps {

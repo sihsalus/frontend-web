@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
 import { type DefaultWorkspaceProps, launchWorkspace, navigateAndLaunchWorkspace } from '@openmrs/esm-framework';
-import { getPatientUuidFromStore, usePatientChartStore } from './store/patient-chart-store';
+import { useCallback } from 'react';
+
 import { launchStartVisitPrompt } from './launchStartVisitPrompt';
-import { useSystemVisitSetting } from './useSystemVisitSetting';
 import { useVisitOrOfflineVisit } from './offline/visit';
+import { getPatientUuidFromStore, usePatientChartStore } from './store/patient-chart-store';
+import { useSystemVisitSetting } from './useSystemVisitSetting';
 
 export interface DefaultPatientWorkspaceProps extends DefaultWorkspaceProps {
   patientUuid: string;

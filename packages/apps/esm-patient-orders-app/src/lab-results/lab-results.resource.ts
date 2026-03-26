@@ -1,6 +1,7 @@
 import { openmrsFetch, restBaseUrl, type FetchResponse, type OpenmrsResource } from '@openmrs/esm-framework';
 import { type Order } from '@openmrs/esm-patient-common-lib';
 import useSWR from 'swr';
+
 import { type Encounter, type Observation } from '../types/encounter';
 import { type OrderDiscontinuationPayload } from '../types/order';
 

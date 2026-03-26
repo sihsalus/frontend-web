@@ -1,7 +1,9 @@
-import { useFormEncounters } from '../hooks/use-forms';
-import { isValidOfflineFormEncounter } from './offline-form-helpers';
 import { useConfig } from '@openmrs/esm-framework';
+
 import { type ConfigObject } from '../config-schema';
+import { useFormEncounters } from '../hooks/use-forms';
+
+import { isValidOfflineFormEncounter } from './offline-form-helpers';
 
 /**
  * Returns an `SWRResult` of those form encounters that work with offline mode.

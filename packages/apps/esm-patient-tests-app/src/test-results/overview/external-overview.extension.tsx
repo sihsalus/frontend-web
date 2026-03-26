@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { Button, DataTableSkeleton } from '@carbon/react';
 import { ArrowRightIcon, navigate } from '@openmrs/esm-framework';
 import {
@@ -9,10 +6,16 @@ import {
   type PanelFilterProps,
   type PatientData,
 } from '@openmrs/esm-patient-common-lib';
-import { parseSingleEntry, type OverviewPanelEntry } from './useOverviewData';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+
 import usePatientResultsData from '../loadPatientTestData/usePatientResultsData';
+
 import CommonOverview from './common-overview.component';
 import styles from './external-overview.scss';
+import { parseSingleEntry, type OverviewPanelEntry } from './useOverviewData';
 
 const resultsToShow = 3;
 

@@ -17,9 +17,12 @@ import {
   Tile,
 } from '@carbon/react';
 import { WarningFilled } from '@carbon/react/icons';
-import { useFormContext, Controller } from 'react-hook-form';
 import { showSnackbar, useDebounce, useSession, ResponsiveWrapper } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
+import { useFormContext, Controller } from 'react-hook-form';
+
+import styles from './conditions-form.scss';
+import { type ConditionsFormSchema } from './conditions-form.workspace';
 import {
   type CodedCondition,
   type ConditionDataTableRow,
@@ -29,8 +32,6 @@ import {
   useConditions,
   useConditionsSearch,
 } from './conditions.resource';
-import { type ConditionsFormSchema } from './conditions-form.workspace';
-import styles from './conditions-form.scss';
 
 interface ConditionsWidgetProps {
   closeWorkspaceWithSavedChanges?: DefaultPatientWorkspaceProps['closeWorkspaceWithSavedChanges'];

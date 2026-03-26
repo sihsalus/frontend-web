@@ -1,8 +1,3 @@
-import React, { useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import debounce from 'lodash-es/debounce';
-import first from 'lodash-es/first';
 import {
   DataTable,
   type DataTableHeader,
@@ -20,15 +15,22 @@ import {
   Tile,
   Button,
 } from '@carbon/react';
+import { EditIcon, formatDatetime, useConfig, useLayoutType, usePagination } from '@openmrs/esm-framework';
 import {
   EmptyDataIllustration,
   PatientChartPagination,
   launchFormEntryOrHtmlForms,
   useVisitOrOfflineVisit,
 } from '@openmrs/esm-patient-common-lib';
-import { EditIcon, formatDatetime, useConfig, useLayoutType, usePagination } from '@openmrs/esm-framework';
+import classNames from 'classnames';
+import debounce from 'lodash-es/debounce';
+import first from 'lodash-es/first';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ConfigObject } from '../config-schema';
 import { type CompletedFormInfo } from '../types';
+
 import styles from './form-view.scss';
 
 type FormsCategory = 'All' | 'Completed' | 'Recommended';

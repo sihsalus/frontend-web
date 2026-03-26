@@ -1,7 +1,4 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Tile } from '@carbon/react';
-import classNames from 'classnames';
-import styles from './general-order-panel.scss';
 import {
   AddIcon,
   ChevronDownIcon,
@@ -10,16 +7,22 @@ import {
   MaybeIcon,
   useLayoutType,
 } from '@openmrs/esm-framework';
-import { useTranslation } from 'react-i18next';
 import {
   type OrderBasketItem,
   launchPatientWorkspace,
   useOrderBasket,
   useOrderType,
 } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { type OrderTypeDefinition } from '../../config-schema';
+
+import styles from './general-order-panel.scss';
 import OrderBasketItemTile from './order-basket-item-tile.component';
 import { prepOrderPostData } from './resources';
-import { type OrderTypeDefinition } from '../../config-schema';
+
 
 interface GeneralOrderTypeProps extends OrderTypeDefinition {
   closeWorkspace: DefaultWorkspaceProps['closeWorkspace'];

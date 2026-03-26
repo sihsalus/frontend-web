@@ -1,8 +1,3 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, renderHook, screen, waitFor } from '@testing-library/react';
-import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
-import { type PostDataPrepLabOrderFunction } from '../api';
 import {
   closeWorkspace,
   getDefaultsFromConfigSchema,
@@ -12,11 +7,18 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { type PostDataPrepFunction, useOrderBasket, useOrderType } from '@openmrs/esm-patient-common-lib';
-import { configSchema, type ConfigObject } from '../../config-schema';
+import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockSessionDataResponse } from '__mocks__';
+import React from 'react';
 import { mockPatient } from 'tools';
-import { createEmptyLabOrder } from './test-order';
+
+import { configSchema, type ConfigObject } from '../../config-schema';
+import { type PostDataPrepLabOrderFunction } from '../api';
+
 import AddLabOrderWorkspace from './add-test-order.workspace';
+import { createEmptyLabOrder } from './test-order';
 
 const mockCloseWorkspace = closeWorkspace as jest.Mock;
 const mockUseLayoutType = jest.mocked(useLayoutType);

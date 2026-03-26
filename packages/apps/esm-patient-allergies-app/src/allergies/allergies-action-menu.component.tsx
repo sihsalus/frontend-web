@@ -1,11 +1,13 @@
+import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
+import { showModal, useLayoutType } from '@openmrs/esm-framework';
+import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { showModal, useLayoutType } from '@openmrs/esm-framework';
-import { type Allergy } from './allergy-intolerance.resource';
-import styles from './allergies-action-menu.scss';
+
 import { patientAllergiesFormWorkspace } from '../constants';
+
+import styles from './allergies-action-menu.scss';
+import { type Allergy } from './allergy-intolerance.resource';
 
 interface allergiesActionMenuProps {
   allergy: Allergy;

@@ -1,4 +1,3 @@
-import React, { useMemo, useState } from 'react';
 import {
   DataTable,
   type DataTableRow,
@@ -12,6 +11,8 @@ import {
 } from '@carbon/react';
 import { useLayoutType, usePagination } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
+import React, { useMemo, useState } from 'react';
+
 import styles from './paginated-biometrics.scss';
 import type { BiometricsTableHeader, BiometricsTableRow } from './types';
 

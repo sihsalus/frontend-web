@@ -1,11 +1,13 @@
+import { useConfig } from '@openmrs/esm-framework';
+import { EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
-import { useConfig } from '@openmrs/esm-framework';
+
 import { type ConfigObject } from '../../config-schema';
 import { type viewOpts } from '../../types';
-import { useGetManyObstreeData } from '../grouped-timeline';
 import { FilterProvider } from '../filter/filter-context';
+import { useGetManyObstreeData } from '../grouped-timeline';
+
 import TreeView from './tree-view.component';
 
 interface TreeViewWrapperProps {

@@ -1,5 +1,3 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   Link,
@@ -14,6 +12,9 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './forms-table.scss';
 
 interface FormsTableProps {

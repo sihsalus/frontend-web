@@ -1,10 +1,12 @@
-import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getByTextWithMarkup } from 'tools';
-import { type DrugOrderBasketItem } from '../types';
 import { mockDrugSearchResultApiData, mockPatientDrugOrdersApiData } from '__mocks__';
+import React from 'react';
+import { getByTextWithMarkup } from 'tools';
+
 import { getTemplateOrderBasketItem } from '../add-drug-order/drug-search/drug-search.resource';
+import { type DrugOrderBasketItem } from '../types';
+
 import DrugOrderBasketPanel from './drug-order-basket-panel.extension';
 
 const mockUseOrderBasket = jest.fn();

@@ -1,8 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   ButtonSkeleton,
@@ -14,6 +9,7 @@ import {
   Row,
   Stack,
 } from '@carbon/react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   age,
   createErrorHandler,
@@ -26,13 +22,11 @@ import {
   useVisit,
 } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
-import type { ConfigObject } from '../config-schema';
-import {
-  calculateBodyMassIndex,
-  extractNumbers,
-  getMuacColorCode,
-  isValueWithinReferenceRange,
-} from './vitals-biometrics-form.utils';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+
 import {
   assessValue,
   getReferenceRangesForConcept,
@@ -41,8 +35,16 @@ import {
   saveVitalsAndBiometrics as savePatientVitals,
   useVitalsConceptMetadata,
 } from '../common';
-import VitalsAndBiometricsInput from './vitals-biometrics-input.component';
+import type { ConfigObject } from '../config-schema';
+
 import styles from './vitals-biometrics-form.scss';
+import {
+  calculateBodyMassIndex,
+  extractNumbers,
+  getMuacColorCode,
+  isValueWithinReferenceRange,
+} from './vitals-biometrics-form.utils';
+import VitalsAndBiometricsInput from './vitals-biometrics-input.component';
 
 const VitalsAndBiometricFormSchema = z
   .object({

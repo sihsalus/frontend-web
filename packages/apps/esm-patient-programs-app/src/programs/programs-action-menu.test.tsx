@@ -1,9 +1,10 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { showModal, useLayoutType } from '@openmrs/esm-framework';
+import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { mockPatient } from 'tools';
+
 import { ProgramsActionMenu } from './programs-action-menu.component';
 
 const mockShowModal = jest.mocked(showModal);

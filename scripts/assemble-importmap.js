@@ -38,15 +38,17 @@ for (const distDir of appDirs) {
   fs.copyFileSync(entryFilePath, path.join(outDir, entryFileName));
   importmap.imports[pkg.name] = `./${entryFileName}`;
 
-  // Also copy chunk files that the entry bundle may reference (CSS, async chunks)
+  // Also copy chunk files that the entry bundle may reference (CSS, async chunks, JS chunks)
   for (const file of fs.readdirSync(distDir)) {
-    const dest = path.join(outDir, file);
-    // Don't overwrite the entry bundle or files from other apps
     if (file === entryFileName) continue;
-    // Copy CSS and sourcemap files (these tend to have unique hashed names)
-    if (file.endsWith('.css') || file.endsWith('.map')) {
-      fs.copyFileSync(path.join(distDir, file), dest);
+    // Skip build manifests and package metadata
+    if (file.endsWith('.buildmanifest.json')) continue;
+    const dest = path.join(outDir, file);
+    if (fs.existsSync(dest)) {
+      console.warn(`  WARN ${pkg.name}: skipping ${file} (already exists from another app)`);
+      continue;
     }
+    fs.copyFileSync(path.join(distDir, file), dest);
   }
 
   // Collect routes
@@ -61,9 +63,18 @@ for (const distDir of appDirs) {
   console.log(`  OK ${pkg.name} -> ${entryFileName}`);
 }
 
-// Copy shell dist (app shell, service worker, CSS, etc.)
-const shellDist = 'packages/shell/esm-app-shell/dist';
-if (fs.existsSync(shellDist)) {
+// Resolve app-shell dist: prefer local packages/shell, fallback to node_modules
+let shellDist = 'packages/shell/esm-app-shell/dist';
+if (!fs.existsSync(shellDist)) {
+  try {
+    shellDist = path.join(path.dirname(require.resolve('@openmrs/esm-app-shell/package.json')), 'dist');
+  } catch {
+    console.warn('  WARN: @openmrs/esm-app-shell not found, skipping shell copy');
+    shellDist = null;
+  }
+}
+
+if (shellDist && fs.existsSync(shellDist)) {
   for (const file of fs.readdirSync(shellDist)) {
     const dest = path.join(outDir, file);
     // Don't overwrite app bundles with shell files
@@ -71,26 +82,29 @@ if (fs.existsSync(shellDist)) {
       fs.copyFileSync(path.join(shellDist, file), dest);
     }
   }
-  console.log(`  OK app-shell dist copied`);
+  console.log(`  OK app-shell dist copied from ${shellDist}`);
 }
 
-// Write importmap.json to both dist/spa and app-shell dist (for openmrs start)
+// Write importmap.json
 const importmapJson = JSON.stringify(importmap, null, 2);
 fs.writeFileSync(path.join(outDir, 'importmap.json'), importmapJson);
 
 // Also write to app-shell dist so `openmrs start` can find it
-const shellImportmapPath = path.join(shellDist, 'importmap.json');
-fs.writeFileSync(shellImportmapPath, importmapJson);
+if (shellDist && fs.existsSync(shellDist)) {
+  fs.writeFileSync(path.join(shellDist, 'importmap.json'), importmapJson);
+}
 
 // Write routes registry
 fs.writeFileSync(
   path.join(outDir, 'routes.registry.json'),
   JSON.stringify(routesRegistry, null, 2),
 );
-fs.writeFileSync(
-  path.join(shellDist, 'routes.registry.json'),
-  JSON.stringify(routesRegistry, null, 2),
-);
+if (shellDist && fs.existsSync(shellDist)) {
+  fs.writeFileSync(
+    path.join(shellDist, 'routes.registry.json'),
+    JSON.stringify(routesRegistry, null, 2),
+  );
+}
 
 // Verify no duplicate bundle filenames
 const values = Object.values(importmap.imports);

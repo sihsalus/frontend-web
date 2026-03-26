@@ -1,7 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Header, IconButton } from '@carbon/react';
 import { ArrowLeftIcon } from '@openmrs/esm-framework';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './tablet-overlay.scss';
 
 interface OverlayProps {

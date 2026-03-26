@@ -1,10 +1,14 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
-import OrderStockDetailsComponent from './order-stock-details.component';
-import { useOrderStockInfo } from '../hooks/useOrderStockInfo';
-import { renderWithSwr } from 'tools';
-import { useTranslation } from 'react-i18next';
 import { mockOrderStockData } from '__mocks__';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { renderWithSwr } from 'tools';
+
+import { useOrderStockInfo } from '../hooks/useOrderStockInfo';
+
+import OrderStockDetailsComponent from './order-stock-details.component';
+
+
 
 const mockUseOrderStockInfo = jest.mocked(useOrderStockInfo);
 

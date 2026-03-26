@@ -1,7 +1,7 @@
-import React, { type ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
 import { EventsIcon, ActionMenuButton } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import React, { type ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const handleLaunchPatientListsWorkspace = () => launchPatientWorkspace('patient-lists');
 

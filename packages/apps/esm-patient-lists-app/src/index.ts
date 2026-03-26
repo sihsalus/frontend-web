@@ -1,7 +1,8 @@
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle, translateFrom } from '@openmrs/esm-framework';
-import { configSchema } from './config-schema';
 
 import patientListsActionButtonComponent from './action-button/patient-lists-action-button.extension';
+import { configSchema } from './config-schema';
+
 
 const moduleName = '@openmrs/esm-patient-lists-app';
 const options = {

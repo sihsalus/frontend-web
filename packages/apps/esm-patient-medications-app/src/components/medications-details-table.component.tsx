@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import { capitalize } from 'lodash-es';
 import {
   DataTable,
   Button,
@@ -19,14 +16,6 @@ import {
   Tooltip,
 } from '@carbon/react';
 import {
-  CardHeader,
-  compare,
-  PatientChartPagination,
-  type Order,
-  useLaunchWorkspaceRequiringVisit,
-  useOrderBasket,
-} from '@openmrs/esm-patient-common-lib';
-import {
   AddIcon,
   age,
   getPatientName,
@@ -37,12 +26,25 @@ import {
   usePagination,
   UserIcon,
 } from '@openmrs/esm-framework';
+import {
+  CardHeader,
+  compare,
+  PatientChartPagination,
+  type Order,
+  useLaunchWorkspaceRequiringVisit,
+  useOrderBasket,
+} from '@openmrs/esm-patient-common-lib';
+import dayjs from 'dayjs';
+import { capitalize } from 'lodash-es';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReactToPrint } from 'react-to-print';
+
 import { type AddDrugOrderWorkspaceAdditionalProps } from '../add-drug-order/add-drug-order.workspace';
-import { type DrugOrderBasketItem } from '../types';
 import { type ConfigObject } from '../config-schema';
 import PrintComponent from '../print/print.component';
+import { type DrugOrderBasketItem } from '../types';
+
 import styles from './medications-details-table.scss';
 
 export interface MedicationsDetailsTableProps {

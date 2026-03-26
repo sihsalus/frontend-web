@@ -1,6 +1,8 @@
 import { priorityOptions, type OrderUrgency } from '@openmrs/esm-patient-common-lib';
-import { type TestType } from './useTestTypes';
+
 import type { TestOrderBasketItem } from '../../types';
+
+import { type TestType } from './useTestTypes';
 
 type LabOrderRequest = Pick<TestOrderBasketItem, 'action' | 'testType'>;
 

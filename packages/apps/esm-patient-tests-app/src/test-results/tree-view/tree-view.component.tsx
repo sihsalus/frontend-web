@@ -1,17 +1,18 @@
-import React, { useContext, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { AccordionSkeleton, DataTableSkeleton, Button, Layer } from '@carbon/react';
 import { useLayoutType, TreeViewAltIcon } from '@openmrs/esm-framework';
 import { EmptyState } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type GroupedObservation, type viewOpts } from '../../types';
 import FilterSet, { FilterContext } from '../filter';
 import GroupedTimeline from '../grouped-timeline';
 import IndividualResultsTable from '../individual-results-table/individual-results-table.component';
-import TabletOverlay from '../tablet-overlay';
-import Trendline from '../trendline/trendline.component';
 import usePanelData from '../panel-view/usePanelData';
 import styles from '../results-viewer/results-viewer.scss';
+import TabletOverlay from '../tablet-overlay';
+import Trendline from '../trendline/trendline.component';
 
 interface TreeViewProps {
   patientUuid: string;

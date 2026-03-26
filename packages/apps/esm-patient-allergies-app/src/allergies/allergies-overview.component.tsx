@@ -1,5 +1,3 @@
-import React from 'react';
-import classNames from 'classnames';
 import {
   DataTableSkeleton,
   DataTable,
@@ -13,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { AddIcon, useLayoutType, usePagination } from '@openmrs/esm-framework';
 import {
   CardHeader,
@@ -22,9 +19,14 @@ import {
   launchPatientWorkspace,
   PatientChartPagination,
 } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { allergiesCount, patientAllergiesFormWorkspace } from '../constants';
-import { useAllergies } from './allergy-intolerance.resource';
+
 import styles from './allergies-overview.scss';
+import { useAllergies } from './allergy-intolerance.resource';
 
 interface AllergiesOverviewProps {
   basePath: string;

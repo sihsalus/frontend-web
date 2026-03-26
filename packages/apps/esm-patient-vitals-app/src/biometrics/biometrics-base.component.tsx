@@ -1,16 +1,18 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ContentSwitcher, DataTableSkeleton, IconSwitch, InlineLoading } from '@carbon/react';
 import { Add, Analytics, Table } from '@carbon/react/icons';
 import { formatDatetime, parseDate, useConfig, useLayoutType } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
-import { launchVitalsAndBiometricsForm } from '../utils';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useVitalsConceptMetadata, useVitalsAndBiometrics, withUnit } from '../common';
 import { type ConfigObject } from '../config-schema';
+import { launchVitalsAndBiometricsForm } from '../utils';
+
+import styles from './biometrics-base.scss';
 import BiometricsChart from './biometrics-chart.component';
 import PaginatedBiometrics from './paginated-biometrics.component';
 import type { BiometricsTableHeader, BiometricsTableRow } from './types';
-import styles from './biometrics-base.scss';
 
 interface BiometricsBaseProps {
   pageSize: number;

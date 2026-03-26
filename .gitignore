@@ -13,3 +13,28 @@ coverage/
 *.key
 CLAUDE.md
 .claude/
+
+# Yarn Berry
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+.pnp.*
+yarn.lock.backup
+
+# TypeScript build artifacts in libs src/
+packages/libs/*/src/**/*.js
+packages/libs/*/src/**/*.d.ts
+packages/libs/*/src/**/*.js.map
+packages/libs/*/src/**/*.d.ts.map
+
+# Large binary test fixtures (use Git LFS or download at test time)
+**/__mocks__/*.zip
+
+# Backup and temporary files
+*.bak
+*.orig
+*.swp
+*.tmp
+*~

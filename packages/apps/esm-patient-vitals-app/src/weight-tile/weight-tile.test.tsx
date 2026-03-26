@@ -1,10 +1,12 @@
-import React from 'react';
-import { screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
-import { configSchema, type ConfigObject } from '../config-schema';
-import { getByTextWithMarkup, mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { screen } from '@testing-library/react';
 import { formattedBiometrics, mockBiometricsConfig, mockConceptMetadata, mockVitalsSignsConcepts } from '__mocks__';
+import React from 'react';
+import { getByTextWithMarkup, mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import { useVitalsAndBiometrics } from '../common';
+import { configSchema, type ConfigObject } from '../config-schema';
+
 import WeightTile from './weight-tile.component';
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);

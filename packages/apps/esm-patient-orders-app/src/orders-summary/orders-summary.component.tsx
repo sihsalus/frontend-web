@@ -1,7 +1,8 @@
+import { type ConfigObject, useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import OrderDetailsTable from '../components/orders-details-table.component';
-import { type ConfigObject, useConfig } from '@openmrs/esm-framework';
 
 export interface OrdersSummaryProps {
   patientUuid: string;

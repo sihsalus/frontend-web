@@ -1,7 +1,9 @@
-import { type OrderPriceData } from '../types/order';
 import { type FetchResponse, fhirBaseUrl, openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
 import { useMemo } from 'react';
+import useSWR from 'swr';
+
+import { type OrderPriceData } from '../types/order';
+
 import { useAreBackendModuleInstalled } from './useAreBackendModuleInstalled';
 
 export const useOrderPrice = (orderItemUuid: string) => {

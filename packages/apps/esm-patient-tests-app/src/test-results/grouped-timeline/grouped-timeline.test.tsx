@@ -1,10 +1,12 @@
-import React from 'react';
+import { showModal } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { showModal } from '@openmrs/esm-framework';
 import { mockGroupedResults } from '__mocks__';
-import { type FilterContextProps } from '../filter/filter-types';
+import React from 'react';
+
 import FilterContext from '../filter/filter-context';
+import { type FilterContextProps } from '../filter/filter-types';
+
 import GroupedTimeline from './grouped-timeline.component';
 
 const mockShowModal = jest.mocked(showModal);

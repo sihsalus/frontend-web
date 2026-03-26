@@ -1,9 +1,13 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, render, within } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showSnackbar, useConfig } from '@openmrs/esm-framework';
+import { screen, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockAllergens, mockAllergicReactions, mockAllergy } from '__mocks__';
+import React from 'react';
 import { mockPatient } from 'tools';
+
+import { type AllergiesConfigObject, configSchema } from '../../config-schema';
+import { AllergenType } from '../../types';
+
 import {
   type NewAllergy,
   saveAllergy,
@@ -11,8 +15,6 @@ import {
   useAllergicReactions,
   updatePatientAllergy,
 } from './allergy-form.resource';
-import { type AllergiesConfigObject, configSchema } from '../../config-schema';
-import { AllergenType } from '../../types';
 import AllergyForm from './allergy-form.workspace';
 
 const mockSaveAllergy = jest.mocked(saveAllergy);

@@ -1,11 +1,13 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
-import { type ConfigObject, configSchema } from '../config-schema';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { formattedVitals, mockConceptMetadata, mockConceptUnits, mockVitalsConfig } from '__mocks__';
+import React from 'react';
 import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import { useVitalsAndBiometrics } from '../common';
+import { type ConfigObject, configSchema } from '../config-schema';
+
 import VitalsOverview from './vitals-overview.component';
 
 const testProps = {

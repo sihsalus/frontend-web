@@ -1,11 +1,13 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, render } from '@testing-library/react';
-import { useOrderType } from '@openmrs/esm-patient-common-lib';
-import LabOrderBasketPanel from './lab-order-basket-panel.extension';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { useOrderType } from '@openmrs/esm-patient-common-lib';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { type ConfigObject, configSchema } from '../../config-schema';
 import type { TestOrderBasketItem } from '../../types';
+
+import LabOrderBasketPanel from './lab-order-basket-panel.extension';
 
 const mockUseOrderBasket = jest.fn();
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);

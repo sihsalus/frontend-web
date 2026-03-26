@@ -1,5 +1,3 @@
-import * as React from 'react';
-import classNames from 'classnames';
 import {
   DataTable,
   Table,
@@ -12,8 +10,11 @@ import {
 } from '@carbon/react';
 import { useLayoutType } from '@openmrs/esm-framework';
 import { type OBSERVATION_INTERPRETATION } from '@openmrs/esm-patient-common-lib';
-import { type OverviewPanelData } from './useOverviewData';
+import classNames from 'classnames';
+import * as React from 'react';
+
 import styles from './common-datatable.scss';
+import { type OverviewPanelData } from './useOverviewData';
 
 interface CommonDataTableProps {
   data: Array<OverviewPanelData>;

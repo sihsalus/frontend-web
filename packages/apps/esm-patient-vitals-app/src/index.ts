@@ -7,13 +7,14 @@ import {
   restBaseUrl,
 } from '@openmrs/esm-framework';
 import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
-import { configSchema } from './config-schema';
+
 import biometricsDetailedSummaryComponent from './biometrics/biometrics-main.component';
 import biometricsOverviewComponent from './biometrics/biometrics-overview.component';
+import { configSchema } from './config-schema';
 import dashboardMeta from './dashboard.meta';
-import vitalsHeaderComponent from './vitals-and-biometrics-header/vitals-header.component';
 import vitalsMainComponent from './vitals/vitals-main.component';
 import vitalsSummaryComponent from './vitals/vitals-summary.component';
+import vitalsHeaderComponent from './vitals-and-biometrics-header/vitals-header.component';
 
 const moduleName = '@openmrs/esm-patient-vitals-app';
 

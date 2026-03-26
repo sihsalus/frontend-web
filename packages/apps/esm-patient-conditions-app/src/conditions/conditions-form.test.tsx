@@ -1,12 +1,13 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
 import { type FetchResponse, openmrsFetch, showSnackbar } from '@openmrs/esm-framework';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockFhirConditionsResponse, searchedCondition } from '__mocks__';
+import dayjs from 'dayjs';
+import React from 'react';
 import { getByTextWithMarkup, mockPatient } from 'tools';
-import { createCondition, useConditionsSearch } from './conditions.resource';
+
 import ConditionsForm from './conditions-form.workspace';
+import { createCondition, useConditionsSearch } from './conditions.resource';
 
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);

@@ -1,12 +1,14 @@
-import React from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { EmptyState } from '@openmrs/esm-patient-common-lib';
-import { PaddingContainer, TimeSlots, Grid, RowStartCell, GridItems, ShadowBox } from './helpers';
-import { type ParsedTimeType } from '../filter/filter-types';
+import classNames from 'classnames';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ObsRecord } from '../../types';
-import useScrollIndicator from './useScroll';
+import { type ParsedTimeType } from '../filter/filter-types';
+
+import { PaddingContainer, TimeSlots, Grid, RowStartCell, GridItems, ShadowBox } from './helpers';
 import styles from './timeline.scss';
+import useScrollIndicator from './useScroll';
 
 interface PanelNameCornerProps {
   showShadow: boolean;

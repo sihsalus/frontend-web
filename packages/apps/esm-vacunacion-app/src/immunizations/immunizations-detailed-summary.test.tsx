@@ -1,6 +1,3 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
 import {
   getDefaultsFromConfigSchema,
   launchWorkspace2,
@@ -8,11 +5,16 @@ import {
   useVisit,
   type VisitReturnType,
 } from '@openmrs/esm-framework';
-import { configSchema, type ImmunizationConfigObject } from '../config-schema';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
-import { mockCurrentVisit } from '__mocks__';
 import { usePatientChartStore } from '@openmrs/esm-patient-common-lib';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { mockCurrentVisit } from '__mocks__';
+import React from 'react';
+import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
+import { configSchema, type ImmunizationConfigObject } from '../config-schema';
 import { useImmunizations } from '../hooks/useImmunizations';
+
 import ImmunizationsDetailedSummary from './immunizations-detailed-summary.component';
 
 jest.mock('../hooks/useImmunizations', () => ({

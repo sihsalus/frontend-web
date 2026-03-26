@@ -1,18 +1,20 @@
-import React, { type ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton, Button, Search, Form } from '@carbon/react';
 import { CloseIcon, navigate, SearchIcon, useLayoutType } from '@openmrs/esm-framework';
 import { EmptyState } from '@openmrs/esm-patient-common-lib';
-import { FilterEmptyState } from '../ui-elements/resetFiltersEmptyState/filter-empty-state.component';
+import classNames from 'classnames';
+import React, { type ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import type { ObsRecord } from '../../types';
 import { testResultsBasePath } from '../helpers';
-import LabSetPanel from './panel.component';
-import Overlay from '../tablet-overlay/tablet-overlay.component';
 import PanelTimelineComponent from '../panel-timeline/panel-timeline-component';
+import Overlay from '../tablet-overlay/tablet-overlay.component';
 import Trendline from '../trendline/trendline.component';
-import usePanelData from './usePanelData';
+import { FilterEmptyState } from '../ui-elements/resetFiltersEmptyState/filter-empty-state.component';
+
 import styles from './panel-view.scss';
+import LabSetPanel from './panel.component';
+import usePanelData from './usePanelData';
 
 interface PanelViewProps {
   expanded: boolean;

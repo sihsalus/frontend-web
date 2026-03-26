@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { Button, Tile } from '@carbon/react';
 import {
   AddIcon,
@@ -17,11 +14,16 @@ import {
   useOrderBasket,
   useOrderType,
 } from '@openmrs/esm-patient-common-lib';
-import type { TestOrderBasketItem } from '../../types';
-import { LabOrderBasketItemTile } from './lab-order-basket-item-tile.component';
-import { prepTestOrderPostData } from '../api';
-import styles from './lab-order-basket-panel.scss';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import type { ConfigObject } from '../../config-schema';
+import type { TestOrderBasketItem } from '../../types';
+import { prepTestOrderPostData } from '../api';
+
+import { LabOrderBasketItemTile } from './lab-order-basket-item-tile.component';
+import styles from './lab-order-basket-panel.scss';
 
 /**
  * Designs: https://app.zeplin.io/project/60d59321e8100b0324762e05/screen/648c44d9d4052c613e7f23da

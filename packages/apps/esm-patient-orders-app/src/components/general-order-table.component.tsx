@@ -1,6 +1,3 @@
-import React, { useMemo } from 'react';
-import styles from './general-order-table.scss';
-import { type Order } from '@openmrs/esm-patient-common-lib';
 import {
   DataTable,
   DataTableSkeleton,
@@ -13,9 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
-import { useLabEncounter, useOrderConceptByUuid } from '../lab-results/lab-results.resource';
 import { useLayoutType } from '@openmrs/esm-framework';
+import { type Order } from '@openmrs/esm-patient-common-lib';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useLabEncounter, useOrderConceptByUuid } from '../lab-results/lab-results.resource';
+
+import styles from './general-order-table.scss';
+
 
 interface GeneralOrderProps {
   order: Order;

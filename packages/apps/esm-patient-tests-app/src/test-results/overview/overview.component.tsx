@@ -1,6 +1,7 @@
-import React from 'react';
 import { DataTableSkeleton } from '@carbon/react';
 import { navigate } from '@openmrs/esm-framework';
+import React from 'react';
+
 import CommonOverview from './common-overview.component';
 import useOverviewData from './useOverviewData';
 

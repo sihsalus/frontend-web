@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
 import { Dropdown, NumberInput } from '@carbon/react';
+import React, { useCallback, useMemo } from 'react';
 import { useController, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+
 import { type ImmunizationSequenceDefinition } from '../../types/fhir-immunization-domain';
+
 import styles from './../immunizations-form.scss';
 
 export const DoseInput: React.FC<{

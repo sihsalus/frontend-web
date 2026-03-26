@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -32,10 +29,15 @@ import {
   launchPatientWorkspace,
   CardHeader,
 } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import type { ConfigObject } from '../config-schema';
+
 import { ConditionsActionMenu } from './conditions-action-menu.component';
-import { type Condition, useConditions, useConditionsSorting } from './conditions.resource';
 import styles from './conditions-overview.scss';
+import { type Condition, useConditions, useConditionsSorting } from './conditions.resource';
 
 interface ConditionTableRow extends Condition {
   id: string;

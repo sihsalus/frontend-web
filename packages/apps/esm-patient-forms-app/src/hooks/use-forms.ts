@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-import useSWR from 'swr';
 import {
   getDynamicOfflineDataEntries,
   openmrsFetch,
@@ -8,10 +6,13 @@ import {
   userHasAccess,
   useSession,
 } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import useSWR from 'swr';
+
 import type { ConfigObject } from '../config-schema';
-import type { ListResponse, Form, EncounterWithFormRef, CompletedFormInfo } from '../types';
 import { customEncounterRepresentation, formEncounterUrl, formEncounterUrlPoc } from '../constants';
 import { isValidOfflineFormEncounter } from '../offline-forms/offline-form-helpers';
+import type { ListResponse, Form, EncounterWithFormRef, CompletedFormInfo } from '../types';
 
 export function useFormEncounters(cachedOfflineFormsOnly = false, patientUuid: string = '') {
   const { customFormsUrl, showHtmlFormEntryForms } = useConfig<ConfigObject>();

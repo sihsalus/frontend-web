@@ -1,8 +1,9 @@
 import { type Visit } from '@openmrs/esm-framework';
 import { launchPatientWorkspace, launchStartVisitPrompt } from '@openmrs/esm-patient-common-lib';
+
+import { invalidateCachedVitalsAndBiometrics } from './common';
 import { type ConfigObject } from './config-schema';
 import { patientVitalsBiometricsFormWorkspace } from './constants';
-import { invalidateCachedVitalsAndBiometrics } from './common';
 
 /**
  * Launches the for entry workspace with the custom form

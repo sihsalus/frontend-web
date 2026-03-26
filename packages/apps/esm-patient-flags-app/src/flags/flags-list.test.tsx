@@ -1,9 +1,10 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockPatient } from 'tools';
 import { mockPatientFlags } from '__mocks__';
-import { usePatientFlags } from './hooks/usePatientFlags';
+import React from 'react';
+import { mockPatient } from 'tools';
+
 import FlagsList from './flags-list.component';
+import { usePatientFlags } from './hooks/usePatientFlags';
 
 const mockUsePatientFlags = usePatientFlags as jest.Mock;
 

@@ -1,11 +1,13 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, within } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, openmrsFetch, useConfig } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockCareProgramsResponse, mockEnrolledInAllProgramsResponse, mockEnrolledProgramsResponse } from '__mocks__';
+import React from 'react';
 import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+
 import { type ConfigObject, configSchema } from '../config-schema';
+
 import ProgramsDetailedSummary from './programs-detailed-summary.component';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;

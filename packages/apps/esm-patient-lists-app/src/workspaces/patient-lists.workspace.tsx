@@ -1,6 +1,3 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import fuzzy from 'fuzzy';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   type DataTableHeader,
@@ -20,9 +17,14 @@ import {
   TableToolbarSearch,
   Tile,
 } from '@carbon/react';
-import { EmptyDataIllustration, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { useDebounce, useLayoutType } from '@openmrs/esm-framework';
+import { EmptyDataIllustration, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import fuzzy from 'fuzzy';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { usePatientLists } from '../patient-lists.resource';
+
 import styles from './patient-lists.scss';
 
 function PatientListsWorkspace() {

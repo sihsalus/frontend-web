@@ -1,9 +1,11 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { InlineLoading } from '@carbon/react';
 import { useConfig } from '@openmrs/esm-framework';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useVitalsAndBiometrics, useVitalsConceptMetadata } from '../common';
 import { type ConfigObject } from '../config-schema';
+
 import styles from './weight-tile.scss';
 
 interface WeightTileInterface {

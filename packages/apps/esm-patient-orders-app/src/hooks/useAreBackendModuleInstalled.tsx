@@ -1,6 +1,6 @@
 import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import useSWR from 'swr';
 import { useMemo } from 'react';
+import useSWR from 'swr';
 
 interface ModuleData {
   results: Array<{ uuid: string }>;

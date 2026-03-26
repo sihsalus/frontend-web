@@ -33,7 +33,7 @@
   ],
   "homepage": "https://github.com/openmrs/openmrs-esm-core#readme",
   "dependencies": {
-    "@openmrs/esm-app-shell": "workspace:*",
+    "@openmrs/esm-app-shell": "9.0.2",
     "@openmrs/rspack-config": "workspace:*",
     "@openmrs/webpack-config": "workspace:*",
     "@pnpm/npm-conf": "^2.1.0",

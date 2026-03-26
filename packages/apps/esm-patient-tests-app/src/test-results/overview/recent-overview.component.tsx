@@ -1,12 +1,15 @@
+import { Button, DataTableSkeleton } from '@carbon/react';
+import { ArrowRightIcon, useLayoutType } from '@openmrs/esm-framework';
+import { EmptyState } from '@openmrs/esm-patient-common-lib';
 import React, { type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, DataTableSkeleton } from '@carbon/react';
-import { EmptyState } from '@openmrs/esm-patient-common-lib';
-import { ArrowRightIcon, useLayoutType } from '@openmrs/esm-framework';
-import useOverviewData from './useOverviewData';
-import CommonOverview from './common-overview.component';
+
+
 import { navigateToResults, navigateToTimeline, navigateToTrendline } from '../helpers';
+
+import CommonOverview from './common-overview.component';
 import styles from './recent-overview.scss';
+import useOverviewData from './useOverviewData';
 
 const RECENT_COUNT = 5;
 

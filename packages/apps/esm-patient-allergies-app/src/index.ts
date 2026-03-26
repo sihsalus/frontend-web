@@ -8,10 +8,11 @@ import {
   translateFrom,
 } from '@openmrs/esm-framework';
 import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
-import { configSchema } from './config-schema';
-import { dashboardMeta } from './dashboard.meta';
+
 import allergiesDetailedSummaryComponent from './allergies/allergies-detailed-summary.component';
 import allergyTileComponent from './allergies/allergies-tile.component';
+import { configSchema } from './config-schema';
+import { dashboardMeta } from './dashboard.meta';
 
 const moduleName = '@openmrs/esm-patient-allergies-app';
 

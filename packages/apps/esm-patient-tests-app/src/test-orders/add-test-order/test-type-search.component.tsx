@@ -1,6 +1,3 @@
-import React, { type ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
-import classNames from 'classnames';
-import { type TFunction, useTranslation } from 'react-i18next';
 import { Button, ButtonSkeleton, Search, SkeletonText, Tile } from '@carbon/react';
 import { ShoppingCartArrowUp } from '@carbon/react/icons';
 import {
@@ -13,8 +10,13 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { launchPatientWorkspace, useOrderBasket, useOrderType } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
+import { type TFunction, useTranslation } from 'react-i18next';
+
 import type { TestOrderBasketItem } from '../../types';
 import { prepTestOrderPostData } from '../api';
+
 import { createEmptyLabOrder } from './test-order';
 import styles from './test-type-search.scss';
 import { useTestTypes, type TestType } from './useTestTypes';

@@ -1,5 +1,3 @@
-import React, { type ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ActionMenuButton, DocumentIcon, useWorkspaces } from '@openmrs/esm-framework';
 import {
   clinicalFormsWorkspace,
@@ -8,6 +6,8 @@ import {
   launchPatientWorkspace,
   useLaunchWorkspaceRequiringVisit,
 } from '@openmrs/esm-patient-common-lib';
+import React, { type ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ClinicalFormActionButton: React.FC = () => {
   const { t } = useTranslation();

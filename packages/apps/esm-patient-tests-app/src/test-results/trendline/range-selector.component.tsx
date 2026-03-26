@@ -1,6 +1,7 @@
+import { Tab, Tabs, TabList } from '@carbon/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tab, Tabs, TabList } from '@carbon/react';
+
 import styles from './trendline.scss';
 
 const RangeSelector: React.FC<{ setLowerRange: (lowerRange: Date) => void; upperRange: Date }> = ({

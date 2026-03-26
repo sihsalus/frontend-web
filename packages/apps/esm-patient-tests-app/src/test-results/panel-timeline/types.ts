@@ -1,5 +1,5 @@
-import { type ParsedTimeType } from '../filter/filter-types';
 import { type ObsRecord } from '../../types';
+import { type ParsedTimeType } from '../filter/filter-types';
 
 export interface TimelineData {
   parsedTimes: ParsedTimeType;

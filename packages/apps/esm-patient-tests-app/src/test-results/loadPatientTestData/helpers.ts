@@ -63,7 +63,7 @@ export function getUserDataFromCache(patientUuid: string): [PatientData | undefi
 
   return [
     data,
-    !!data
+    data
       ? getLatestObsUuid(patientUuid).then((obsUuid) => obsUuid !== patientResultsDataCache?.[patientUuid]?.[2])
       : Promise.resolve(true),
   ];

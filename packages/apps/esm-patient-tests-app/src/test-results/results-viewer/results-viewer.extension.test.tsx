@@ -1,10 +1,12 @@
-import React from 'react';
+import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { mockResults } from '__mocks__';
+import React from 'react';
+
 import { type ConfigObject, configSchema } from '../../config-schema';
 import TreeViewWrapper from '../tree-view/tree-view-wrapper.component';
-import { mockResults } from '__mocks__';
+
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
 const mockUseGetManyObstreeData = jest.fn();

@@ -1,5 +1,5 @@
-import React from 'react';
 import { ConfigurableLink } from '@openmrs/esm-framework';
+import React from 'react';
 
 interface OfflineToolsNavLinkProps {
   page?: string;

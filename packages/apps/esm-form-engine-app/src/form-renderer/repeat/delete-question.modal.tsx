@@ -1,6 +1,6 @@
+import { ModalHeader, ModalBody, ModalFooter, Button } from '@carbon/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalHeader, ModalBody, ModalFooter, Button } from '@carbon/react';
 
 interface DeleteModalProps {
   onConfirm: () => void;

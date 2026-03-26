@@ -1,7 +1,3 @@
-import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { capitalize } from 'lodash-es';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
 import {
   age,
@@ -20,11 +16,17 @@ import {
   useOrderType,
   usePatientChartStore,
 } from '@openmrs/esm-patient-common-lib';
-import { LabOrderForm } from './test-order-form.component';
-import { TestTypeSearch } from './test-type-search.component';
-import styles from './add-test-order.scss';
+import classNames from 'classnames';
+import { capitalize } from 'lodash-es';
+import React, { type ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ConfigObject } from '../../config-schema';
 import type { TestOrderBasketItem } from '../../types';
+
+import styles from './add-test-order.scss';
+import { LabOrderForm } from './test-order-form.component';
+import { TestTypeSearch } from './test-type-search.component';
 
 export interface AddLabOrderWorkspaceAdditionalProps {
   order?: OrderBasketItem;
