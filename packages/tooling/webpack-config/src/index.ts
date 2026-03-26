@@ -311,12 +311,13 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
           if (depName === 'swr') {
             // SWR is annoying with Module Federation
             // See: https://github.com/webpack/webpack/issues/16125 and https://github.com/vercel/swr/issues/2356
-            obj['swr/'] = {
+            // Must match the app-shell host config which shares as 'swr/_internal'
+            obj['swr/_internal'] = {
               requiredVersion: peerDependencies['swr'] ?? false,
               strictVersion: false,
               singleton: true,
-              import: 'swr/',
-              shareKey: 'swr/',
+              import: 'swr/_internal',
+              shareKey: 'swr/_internal',
               shareScope: 'default',
               // eslint-disable-next-line @typescript-eslint/no-require-imports
               version: require('swr/package.json').version,
