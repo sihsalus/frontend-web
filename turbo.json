@@ -11,7 +11,6 @@
         "!src/**/setup-tests.*",
         "tsconfig.json",
         "tsconfig.build.json",
-        "webpack.config.js",
         "rspack.config.js",
         "rspack.config.cjs",
         "rspack.config.ts",
@@ -33,7 +32,6 @@
         "src/**",
         "!src/**/*.test.*",
         "tsconfig.json",
-        "webpack.config.js",
         "rspack.config.js",
         "translations/**"
       ],
