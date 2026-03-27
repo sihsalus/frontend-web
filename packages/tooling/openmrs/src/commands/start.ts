@@ -44,27 +44,16 @@ export async function runStart(args: StartArgs) {
     .replace(/href="\/openmrs\/spa/g, `href="${spaPath}`)
     .replace(/src="\/openmrs\/spa/g, `src="${spaPath}`);
 
-  // Build merged importmap: backend provides all @openmrs/* modules (built with compatible
-  // Module Federation format), local only overrides @sihsalus/* custom modules.
-  // Reason: the app-shell from npm uses a specific Module Federation runtime version and
-  // container format. Locally-built @openmrs/* modules (via Rspack) produce an incompatible
-  // federation container, causing silent mount failures (RUNTIME-004). Only @sihsalus/*
-  // modules are safe to serve locally because they don't conflict with backend modules.
+  // Build merged importmap: all local modules take precedence over backend.
+  // Now that the app-shell is built locally with rspack (same MF runtime as apps),
+  // all modules are compatible and can be served locally.
   let localImportmap: { imports: Record<string, string> } = { imports: {} };
   const importmapPath = resolve(spaDist, 'importmap.json');
   if (existsSync(importmapPath)) {
     localImportmap = JSON.parse(readFileSync(importmapPath, 'utf8'));
   }
 
-  // Filter local modules: only include @sihsalus/* scope
-  const sihsalusImportmap: { imports: Record<string, string> } = { imports: {} };
-  for (const [name, url] of Object.entries(localImportmap.imports)) {
-    if (name.startsWith('@sihsalus/')) {
-      sihsalusImportmap.imports[name] = url;
-    }
-  }
-
-  logInfo(`Local modules: ${Object.keys(sihsalusImportmap.imports).length} @sihsalus/* (${Object.keys(localImportmap.imports).length - Object.keys(sihsalusImportmap.imports).length} @openmrs/* skipped — served from backend)`);
+  logInfo(`Local modules: ${Object.keys(localImportmap.imports).length}`);
 
   logInfo(`Fetching backend importmap from ${backendUrl}...`);
   const backendImportmap = (await fetchBackendJson(`${backendUrl}/openmrs/spa/importmap.json`)) as {
@@ -73,51 +62,43 @@ export async function runStart(args: StartArgs) {
 
   const mergedImportmap: { imports: Record<string, string> } = { imports: {} };
 
-  // Build a set of "base names" from local @sihsalus/* modules to detect duplicates
+  // Build a set of "base names" from local modules to detect duplicates under different scopes
   // e.g. local "@sihsalus/esm-fua-app" should exclude backend "@pucp-gidis-hiisc/esm-fua-app"
   const localBaseNames = new Set(
-    Object.keys(sihsalusImportmap.imports).map((name) => name.replace(/^@[^/]+\//, '')),
+    Object.keys(localImportmap.imports).map((name) => name.replace(/^@[^/]+\//, '')),
   );
 
   if (backendImportmap?.imports) {
     let skippedCount = 0;
-    // Add backend modules first (as base), skipping duplicates of local @sihsalus/* modules
     for (const [name, url] of Object.entries(backendImportmap.imports)) {
       const baseName = name.replace(/^@[^/]+\//, '');
       if (localBaseNames.has(baseName)) {
         skippedCount++;
         continue;
       }
-      // Resolve relative URLs against the backend
       const resolvedUrl = url.startsWith('.') ? `${backendUrl}/openmrs/spa/${url.replace(/^\.\//, '')}` : url;
       mergedImportmap.imports[name] = resolvedUrl;
     }
-    logInfo(`Backend importmap: ${Object.keys(backendImportmap.imports).length} modules (${skippedCount} skipped as duplicates)`);
+    logInfo(`Backend importmap: ${Object.keys(backendImportmap.imports).length} modules (${skippedCount} skipped as local duplicates)`);
   } else {
     logWarn(`Could not fetch backend importmap — using local modules only`);
   }
 
-  // Override with local @sihsalus/* modules
-  for (const [name, url] of Object.entries(sihsalusImportmap.imports)) {
+  // Local modules override backend
+  for (const [name, url] of Object.entries(localImportmap.imports)) {
     mergedImportmap.imports[name] = url;
   }
 
-  const localCount = Object.keys(sihsalusImportmap.imports).length;
+  const localCount = Object.keys(localImportmap.imports).length;
   const totalCount = Object.keys(mergedImportmap.imports).length;
   const backendOnlyCount = totalCount - localCount;
   logInfo(`Merged importmap: ${localCount} local + ${backendOnlyCount} from backend = ${totalCount} total`);
 
-  // Build merged routes: same strategy — only @sihsalus/* routes from local
+  // Build merged routes
   let localRoutes: Record<string, unknown> = {};
   const routesPath = resolve(spaDist, 'routes.registry.json');
   if (existsSync(routesPath)) {
-    const allLocalRoutes = JSON.parse(readFileSync(routesPath, 'utf8'));
-    // Only keep @sihsalus/* routes
-    for (const [name, config] of Object.entries(allLocalRoutes)) {
-      if (name.startsWith('@sihsalus/')) {
-        localRoutes[name] = config;
-      }
-    }
+    localRoutes = JSON.parse(readFileSync(routesPath, 'utf8'));
   }
 
   const backendRoutes = (await fetchBackendJson(`${backendUrl}/openmrs/spa/routes.registry.json`)) as Record<
@@ -127,12 +108,9 @@ export async function runStart(args: StartArgs) {
 
   const mergedRoutes: Record<string, unknown> = {};
   if (backendRoutes) {
-    // Filter backend routes: skip those that duplicate local @sihsalus/* modules
     for (const [name, config] of Object.entries(backendRoutes)) {
       const baseName = name.replace(/^@[^/]+\//, '');
-      if (localBaseNames.has(baseName)) {
-        continue;
-      }
+      if (localBaseNames.has(baseName)) continue;
       mergedRoutes[name] = config;
     }
   }
