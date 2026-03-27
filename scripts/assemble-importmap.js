@@ -91,6 +91,14 @@ async function downloadBackendModules() {
     console.warn(`  WARN: Cannot fetch backend routes: ${e.message}`);
   }
 
+  // Known aliases: backend modules that map to different local names
+  const BACKEND_ALIASES = {
+    'esm-indicators-app': 'esm-indicadores-app',
+  };
+  for (const [backendName, localName] of Object.entries(BACKEND_ALIASES)) {
+    if (localBaseNames.has(localName)) localBaseNames.add(backendName);
+  }
+
   const backendEntries = Object.entries(backendImportmap.imports || {});
   console.log(`  Backend has ${backendEntries.length} modules`);
 
@@ -126,8 +134,7 @@ async function downloadBackendModules() {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         fs.writeFileSync(entryDest, Buffer.from(await resp.arrayBuffer()));
       } catch (e) {
-        console.warn(`  WARN ${name}: download failed (${e.message})`);
-        importmap.imports[name] = fullUrl;
+        console.warn(`  SKIP ${name}: download failed (${e.message})`);
         continue;
       }
     }
