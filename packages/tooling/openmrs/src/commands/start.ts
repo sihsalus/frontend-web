@@ -139,20 +139,22 @@ export async function runStart(args: StartArgs) {
   }
   expressApp.use(spaPath, express.static(shellDist, { index: false }));
 
-  // Proxy all /openmrs/* API requests to the backend
+  // Proxy all /openmrs/* API requests to the backend (except /openmrs/spa/**)
   expressApp.use(
-    '/openmrs',
-    createProxyMiddleware([`/openmrs/**`, `!${spaPath}/**`], {
-      target: backend,
-      changeOrigin: true,
-      onProxyReq(proxyReq) {
-        if (addCookie) {
-          const origCookie = proxyReq.getHeader('cookie');
-          const newCookie = `${origCookie};${addCookie}`;
-          proxyReq.setHeader('cookie', newCookie);
-        }
+    createProxyMiddleware(
+      (path) => path.startsWith('/openmrs') && !path.startsWith(spaPath),
+      {
+        target: backend,
+        changeOrigin: true,
+        onProxyReq(proxyReq) {
+          if (addCookie) {
+            const origCookie = proxyReq.getHeader('cookie');
+            const newCookie = `${origCookie};${addCookie}`;
+            proxyReq.setHeader('cookie', newCookie);
+          }
+        },
       },
-    }),
+    ),
   );
 
   // Fallback: serve index.html for any unmatched route (SPA client-side routing)
