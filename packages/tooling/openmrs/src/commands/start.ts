@@ -68,6 +68,16 @@ export async function runStart(args: StartArgs) {
     Object.keys(localImportmap.imports).map((name) => name.replace(/^@[^/]+\//, '')),
   );
 
+  // Backend modules that map to local modules with different names.
+  // e.g. backend "esm-patient-immunizations-app" is replaced by local "esm-vacunacion-app"
+  const backendAliases: Record<string, string> = {
+    'esm-indicators-app': 'esm-indicadores-app',
+    'esm-patient-immunizations-app': 'esm-vacunacion-app',
+  };
+  for (const [backendName, localName] of Object.entries(backendAliases)) {
+    if (localBaseNames.has(localName)) localBaseNames.add(backendName);
+  }
+
   if (backendImportmap?.imports) {
     let skippedCount = 0;
     for (const [name, url] of Object.entries(backendImportmap.imports)) {

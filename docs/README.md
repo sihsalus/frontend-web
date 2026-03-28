@@ -34,7 +34,7 @@ SIH Salus is a Hospital Information System built as a **Turborepo monorepo** wit
 - `esm-patient-registration-app`
 - `esm-patient-search-app`
 - `esm-billing-app` (upstream removed)
-- `esm-patient-immunizations-app` (MINSA vaccination schedule)
+- `esm-vacunacion-app` (MINSA vaccination schedule, replaces upstream `esm-patient-immunizations-app`)
 
 **SIH Salus custom** — modules with no upstream equivalent:
 - `esm-coststructure-app` — Cost structure management

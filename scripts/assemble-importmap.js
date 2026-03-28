@@ -92,8 +92,11 @@ async function downloadBackendModules() {
   }
 
   // Known aliases: backend modules that map to different local names
+  // When a local app replaces a backend module with a different name,
+  // add the mapping here so the backend version gets excluded.
   const BACKEND_ALIASES = {
     'esm-indicators-app': 'esm-indicadores-app',
+    'esm-patient-immunizations-app': 'esm-vacunacion-app',
   };
   for (const [backendName, localName] of Object.entries(BACKEND_ALIASES)) {
     if (localBaseNames.has(localName)) localBaseNames.add(backendName);
