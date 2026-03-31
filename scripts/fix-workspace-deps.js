@@ -2,7 +2,6 @@ const fs = require('fs');
 const glob = require('glob');
 
 const WORKSPACE_DEPS = [
-  '@openmrs/esm-framework',
   '@openmrs/esm-patient-common-lib',
   '@openmrs/rspack-config',
   'openmrs',

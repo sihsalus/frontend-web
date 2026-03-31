@@ -46,7 +46,7 @@
   "peerDependencies": {
     "@carbon/react": "1.x",
     "@openmrs/esm-framework": "9.0.2",
-    "@openmrs/esm-patient-common-lib": ">=9.0.0",
+    "@openmrs/esm-patient-common-lib": "workspace:*",
     "dayjs": "1.x",
     "lodash-es": "4.x",
     "react": "18.x",

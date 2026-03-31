@@ -128,12 +128,10 @@ async function downloadNpmModules() {
       const versionedDir = path.join(outDir, versionedSubdir);
       fs.mkdirSync(versionedDir, { recursive: true });
 
-      // Copy all files from the package dist directory
+      // Copy all files from the package dist directory (recursive for chunks/subdirs)
       const pkgDistDir = path.join(tmpDir, path.dirname(browserField));
       if (fs.existsSync(pkgDistDir) && pkgDistDir !== tmpDir) {
-        for (const file of fs.readdirSync(pkgDistDir)) {
-          fs.copyFileSync(path.join(pkgDistDir, file), path.join(versionedDir, file));
-        }
+        fs.cpSync(pkgDistDir, versionedDir, { recursive: true, force: true });
       } else {
         // browserField is at the package root (no subdirectory)
         fs.copyFileSync(path.join(tmpDir, browserField), path.join(versionedDir, path.basename(browserField)));
@@ -174,12 +172,7 @@ function copyAppShell() {
   }
 
   if (fs.existsSync(shellDist)) {
-    for (const file of fs.readdirSync(shellDist)) {
-      const dest = path.join(outDir, file);
-      if (!fs.existsSync(dest)) {
-        fs.copyFileSync(path.join(shellDist, file), dest);
-      }
-    }
+    fs.cpSync(shellDist, outDir, { recursive: true, force: false });
     console.log(`  OK app-shell dist copied`);
   }
 }

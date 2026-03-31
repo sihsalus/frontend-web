@@ -1,5 +1,3 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import {
   useLayoutType,
   isDesktop,
@@ -8,10 +6,16 @@ import {
   useConfig,
   useAssignedExtensions,
 } from '@openmrs/esm-framework';
-import type { DashboardConfig } from '../types/index';
-import styles from './dashboard-container.scss';
 import classNames from 'classnames';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import { type HomeConfig } from '../config-schema';
+import type { DashboardConfig } from '../types/index';
+
+import styles from './dashboard-container.scss';
+
+
 
 export default function DashboardContainer() {
   const params = useParams();

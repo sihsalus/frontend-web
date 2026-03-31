@@ -4,7 +4,7 @@ This directory contains architecture documentation and decision records for the 
 
 ## Contents
 
-- [ADRs](adr/) — Architecture Decision Records
+- ADRs — Architecture Decision Records (pending, not yet created)
 
 ## Architecture Overview
 

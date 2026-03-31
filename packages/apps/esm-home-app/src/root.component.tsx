@@ -1,8 +1,9 @@
+import { useConfig, useLeftNav } from '@openmrs/esm-framework';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useConfig, useLeftNav } from '@openmrs/esm-framework';
-import DashboardContainer from './dashboard-container/dashboard-container.component';
+
 import { type HomeConfig } from './config-schema';
+import DashboardContainer from './dashboard-container/dashboard-container.component';
 import { DefaultDashboardRedirect } from './default-dashboard-redirect.component';
 
 const Root: React.FC = () => {

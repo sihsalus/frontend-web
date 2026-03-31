@@ -1,10 +1,10 @@
+import { useAssignedExtensions, useConfig, useSession } from '@openmrs/esm-framework';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAssignedExtensions, useConfig, useSession } from '@openmrs/esm-framework';
-import { type DashboardConfig } from './types/index';
-import { type HomeConfig } from './config-schema';
 
+import { type HomeConfig } from './config-schema';
 import { DashboardNotFound } from './dashboard-container/dashboard-not-found.component';
+import { type DashboardConfig } from './types/index';
 
 export function DefaultDashboardRedirect() {
   const assignedExtensions = useAssignedExtensions('homepage-dashboard-slot');
