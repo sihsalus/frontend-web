@@ -16,8 +16,6 @@ function LinkExtension({ config }: { config: LinkConfig }) {
 
   const urlSegment = useMemo(() => decodeURIComponent(last(location.pathname.split('/')) ?? ''), [location.pathname]);
 
-  const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-
   return (
     <ConfigurableLink
       to={`${baseName}${name ? `/${name}` : ''}`}

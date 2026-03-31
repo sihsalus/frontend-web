@@ -1,4 +1,4 @@
-import { Button, Tabs, Tab, TextInput, TabList, TabPanels, TabPanel } from '@carbon/react';
+import { Button, Tabs, Tab, TabList, TabPanels, TabPanel } from '@carbon/react';
 import { WhitePaper } from '@carbon/react/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
@@ -50,16 +50,16 @@ export default function CostStructureForm() {
     setValue,
     formState: { errors },
   } = form;
-  const onSubmit = (data: CostStructureFormValues) => {
+  const onSubmit = (_data: CostStructureFormValues) => {
     // TODO: Implementar guardado via API (POST al OMOD de coststructure)
   };
 
-  const onError = (formErrors: Record<string, unknown>) => {
+  const onError = (_formErrors: Record<string, unknown>) => {
     // TODO: Mostrar notificación de errores de validación al usuario
   };
 
   const handleTanbChange = (state: { selectedIndex: number }) => {
-    setSelectedTab((index) => state.selectedIndex);
+    setSelectedTab((_index) => state.selectedIndex);
   };
 
   return (

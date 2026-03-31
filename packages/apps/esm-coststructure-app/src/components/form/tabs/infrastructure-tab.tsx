@@ -1,4 +1,4 @@
-import { Button, IconButton, NumberInput, Select, SelectItem, Table } from '@carbon/react';
+import { Button, NumberInput, Select, SelectItem } from '@carbon/react';
 import { Add, TrashCan } from '@carbon/react/icons';
 import React, { useState } from 'react';
 import { Controller, useFieldArray, type UseFormReturn } from 'react-hook-form';
@@ -24,13 +24,13 @@ export default function InfrastructureTab({ form }: Props) {
   const { t } = useTranslation();
 
   const { infrastructure: infrastructures } = useGetInfrastructure();
-  const { control, setValue, watch } = form;
+  const { control, setValue } = form;
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'infrastructures',
   });
 
-  const { fields: publicServiceFields, append: publicServiceAppend } = useFieldArray({
+  const { append: publicServiceAppend } = useFieldArray({
     control,
     name: 'publicServices',
   });

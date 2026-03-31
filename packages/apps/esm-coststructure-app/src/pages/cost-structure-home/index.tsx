@@ -1,4 +1,4 @@
-import { Button, Select, Search, Pagination } from '@carbon/react';
+import { Button, Search, Pagination } from '@carbon/react';
 import { Add, Filter, WhitePaper } from '@carbon/react/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import styles from './styles.scss';
 const CostStructureSearch: React.FC = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [query, setQuery] = useState('');
+  const [query] = useState('');
   const { costStructure, total, isLoading, isError } = useGetCostStructure(page - 1, size, query);
   const { t } = useTranslation();
 

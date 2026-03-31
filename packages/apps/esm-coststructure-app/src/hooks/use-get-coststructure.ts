@@ -3,11 +3,7 @@ import useSWR from 'swr';
 
 import { baseUrl } from '../constants';
 import {
-  AnnualServiceCost,
   type CostStructure,
-  EquipmentCost,
-  HumanResourceCost,
-  InfrastructureCost,
   type Procedure,
 } from '../types';
 

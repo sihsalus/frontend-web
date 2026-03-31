@@ -12,7 +12,7 @@ interface Props {
   form: UseFormReturn<CostStructureFormValues>;
 }
 export default function GeneralServiceTab({ form }: Props) {
-  const { control, setValue, watch } = form;
+  const { control, watch } = form;
   const { t } = useTranslation();
 
   const annualServices = watch('annualServicesCost');

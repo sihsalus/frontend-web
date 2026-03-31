@@ -16,9 +16,9 @@ interface Props {
   form: UseFormReturn<CostStructureFormValues>;
 }
 export default function HumanResourceTab({ form }: Props) {
-  const { control, setValue, watch } = form;
+  const { control, watch } = form;
   const { t } = useTranslation();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control,
     name: 'humanResourceCost',
   });
