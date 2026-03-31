@@ -62,6 +62,8 @@
   },
   "packageManager": "yarn@4.13.0",
   "resolutions": {
+    "eslint/ajv": "6.12.6",
+    "@eslint/eslintrc/ajv": "6.12.6",
     "sass": "1.98.0",
     "zustand": "^4.5.5",
     "html-webpack-plugin": "^5.5.0",
