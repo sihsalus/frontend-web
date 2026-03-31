@@ -13,7 +13,7 @@
     "debug": "yarn run serve",
     "build": "ng build --configuration production",
     "build:angular": "ng build --configuration production",
-    "typescript": "ng build --configuration production --dry-run",
+    "typescript": "echo 'Angular: typecheck runs during ng build'",
     "lint": "ng lint"
   },
   "openmrs:develop": {

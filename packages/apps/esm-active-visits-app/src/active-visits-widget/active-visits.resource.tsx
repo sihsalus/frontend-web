@@ -69,7 +69,7 @@ export function useActiveVisits() {
   const mapVisitProperties = (visit: Visit): ActiveVisit => {
     // create base object
     const activeVisits: ActiveVisit = {
-      age: visit?.patient?.person?.age,
+      age: String(visit?.patient?.person?.age),
       id: visit.uuid,
       idNumber: null,
       gender: visit?.patient?.person?.gender,
@@ -260,7 +260,7 @@ export function useTableHeaders(obsConcepts: OpenmrsResource[]) {
     config?.activeVisits?.identifiers?.forEach((identifier) => {
       headers.push({
         id: headersIndex++,
-        header: t(identifier?.header?.key, identifier?.header?.default),
+        header: String(t(identifier?.header?.key, identifier?.header?.default)),
         key: identifier?.header?.key,
       });
     });
@@ -268,7 +268,7 @@ export function useTableHeaders(obsConcepts: OpenmrsResource[]) {
     if (!config?.activeVisits?.identifiers) {
       headers.push({
         id: headersIndex++,
-        header: t('idNumber', 'ID Number'),
+        header: t('idNumber', 'ID Number') as string,
         key: 'idNumber',
       });
     }
@@ -276,7 +276,7 @@ export function useTableHeaders(obsConcepts: OpenmrsResource[]) {
     config?.activeVisits?.attributes?.forEach((attribute) => {
       headers.push({
         id: headersIndex++,
-        header: t(attribute?.header?.key, attribute?.header?.default),
+        header: String(t(attribute?.header?.key, attribute?.header?.default)),
         key: attribute?.header?.key,
       });
     });
