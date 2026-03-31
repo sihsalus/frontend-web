@@ -4,7 +4,7 @@ export * from './address.mock';
 export * from './appointments.mock';
 export * from './auto-generation-options.mock';
 export * from './emr-configuration.mock';
-export * from './encountes.mock';
+export * from './encounter-ward.mock';
 export * from './identifier-types.mock';
 export * from './identifiers.mock';
 export * from './inpatient-admission';

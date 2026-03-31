@@ -10,6 +10,16 @@ const importmap = { imports: {} };
 const routesRegistry = {};
 const outDir = process.env.SPA_OUTPUT_DIR || 'dist/spa';
 
+/** Ensures resolvedPath stays inside baseDir. Exits on traversal attempt. */
+function assertInsideDir(resolvedPath, baseDir, label) {
+  const real = path.resolve(resolvedPath);
+  const base = path.resolve(baseDir);
+  if (!real.startsWith(base + path.sep) && real !== base) {
+    logFail(`Path traversal bloqueado (${label}): ${resolvedPath} escapa de ${baseDir}`);
+    process.exit(1);
+  }
+}
+
 // Clean and recreate output directory
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -45,6 +55,7 @@ for (const distDir of appDirs) {
 
   const entryFileName = path.basename(browserField);
   const entryFilePath = path.join(distDir, '..', browserField);
+  assertInsideDir(entryFilePath, path.join(distDir, '..'), `${pkg.name} browserField`);
 
   if (!fs.existsSync(entryFilePath)) {
     notBuilt.push(pkg.name);
@@ -75,6 +86,8 @@ for (const distDir of appDirs) {
       ...JSON.parse(fs.readFileSync(routesPath, 'utf8')),
       version: pkg.version || '0.0.0',
     };
+  } else {
+    logWarn(`${pkg.name}: sin routes.json — no tendrá páginas ni extensiones registradas`);
   }
 
   logInfo(`OK ${tag} ${pkg.name} -> ${entryFileName} (${chunkCount} chunks)`);
@@ -107,7 +120,8 @@ async function downloadNpmModules() {
 
   logInfo(`Fase 2: módulos npm (${entries.length} fijados)`);
 
-  const tmpBase = path.join(outDir, '.npm-tmp');
+  const os = require('os');
+  const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), 'sihsalus-assemble-'));
 
   for (const [name, version] of entries) {
     const baseName = name.replace(/^@[^/]+\//, '');
@@ -130,6 +144,9 @@ async function downloadNpmModules() {
         logWarn(`SKIP [npm] ${name}: sin campo browser/module/main en paquete`);
         continue;
       }
+
+      // Validate browserField doesn't escape the package directory
+      assertInsideDir(path.join(tmpDir, browserField), tmpDir, `${name} browserField`);
 
       // Preserve versioned directory (mirrors upstream convention for chunk resolution)
       const versionedSubdir = `${baseName}-${version}`;
@@ -157,7 +174,7 @@ async function downloadNpmModules() {
         };
       }
 
-      console.log(`  OK  [npm]  ${name}@${version} -> ${versionedSubdir}/${entryFileName}`);
+      logInfo(`OK [npm] ${name}@${version} -> ${versionedSubdir}/${entryFileName}`);
     } catch (e) {
       logWarn(`[npm] ${spec}: ${e.message} — omitido`);
     }
@@ -169,7 +186,7 @@ async function downloadNpmModules() {
 
 // ── Phase 3: Copy app-shell dist ──────────────────────────────────────
 function copyAppShell() {
-  console.log('\n=== Phase 3: App shell ===');
+  logInfo('Fase 3: App shell');
   let shellDist;
   try {
     shellDist = path.join(path.dirname(require.resolve('@openmrs/esm-app-shell/package.json')), 'dist');
@@ -180,13 +197,13 @@ function copyAppShell() {
 
   if (fs.existsSync(shellDist)) {
     fs.cpSync(shellDist, outDir, { recursive: true, force: false });
-    console.log(`  OK app-shell dist copied`);
+    logInfo('OK app-shell dist copiado');
   }
 }
 
 // ── Phase 4: Write importmap.json and routes ──────────────────────────
 function writeOutputs() {
-  console.log('\n=== Phase 4: Write outputs ===');
+  logInfo('Fase 4: Escribir outputs');
   fs.writeFileSync(path.join(outDir, 'importmap.json'), JSON.stringify(importmap, null, 2));
   fs.writeFileSync(path.join(outDir, 'routes.registry.json'), JSON.stringify(routesRegistry, null, 2));
 
@@ -203,8 +220,15 @@ function writeOutputs() {
     }
   }
 
-  console.log(`\n  Import map: ${Object.keys(importmap.imports).length} total modules`);
-  console.log(`  Routes: ${Object.keys(routesRegistry).length} modules`);
+  // Detectar módulos en el importmap sin rutas registradas
+  const withoutRoutes = Object.keys(importmap.imports).filter((name) => !routesRegistry[name]);
+  if (withoutRoutes.length > 0) {
+    logWarn(`${withoutRoutes.length} módulo(s) sin rutas registradas (no tendrán páginas/extensiones):`);
+    for (const name of withoutRoutes) logWarn(`  - ${name}`);
+  }
+
+  logInfo(`Import map: ${Object.keys(importmap.imports).length} módulos totales`);
+  logInfo(`Routes: ${Object.keys(routesRegistry).length} módulos`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────
@@ -212,5 +236,8 @@ function writeOutputs() {
   await downloadNpmModules();
   copyAppShell();
   writeOutputs();
-  console.log('\nDone! dist/spa/ is self-contained.');
-})();
+  logInfo('Listo! dist/spa/ es autónomo.');
+})().catch((err) => {
+  logFail(err.message);
+  process.exit(1);
+});

@@ -3,8 +3,9 @@
 
 require('dotenv').config({ quiet: true });
 const { spawn } = require('child_process');
-const { existsSync, readFileSync, readdirSync, symlinkSync, unlinkSync, statSync } = require('fs');
-const { resolve, join } = require('path');
+const { existsSync, statSync } = require('fs');
+const net = require('net');
+const { resolve } = require('path');
 
 const chalk = require('chalk');
 const logInfo = (msg) => console.log(`${chalk.green.bold('[start-dev]')} ${msg}`);
@@ -25,54 +26,19 @@ const devAppsEnv = process.env.SIHSALUS_DEV_APPS;
 const assembledImportmap = resolve(__dirname, '..', 'dist', 'spa', 'importmap.json');
 const assembledRoutes = resolve(__dirname, '..', 'dist', 'spa', 'routes.registry.json');
 const distSpa = resolve(__dirname, '..', 'dist', 'spa');
+const spaPath = '/openmrs/spa';
 
-// The app-shell's dist directory — the openmrs CLI serves static files from here.
-const shellDist = resolve(
-  require.resolve('@openmrs/esm-app-shell/package.json'),
-  '..',
-  'dist',
-);
-
-/**
- * Symlink pre-built bundles and chunks from dist/spa/ into the app-shell dist
- * directory so the openmrs CLI's express.static serves them at /openmrs/spa/.
- *
- * This ensures webpack lazy chunks (including translations) resolve correctly
- * since publicPath:'auto' resolves to /openmrs/spa/ at runtime.
- */
-function linkDistSpaIntoShell() {
-  if (!existsSync(distSpa)) {
-    return [];
-  }
-
-  const created = [];
-  for (const entry of readdirSync(distSpa)) {
-    const src = join(distSpa, entry);
-    const dest = join(shellDist, entry);
-    if (!existsSync(dest)) {
-      symlinkSync(src, dest);
-      created.push(dest);
-    }
-  }
-
-  if (created.length > 0) {
-    logInfo(`Enlazados ${created.length} archivos de dist/spa/ en app-shell dist`);
-  }
-
-  return created;
+function findFreePort() {
+  return new Promise((resolve) => {
+    const srv = net.createServer();
+    srv.listen(0, () => {
+      const port = srv.address().port;
+      srv.close(() => resolve(port));
+    });
+  });
 }
 
-function cleanupSymlinks(links) {
-  for (const link of links) {
-    try {
-      unlinkSync(link);
-    } catch {
-      // ignore — best effort cleanup
-    }
-  }
-}
-
-function startDevServer(args) {
+function startCli(args) {
   const openmrsBin = resolve(__dirname, '..', 'node_modules', 'openmrs', 'dist', 'cli.js');
   const fullArgs = [openmrsBin, 'develop', '--backend', backend, ...args];
 
@@ -81,6 +47,54 @@ function startDevServer(args) {
   child.on('exit', (code) => process.exit(code ?? 1));
   process.on('SIGINT', () => child.kill('SIGINT'));
   process.on('SIGTERM', () => child.kill('SIGTERM'));
+
+  return child;
+}
+
+/**
+ * Start a reverse proxy on port 8080 that:
+ * 1. Serves pre-built bundles and chunks from dist/spa/ for /openmrs/spa/ paths
+ * 2. Proxies everything else to the openmrs CLI on an internal port
+ *
+ * This ensures webpack lazy chunks (translations, vendor splits) resolve correctly
+ * because they're served from the same origin (/openmrs/spa/) as the SPA shell,
+ * which is where publicPath:'auto' points at runtime.
+ */
+async function startWithProxy(cliArgs) {
+  const express = require('express');
+  const { createProxyMiddleware } = require('http-proxy-middleware');
+
+  const cliPort = await findFreePort();
+
+  // Files managed by the openmrs CLI — always proxy these to the CLI
+  const cliManagedPaths = new Set(['/importmap.json', '/routes.registry.json', '/routes.json']);
+
+  const app = express();
+  const staticHandler = express.static(distSpa, { index: false });
+
+  // Serve pre-built assets from dist/spa/, skip CLI-managed files
+  app.use(spaPath, (req, res, next) => {
+    if (cliManagedPaths.has(req.path)) {
+      return next();
+    }
+    staticHandler(req, res, next);
+  });
+
+  // Proxy everything else to the openmrs CLI (importmap, index.html, API, etc.)
+  app.use(
+    createProxyMiddleware({
+      target: `http://localhost:${cliPort}`,
+      ws: true,
+      changeOrigin: true,
+    }),
+  );
+
+  app.listen(8080, () => {
+    logInfo(`Proxy en puerto 8080 → CLI interno en puerto ${cliPort}`);
+    logInfo(`SPA disponible en http://localhost:8080${spaPath}`);
+  });
+
+  startCli(['--port', String(cliPort), '--open', 'false', ...cliArgs]);
 }
 
 if (devAppsEnv) {
@@ -101,18 +115,12 @@ if (devAppsEnv) {
       logWarn(`El importmap ensamblado tiene ${hoursOld}h de antigüedad. Considera ejecutar: yarn assemble`);
     }
 
-    // Symlink dist/spa/ contents into the app-shell dist so the CLI serves
-    // pre-built bundles AND their chunks (translations, vendor splits, etc.)
-    const createdLinks = linkDistSpaIntoShell();
-    process.on('exit', () => cleanupSymlinks(createdLinks));
-
-    // Pass assembled importmap & routes — relative paths resolve correctly
-    // because the bundles are now available in the shell dist directory.
-    startDevServer(['--importmap', assembledImportmap, '--routes', assembledRoutes, ...sourcesArgs]);
+    // Use reverse proxy: dist/spa bundles + chunks served from same origin
+    startWithProxy(['--importmap', assembledImportmap, '--routes', assembledRoutes, ...sourcesArgs]);
   } else {
     logWarn('No se encontró importmap ensamblado. Solo las apps en SIHSALUS_DEV_APPS estarán disponibles.');
     logWarn('Para tener todas las apps: yarn assemble');
-    startDevServer(['--importmap', '{"imports":{}}', '--routes', '{}', ...sourcesArgs]);
+    startCli(['--importmap', '{"imports":{}}', '--routes', '{}', ...sourcesArgs]);
   }
 } else {
   // No apps to hot-reload: serve the pre-assembled SPA
@@ -123,5 +131,11 @@ if (devAppsEnv) {
     process.exit(1);
   }
   logInfo('Sirviendo SPA pre-ensamblado (sin hot-reload). Define SIHSALUS_DEV_APPS para desarrollo.');
-  startDevServer(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--run-project', 'false']);
+
+  // The openmrs CLI always requires at least one --sources directory with a
+  // valid package.json (containing a "browser" field). We point it at
+  // esm-login-app as a lightweight shim — the pre-assembled importmap already
+  // includes every app, so the dev-server entry for login simply overlaps.
+  const shimSource = resolve(__dirname, '..', 'packages', 'apps', 'esm-login-app');
+  startCli(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--sources', shimSource]);
 }
