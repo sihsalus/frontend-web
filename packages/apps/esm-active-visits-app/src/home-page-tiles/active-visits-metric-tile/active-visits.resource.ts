@@ -1,4 +1,4 @@
-import { openmrsFetch, restBaseUrl, useSession, type Visit } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl, useSession } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 
 export default function useActiveVisits() {

@@ -23,7 +23,9 @@ import EncounterObservations from './encounter-observations.component';
 
 interface EncounterListProps {
   encounters: Array<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     id: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     time: any;
     encounterType: string;
     provider: string;

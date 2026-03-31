@@ -137,7 +137,7 @@ export function useActiveVisits() {
   };
 
   const formattedActiveVisits: Array<ActiveVisit> = data
-    ? [].concat(...data?.map((res) => res?.data?.results?.map(mapVisitProperties)))
+    ? [].concat(...(data?.map((res) => res?.data?.results?.map(mapVisitProperties)) ?? []))
     : [];
 
   return {
@@ -163,7 +163,7 @@ export function useObsConcepts(uuids: Array<string>): {
     }
   };
 
-  const { data, isLoading, error } = useSWR(uuids.length > 0 ? ['obs-concepts', uuids] : null, async () => {
+  const { data, isLoading } = useSWR(uuids.length > 0 ? ['obs-concepts', uuids] : null, async () => {
     const results = await Promise.all(uuids.map(fetchConcept));
     return results.filter((concept) => concept !== null);
   });
@@ -177,6 +177,7 @@ export function useObsConcepts(uuids: Array<string>): {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useActiveVisitsSorting(tableRows: Array<any>) {
   const [sortParams, setSortParams] = useState<{
     key: string;
@@ -187,6 +188,7 @@ export function useActiveVisitsSorting(tableRows: Array<any>) {
     setSortParams({ key, sortDirection });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSortValue = (item: any, key: string) => {
     // For observation columns
     if (key.startsWith('obs-')) {

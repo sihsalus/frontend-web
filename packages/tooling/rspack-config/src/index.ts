@@ -360,6 +360,10 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
     ].filter(Boolean),
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.scss', '.json'],
+      extensionAlias: {
+        '.js': ['.ts', '.tsx', '.js'],
+        '.jsx': ['.tsx', '.jsx'],
+      },
       alias: {
         '@openmrs/esm-framework': '@openmrs/esm-framework/src/internal',
         'lodash.debounce': 'lodash-es/debounce',

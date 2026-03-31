@@ -24,7 +24,7 @@ interface VisitSummaryProps {
 
 const VisitSummary: React.FC<VisitSummaryProps> = ({ encounters, patientUuid }) => {
   const { t } = useTranslation();
-  const [tabSelected, setSelectedTab] = useState(0);
+  const [, setSelectedTab] = useState(0);
 
   const [diagnoses, notes, medications]: [Array<DiagnosisItem>, Array<Note>, Array<OrderItem>] = useMemo(() => {
     // Medication Tab
