@@ -410,7 +410,12 @@ export function proxyImportmapAndRoutes(
   const spaPathRegEx = new RegExp('^' + spaPath.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d'));
 
   Object.keys(importmap.imports).forEach((key) => {
-    const url = new URL(importmap.imports[key], backendUrl);
+    const value = importmap.imports[key];
+    // Skip entries that are already relative paths — they don't need proxying
+    if (value.startsWith('./') || value.startsWith('../') || !value.includes('://')) {
+      return;
+    }
+    const url = new URL(value, backendUrl);
     if (url.protocol === backendUrl.protocol && url.host === backendUrl.host) {
       importmap.imports[key] = `./${url.pathname.replace(spaPathRegEx, '')}${url.search}${url.hash}`;
     }

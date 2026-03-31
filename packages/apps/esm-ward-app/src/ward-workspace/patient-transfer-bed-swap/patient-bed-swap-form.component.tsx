@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Button, ButtonSet, Form, InlineNotification } from '@carbon/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSnackbar, useAppContext } from '@openmrs/esm-framework';

@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   openmrsFetch,
   setSessionLocation,
@@ -14,6 +13,7 @@ import {
   type Session,
   type FetchResponse,
 } from '@openmrs/esm-framework';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mockConfig } from '../../__mocks__/config.mock';
 import {
