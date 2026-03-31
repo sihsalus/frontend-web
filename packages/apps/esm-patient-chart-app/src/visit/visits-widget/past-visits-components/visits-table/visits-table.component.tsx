@@ -1,5 +1,3 @@
-import React, { type ComponentProps, useMemo, useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -43,9 +41,14 @@ import {
   PatientChartPagination,
   launchFormEntryOrHtmlForms,
 } from '@openmrs/esm-patient-common-lib';
-import { deleteEncounter } from './visits-table.resource';
-import { type MappedEncounter } from '../../visit.resource';
+import React, { type ComponentProps, useMemo, useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+
+
 import EncounterObservations from '../../encounter-observations';
+import { type MappedEncounter } from '../../visit.resource';
+
+import { deleteEncounter } from './visits-table.resource';
 import styles from './visits-table.scss';
 
 interface VisitTableProps {

@@ -1,4 +1,3 @@
-import React, { useEffect, useId, useMemo } from 'react';
 import {
   Checkbox,
   DatePicker,
@@ -11,14 +10,17 @@ import {
   TextInput,
   TextInputSkeleton,
 } from '@carbon/react';
-import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
-import { Controller, type ControllerRenderProps, useFormContext } from 'react-hook-form';
 import { useConfig } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import React, { useEffect, useId, useMemo } from 'react';
+import { Controller, type ControllerRenderProps, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
 import { type ChartConfig } from '../../config-schema';
 import { useConceptAnswersForVisitAttributeType, useVisitAttributeType } from '../hooks/useVisitAttributeType';
-import { type VisitFormData } from './visit-form.resource';
+
 import styles from './visit-attribute-type.scss';
+import { type VisitFormData } from './visit-form.resource';
 
 interface VisitAttributes {
   [uuid: string]: string;
