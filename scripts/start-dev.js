@@ -39,7 +39,8 @@ if (devAppsEnv) {
   sourcesFlags = `--importmap ${importmap} --run-project false`;
 }
 
+const openmrsBin = resolve(__dirname, '..', 'node_modules', 'openmrs', 'dist', 'cli.js');
 execSync(
-  `node_modules/.bin/openmrs develop --backend ${backend} ${sourcesFlags}`,
+  `node ${openmrsBin} develop --backend ${backend} ${sourcesFlags}`,
   { stdio: 'inherit' },
 );
