@@ -9,7 +9,7 @@
   "scripts": {
     "start": "openmrs develop",
     "serve": "rspack serve --mode=development",
-    "build": "rspack --mode=production --mode production",
+    "build": "rspack --mode=production",
     "analyze": "rspack --mode=production --env analyze=true",
     "lint": "eslint src --ext js,jsx,ts,tsx --max-warnings=0",
     "typescript": "tsc",

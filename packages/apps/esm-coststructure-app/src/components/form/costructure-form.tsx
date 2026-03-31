@@ -1,21 +1,26 @@
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { costStructureSchema, type CostStructureFormValues } from './schema/costructure-schema';
 import { Button, Tabs, Tab, TextInput, TabList, TabPanels, TabPanel } from '@carbon/react';
-import { ProcedureAutocomplete } from './autocomplete/procedure-autocomplete';
+import { WhitePaper } from '@carbon/react/icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+
 import { type Procedure } from '../../hooks/use-get-procedures';
-import InfrastructureTab from './tabs/infrastructure-tab';
-import PublicServicesTab from './tabs/public-service-tab';
+import PageHeader from '../ui/PageHeader/pageHeader';
+
+import { ProcedureAutocomplete } from './autocomplete/procedure-autocomplete';
+import styles from './form.scss';
+import { costStructureSchema, type CostStructureFormValues } from './schema/costructure-schema';
+import EquipmentTab from './tabs/equipment-tab';
 import GeneralServiceTab from './tabs/general-service-tab';
 import HumanResourceTab from './tabs/humanresource-tab';
-import EquipmentTab from './tabs/equipment-tab';
-import SupplyTab from './tabs/supply-tab';
-import PageHeader from '../ui/PageHeader/pageHeader';
-import { WhitePaper } from '@carbon/react/icons';
+import InfrastructureTab from './tabs/infrastructure-tab';
+import PublicServicesTab from './tabs/public-service-tab';
 import SummaryTab from './tabs/summary-tab';
-import styles from './form.scss';
+import SupplyTab from './tabs/supply-tab';
+
+
+
 
 export default function CostStructureForm() {
   const [selectedTab, setSelectedTab] = useState(0);

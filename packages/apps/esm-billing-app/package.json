@@ -10,7 +10,7 @@
   "scripts": {
     "start": "openmrs develop",
     "analyze": "rspack --mode=production --env analyze=true",
-    "build": "rspack --mode=production --mode production",
+    "build": "rspack --mode=production",
     "coverage": "yarn test --coverage",
     "debug": "npm run serve",
     "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.workspace.tsx' 'src/**/*.modal.tsx' 'src/index.ts' --config ./tools/i18next-parser.config.js",

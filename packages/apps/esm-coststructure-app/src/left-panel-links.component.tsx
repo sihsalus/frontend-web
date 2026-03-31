@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
-import last from 'lodash-es/last';
-import { BrowserRouter, useLocation } from 'react-router-dom';
 import { ConfigurableLink } from '@openmrs/esm-framework';
+import last from 'lodash-es/last';
+import React, { useMemo } from 'react';
+import { BrowserRouter, useLocation } from 'react-router-dom';
+
 import { baseName } from './constants';
 
 export interface LinkConfig {
