@@ -22,7 +22,7 @@ const mockUseConfig = vi.mocked(useConfig);
 const mockUseConnectivity = vi.mocked(useConnectivity);
 const mockUseSession = vi.mocked(useSession);
 
-const loginLocations = [
+const _loginLocations = [
   { uuid: '111', display: 'Earth' },
   { uuid: '222', display: 'Mars' },
 ];
@@ -130,7 +130,8 @@ describe('Login', () => {
 
   // TODO: Complete the test
   it('sends the user to the location select page on login if there is more than one location', async () => {
-    let refreshUser = (user: any) => {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let refreshUser = (_user: any) => {};
     mockLogin.mockImplementation(() => {
       refreshUser({
         display: 'my name',

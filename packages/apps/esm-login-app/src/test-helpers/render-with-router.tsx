@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 export default function renderWithRouter<T = unknown>(
   Component: React.JSXElementConstructor<T>,
   props: T = {} as unknown as T,
-  { route = '/', routes = [route], routeParams = {} } = {},
+  { route = '/', routes = [route], routeParams: _routeParams = {} } = {},
 ) {
   return {
     ...render(

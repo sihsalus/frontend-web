@@ -8,7 +8,6 @@ import {
   useDebounce,
 } from '@openmrs/esm-framework';
 import { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import useSwrImmutable from 'swr/immutable';
 import useSwrInfinite, { type SWRInfiniteResponse } from 'swr/infinite';
 
@@ -33,7 +32,7 @@ export function useLoginLocations(
   searchQuery: string = '',
   useLoginLocationTag: boolean,
 ): LoginLocationData {
-  useTranslation();
+
   const debouncedSearchQuery = useDebounce(searchQuery);
 
   function constructUrl(page: number, prevPageData: FetchResponse<LocationResponse>) {

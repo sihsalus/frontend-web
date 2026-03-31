@@ -100,6 +100,7 @@ const LocationPickerView: React.FC<LocationPickerProps> = ({ hideWelcomeMessage,
         console.error('Expected location data is missing', { firstLocation, locationCount });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationCount, isLoadingLocationCount]);
 
   // Handle cases where the login location is present in the userProperties.

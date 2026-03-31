@@ -24,7 +24,7 @@
     "@openmrs/esm-patient-notes-app": "9.2.2",
     "@openmrs/esm-patient-orders-app": "9.2.2",
     "@openmrs/esm-patient-programs-app": "9.2.2",
-    "@openmrs/esm-patient-registration-app": "8.3.7",
+    "@openmrs/esm-patient-registration-app": "10.0.2",
     "@openmrs/esm-patient-search-app": "8.3.1",
     "@openmrs/esm-patient-tests-app": "9.2.2",
     "@openmrs/esm-patient-vitals-app": "9.2.2",
