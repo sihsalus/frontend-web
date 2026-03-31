@@ -19,7 +19,7 @@ import { ExtensionSlot, showSnackbar, useConfig, useLayoutType, ResponsiveWrappe
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { type Control, Controller, useForm, type UseFormSetValue, type UseFormGetValues } from 'react-hook-form';
+import { type Control, Controller, useForm, type UseFormSetValue } from 'react-hook-form';
 import { type TFunction, useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
