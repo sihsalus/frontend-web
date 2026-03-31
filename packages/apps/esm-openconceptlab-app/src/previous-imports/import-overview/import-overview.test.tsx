@@ -74,6 +74,6 @@ function renderImportOverviewComponent(importObject) {
 
 function waitForLoadingToFinish() {
   return waitFor(() => {
-    expect(screen.getByText('Started on')).toBeVisible(), { timeout: 2000 };
+    expect(screen.getByText('Started on')).toBeVisible();
   });
 }

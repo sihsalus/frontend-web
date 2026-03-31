@@ -46,6 +46,6 @@ describe('Previous imports', () => {
 
 function waitForLoadingToFinish() {
   return waitFor(() => {
-    expect(screen.getByText('Previous Imports')).toBeVisible(), { timeout: 2000 };
+    expect(screen.getByText('Previous Imports')).toBeVisible();
   });
 }

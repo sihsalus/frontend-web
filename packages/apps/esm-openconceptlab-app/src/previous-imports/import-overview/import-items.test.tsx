@@ -60,6 +60,6 @@ describe('Import items', () => {
 
 function waitForLoadingToFinish() {
   return waitFor(() => {
-    expect(screen.getByText('Concept/Mapping')).toBeVisible(), { timeout: 2000 };
+    expect(screen.getByText('Concept/Mapping')).toBeVisible();
   });
 }
