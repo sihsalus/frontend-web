@@ -6,7 +6,6 @@
     "@openmrs/esm-devtools-app": "9.0.2",
     "@openmrs/esm-form-builder-app": "3.4.1",
     "@openmrs/esm-form-engine-app": "9.2.2",
-    "@openmrs/esm-form-entry-app": "9.2.2",
     "@openmrs/esm-generic-patient-widgets-app": "9.2.2",
     "@openmrs/esm-help-menu-app": "9.0.2",
     "@openmrs/esm-implementer-tools-app": "9.0.2",
