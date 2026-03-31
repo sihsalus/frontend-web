@@ -1,9 +1,5 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.tsx"],
-  "compilerOptions": {
-    /* TODO: Remove when @openmrs/esm-styleguide ships dist types instead of src .tsx */
-    "skipLibCheck": true
-  }
+  "exclude": ["src/**/*.test.tsx"]
 }
