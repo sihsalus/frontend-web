@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-implementer-tools-app",
+  "name": "@sihsalus/esm-implementer-tools-app",
   "version": "9.0.2",
   "license": "MPL-2.0",
   "description": "The admin interface for OpenMRS Frontend",

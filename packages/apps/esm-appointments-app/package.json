@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-appointments-app",
+  "name": "@sihsalus/esm-appointments-app",
   "version": "8.3.1",
   "description": "Appointments front-end module for O3",
   "browser": "dist/openmrs-esm-appointments-app.js",

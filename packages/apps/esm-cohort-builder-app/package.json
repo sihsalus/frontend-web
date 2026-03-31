@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-cohort-builder-app",
+  "name": "@sihsalus/esm-cohort-builder-app",
   "version": "4.0.5",
   "license": "MPL-2.0",
   "description": "O3 frontend module for managing cohorts",

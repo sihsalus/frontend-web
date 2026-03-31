@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-home-app",
+  "name": "@sihsalus/esm-home-app",
   "version": "10.0.2",
   "description": "Homepage microfrontend for the OpenMRS SPA",
   "browser": "dist/openmrs-esm-home-app.js",

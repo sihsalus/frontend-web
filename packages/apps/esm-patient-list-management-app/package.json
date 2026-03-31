@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-patient-list-management-app",
+  "name": "@sihsalus/esm-patient-list-management-app",
   "version": "8.3.1",
   "description": "Microfrontend for managing patient lists in O3",
   "browser": "dist/openmrs-esm-patient-list-management-app.js",

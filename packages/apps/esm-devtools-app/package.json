@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-devtools-app",
+  "name": "@sihsalus/esm-devtools-app",
   "version": "9.0.2",
   "license": "MPL-2.0",
   "description": "Dev tools for frontend devs using OpenMRS",

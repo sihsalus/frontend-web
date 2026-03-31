@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-help-menu-app",
+  "name": "@sihsalus/esm-help-menu-app",
   "version": "9.0.2",
   "license": "MPL-2.0",
   "description": " A microfrontend that provides a help menu for O3",

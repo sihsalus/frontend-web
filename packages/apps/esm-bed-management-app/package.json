@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-bed-management-app",
+  "name": "@sihsalus/esm-bed-management-app",
   "version": "8.3.1",
   "description": "Bed management app for OpenMRS 3",
   "browser": "dist/openmrs-esm-bed-management-app.js",

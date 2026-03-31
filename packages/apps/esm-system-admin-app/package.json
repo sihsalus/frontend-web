@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-system-admin-app",
+  "name": "@sihsalus/esm-system-admin-app",
   "version": "4.3.0",
   "license": "MPL-2.0",
   "description": "System admin frontend module for O3",

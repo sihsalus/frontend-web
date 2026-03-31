@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-active-visits-app",
+  "name": "@sihsalus/esm-active-visits-app",
   "version": "8.3.1",
   "description": "Active visits widget microfrontend for O3",
   "browser": "dist/openmrs-esm-active-visits-app.js",

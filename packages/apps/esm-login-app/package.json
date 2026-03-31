@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-login-app",
+  "name": "@sihsalus/esm-login-app",
   "version": "9.0.2",
   "license": "MPL-2.0",
   "description": "The login microfrontend for the OpenMRS SPA",

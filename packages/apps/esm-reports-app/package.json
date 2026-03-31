@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-reports-app",
+  "name": "@sihsalus/esm-reports-app",
   "version": "4.3.0",
   "license": "MPL-2.0",
   "description": "Reports admin dashboard for 03",

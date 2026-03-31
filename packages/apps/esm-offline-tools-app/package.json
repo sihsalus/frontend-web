@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-offline-tools-app",
+  "name": "@sihsalus/esm-offline-tools-app",
   "version": "9.0.2",
   "license": "MPL-2.0",
   "description": "The offline tools microfrontend for the OpenMRS SPA",

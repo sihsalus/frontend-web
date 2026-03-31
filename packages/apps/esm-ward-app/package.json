@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-ward-app",
+  "name": "@sihsalus/esm-ward-app",
   "version": "8.3.1",
   "description": "Ward and bed management module for O3",
   "browser": "dist/openmrs-esm-ward-app.js",

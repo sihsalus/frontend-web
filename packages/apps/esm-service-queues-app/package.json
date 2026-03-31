@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-service-queues-app",
+  "name": "@sihsalus/esm-service-queues-app",
   "version": "8.3.1",
   "description": "Outpatient front-end module for O3",
   "browser": "dist/openmrs-esm-service-queues-app.js",
