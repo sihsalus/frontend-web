@@ -1,7 +1,3 @@
-import React, { useMemo } from 'react';
-import cloneDeep from 'lodash-es/cloneDeep';
-import uniqueId from 'lodash-es/uniqueId';
-import { AddIcon, TrashCanIcon, Type } from '@openmrs/esm-framework';
 import {
   Button,
   Tile,
@@ -10,9 +6,17 @@ import {
   StructuredListRow,
   StructuredListWrapper,
 } from '@carbon/react';
-import { ValueEditorField } from './value-editor-field';
+import { AddIcon, TrashCanIcon, Type } from '@openmrs/esm-framework';
+import cloneDeep from 'lodash-es/cloneDeep';
+import uniqueId from 'lodash-es/uniqueId';
+import React, { useMemo } from 'react';
+
 import type { ConfigValueDescriptor } from '../editable-value.component';
+
 import styles from './array-editor.styles.scss';
+import { ValueEditorField } from './value-editor-field';
+
+
 
 interface ArrayEditorProps {
   element: ConfigValueDescriptor;

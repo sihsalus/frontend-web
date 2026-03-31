@@ -1,7 +1,3 @@
-import { useState } from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { waitFor, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
   getSessionStore,
   refetchCurrentUser,
@@ -10,8 +6,14 @@ import {
   useConnectivity,
   useSession,
 } from '@openmrs/esm-framework';
+import { waitFor, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { mockConfig } from '../../__mocks__/config.mock';
 import renderWithRouter from '../test-helpers/render-with-router';
+
 import Login from './login.component';
 
 const mockGetSessionStore = vi.mocked(getSessionStore);

@@ -1,5 +1,6 @@
-import useSWR from 'swr';
 import { openmrsFetch } from '@openmrs/esm-framework';
+import useSWR from 'swr';
+
 import type { Import, Subscription } from '../types';
 
 export function useSubscription() {

@@ -1,4 +1,3 @@
-import React, { useState, useMemo, useCallback } from 'react';
 import {
   DataTable,
   DataTableSkeleton,
@@ -22,13 +21,16 @@ import {
   Tooltip,
 } from '@carbon/react';
 import { View, Download, EventSchedule } from '@carbon/react/icons';
-import { useTranslation } from 'react-i18next';
 import { formatDate, launchWorkspace, showModal, showSnackbar, usePagination } from '@openmrs/esm-framework';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import useFuaRequests, { setFuaEstado, type FuaRequest } from '../hooks/useFuaRequests';
 import { useVisit } from '../hooks/useVisit';
-import { FuaDateRangePicker } from './fua-date-range-picker.component';
-import { exportFuasToExcel } from '../utils/fua-export';
 import { FUA_ESTADOS } from '../modals/change-fua-status.modal';
+import { exportFuasToExcel } from '../utils/fua-export';
+
+import { FuaDateRangePicker } from './fua-date-range-picker.component';
 import styles from './fua-request-table.scss';
 
 interface FuaRequestTableProps {

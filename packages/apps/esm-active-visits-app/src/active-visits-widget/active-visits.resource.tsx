@@ -1,8 +1,3 @@
-import { useEffect, useMemo, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
-import dayjs from 'dayjs';
-import isToday from 'dayjs/plugin/isToday';
-import last from 'lodash-es/last';
 import {
   type FetchResponse,
   formatDatetime,
@@ -14,9 +9,16 @@ import {
   useSession,
   type Visit,
 } from '@openmrs/esm-framework';
-import useSWR from 'swr';
-import { type ActiveVisit, type VisitResponse } from '../types';
+import dayjs from 'dayjs';
+import isToday from 'dayjs/plugin/isToday';
+import last from 'lodash-es/last';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
+
+import { type ActiveVisit, type VisitResponse } from '../types';
+
 
 dayjs.extend(isToday);
 
@@ -36,8 +38,8 @@ export function useActiveVisits() {
       return null;
     }
 
-    let url = `${restBaseUrl}/visit?v=${customRepresentation}&`;
-    let urlSearchParams = new URLSearchParams();
+    const url = `${restBaseUrl}/visit?v=${customRepresentation}&`;
+    const urlSearchParams = new URLSearchParams();
 
     urlSearchParams.append('includeParentLocations', 'true');
     urlSearchParams.append('includeInactive', 'false');

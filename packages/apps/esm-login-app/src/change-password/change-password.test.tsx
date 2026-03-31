@@ -1,10 +1,11 @@
+import { type FetchResponse } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
-import { type FetchResponse } from '@openmrs/esm-framework';
-import { changeUserPassword } from './change-password.resource';
+
 import ChangePasswordModal from './change-password.modal';
+import { changeUserPassword } from './change-password.resource';
 
 const mockClose = vi.fn();
 const mockChangeUserPassword = vi.mocked(changeUserPassword);

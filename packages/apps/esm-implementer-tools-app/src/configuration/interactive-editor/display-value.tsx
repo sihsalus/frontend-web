@@ -1,5 +1,6 @@
-import React from 'react';
 import { StructuredListCell, StructuredListRow } from '@carbon/react';
+import React from 'react';
+
 import styles from './display-value.scss';
 
 export interface DisplayValueProps {

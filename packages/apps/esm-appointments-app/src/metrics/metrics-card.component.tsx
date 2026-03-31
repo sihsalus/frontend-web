@@ -4,8 +4,10 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
 import isEmpty from 'lodash-es/isEmpty';
-import styles from './metrics-card.scss';
+
 import SelectedDateContext from '../hooks/selectedDateContext';
+
+import styles from './metrics-card.scss';
 
 interface MetricsCardProps {
   label: string;

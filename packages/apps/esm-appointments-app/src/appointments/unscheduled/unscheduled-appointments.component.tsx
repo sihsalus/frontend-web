@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -18,11 +16,14 @@ import {
 } from '@carbon/react';
 import { Download } from '@carbon/react/icons';
 import { ConfigurableLink, useConfig, usePagination } from '@openmrs/esm-framework';
-import { useUnscheduledAppointments } from '../../hooks/useUnscheduledAppointments';
-import { exportUnscheduledAppointmentsToSpreadsheet } from '../../helpers/excel';
-import { EmptyState } from '../../empty-state/empty-state.component';
-import { getPageSizes, useSearchResults } from '../utils';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ConfigObject } from '../../config-schema';
+import { EmptyState } from '../../empty-state/empty-state.component';
+import { exportUnscheduledAppointmentsToSpreadsheet } from '../../helpers/excel';
+import { useUnscheduledAppointments } from '../../hooks/useUnscheduledAppointments';
+import { getPageSizes, useSearchResults } from '../utils';
 
 const UnscheduledAppointments: React.FC = () => {
   const { t } = useTranslation();

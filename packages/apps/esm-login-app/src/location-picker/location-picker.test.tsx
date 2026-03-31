@@ -14,13 +14,15 @@ import {
   type Session,
   type FetchResponse,
 } from '@openmrs/esm-framework';
+
+import { mockConfig } from '../../__mocks__/config.mock';
 import {
   mockLoginLocations,
   validatingLocationFailureResponse,
   validatingLocationSuccessResponse,
 } from '../../__mocks__/locations.mock';
-import { mockConfig } from '../../__mocks__/config.mock';
 import renderWithRouter from '../test-helpers/render-with-router';
+
 import LocationPickerView from './location-picker-view.component';
 
 const fistLocation = {

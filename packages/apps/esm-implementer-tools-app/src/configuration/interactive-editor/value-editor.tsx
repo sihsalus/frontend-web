@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Button } from '@carbon/react';
 import { CloseIcon, type ConfigSchema, type Config, getCoreTranslation, SaveIcon, Type } from '@openmrs/esm-framework';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+
 import type { ConfigValueDescriptor } from './editable-value.component';
-import { ValueEditorField } from './value-editors/value-editor-field';
-import styles from './value-editor.styles.scss';
 import { validateValue } from './validators.resource';
+import styles from './value-editor.styles.scss';
+import { ValueEditorField } from './value-editors/value-editor-field';
 
 export type CustomValueType = 'add' | 'remove' | 'order' | 'configure';
 

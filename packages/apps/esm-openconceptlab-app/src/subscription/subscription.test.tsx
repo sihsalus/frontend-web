@@ -1,11 +1,12 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, waitFor } from '@testing-library/react';
-import { type FetchResponse, openmrsFetch, showNotification } from '@openmrs/esm-framework';
-import { renderWithSwr } from '@tools/test-helpers';
 import { mockSubscription } from '@mocks/openconceptlab.mock';
-import { deleteSubscription, updateSubscription } from './subscription.resource';
+import { type FetchResponse, openmrsFetch, showNotification } from '@openmrs/esm-framework';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { renderWithSwr } from '@tools/test-helpers';
+import React from 'react';
+
 import Subscription from './subscription.component';
+import { deleteSubscription, updateSubscription } from './subscription.resource';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;
 const mockUpdateSubscription = jest.mocked(updateSubscription);

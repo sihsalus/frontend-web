@@ -1,4 +1,5 @@
 import { getAsyncLifecycle, getSyncLifecycle } from '@openmrs/esm-framework';
+
 import ContactUsComponent from './help-menu/components/contact-us.component';
 import DocsComponent from './help-menu/components/docs.component';
 import ReleaseNotesComponent from './help-menu/components/release-notes.component';

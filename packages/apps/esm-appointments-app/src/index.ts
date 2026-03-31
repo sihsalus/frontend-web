@@ -5,6 +5,7 @@ import {
   getSyncLifecycle,
   registerBreadcrumbs,
 } from '@openmrs/esm-framework';
+
 import { configSchema } from './config-schema';
 import { createDashboardLink } from './createDashboardLink.component';
 import { dashboardMeta, appointmentCalendarDashboardMeta, patientChartDashboardMeta } from './dashboard.meta';

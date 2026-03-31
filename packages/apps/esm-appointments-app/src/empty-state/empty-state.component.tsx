@@ -1,8 +1,9 @@
-import React from 'react';
 import { Layer, Tile } from '@carbon/react';
-import { Trans } from 'react-i18next';
-import { EmptyDataIllustration } from './empty-data-illustration.component';
 import { useLayoutType } from '@openmrs/esm-framework';
+import React from 'react';
+import { Trans } from 'react-i18next';
+
+import { EmptyDataIllustration } from './empty-data-illustration.component';
 import styles from './empty-state.scss';
 
 export interface EmptyStateProps {

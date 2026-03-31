@@ -1,10 +1,11 @@
-import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
-import { usePagination } from '@openmrs/esm-framework';
-import { renderWithSwr } from '@tools/test-helpers';
 import { mockImportItems, mockPreviousImports } from '@mocks/openconceptlab.mock';
-import { getImportDetails } from './import-items.resource';
+import { usePagination } from '@openmrs/esm-framework';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithSwr } from '@tools/test-helpers';
+import React from 'react';
+
 import ImportItems from './import-items.component';
+import { getImportDetails } from './import-items.resource';
 
 const defaultProps = {
   importUuid: mockPreviousImports[1].uuid,

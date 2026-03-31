@@ -1,6 +1,7 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
 import isNil from 'lodash-es/isNil';
+import useSWR from 'swr';
+
 import type { Subscription } from '../types';
 
 export function useSubscription() {

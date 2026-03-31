@@ -1,5 +1,6 @@
-import { buildExportRows, exportFuasToExcel } from './fua-export';
 import type { FuaRequest } from '../hooks/useFuaRequests';
+
+import { buildExportRows, exportFuasToExcel } from './fua-export';
 
 // Mock xlsx so it doesn't write real files in tests
 jest.mock('xlsx', () => ({

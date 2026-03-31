@@ -1,6 +1,6 @@
+import { render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render } from '@testing-library/react';
 
 export default function renderWithRouter<T = unknown>(
   Component: React.JSXElementConstructor<T>,

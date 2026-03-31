@@ -1,7 +1,3 @@
-import React, { useContext, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import { Controller, useController, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonSet,
@@ -36,15 +32,13 @@ import {
   type DefaultWorkspaceProps,
   type FetchResponse,
 } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import React, { useContext, useEffect, useState } from 'react';
+import { Controller, useController, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
+
 import { type ConfigObject } from '../config-schema';
-import {
-  checkAppointmentConflict,
-  saveAppointment,
-  saveRecurringAppointments,
-  useAppointmentService,
-  useMutateAppointments,
-} from './appointments-form.resource';
 import {
   appointmentLocationTagName,
   dateFormat,
@@ -53,10 +47,18 @@ import {
   moduleName,
   weekDays,
 } from '../constants';
+import SelectedDateContext from '../hooks/selectedDateContext';
 import { useProviders } from '../hooks/useProviders';
 import type { Appointment, AppointmentPayload, RecurringPattern } from '../types';
-import SelectedDateContext from '../hooks/selectedDateContext';
 import Workload from '../workload/workload.component';
+
+import {
+  checkAppointmentConflict,
+  saveAppointment,
+  saveRecurringAppointments,
+  useAppointmentService,
+  useMutateAppointments,
+} from './appointments-form.resource';
 import styles from './appointments-form.scss';
 
 interface AppointmentsFormProps {

@@ -1,21 +1,22 @@
 import { defineConfigSchema, getSyncLifecycle, registerBreadcrumbs } from '@openmrs/esm-framework';
+
+import offlineToolsConfirmationModalComponent from './components/confirmation.modal';
 import { routes } from './constants';
 import { createDashboardLink } from './createDashboardLink';
 import { dashboardMeta } from './dashboard.meta';
-import { setupOffline } from './offline';
-import { setupSynchronizingOfflineActionsNotifications } from './offline-actions/synchronizing-notification';
-import offlineToolsComponent from './root.component';
-import offlineToolsLinkComponent from './offline-tools-app-menu-link.component';
+import OfflineToolsNavLink from './nav/offline-tools-nav-link.component';
 import offlineToolsNavItemsComponent from './nav/offline-tools-nav-menu.component';
-import offlineToolsConfirmationModalComponent from './components/confirmation.modal';
-import offlineToolsPatientsCardComponent from './offline-patients/patients-overview-card.component';
+import { setupOffline } from './offline';
+import offlineToolsOptInButtonComponent from './offline-actions/offline-actions-mode-button.extension';
 import offlineToolsActionsCardComponent from './offline-actions/offline-actions-overview-card.component';
-import offlineToolsActionsComponent from './offline-actions/offline-actions.component';
-import offlineToolsPatientsComponent from './offline-patients/offline-patients.component';
 import offlineToolsPageActionsComponent from './offline-actions/offline-actions-page.component';
 import offlineToolsPatientChartComponent from './offline-actions/offline-actions-patient-chart-widget.component';
-import offlineToolsOptInButtonComponent from './offline-actions/offline-actions-mode-button.extension';
-import OfflineToolsNavLink from './nav/offline-tools-nav-link.component';
+import offlineToolsActionsComponent from './offline-actions/offline-actions.component';
+import { setupSynchronizingOfflineActionsNotifications } from './offline-actions/synchronizing-notification';
+import offlineToolsPatientsCardComponent from './offline-patients/patients-overview-card.component';
+import offlineToolsLinkComponent from './offline-tools-app-menu-link.component';
+import offlineToolsComponent from './root.component';
+import offlineToolsPatientsComponent from './offline-patients/offline-patients.component';
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 

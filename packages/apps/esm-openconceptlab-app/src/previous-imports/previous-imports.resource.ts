@@ -1,5 +1,6 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
 import useSWR from 'swr';
+
 import type { Import } from '../types';
 
 export function usePreviousImports() {

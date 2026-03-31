@@ -1,7 +1,4 @@
-import React, { useMemo, useState } from 'react';
 import { Button, Column, FlexGrid, Row, TextInput, Toggle } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
-import { cloneDeep, isEmpty } from 'lodash-es';
 import type { Config } from '@openmrs/esm-framework/src/internal';
 import {
   ChevronDownIcon,
@@ -15,10 +12,16 @@ import {
   useStore,
   useStoreWithActions,
 } from '@openmrs/esm-framework/src/internal';
+import { cloneDeep, isEmpty } from 'lodash-es';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+
+import { implementerToolsStore, type ImplementerToolsStore } from '../store';
+
+import styles from './configuration.styles.scss';
 import { ConfigTree } from './interactive-editor/config-tree.component';
 import { Description } from './interactive-editor/description.component';
-import { implementerToolsStore, type ImplementerToolsStore } from '../store';
-import styles from './configuration.styles.scss';
 
 const JsonEditor = React.lazy(() => import('./json-editor/json-editor.component'));
 
@@ -81,7 +84,7 @@ export const Configuration: React.FC = () => {
 
   const combinedConfig = useMemo(() => {
     const result = cloneDeep(config);
-    for (let slot of Object.values(extensionStore.slots)) {
+    for (const slot of Object.values(extensionStore.slots)) {
       if (slot.moduleName) {
         if (!result[slot.moduleName].extensionSlots) {
           result[slot.moduleName].extensionSlots = {};
@@ -97,7 +100,7 @@ export const Configuration: React.FC = () => {
   const filteredConfig = useMemo(() => {
     function getRelatedBranches(inputTree: Config, filterText: string) {
       const result = {};
-      for (let k of Object.keys(inputTree)) {
+      for (const k of Object.keys(inputTree)) {
         if (k.includes(filterText)) {
           result[k] = cloneDeep(inputTree[k]);
         } else {

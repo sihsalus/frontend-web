@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/vitest';
 import userEvent from '@testing-library/user-event';
 import { type AppProps } from 'single-spa';
 import { render, screen } from '@testing-library/react';
+
 import Root from './devtools.component';
 
 vi.mock('./import-map.component', () => ({

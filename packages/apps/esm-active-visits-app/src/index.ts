@@ -1,4 +1,5 @@
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle } from '@openmrs/esm-framework';
+
 import { configSchema } from './config-schema';
 
 const moduleName = '@openmrs/esm-active-visits-app';

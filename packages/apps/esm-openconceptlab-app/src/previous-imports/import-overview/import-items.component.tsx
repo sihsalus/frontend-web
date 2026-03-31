@@ -1,5 +1,3 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   DataTableSkeleton,
   Link,
@@ -13,7 +11,11 @@ import {
   TableRow,
 } from '@carbon/react';
 import { showNotification, usePagination } from '@openmrs/esm-framework';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { type ImportItem } from '../../types';
+
 import { getImportDetails } from './import-items.resource';
 import styles from './import-items.scss';
 
@@ -23,7 +25,7 @@ interface ImportItemsProps {
 
 const ImportItems: React.FC<ImportItemsProps> = ({ importUuid }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState<Boolean>();
+  const [isLoading, setIsLoading] = useState<boolean>();
   const [pageSize, setPageSize] = useState(5);
   const [selectedImportItems, setSelectedImportItems] = useState<ImportItem[]>([]);
 

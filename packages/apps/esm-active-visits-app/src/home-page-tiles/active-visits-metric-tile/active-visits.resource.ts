@@ -8,8 +8,8 @@ export default function useActiveVisits() {
   const customRepresentation = 'custom:(uuid,startDatetime,stopDatetime)';
 
   const getUrl = () => {
-    let url = `${restBaseUrl}/visit?v=${customRepresentation}&`;
-    let urlSearchParams = new URLSearchParams();
+    const url = `${restBaseUrl}/visit?v=${customRepresentation}&`;
+    const urlSearchParams = new URLSearchParams();
 
     urlSearchParams.append('includeParentLocations', 'true');
     urlSearchParams.append('includeInactive', 'false');

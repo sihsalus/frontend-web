@@ -9,6 +9,7 @@ import {
   mockPatientAlice,
 } from '__mocks__';
 import React from 'react';
+
 import { renderWithSwr } from '../../../../../tools';
 import { mockWardViewContext } from '../../../mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
@@ -19,6 +20,7 @@ import useRestPatient from '../../hooks/useRestPatient';
 import useWardLocation from '../../hooks/useWardLocation';
 import { type WardViewContext } from '../../types';
 import { useAdmitPatient } from '../../ward.resource';
+
 import CreateAdmissionEncounterWorkspace from './create-admission-encounter.workspace';
 
 jest.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);

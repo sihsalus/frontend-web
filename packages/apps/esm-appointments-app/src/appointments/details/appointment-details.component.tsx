@@ -1,9 +1,11 @@
+import { formatDate, formatDatetime, usePatient } from '@openmrs/esm-framework';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatDate, formatDatetime, usePatient } from '@openmrs/esm-framework';
-import { usePatientAppointmentHistory } from '../../hooks/usePatientAppointmentHistory';
+
 import { getGender } from '../../helpers';
+import { usePatientAppointmentHistory } from '../../hooks/usePatientAppointmentHistory';
 import { type Appointment } from '../../types';
+
 import styles from './appointment-details.scss';
 
 interface AppointmentDetailsProps {

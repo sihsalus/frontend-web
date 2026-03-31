@@ -1,6 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { isEqual, cloneDeep, unset } from 'lodash-es';
 import { Button } from '@carbon/react';
 import { EditIcon, ResetIcon } from '@openmrs/esm-framework';
 import {
@@ -11,10 +8,15 @@ import {
   type Validator,
   type Type,
 } from '@openmrs/esm-framework/src/internal';
+import { isEqual, cloneDeep, unset } from 'lodash-es';
+import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { implementerToolsStore, type ImplementerToolsStore } from '../../store';
+
 import { DisplayValue } from './display-value';
-import { ValueEditor, type CustomValueType } from './value-editor';
 import styles from './editable-value.styles.scss';
+import { ValueEditor, type CustomValueType } from './value-editor';
 
 export interface EditableValueProps {
   path: Array<string>;

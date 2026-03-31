@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import FuaHtmlViewer from '../components/fua-html-viewer.component';
 
 interface FuaViewerWorkspaceProps {

@@ -1,5 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useSWRConfig } from 'swr';
 import {
   Button,
   ButtonSkeleton,
@@ -15,10 +13,14 @@ import {
   TextInput,
   TextInputSkeleton,
 } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { showNotification } from '@openmrs/esm-framework';
-import { deleteSubscription, updateSubscription, useSubscription } from './subscription.resource';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSWRConfig } from 'swr';
+
 import { isVersionDefinedInUrl } from '../utils';
+
+import { deleteSubscription, updateSubscription, useSubscription } from './subscription.resource';
 import styles from './subscription.scss';
 
 const Subscription: React.FC = () => {

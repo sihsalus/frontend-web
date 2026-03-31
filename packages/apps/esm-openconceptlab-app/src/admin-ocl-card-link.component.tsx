@@ -1,7 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Layer, ClickableTile } from '@carbon/react';
 import { ArrowRightIcon } from '@openmrs/esm-framework';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './admin-ocl-card-link.scss';
 
 const OpenConceptLabCardLink: React.FC = () => {

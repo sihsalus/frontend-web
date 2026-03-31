@@ -18,7 +18,7 @@ export const isVersionDefinedInUrl = (subscriptionUrl: string) => {
     return false;
   }
 
-  let count = url.pathname.match(/\//g)?.length ?? 0;
+  const count = url.pathname.match(/\//g)?.length ?? 0;
   if (count == NUMBER_OF_SLASHES_AFTER_BASE_URL) {
     return true;
   } else {

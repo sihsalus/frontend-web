@@ -1,6 +1,3 @@
-import React, { useContext, useMemo } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { InlineNotification } from '@carbon/react';
 import {
   ComponentContext,
@@ -12,6 +9,9 @@ import {
   Type,
   type IconId,
 } from '@openmrs/esm-framework/src/internal';
+import React, { useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { BrowserRouter } from 'react-router-dom';
 
 export const dashboardConfigSchema = {
   title: {

@@ -1,4 +1,5 @@
 import { getAsyncLifecycle, defineConfigSchema } from '@openmrs/esm-framework';
+
 import { configSchema } from './config-schema';
 
 const moduleName = '@openmrs/esm-openconceptlab-app';

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 import { useAppointmentService } from '../form/appointments-form.resource';
-import { useCalendarDistribution, useMonthlyCalendarDistribution } from './workload.resource';
+
 import MonthlyCalendarView from './monthly-view-workload/monthly-view.component';
+import { useCalendarDistribution, useMonthlyCalendarDistribution } from './workload.resource';
 import styles from './workload.scss';
 
 interface WorkloadProps {

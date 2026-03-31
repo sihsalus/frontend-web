@@ -1,5 +1,3 @@
-import React, { type ChangeEvent, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -29,6 +27,9 @@ import {
   usePagination,
   type SyncItem,
 } from '@openmrs/esm-framework';
+import React, { type ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import styles from './offline-actions-table.styles.scss';
 
 export interface SyncItemWithPatient {

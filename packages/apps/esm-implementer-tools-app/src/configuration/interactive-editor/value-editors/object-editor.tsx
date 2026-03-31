@@ -1,10 +1,12 @@
-import React from 'react';
 import { StructuredListBody, StructuredListCell, StructuredListRow, StructuredListWrapper, Tile } from '@carbon/react';
-import { ValueEditorField } from './value-editor-field';
-import type { ConfigValueDescriptor } from '../editable-value.component';
 import { Type } from '@openmrs/esm-framework';
 import cloneDeep from 'lodash-es/cloneDeep';
+import React from 'react';
+
+import type { ConfigValueDescriptor } from '../editable-value.component';
+
 import styles from './object-editor.styles.scss';
+import { ValueEditorField } from './value-editor-field';
 
 interface ObjectEditorProps {
   element: ConfigValueDescriptor;

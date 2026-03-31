@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
 import { ModalHeader, ModalBody, ModalFooter, Button, TextArea, InlineLoading } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { showSnackbar } from '@openmrs/esm-framework';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { cancelFuaRequest, type FuaRequest } from '../hooks/useFuaRequests';
+
 import styles from './fua-modals.scss';
 
 interface CancelFuaModalProps {

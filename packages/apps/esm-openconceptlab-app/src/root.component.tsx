@@ -1,11 +1,12 @@
-import React from 'react';
-import classNames from 'classnames';
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from '@carbon/react';
+import classNames from 'classnames';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import Import from './import/import.component';
 import PreviousImports from './previous-imports/previous-imports.component';
-import Subscription from './subscription/subscription.component';
 import styles from './root.scss';
+import Subscription from './subscription/subscription.component';
 
 const Root: React.FC = () => {
   const { t } = useTranslation();

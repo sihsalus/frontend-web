@@ -1,5 +1,6 @@
-import { type TOptions } from 'i18next';
 import { Type, type ConfigValue, type ConfigSchema, type Validator, translateFrom } from '@openmrs/esm-framework';
+import { type TOptions } from 'i18next';
+
 import type { CustomValueType } from './value-editor';
 
 const moduleName = '@openmrs/esm-implementer-tools-app';
