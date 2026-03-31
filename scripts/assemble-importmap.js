@@ -154,8 +154,7 @@ async function downloadNpmModules() {
 
       console.log(`  OK  [npm]  ${name}@${version} -> ${versionedSubdir}/${entryFileName}`);
     } catch (e) {
-      console.error(`  ERROR [npm] ${spec}: ${e.message}`);
-      process.exit(1);
+      console.warn(`  WARN [npm] ${spec}: ${e.message} — skipping`);
     }
   }
 
