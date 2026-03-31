@@ -46,6 +46,7 @@ const Import: React.FC = () => {
         setFile(fileToUpload);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [t],
   );
 
