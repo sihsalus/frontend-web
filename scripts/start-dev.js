@@ -3,8 +3,9 @@
 
 require('dotenv').config({ quiet: true });
 const { spawn } = require('child_process');
-const { createReadStream, existsSync, readFileSync } = require('fs');
-const { resolve, join, extname } = require('path');
+const { createReadStream, existsSync, readFileSync, writeFileSync, mkdtempSync } = require('fs');
+const { resolve, join, extname, sep } = require('path');
+const { tmpdir } = require('os');
 const http = require('http');
 
 const backend =
@@ -55,7 +56,12 @@ function rewriteImportmap(importmapPath, devApps, staticPort) {
     }
   }
 
-  return JSON.stringify(importmap);
+  // Write to a temp file because the CLI's getImportMap regex treats any string
+  // containing "http://" as a URL, so inline JSON with http:// URLs won't work.
+  const tmpDir = mkdtempSync(join(tmpdir(), 'sihsalus-dev-'));
+  const tmpFile = join(tmpDir, 'importmap.json');
+  writeFileSync(tmpFile, JSON.stringify(importmap));
+  return tmpFile;
 }
 
 function startDevServer(args) {
@@ -88,8 +94,8 @@ if (devAppsEnv) {
       const staticPort = staticServer.address().port;
       console.log(`[start-dev] Serving pre-built bundles from dist/spa/ on port ${staticPort}`);
 
-      const importmapJson = rewriteImportmap(assembledImportmap, apps, staticPort);
-      startDevServer(['--importmap', importmapJson, '--routes', assembledRoutes, ...sourcesArgs]);
+      const importmapFile = rewriteImportmap(assembledImportmap, apps, staticPort);
+      startDevServer(['--importmap', importmapFile, '--routes', assembledRoutes, ...sourcesArgs]);
     });
 
     process.on('exit', () => staticServer.close());
