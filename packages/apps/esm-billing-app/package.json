@@ -76,7 +76,6 @@
     "@typescript-eslint/parser": "^8.0.0",
     "babel-preset-minify": "^0.5.2",
     "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
     "d3-selection": "^3.0.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",
