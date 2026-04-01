@@ -43,18 +43,7 @@
       "component": "deleteImmunizationConfirmationModal"
     }
   ],
-  "workspaces2": [
-    {
-      "name": "immunization-form-workspace",
-      "component": "immunizationFormWorkspace",
-      "window": "immunization-form-window"
-    }
-  ],
-  "workspaceWindows2": [
-    {
-      "name": "immunization-form-window",
-      "group": "patient-chart"
-    }
-  ]
+  "workspaces2": [],
+  "workspaceWindows2": []
 }
 

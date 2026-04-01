@@ -331,8 +331,9 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
               version: require('swr/package.json').version,
             };
           } else {
+            const reqVersion = peerDependencies[depName] ?? false;
             obj[depName] = {
-              requiredVersion: peerDependencies[depName] ?? false,
+              requiredVersion: typeof reqVersion === 'string' && reqVersion.startsWith('workspace:') ? false : reqVersion,
               strictVersion: false,
               singleton: true,
               import: depName,
