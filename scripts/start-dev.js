@@ -139,5 +139,5 @@ if (devAppsEnv) {
   // esm-login-app as a lightweight shim — the pre-assembled importmap already
   // includes every app, so the dev-server entry for login simply overlaps.
   const shimSource = resolve(__dirname, '..', 'packages', 'apps', 'esm-login-app');
-  startCli(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--sources', shimSource]);
+  startWithProxy(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--sources', shimSource]);
 }
