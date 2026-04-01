@@ -91,8 +91,8 @@ async function startWithProxy(cliArgs) {
   );
 
   app.listen(8080, () => {
-    logInfo(`Proxy en puerto 8080 → CLI interno en puerto ${cliPort}`);
-    logInfo(`SPA disponible en http://localhost:8080${spaPath}`);
+    logInfo(`Proxy :8080 → CLI interno :${cliPort}`);
+    logInfo(`SPA → ${chalk.cyan.underline(`http://localhost:8080${spaPath}`)}`);
   });
 
   startCli(['--port', String(cliPort), '--open', 'false', ...cliArgs]);
