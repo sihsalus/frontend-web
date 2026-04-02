@@ -54,7 +54,7 @@ const ChartReview: React.FC<ChartReviewProps> = ({ patientUuid, patient, view, s
 
   const defaultDashboard = dashboards.filter((dashboard) => dashboard.path)[0];
   const dashboard = useMemo(() => {
-    return dashboards.find((dashboard) => dashboard.path === view);
+    return view ? dashboards.find((dashboard) => dashboard.path === view) : undefined;
   }, [dashboards, view]);
 
   useEffect(() => {

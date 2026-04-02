@@ -36,9 +36,8 @@ interface DashboardViewProps {
 export function DashboardView({ dashboard, patientUuid, patient }: DashboardViewProps) {
   const widgetMetas = useExtensionSlotMeta(dashboard.slot);
   const { t } = useTranslation(dashboard.moduleName);
-  const {
-    params: { view },
-  } = useMatch(dashboardPath);
+  const match = useMatch(dashboardPath);
+  const view = match?.params?.view;
 
   const state = useMemo(
     () => ({
