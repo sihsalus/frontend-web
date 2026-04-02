@@ -64,25 +64,11 @@ const ChartReview: React.FC<ChartReviewProps> = ({ patientUuid, patient, view, s
     }
   }, [dashboard, defaultDashboard, setDashboardLayoutMode]);
 
-  console.warn('[ChartReview]', {
-    slotExists,
-    slots: Object.keys(extensionStore.slots),
-    ungroupedCount: ungroupedDashboards.length,
-    groupedCount: groupedDashboards.length,
-    dashboardPaths: dashboards.map((d) => d.path),
-    defaultDashboard: defaultDashboard?.path,
-    currentView: view,
-    matchedDashboard: dashboard?.path,
-    navGroups,
-  });
-
   if (!slotExists) {
-    console.warn('[ChartReview] RETURNING NULL: patient-chart-dashboard-slot NOT in extension store');
     return null;
   }
 
   if (!defaultDashboard) {
-    console.warn('[ChartReview] RETURNING NULL: No default dashboard found');
     return null;
   } else if (!dashboard) {
     return (

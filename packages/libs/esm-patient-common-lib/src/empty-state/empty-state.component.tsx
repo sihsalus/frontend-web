@@ -13,7 +13,7 @@ export interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = (props) => {
-  const { t } = useTranslation('@openmrs/esm-patient-chart-app');
+  const { t } = useTranslation('@sihsalus/esm-patient-chart-app');
   const isTablet = useLayoutType() === 'tablet';
 
   return (

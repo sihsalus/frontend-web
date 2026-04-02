@@ -125,7 +125,7 @@ if (devAppsEnv) {
     startCli(['--importmap', '{"imports":{}}', '--routes', '{}', ...sourcesArgs]);
   }
 } else {
-  // No apps to hot-reload: serve the pre-assembled SPA
+  // No apps to hot-reload: serve the pre-assembled SPA purely via proxy + static files
   if (!existsSync(assembledImportmap)) {
     logFail('No assembled importmap found.');
     logFail('  Run: yarn assemble   (builds the importmap from local packages)');
@@ -134,10 +134,6 @@ if (devAppsEnv) {
   }
   logInfo('Serving pre-assembled SPA (no hot-reload). Set SIHSALUS_DEV_APPS for development.');
 
-  // The openmrs CLI always requires at least one --sources directory with a
-  // valid package.json (containing a "browser" field). We point it at
-  // esm-login-app as a lightweight shim — the pre-assembled importmap already
-  // includes every app, so the dev-server entry for login simply overlaps.
   const shimSource = resolve(__dirname, '..', 'packages', 'apps', 'esm-login-app');
   startWithProxy(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--sources', shimSource]);
 }

@@ -172,7 +172,7 @@
     },
     {
       "name": "add-test-order-start-visit-workspace",
-      "component": "@openmrs/esm-patient-chart-app#exportedVisitForm",
+      "component": "@sihsalus/esm-patient-chart-app#startVisitWorkspace",
       "window": "add-test-order-window"
     },
     {

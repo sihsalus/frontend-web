@@ -12,7 +12,7 @@ export interface ErrorStateProps {
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({ error, headerTitle }) => {
-  const { t } = useTranslation('@openmrs/esm-patient-chart-app');
+  const { t } = useTranslation('@sihsalus/esm-patient-chart-app');
   const isTablet = useLayoutType() === 'tablet';
 
   return (

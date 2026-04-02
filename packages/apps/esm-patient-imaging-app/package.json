@@ -42,10 +42,8 @@
     "url": "https://github.com/sadrezhao/openmrs-esm-patient-imaging-app/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.90.0",
     "@hookform/resolvers": "^3.x",
     "@internationalized/date": "^3.x",
-    "@openmrs/esm-patient-common-lib": "*",
     "lodash-es": "^4.17.21",
     "open": "^8.4.0",
     "react-hook-form": "^7.x",
@@ -54,12 +52,15 @@
     "zod": "^3.x"
   },
   "peerDependencies": {
+    "@carbon/react": "1.x",
     "@openmrs/esm-framework": "9.0.2",
+    "@openmrs/esm-patient-common-lib": "*",
     "dayjs": "1.x",
     "react": "18.x",
     "react-i18next": "16.x",
     "react-router-dom": "6.x",
-    "rxjs": "6.x"
+    "rxjs": "6.x",
+    "swr": "2.x"
   },
   "devDependencies": {
     "@openmrs/esm-framework": "9.0.2",

@@ -6,7 +6,7 @@ import type { PatientOrderFetchResponse, PriorityOption } from './types';
 
 export type Status = 'ACTIVE' | 'any';
 export const careSettingUuid = '6f0c9a92-6f24-11e3-af88-005056821db0';
-const patientChartAppModuleName = '@openmrs/esm-patient-chart-app';
+const patientChartAppModuleName = '@sihsalus/esm-patient-chart-app';
 
 export const drugCustomRepresentation =
   'custom:(uuid,dosingType,orderNumber,accessionNumber,' +

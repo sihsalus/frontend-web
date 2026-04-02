@@ -27,8 +27,6 @@ const PatientChart: React.FC = () => {
   const { patientUuid, view: encodedView } = useParams();
   const view = encodedView ? decodeURIComponent(encodedView) : undefined;
   const { isLoading: isLoadingPatient, patient } = usePatient(patientUuid);
-
-  console.warn('[PatientChart]', { patientUuid, encodedView, view, isLoadingPatient, hasPatient: !!patient });
   const state = useMemo(() => ({ patient, patientUuid }), [patient, patientUuid]);
   const { workspaceWindowState, active } = useWorkspaces();
   const [layoutMode, setLayoutMode] = useState<LayoutMode>();

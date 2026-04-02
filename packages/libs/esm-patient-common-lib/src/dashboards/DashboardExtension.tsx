@@ -20,7 +20,7 @@ export const DashboardExtension = ({
   title,
   basePath,
   icon,
-  moduleName = '@openmrs/esm-patient-chart-app',
+  moduleName = '@sihsalus/esm-patient-chart-app',
 }: DashboardExtensionProps) => {
   const { t } = useTranslation(moduleName);
   const location = useLocation();
