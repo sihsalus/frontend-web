@@ -194,6 +194,7 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
       publicPath: 'auto',
       path: resolve(root, outDir),
       hashFunction: 'xxhash64',
+      filename: `${ident}-[name]-[contenthash:8].js`,
       chunkFilename: `${ident}-[name]-[contenthash:8].js`,
     },
     module: {
