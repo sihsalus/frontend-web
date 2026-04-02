@@ -130,9 +130,10 @@ const VisitHeader: React.FC<{ patient: fhir.Patient }> = ({ patient }) => {
   const navMenuItems = useAssignedExtensions('patient-chart-dashboard-slot').map((extension) => extension.id);
   const { logo } = useConfig();
   const { systemVisitEnabled } = useSystemVisitSetting();
-  const isTablet = useLayoutType() === 'tablet';
+  const layout = useLayoutType();
+  const isTablet = layout === 'tablet';
 
-  const showHamburger = useLayoutType() !== 'large-desktop' && navMenuItems.length > 0;
+  const showHamburger = layout !== 'large-desktop' && navMenuItems.length > 0;
 
   const toggleSideMenu = useCallback(
     (state?: boolean) => setIsSideMenuExpanded((prevState) => (state !== undefined ? state : !prevState)),
