@@ -316,6 +316,18 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
           './start': srcFile,
         },
         shared: [...Object.keys(peerDependencies), '@openmrs/esm-framework/src/internal'].reduce((obj, depName) => {
+          const versionSpec = peerDependencies[depName] ?? false;
+
+          if (typeof versionSpec === 'string' && versionSpec.startsWith('workspace:')) {
+            const msg =
+              `[rspack-config] Invalid workspace protocol in peerDependencies: ` +
+              `"${depName}": "${versionSpec}" (package: ${name}). ` +
+              `Workspace protocols are not valid at runtime and will break Module Federation shared modules. ` +
+              `Replace "workspace:*" with "*" or an explicit semver range in ${name}/package.json.`;
+            console.error(msg);
+            throw new Error(msg);
+          }
+
           if (depName === 'swr') {
             // SWR is annoying with Module Federation
             // See: https://github.com/webpack/webpack/issues/16125 and https://github.com/vercel/swr/issues/2356
@@ -332,7 +344,7 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
             };
           } else {
             obj[depName] = {
-              requiredVersion: peerDependencies[depName] ?? false,
+              requiredVersion: versionSpec,
               strictVersion: false,
               singleton: true,
               import: depName,
