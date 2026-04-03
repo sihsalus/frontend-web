@@ -3,12 +3,7 @@
 @use '@openmrs/esm-styleguide/src/vars' as *;
 
 .header {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  height: layout.$spacing-12;
-  background-color: $ui-02;
-  display: flex;
-  justify-content: space-between;
+  border-bottom: 1px solid $ui-03;
 }
 
 .leftJustifiedItems {
@@ -18,21 +13,23 @@
   margin-left: layout.$spacing-05;
 }
 
-.rightJustifiedItems {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  padding-top: layout.$spacing-05;
+.pageLabels {
+  margin-left: layout.$spacing-05;
+
+  p:first-of-type {
+    margin-bottom: layout.$spacing-02;
+  }
 }
 
 .pageName {
   @include type.type-style('heading-04');
 }
 
-.pageLabels {
-  margin-left: layout.$spacing-05;
-  p:first-of-type {
-    margin-bottom: layout.$spacing-02;
-  }
+.rightJustifiedItems {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  display: flex;
+  align-items: center;
 }
 
 .dateAndLocation {
@@ -48,8 +45,4 @@
 
 .middot {
   margin: 0 layout.$spacing-03;
-}
-
-.view {
-  @include type.type-style('label-01');
 }

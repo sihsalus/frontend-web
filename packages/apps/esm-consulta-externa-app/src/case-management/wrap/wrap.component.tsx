@@ -11,7 +11,7 @@ const WrapComponent: React.FC = () => {
 
   return (
     <div className="omrs-main-content">
-      <ClaimManagementHeader title={t('caseManagemet', 'Case Managemet')} />
+      <ClaimManagementHeader title={t('caseManagemet', 'Case Management')} />
       <MetricsHeader activeTabIndex={activeTabIndex} />
       <CaseManagementTabs setActiveTabIndex={setActiveTabIndex} />
     </div>

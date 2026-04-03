@@ -3,13 +3,6 @@
 @use '@carbon/type';
 
 .header {
-  @include type.type-style('body-compact-02');
-  color: colors.$gray-70;
-  height: layout.$spacing-12;
-  background-color: colors.$white-0;
-  display: flex;
-  padding-left: layout.$spacing-03;
-  justify-content: space-between;
   border-bottom: 1px solid colors.$gray-20;
 }
 

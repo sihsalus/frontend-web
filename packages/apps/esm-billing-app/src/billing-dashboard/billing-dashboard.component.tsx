@@ -22,7 +22,7 @@ export function BillingDashboard() {
 
   return (
     <SelectedDateContext.Provider value={{ selectedDate, setSelectedDate }}>
-      <BillingHeader title={t('home', 'Home')} />
+      <BillingHeader title={t('billing', 'Billing')} />
       {/**
        *
        * TODO: Add this back when the backend has an endpoint to get the metrics

@@ -3,9 +3,8 @@ import dayjs from 'dayjs';
 import { DatePickerInput, DatePicker } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { Location, UserFollow } from '@carbon/react/icons';
-import { useSession } from '@openmrs/esm-framework';
+import { useSession, PageHeader, PageHeaderContent, PaymentsDeskPictogram } from '@openmrs/esm-framework';
 import { omrsDateFormat } from '../constants';
-import BillingIllustration from './billing-illustration.component';
 import SelectedDateContext from '../hooks/selectedDateContext';
 import styles from './billing-header.scss';
 
@@ -20,20 +19,14 @@ const BillingHeader: React.FC<BillingHeaderProps> = ({ title }) => {
   const { selectedDate, setSelectedDate } = useContext(SelectedDateContext);
 
   return (
-    <div className={styles.header} data-testid="billing-header">
-      <div className={styles['left-justified-items']}>
-        <BillingIllustration />
-        <div className={styles['page-labels']}>
-          <p>{t('billing', 'Billing')}</p>
-          <p className={styles['page-name']}>{title}</p>
-        </div>
-      </div>
-      <div className={styles['right-justified-items']}>
+    <PageHeader className={styles.header} data-testid="billing-header">
+      <PageHeaderContent title={title} illustration={<PaymentsDeskPictogram />} />
+      <div className={styles.rightJustifiedItems}>
         <div className={styles.userContainer}>
           <p>{session?.user?.person?.display}</p>
           <UserFollow size={16} className={styles.userIcon} />
         </div>
-        <div className={styles['date-and-location']}>
+        <div className={styles.dateAndLocation}>
           <Location size={16} />
           <span className={styles.value}>{location}</span>
           <span className={styles.middot}>&middot;</span>
@@ -52,7 +45,7 @@ const BillingHeader: React.FC<BillingHeaderProps> = ({ title }) => {
           </DatePicker>
         </div>
       </div>
-    </div>
+    </PageHeader>
   );
 };
 

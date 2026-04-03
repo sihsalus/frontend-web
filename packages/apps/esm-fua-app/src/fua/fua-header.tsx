@@ -1,31 +1,22 @@
 import { Calendar, Location } from '@carbon/react/icons';
-import { useSession, formatDate } from '@openmrs/esm-framework';
+import { useSession, formatDate, PageHeader, PageHeaderContent, Assessment2Pictogram } from '@openmrs/esm-framework';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import styles from './fua-header.scss';
-import FuaIllustration from './fua-illustration';
 
 interface FuaHeaderProps {
   title: string;
 }
 
 export const FuaHeader: React.FC<FuaHeaderProps> = ({ title }) => {
-  const { t } = useTranslation();
   const userSession = useSession();
   const userLocation = userSession?.sessionLocation?.display;
 
   return (
-    <div className={styles.header}>
-      <div className={styles['left-justified-items']}>
-        <FuaIllustration />
-        <div className={styles['page-labels']}>
-          <p>{t('fuaManagement', 'Gestión de Formato Único de Atención')}</p>
-          <p className={styles['page-name']}>{title}</p>
-        </div>
-      </div>
-      <div className={styles['right-justified-items']}>
-        <div className={styles['date-and-location']}>
+    <PageHeader className={styles.header}>
+      <PageHeaderContent title={title} illustration={<Assessment2Pictogram />} />
+      <div className={styles.rightJustifiedItems}>
+        <div className={styles.dateAndLocation}>
           <Location size={16} />
           <span className={styles.value}>{userLocation}</span>
           <span className={styles.middot}>&middot;</span>
@@ -33,6 +24,6 @@ export const FuaHeader: React.FC<FuaHeaderProps> = ({ title }) => {
           <span className={styles.value}>{formatDate(new Date(), { mode: 'standard' })}</span>
         </div>
       </div>
-    </div>
+    </PageHeader>
   );
 };
