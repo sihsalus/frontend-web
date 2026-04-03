@@ -7,6 +7,7 @@ RUN corepack enable && corepack prepare yarn@4.13.0 --activate
 
 # Copy workspace files first for better layer caching
 COPY package.json yarn.lock .yarnrc.yml turbo.json ./
+COPY .yarn/ ./.yarn/
 COPY packages/ ./packages/
 COPY scripts/ ./scripts/
 
