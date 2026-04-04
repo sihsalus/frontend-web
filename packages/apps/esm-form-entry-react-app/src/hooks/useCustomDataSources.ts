@@ -52,7 +52,10 @@ export function useCustomDataSources(config: FormEntryReactConfig) {
           try {
             const { registerCustomDataSource } = await import('@openmrs/esm-form-engine-lib');
             if (typeof registerCustomDataSource === 'function') {
-              registerCustomDataSource({ name, customDataSource: dataSource });
+              registerCustomDataSource({
+                name,
+                load: () => Promise.resolve({ default: dataSource }),
+              });
             }
           } catch {
             console.warn(`Could not register custom data source "${name}" with FormEngine registry.`);
