@@ -9,7 +9,6 @@ RUN corepack enable && corepack prepare yarn@4.13.0 --activate
 COPY package.json yarn.lock .yarnrc.yml turbo.json ./
 COPY .yarn/ ./.yarn/
 COPY packages/ ./packages/
-COPY scripts/ ./scripts/
 
 ENV CI=true
 RUN yarn install --immutable
@@ -23,10 +22,10 @@ WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages/apps ./packages/apps
-COPY scripts/assemble-importmap.js ./scripts/
+COPY --from=builder /app/packages/tooling/assemble-importmap.js ./packages/tooling/assemble-importmap.js
 COPY config/ ./config/
 
 # SPA_OUTPUT_DIR: path to the shared volume nginx will serve
 ENV SPA_OUTPUT_DIR=/spa
 
-CMD ["node", "scripts/assemble-importmap.js"]
+CMD ["node", "packages/tooling/assemble-importmap.js"]

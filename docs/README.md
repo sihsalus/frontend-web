@@ -19,14 +19,16 @@ SIH Salus is a Hospital Information System built as a **Turborepo monorepo** wit
 
 ### Package Organization
 
-| Directory           | Contents                                                                                           |
-| ------------------- | -------------------------------------------------------------------------------------------------- |
-| `packages/apps/`    | 41 frontend ESM modules (upstream + custom)                                                        |
-| `packages/libs/`    | 6 shared libraries (RBAC, FHIR client, audit logger, Keycloak auth, constants, patient-common-lib) |
-| `packages/tooling/` | CLI (`openmrs`), rspack-config                                                                     |
-| `packages/tools/`   | Test utilities (setup-tests, test-utils)                                                           |
-| `scripts/`          | Build scripts (import map assembly, workspace dep fixer)                                           |
-| `e2e/`              | Playwright E2E tests                                                                               |
+| Directory                    | Contents                                                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------------- |
+| `packages/apps/`             | 41 frontend ESM modules (upstream + custom)                                                        |
+| `packages/libs/`             | 6 shared libraries (RBAC, FHIR client, audit logger, Keycloak auth, constants, patient-common-lib) |
+| `packages/tooling/`          | Build scripts and local dev tooling (import map assembly, dev server, i18n parser)                 |
+| `packages/__mocks__/`        | Shared Jest mocks                                                                                  |
+| `packages/declarations.d.ts` | Global TypeScript declarations                                                                     |
+| `packages/jest.config.js`    | Root Jest config                                                                                   |
+| `packages/tsconfig.json`     | Root TypeScript config                                                                             |
+| `e2e/`                       | Playwright E2E tests                                                                               |
 
 ### Module Types
 

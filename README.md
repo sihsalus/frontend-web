@@ -38,6 +38,10 @@ El dev server hace proxy de las peticiones de API al backend definido en `SIHSAL
 
 ```
 packages/
+  __mocks__/                            # Shared Jest mocks
+  declarations.d.ts                     # Global declarations for TS
+  jest.config.js                        # Root Jest configuration
+  tsconfig.json                         # Root TypeScript configuration
   tooling/
     openmrs/                            # CLI (openmrs develop, build, assemble)
     rspack-config/                      # Shared Rspack configuration
@@ -49,10 +53,10 @@ packages/
     keycloak-auth/                      # @sihsalus/keycloak-auth — Keycloak OIDC adapter
     constants/                          # @sihsalus/constants — Centralized UUIDs and constants
     esm-patient-common-lib/             # @openmrs/esm-patient-common-lib — Shared patient utilities
-  tools/                                # Test utilities (setup-tests, test-utils)
-scripts/
+packages/tooling/
   assemble-importmap.js                 # Import map assembly for SPA build
-  fix-workspace-deps.js                 # Workspace dependency fixer
+  start-dev.js                          # Local dev server entrypoint
+  i18next-parser.config.js               # i18n extraction config
 e2e/                                    # Playwright E2E tests
 docs/                                   # Architecture docs and ADRs
 ```
@@ -123,12 +127,12 @@ Nginx / reverse proxy configuration is managed in the infra repo (`sihsalus-dist
 
 ## SIH Salus Module Overrides
 
-| SIH Salus Module (`@sihsalus/*`) | Replaces Upstream (`@openmrs/*`) |
-|---|---|
-| `esm-patient-registration-app` | `@openmrs/esm-patient-registration-app` |
-| `esm-patient-search-app` | `@openmrs/esm-patient-search-app` |
-| `esm-billing-app` | `@openmrs/esm-billing-app` |
-| `esm-vacunacion-app` | `@openmrs/esm-patient-immunizations-app` |
+| SIH Salus Module (`@sihsalus/*`) | Replaces Upstream (`@openmrs/*`)         |
+| -------------------------------- | ---------------------------------------- |
+| `esm-patient-registration-app`   | `@openmrs/esm-patient-registration-app`  |
+| `esm-patient-search-app`         | `@openmrs/esm-patient-search-app`        |
+| `esm-billing-app`                | `@openmrs/esm-billing-app`               |
+| `esm-vacunacion-app`             | `@openmrs/esm-patient-immunizations-app` |
 
 Custom modules with no upstream equivalent: `esm-coststructure-app`, `esm-dyaku-app`, `esm-fua-app`, `esm-indicadores-app`, `esm-maternal-and-child-health`, `esm-consulta-externa-app`.
 
@@ -136,13 +140,13 @@ Custom modules with no upstream equivalent: `esm-coststructure-app`, `esm-dyaku-
 
 Crea un archivo `.env` en la raíz del repo (ver [.env.example](.env.example)):
 
-| Variable | Default | Descripción |
-|---|---|---|
+| Variable               | Default                             | Descripción                                                            |
+| ---------------------- | ----------------------------------- | ---------------------------------------------------------------------- |
 | `SIHSALUS_BACKEND_URL` | `http://hii1sc-dev.inf.pucp.edu.pe` | Backend OpenMRS al que se hace proxy en dev y se descarga el importmap |
-| `SIHSALUS_AUTH_MODE` | `openmrs` | Modo de auth: `openmrs` (básico) o `keycloak` (OIDC) |
-| `SIHSALUS_FHIR_BASE` | *(derivado del backend)* | URL base de FHIR R4 |
-| `SPA_PATH` | `/openmrs/spa` | Base path para los assets del SPA |
-| `API_URL` | `/openmrs` | Base path de la API de OpenMRS |
+| `SIHSALUS_AUTH_MODE`   | `openmrs`                           | Modo de auth: `openmrs` (básico) o `keycloak` (OIDC)                   |
+| `SIHSALUS_FHIR_BASE`   | *(derivado del backend)*            | URL base de FHIR R4                                                    |
+| `SPA_PATH`             | `/openmrs/spa`                      | Base path para los assets del SPA                                      |
+| `API_URL`              | `/openmrs`                          | Base path de la API de OpenMRS                                         |
 
 ## HIPAA Compliance
 
