@@ -40,11 +40,7 @@ module.exports = [
 
       "react-hooks/exhaustive-deps": "warn",
 
-      "import/order": ["warn", {
-        groups: ["builtin", "external", "internal", "parent", "sibling"],
-        "newlines-between": "always",
-        alphabetize: { order: "asc" }
-      }],
+      "import/order": "off",
 
       "no-console": ["warn", { allow: ["warn", "error"] }]
     }
