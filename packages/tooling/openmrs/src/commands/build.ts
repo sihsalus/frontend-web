@@ -5,8 +5,6 @@ import { basename, join, parse, resolve } from 'node:path';
 import { checkImportmapJson, checkRoutesJson, getImportMap, getRoutes, rspackBin, shellDir, logInfo } from '../utils';
 import { setShellEnvVars } from '../utils/config';
 
-/* eslint-disable no-console */
-
 export interface BuildArgs {
   target: string;
   registry: string;

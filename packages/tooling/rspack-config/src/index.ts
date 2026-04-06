@@ -48,7 +48,6 @@ import rspack, {
   type RspackOptionsNormalized as RspackConfiguration,
 } from '@rspack/core';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-// eslint-disable-next-line no-restricted-imports
 import { isArray, merge, mergeWith } from 'lodash';
 import { inc } from 'semver';
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';

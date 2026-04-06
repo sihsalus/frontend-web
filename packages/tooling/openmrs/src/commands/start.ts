@@ -6,8 +6,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { logInfo, logWarn, removeTrailingSlash } from '../utils';
 
-/* eslint-disable no-console */
-
 export interface StartArgs {
   port: number;
   host: string;

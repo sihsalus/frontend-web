@@ -7,8 +7,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { type ImportmapDeclaration, type RoutesDeclaration, logInfo, logWarn, removeTrailingSlash } from '../utils';
 
-/* eslint-disable no-console */
-
 export interface DevelopArgs {
   port: number;
   host: string;
