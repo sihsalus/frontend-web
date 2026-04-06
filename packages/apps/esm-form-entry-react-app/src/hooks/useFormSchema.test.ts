@@ -1,5 +1,4 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 
 import useFormSchema from './useFormSchema';
 

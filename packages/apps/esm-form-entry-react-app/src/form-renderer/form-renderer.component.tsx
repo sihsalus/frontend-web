@@ -27,7 +27,7 @@ const FormRenderer: React.FC<FormWidgetProps> = ({
   closeWorkspace,
   closeWorkspaceWithSavedChanges,
   promptBeforeClosing,
-  isOffline,
+  isOffline: _isOffline,
   additionalProps,
   clinicalFormsWorkspaceName = clinicalFormsWorkspace,
 }) => {

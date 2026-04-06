@@ -34,7 +34,6 @@ const SkeletonPatientInfo = () => {
 const PatientBanner = () => {
   const { activePatientUuid, workflowState } = useContext(FormWorkflowContext);
   const patient = useGetPatient(activePatientUuid);
-  const patientName = `${patient?.name?.[0].given?.join(' ')} ${patient?.name?.[0]?.family}`;
 
   if (workflowState === 'NEW_PATIENT') return null;
 

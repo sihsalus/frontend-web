@@ -46,19 +46,11 @@ interface FormViewProps {
   mutateForms?: () => void;
 }
 
-interface FilterProps {
-  rowIds: Array<string>;
-  headers: Array<Record<string, string>>;
-  cellsById: any;
-  inputValue: string;
-  getCellId: (row, key) => string;
-}
-
 const FormView: React.FC<FormViewProps> = ({
   category,
   forms,
   patientUuid,
-  patient,
+  patient: _patient,
   pageSize,
   pageUrl,
   urlLabel,
@@ -141,7 +133,7 @@ const FormView: React.FC<FormViewProps> = ({
             useZebraStyles
             overflowMenuOnHover={false}
           >
-            {({ rows, headers, getHeaderProps, getTableProps, onInputChange, getToolbarProps }) => (
+            {({ rows, headers, getHeaderProps, getTableProps, getToolbarProps }) => (
               <TableContainer className={styles.tableContainer}>
                 <TableToolbarContent {...getToolbarProps()} style={{ justifyContent: 'flex-start' }}>
                   <Layer style={{ width: '100%' }}>

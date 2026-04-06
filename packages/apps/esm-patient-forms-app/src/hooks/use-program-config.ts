@@ -1,4 +1,4 @@
-import { openmrsFetch, type OpenmrsResource, Visit } from '@openmrs/esm-framework';
+import { openmrsFetch, type OpenmrsResource } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
@@ -14,7 +14,7 @@ interface ProgramConfig {
 }
 
 export const useProgramConfig = (patientUuid: string, loadProgramConfig: boolean = false) => {
-  const { data, error, isLoading } = useSWR<{ data: ProgramConfig }>(
+  const { data, error } = useSWR<{ data: ProgramConfig }>(
     loadProgramConfig && `/etl-latest/etl/patient-program-config?patientUuid=${patientUuid}`,
     openmrsFetch,
   );

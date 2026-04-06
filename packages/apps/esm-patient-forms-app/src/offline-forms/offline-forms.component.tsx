@@ -35,7 +35,7 @@ import { useDynamicFormDataEntries } from './offline-form-helpers';
 import styles from './offline-forms.scss';
 import { useValidOfflineFormEncounters } from './use-offline-form-encounters';
 
-export interface OfflineFormsProps {}
+export type OfflineFormsProps = Record<string, never>;
 
 const OfflineForms: React.FC<OfflineFormsProps> = () => {
   const { t } = useTranslation();

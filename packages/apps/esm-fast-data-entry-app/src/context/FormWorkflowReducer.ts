@@ -102,7 +102,8 @@ const reducer = (state, action) => {
     }
     case 'SAVE_ENCOUNTER': {
       if (state.forms[state.activeFormUuid].workflowState === 'SUBMIT_FOR_COMPLETE') {
-        const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
+        const formRest = { ...state.forms };
+        delete formRest[state.activeFormUuid];
         const newState = {
           ...state,
           forms: formRest,
@@ -234,7 +235,8 @@ const reducer = (state, action) => {
       return newState;
     }
     case 'DESTROY_SESSION': {
-      const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
+      const formRest = { ...state.forms };
+      delete formRest[state.activeFormUuid];
       const newState = {
         ...state,
         forms: formRest,

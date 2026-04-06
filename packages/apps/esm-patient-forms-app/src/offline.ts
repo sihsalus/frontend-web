@@ -43,7 +43,6 @@ interface PatientFormSyncItemContent {
 }
 
 import { formEncounterUrl, formEncounterUrlPoc } from './constants';
-import { isFormJsonSchema } from './offline-forms/offline-form-helpers';
 import { type Form } from './types';
 
 const patientFormSyncItem = 'patient-form';
@@ -93,7 +92,7 @@ async function syncEncounter(associatedOfflineVisit: Visit, encounter?: Encounte
   });
 }
 
-async function syncPersonUpdate(personUuid?: string, personUpdate?: any) {
+async function syncPersonUpdate(personUuid?: string, personUpdate?: PersonUpdate) {
   if (!personUuid || !personUpdate) {
     return;
   }

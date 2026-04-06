@@ -41,11 +41,15 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
       patient,
       encounterUuid: encounterUuid ?? null,
       closeWorkspace: () => {
-        typeof mutateForm === 'function' && mutateForm();
+        if (typeof mutateForm === 'function') {
+          mutateForm();
+        }
         closeWorkspace();
       },
       closeWorkspaceWithSavedChanges: () => {
-        typeof mutateForm === 'function' && mutateForm();
+        if (typeof mutateForm === 'function') {
+          mutateForm();
+        }
         closeWorkspaceWithSavedChanges();
       },
       promptBeforeClosing,
