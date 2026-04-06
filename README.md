@@ -73,6 +73,17 @@ yarn start                                  # Dev server → proxy a SIHSALUS_BA
 SIHSALUS_BACKEND_URL=http://... yarn start  # Apuntar a otro backend en esta sesión
 ```
 
+### Qué comando usar (`start` vs `serve` vs `serve:prod`)
+
+- `yarn start` (**recomendado para desarrollo diario**) usa [packages/tooling/start-dev.js](packages/tooling/start-dev.js), que lanza `openmrs develop` con `--importmap` y `--routes`, y además sirve assets/chunks desde `dist/spa` mediante proxy.
+- `yarn serve` ejecuta `openmrs start` directo (ver [package.json](package.json)) después de compilar apps. En esta base, `openmrs start` hace descubrimiento local de módulos compilados (`packages/apps/*/dist`) y genera importmap/rutas en memoria (ver [packages/tooling/openmrs/src/commands/start.ts](packages/tooling/openmrs/src/commands/start.ts)).
+- `yarn serve:prod` compila todo + ejecuta `assemble-importmap.js` y luego `openmrs start`. El `dist/spa` generado queda como fallback estático durante el servido (también en [packages/tooling/openmrs/src/commands/start.ts](packages/tooling/openmrs/src/commands/start.ts)).
+
+Resumen práctico:
+
+- Para desarrollo local con hot-reload/control de módulos: `yarn start`.
+- Para validar comportamiento de `openmrs start` con artefactos compilados: `yarn serve` / `yarn serve:prod`.
+
 ### Building
 
 ```bash
