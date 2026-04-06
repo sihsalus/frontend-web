@@ -23,7 +23,7 @@
     "verify": "turbo run lint typescript test",
     "clean": "turbo run clean && rm -rf dist/spa",
     "setup": "yarn install && turbo run build",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
@@ -50,7 +50,7 @@
     "express": "^4.22.0",
     "fake-indexeddb": "^4.0.2",
     "http-proxy-middleware": "^2.0.9",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "i18next-parser": "^9.3.0",
     "identity-obj-proxy": "^3.0.0",
     "lint-staged": "^15.2.9",

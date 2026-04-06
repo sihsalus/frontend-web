@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Stage 1: Build local @sihsalus/* modules — deterministic, no network required
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare yarn@4.13.0 --activate
 
@@ -17,7 +17,7 @@ RUN yarn turbo run build --filter='./packages/apps/*' --filter='!@sihsalus/esm-f
 # Stage 2: Init container image
 # Runs at deployment time: assembles built modules into SPA_OUTPUT_DIR.
 # The infra repo mounts a shared volume at SPA_OUTPUT_DIR; nginx serves from it.
-FROM node:22-alpine AS init
+FROM node:24-alpine AS init
 WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules
