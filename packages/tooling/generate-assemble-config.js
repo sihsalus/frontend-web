@@ -45,9 +45,9 @@ for (const dir of dirs) {
     continue;
   }
 
-  const browserField = pkg.browser || pkg.module;
+  const browserField = pkg.browser || pkg.module || pkg.main;
   if (!browserField) {
-    skipped.push(`${pkg.name} — no browser/module field`);
+    skipped.push(`${pkg.name} — no browser/module/main field`);
     continue;
   }
 
