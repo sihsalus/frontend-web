@@ -68,6 +68,7 @@
   },
   "packageManager": "yarn@4.13.0",
   "resolutions": {
+    "eslint": "10.2.0",
     "eslint/ajv": "6.12.6",
     "@eslint/eslintrc/ajv": "6.12.6",
     "sass": "1.98.0",

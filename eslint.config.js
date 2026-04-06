@@ -1,9 +1,9 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import reactHooks from "eslint-plugin-react-hooks";
-import importPlugin from "eslint-plugin-import";
+const js = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+const reactHooks = require("eslint-plugin-react-hooks");
+const importPlugin = require("eslint-plugin-import");
 
-export default [
+module.exports = [
   {
     ignores: [
       "**/node_modules/**",
@@ -73,10 +73,19 @@ export default [
 
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: "script"
+      sourceType: "commonjs",
+      globals: {
+        require: "readonly",
+        module: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+        exports: "readonly",
+        process: "readonly"
+      }
     },
 
     rules: {
+      "@typescript-eslint/no-require-imports": "off",
       "no-console": "off"
     }
   }
