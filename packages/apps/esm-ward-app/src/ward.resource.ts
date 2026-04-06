@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 import { openmrsFetch, type OpenmrsResource, type Patient, restBaseUrl, useSession } from '@openmrs/esm-framework';
 
 import useEmrConfiguration from './hooks/useEmrConfiguration';

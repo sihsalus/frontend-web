@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+ 
 import type { Page } from '@playwright/test';
 
 export class FormBuilderPage {

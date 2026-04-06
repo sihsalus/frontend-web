@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 import { InlineNotification } from '@carbon/react';
 import { useAppContext, type DefaultWorkspaceProps } from '@openmrs/esm-framework';
 import React, { createContext, type ReactNode } from 'react';

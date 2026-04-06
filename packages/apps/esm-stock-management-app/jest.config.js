@@ -1,7 +1,7 @@
 const path = require('path');
 
 /** @type {import('jest').Config} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+ 
 module.exports = {
   clearMocks: true,
   collectCoverageFrom: ['**/src/**/*.component.tsx', '!**/node_modules/**', '!**/src/declarations.d.ts', '!**/e2e/**'],

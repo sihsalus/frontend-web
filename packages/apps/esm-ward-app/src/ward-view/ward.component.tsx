@@ -49,7 +49,7 @@ const Ward = ({ wardBeds, wardUnassignedPatients }: { wardBeds: ReactNode; wardU
       return () => {
         if (scrollToLoadMoreTrigger.current) {
           // TODO: Fix this more meaningfully
-          // eslint-disable-next-line react-hooks/exhaustive-deps
+           
           observer.unobserve(scrollToLoadMoreTrigger.current);
         }
       };
