@@ -14,14 +14,8 @@ export const useAppointmentsByPatient = (patientUuid: string, filters: Appointme
     openmrsFetch,
   );
 
-  let appointments = data?.data.results;
-
-  if (filters.serviceType) {
-    appointments = appointments.filter((appointment) => appointment.serviceType === filters.serviceType);
-  }
-
   //mocking the appointments
-  appointments = [
+  const mockedAppointments: Array<PatientAppointment> = [
     {
       appointmentId: '1',
       appointmentDate: '2025-02-11T12:00:00Z',
@@ -38,6 +32,11 @@ export const useAppointmentsByPatient = (patientUuid: string, filters: Appointme
       serviceType: 'Consulta',
     },
   ];
+
+  const sourceAppointments = data?.data?.results?.length ? data.data.results : mockedAppointments;
+  const appointments = filters.serviceType
+    ? sourceAppointments.filter((appointment) => appointment.serviceType === filters.serviceType)
+    : sourceAppointments;
 
   return {
     appointments,

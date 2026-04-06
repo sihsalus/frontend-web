@@ -2,7 +2,6 @@
  * @returns {Promise<import('jest').Config>}
  */
 const path = require('path');
-const { preset } = require('swr/_internal');
 
 module.exports = {
   preset: 'ts-jest',
