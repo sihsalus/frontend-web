@@ -1,7 +1,7 @@
 /**
  * @module index
  *
- * Entrypoint for the Emergency microfrontend (@pucp-gidis-hiisc/esm-emergency-app).
+ * Entrypoint for the Emergency microfrontend (@sihsalus/esm-emergency-app).
  *
  * This module operates in two modes simultaneously:
  * - **Standalone**: Route `/openmrs/spa/emergency` renders the full emergency dashboard
@@ -19,7 +19,7 @@
 import { getAsyncLifecycle, defineConfigSchema } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
 
-const moduleName = '@pucp-gidis-hiisc/esm-emergency-app';
+const moduleName = '@sihsalus/esm-emergency-app';
 
 const options = {
   featureName: 'emergency',

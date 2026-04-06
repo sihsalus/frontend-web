@@ -1,0 +1,63 @@
+{
+  "name": "@sihsalus/esm-emergency-app",
+  "version": "4.0.1",
+  "description": "Emergency module microfrontend for OpenMRS",
+  "browser": "dist/sihsalus-esm-emergency-app.js",
+  "main": "src/index.ts",
+  "source": true,
+  "license": "MPL-2.0",
+  "scripts": {
+    "start": "openmrs develop",
+    "serve": "rspack serve --mode=development",
+    "debug": "npm run serve",
+    "build": "rspack --mode=production",
+    "analyze": "rspack --mode=production --env analyze=true",
+    "lint": "eslint src --ext ts,tsx",
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
+    "coverage": "yarn test --coverage",
+    "typescript": "tsc",
+    "extract-translations": "i18next \"src/**/*.component.tsx\" \"src/**/*.extension.tsx\" \"src/**/*modal.tsx\" \"src/**/*.workspace.tsx\" \"src/index.ts\" --config ../../tooling/i18next-parser.config.js"
+  },
+  "browserslist": [
+    "extends browserslist-config-openmrs"
+  ],
+  "keywords": [
+    "openmrs",
+    "sihsalus"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/sihsalus/frontend-web#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sihsalus/frontend-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sihsalus/frontend-web/issues"
+  },
+  "dependencies": {
+    "@carbon/react": "^1.83.0",
+    "@hookform/resolvers": "^3.3.0",
+    "lodash-es": "^4.17.21",
+    "react-hook-form": "^7.51.0",
+    "swr": "^2.3.6",
+    "zod": "^3.22.0"
+  },
+  "peerDependencies": {
+    "@openmrs/esm-framework": "*",
+    "dayjs": "1.x",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "react-i18next": "16.x",
+    "react-router-dom": "6.x",
+    "rxjs": "6.x"
+  },
+  "devDependencies": {
+    "@openmrs/esm-framework": "next",
+    "@openmrs/esm-styleguide": "next",
+    "cross-env": "^7.0.3",
+    "openmrs": "next"
+  }
+}

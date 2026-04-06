@@ -8,7 +8,7 @@
  */
 
 /** OpenMRS module identifier — must match the `name` field in package.json */
-export const moduleName = '@pucp-gidis-hiisc/esm-emergency-app';
+export const moduleName = '@sihsalus/esm-emergency-app';
 
 /** Short name used as default featureName in getAsyncLifecycle options */
 export const emergency = 'emergency';
