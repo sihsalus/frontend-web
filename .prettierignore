@@ -1,0 +1,19 @@
+# build artifacts
+dist/
+build/
+coverage/
+
+# dependencies
+node_modules/
+
+# generated / lock files
+yarn.lock
+*.lock
+*.snap
+
+# dotfiles (except root config files)
+.husky/
+.yarn/
+
+# type declarations (auto-generated)
+**/*.d.ts
