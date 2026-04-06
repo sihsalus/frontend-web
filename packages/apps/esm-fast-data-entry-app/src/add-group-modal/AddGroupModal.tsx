@@ -92,7 +92,7 @@ const NewGroupForm = (props) => {
       )}
       {!errors?.patientList && (
         <ul className={styles.patientList}>
-          {patientList?.map((patient, index) => (
+          {patientList?.map((patient) => (
             <PatientRow patient={patient} removePatient={removePatient} key={patient.uuid} />
           ))}
         </ul>

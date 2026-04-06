@@ -27,7 +27,7 @@ const reducer = (state, action) => {
     case 'INITIALIZE_WORKFLOW_STATE': {
       const savedData = localStorage.getItem(fdeGroupWorkflowStorageName + ':' + action.userUuid);
       const savedDataObject = savedData ? JSON.parse(savedData) : {};
-      let newState: { [key: string]: unknown } = {};
+      let newState: { [key: string]: unknown };
       if (savedData && savedDataObject['_storageVersion'] === fdeGroupWorkflowStorageVersion) {
         // there is localStorage data and it is still valid
         const thisSavedForm = savedDataObject.forms?.[action.activeFormUuid];
@@ -175,14 +175,14 @@ const reducer = (state, action) => {
     case 'SAVE_ENCOUNTER': {
       const thisForm = state.forms[state.activeFormUuid];
       if (thisForm.workflowState === 'SUBMIT_FOR_COMPLETE') {
-        const { [state.activeFormUuid]: activeForm, ...formRest } = state.forms;
+        const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
         const newState = {
           ...state,
           forms: formRest,
           activeFormUuid: null,
         };
         persistData(newState);
-        // eslint-disable-next-line
+         
         navigate({ to: '${openmrsSpaBase}/forms' });
         return newState;
       } else if (thisForm.workflowState === 'SUBMIT_FOR_NEXT') {
@@ -376,14 +376,14 @@ const reducer = (state, action) => {
       return newState;
     }
     case 'DESTROY_SESSION': {
-      const { [state.activeFormUuid]: activeForm, ...formRest } = state.forms;
+      const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
       const newState = {
         ...state,
         forms: formRest,
         activeFormUuid: null,
       };
       persistData(newState);
-      //eslint-disable-next-line
+       
       navigate({ to: '${openmrsSpaBase}/forms' });
       return { ...newState, formDestroyed: true };
     }
@@ -393,7 +393,7 @@ const reducer = (state, action) => {
         activeFormUuid: null,
       };
       persistData(newState);
-      //eslint-disable-next-line
+       
       navigate({ to: '${openmrsSpaBase}/forms' });
       return newState;
     }

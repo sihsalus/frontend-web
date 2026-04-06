@@ -8,10 +8,10 @@ interface ParamTypes {
 }
 
 const initialActions = {
-  addPatient: (uuid: string | number) => undefined,
+  addPatient: (_uuid: string | number) => undefined,
   openPatientSearch: () => undefined,
-  saveEncounter: (encounterUuid: string | number) => undefined,
-  editEncounter: (patientUuid: string | number) => undefined,
+  saveEncounter: (_encounterUuid: string | number) => undefined,
+  editEncounter: (_patientUuid: string | number) => undefined,
   submitForNext: () => undefined,
   submitForReview: () => undefined,
   submitForComplete: () => undefined,

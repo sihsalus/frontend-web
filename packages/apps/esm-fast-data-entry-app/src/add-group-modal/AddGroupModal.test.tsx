@@ -4,7 +4,6 @@ import {
   showSnackbar,
   type ConfigSchema,
   type Session,
-  PatientIdentifierType,
 } from '@openmrs/esm-framework';
 import { useHsuIdIdentifier } from '../hooks/location-tag.resource';
 

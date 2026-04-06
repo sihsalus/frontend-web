@@ -20,7 +20,7 @@ const reducer = (state, action) => {
     case 'INITIALIZE_WORKFLOW_STATE': {
       const savedData = localStorage.getItem(fdeWorkflowStorageName + ':' + action.userUuid);
       const savedDataObject = savedData ? JSON.parse(savedData) : {};
-      let newState: { [key: string]: unknown } = {};
+      let newState: { [key: string]: unknown };
       const newPatient = action.newPatientUuid
         ? {
             activePatientUuid: action.newPatientUuid,
@@ -102,14 +102,14 @@ const reducer = (state, action) => {
     }
     case 'SAVE_ENCOUNTER': {
       if (state.forms[state.activeFormUuid].workflowState === 'SUBMIT_FOR_COMPLETE') {
-        const { [state.activeFormUuid]: activeForm, ...formRest } = state.forms;
+        const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
         const newState = {
           ...state,
           forms: formRest,
           activeFormUuid: null,
         };
         persistData(newState);
-        // eslint-disable-next-line
+         
         navigate({ to: '${openmrsSpaBase}/forms' });
         return newState;
       } else {
@@ -234,14 +234,14 @@ const reducer = (state, action) => {
       return newState;
     }
     case 'DESTROY_SESSION': {
-      const { [state.activeFormUuid]: activeForm, ...formRest } = state.forms;
+      const { [state.activeFormUuid]: _activeForm, ...formRest } = state.forms;
       const newState = {
         ...state,
         forms: formRest,
         activeFormUuid: null,
       };
       persistData(newState);
-      //eslint-disable-next-line
+       
       navigate({ to: '${openmrsSpaBase}/forms' });
       return newState;
     }
@@ -251,7 +251,7 @@ const reducer = (state, action) => {
         activeFormUuid: null,
       };
       persistData(newState);
-      //eslint-disable-next-line
+       
       navigate({ to: '${openmrsSpaBase}/forms' });
       return newState;
     }
