@@ -251,7 +251,7 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
       ],
     },
     mode,
-    devtool: mode === production ? 'hidden-nosources-source-map' : 'source-map',
+    devtool: mode === production ? false : 'source-map',
     stats: mode === production ? 'normal' : 'errors-warnings',
     infrastructureLogging: {
       level: 'warn',
