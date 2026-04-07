@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 import type { DataTableHeader } from '@carbon/react';
@@ -22,8 +23,6 @@ import type { Appointment } from '../../types';
 
 import { PatientAppointmentsActionMenu } from './patient-appointments-action-menu.component';
 import styles from './patient-appointments-action-menu.scss';
-
-const utc = require('dayjs/plugin/utc');
 
 const pageSize = 10;
 

@@ -1,5 +1,5 @@
 /** At present, this entire mock is boilerplate. */
-import 'react';
+import React from 'react';
 const reactI18next = require('react-i18next');
 
 const hasChildren = (node) => node && (node.children || (node.props && node.props.children));
