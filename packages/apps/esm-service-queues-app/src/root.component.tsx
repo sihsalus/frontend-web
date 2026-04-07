@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from './home.component';
@@ -11,7 +12,8 @@ const Root: React.FC = () => {
   const serviceQueuesBasename = window.getOpenmrsSpaBase() + 'home/service-queues';
 
   return (
-    <main>
+    <AppErrorBoundary appName="esm-service-queues-app">
+      <main>
       <BrowserRouter basename={serviceQueuesBasename}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -23,6 +25,7 @@ const Root: React.FC = () => {
         </Routes>
       </BrowserRouter>
     </main>
+    </AppErrorBoundary>
   );
 };
 

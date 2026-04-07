@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/navbar/navbar.component';
@@ -6,7 +7,8 @@ import styles from './root.scss';
 
 const Root: React.FC = () => {
   return (
-    <BrowserRouter basename={window.getOpenmrsSpaBase()}>
+    <AppErrorBoundary appName="esm-primary-navigation-app">
+      <BrowserRouter basename={window.getOpenmrsSpaBase()}>
       <Routes>
         <Route path="login/*" element={null} />
         <Route path="logout/*" element={null} />
@@ -20,6 +22,7 @@ const Root: React.FC = () => {
         />
       </Routes>
     </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 

@@ -1,9 +1,14 @@
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 
 import { Router } from './routes/router';
 
 const RootComponent: React.FC = () => {
-  return <Router />;
+  return (
+    <AppErrorBoundary appName="esm-coststructure-app">
+      <Router />
+    </AppErrorBoundary>
+  );
 };
 
 export default RootComponent;

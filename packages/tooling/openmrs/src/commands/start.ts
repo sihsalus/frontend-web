@@ -32,6 +32,24 @@ interface LocalDiscovery {
   distDirs: string[];
 }
 
+function resolveEntryFile(appsDir: string, entry: { name: string }, pkg: Record<string, unknown>): string | null {
+  const browserField = (pkg.browser || pkg.module || pkg.main) as string | undefined;
+  if (!browserField) return null;
+  const entryPath = resolve(appsDir, entry.name, browserField);
+  if (!existsSync(entryPath)) return null;
+  return basename(browserField);
+}
+
+function loadModuleRoutes(
+  appsDir: string,
+  entry: { name: string },
+  pkg: Record<string, unknown>,
+): Record<string, unknown> | null {
+  const routesPath = resolve(appsDir, entry.name, 'src', 'routes.json');
+  if (!existsSync(routesPath)) return null;
+  return { ...JSON.parse(readFileSync(routesPath, 'utf8')), version: (pkg.version as string) || '0.0.0' };
+}
+
 /**
  * Auto-discover locally-built @sihsalus/* modules from packages/apps/,
  * eliminating the need for `yarn assemble` during development.
@@ -52,34 +70,80 @@ function discoverLocalModules(rootDir: string): LocalDiscovery {
     const pkgJsonPath = resolve(appsDir, entry.name, 'package.json');
     if (!existsSync(pkgJsonPath)) continue;
 
-    const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf8'));
-    if (pkg.private || !pkg.name?.startsWith('@sihsalus/')) continue;
+    const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as Record<string, unknown>;
+    if (pkg.private || !(pkg.name as string)?.startsWith('@sihsalus/')) continue;
 
     const distDir = resolve(appsDir, entry.name, 'dist');
     if (!existsSync(distDir)) continue;
 
-    const browserField = pkg.browser || pkg.module || pkg.main;
-    if (!browserField) continue;
+    const entryFile = resolveEntryFile(appsDir, entry, pkg);
+    if (!entryFile) continue;
 
-    const entryFile = basename(browserField);
-    const entryPath = resolve(appsDir, entry.name, browserField);
-    if (!existsSync(entryPath)) continue;
-
-    importmap.imports[pkg.name] = `./${entryFile}`;
+    importmap.imports[pkg.name as string] = `./${entryFile}`;
     distDirs.push(distDir);
 
-    const routesPath = resolve(appsDir, entry.name, 'src', 'routes.json');
-    if (existsSync(routesPath)) {
-      routes[pkg.name] = {
-        ...JSON.parse(readFileSync(routesPath, 'utf8')),
-        version: pkg.version || '0.0.0',
-      };
-    }
+    const moduleRoutes = loadModuleRoutes(appsDir, entry, pkg);
+    if (moduleRoutes) routes[pkg.name as string] = moduleRoutes;
 
     logInfo(`  Discovered ${pkg.name} -> ${entryFile}`);
   }
 
   return { importmap, routes, distDirs };
+}
+
+function mergeImportmaps(
+  localImportmap: { imports: Record<string, string> },
+  backendImportmap: { imports?: Record<string, string> } | null,
+  localBaseNames: Set<string>,
+  spaDist: string,
+): { imports: Record<string, string> } {
+  const merged: { imports: Record<string, string> } = { imports: {} };
+
+  if (backendImportmap?.imports) {
+    let skippedCount = 0;
+    let addedCount = 0;
+    for (const [name, url] of Object.entries(backendImportmap.imports)) {
+      const baseName = name.replace(/^@[^/]+\//, '');
+      if (localBaseNames.has(baseName)) { skippedCount++; continue; }
+      if (localImportmap.imports[name]) { addedCount++; continue; }
+      const cleanRelUrl = url.replace(/^\.\//, '');
+      const localPath = resolve(spaDist, cleanRelUrl);
+      if (existsSync(localPath)) {
+        merged.imports[name] = `./${cleanRelUrl}`;
+        addedCount++;
+      } else {
+        skippedCount++;
+        logWarn(`  Skip ${name}: not available locally`);
+      }
+    }
+    logInfo(
+      `Backend importmap: ${Object.keys(backendImportmap.imports).length} modules (${addedCount} available, ${skippedCount} skipped)`,
+    );
+  } else {
+    logWarn(`Could not fetch backend importmap — using local modules only`);
+  }
+
+  for (const [name, url] of Object.entries(localImportmap.imports)) {
+    merged.imports[name] = url;
+  }
+
+  return merged;
+}
+
+function mergeRoutes(
+  localRoutes: Record<string, unknown>,
+  backendRoutes: Record<string, unknown> | null,
+  localBaseNames: Set<string>,
+): Record<string, unknown> {
+  const merged: Record<string, unknown> = {};
+  if (backendRoutes) {
+    for (const [name, config] of Object.entries(backendRoutes)) {
+      const baseName = name.replace(/^@[^/]+\//, '');
+      if (!localBaseNames.has(baseName)) merged[name] = config;
+    }
+  }
+  Object.assign(merged, localRoutes);
+  return merged;
 }
 
 export async function runStart(args: StartArgs) {
@@ -107,13 +171,6 @@ export async function runStart(args: StartArgs) {
 
   logInfo(`Local modules: ${Object.keys(localImportmap.imports).length}`);
 
-  logInfo(`Fetching backend importmap from ${backendUrl}...`);
-  const backendImportmap = (await fetchBackendJson(`${backendUrl}/openmrs/spa/importmap.json`)) as {
-    imports?: Record<string, string>;
-  } | null;
-
-  const mergedImportmap: { imports: Record<string, string> } = { imports: {} };
-
   // Build a set of "base names" from local modules to detect duplicates under different scopes
   // e.g. local "@sihsalus/esm-fua-app" should exclude backend "@pucp-gidis-hiisc/esm-fua-app"
   const localBaseNames = new Set(Object.keys(localImportmap.imports).map((name) => name.replace(/^@[^/]+\//, '')));
@@ -128,69 +185,23 @@ export async function runStart(args: StartArgs) {
     if (localBaseNames.has(localName)) localBaseNames.add(backendName);
   }
 
-  if (backendImportmap?.imports) {
-    let skippedCount = 0;
-    let addedCount = 0;
-    for (const [name, url] of Object.entries(backendImportmap.imports)) {
-      const baseName = name.replace(/^@[^/]+\//, '');
-      if (localBaseNames.has(baseName)) {
-        skippedCount++;
-        continue;
-      }
+  logInfo(`Fetching backend importmap from ${backendUrl}...`);
+  const backendImportmap = (await fetchBackendJson(`${backendUrl}/openmrs/spa/importmap.json`)) as {
+    imports?: Record<string, string>;
+  } | null;
 
-      // If the module was downloaded during assembly, it's already in the local
-      // importmap with a relative path. Only add backend modules that exist locally;
-      // skip modules whose bundles weren't successfully downloaded (e.g. 404 on backend).
-      if (localImportmap.imports[name]) {
-        addedCount++;
-        continue; // already in local importmap, will be added below
-      }
-
-      // Check if the bundle was downloaded to dist/spa during assembly
-      const cleanRelUrl = url.replace(/^\.\//, '');
-      const localPath = resolve(spaDist, cleanRelUrl);
-      if (existsSync(localPath)) {
-        mergedImportmap.imports[name] = `./${cleanRelUrl}`;
-        addedCount++;
-      } else {
-        skippedCount++;
-        logWarn(`  Skip ${name}: not available locally`);
-      }
-    }
-    logInfo(
-      `Backend importmap: ${Object.keys(backendImportmap.imports).length} modules (${addedCount} available, ${skippedCount} skipped)`,
-    );
-  } else {
-    logWarn(`Could not fetch backend importmap — using local modules only`);
-  }
-
-  // Local modules override backend
-  for (const [name, url] of Object.entries(localImportmap.imports)) {
-    mergedImportmap.imports[name] = url;
-  }
+  const mergedImportmap = mergeImportmaps(localImportmap, backendImportmap, localBaseNames, spaDist);
 
   const localCount = Object.keys(localImportmap.imports).length;
   const totalCount = Object.keys(mergedImportmap.imports).length;
-  const backendOnlyCount = totalCount - localCount;
-  logInfo(`Merged importmap: ${localCount} local + ${backendOnlyCount} from backend = ${totalCount} total`);
+  logInfo(`Merged importmap: ${localCount} local + ${totalCount - localCount} from backend = ${totalCount} total`);
 
   // Build merged routes
-  const localRoutes = discovery.routes;
-
   const backendRoutes = (await fetchBackendJson(`${backendUrl}/openmrs/spa/routes.registry.json`)) as Record<
     string,
     unknown
   > | null;
-
-  const mergedRoutes: Record<string, unknown> = {};
-  if (backendRoutes) {
-    for (const [name, config] of Object.entries(backendRoutes)) {
-      const baseName = name.replace(/^@[^/]+\//, '');
-      if (localBaseNames.has(baseName)) continue;
-      mergedRoutes[name] = config;
-    }
-  }
-  Object.assign(mergedRoutes, localRoutes);
+  const mergedRoutes = mergeRoutes(discovery.routes, backendRoutes, localBaseNames);
 
   // Serve merged importmap and routes as JSON endpoints
   const importmapJson = JSON.stringify(mergedImportmap);

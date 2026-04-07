@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@carbon/react": "^1.92.1",
+    "@sihsalus/rbac": "workspace:*",
     "fuzzy": "^0.1.3"
   }
 }

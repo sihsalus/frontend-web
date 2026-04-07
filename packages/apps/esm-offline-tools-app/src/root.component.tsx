@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -9,7 +10,8 @@ import styles from './root.styles.scss';
 
 const Root: React.FC = () => {
   return (
-    <BrowserRouter basename={window.getOpenmrsSpaBase()}>
+    <AppErrorBoundary appName="esm-offline-tools-app">
+      <BrowserRouter basename={window.getOpenmrsSpaBase()}>
       <DesktopSideNav />
       <div className={classNames('omrs-main-content', styles.mainContentContainer)}>
         <Routes>
@@ -20,6 +22,7 @@ const Root: React.FC = () => {
         </Routes>
       </div>
     </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 

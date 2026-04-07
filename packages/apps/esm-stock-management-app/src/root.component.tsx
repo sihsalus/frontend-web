@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useLeftNav } from '@openmrs/esm-framework';
 import Dashboard from './dashboard/home-dashboard.component';
@@ -12,7 +13,8 @@ const Root: React.FC = () => {
   });
 
   return (
-    <main className="omrs-main-content">
+    <AppErrorBoundary appName="esm-stock-management-app">
+      <main className="omrs-main-content">
       <BrowserRouter basename={window.spaBase}>
         <Routes>
           <Route path="/stock-management" element={<Dashboard />} />
@@ -20,6 +22,7 @@ const Root: React.FC = () => {
         </Routes>
       </BrowserRouter>
     </main>
+    </AppErrorBoundary>
   );
 };
 

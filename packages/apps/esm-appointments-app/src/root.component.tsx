@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Appointments from './appointments.component';
@@ -9,7 +10,8 @@ const RootComponent: React.FC = () => {
   const appointmentsBasename = window.getOpenmrsSpaBase() + 'home/appointments';
 
   return (
-    <main>
+    <AppErrorBoundary appName="esm-appointments-app">
+      <main>
       <BrowserRouter basename={appointmentsBasename}>
         <Routes>
           <Route path="/" element={<Appointments />} />
@@ -21,6 +23,7 @@ const RootComponent: React.FC = () => {
         </Routes>
       </BrowserRouter>
     </main>
+    </AppErrorBoundary>
   );
 };
 

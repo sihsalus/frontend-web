@@ -13,17 +13,22 @@
         {
             "name": "odontogram-dashboard-link",
             "component": "odontogramDashboardLink",
-            "slot": "patient-chart-dashboard-slot",
+            "slot": "special-clinics-slot",
             "meta": {
                 "slot": "patient-chart-odontogram-slot",
                 "columns": 1,
-                "title": "Odontogram"
+                "title": "Odontograma",
+                "path": "odontogram",
+                "layoutMode": "anchored"
             }
         },
         {
             "name": "odontogram-widget",
             "component": "odontogramWidget",
-            "slot": "patient-chart-odontogram-slot"
+            "slot": "patient-chart-odontogram-slot",
+            "order": 0,
+            "online": true,
+            "offline": false
         }
     ],
     "workspaces": [

@@ -43,6 +43,42 @@ export interface DateFormatOptions {
   defaultToEndOfDay?: boolean;
 }
 
+function parseDayjsFromString(dateValue: string): dayjs.Dayjs {
+  if (isOmrsDateStrict(dateValue)) {
+    return dayjs(parseDate(dateValue));
+  }
+  const direct = dayjs(dateValue);
+  if (direct.isValid()) return direct;
+  for (const format of SUPPORTED_DATE_FORMATS) {
+    const formatted = dayjs(dateValue, format);
+    if (formatted.isValid()) return formatted;
+  }
+  return direct;
+}
+
+function parseDateInput(dateValue: string | Date | dayjs.Dayjs): dayjs.Dayjs {
+  if (dayjs.isDayjs(dateValue)) return dateValue;
+  if (dateValue instanceof Date) return dayjs(dateValue);
+  if (typeof dateValue === 'string') return parseDayjsFromString(dateValue);
+  throw new Error(`Unsupported date type: ${typeof dateValue}`);
+}
+
+function applyTimeModifiers(date: dayjs.Dayjs, options: DateFormatOptions): dayjs.Dayjs {
+  const { includeTime = true, defaultToStartOfDay = false, defaultToEndOfDay = false } = options;
+  if (defaultToStartOfDay) return date.startOf('day');
+  if (defaultToEndOfDay) return date.endOf('day');
+  if (!includeTime) return date.startOf('day');
+  return date;
+}
+
+function formatDayjsDate(date: dayjs.Dayjs, useTimezone: boolean): string {
+  if (useTimezone) {
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return date.tz(userTimezone).format(OMRS_DATE_FORMAT);
+  }
+  return date.format(OMRS_DATE_FORMAT);
+}
+
 /**
  * Convierte cualquier valor de fecha a formato ISO OpenMRS
  * Esta es la función principal que soluciona el problema de "Unparseable date"
@@ -51,66 +87,22 @@ export function toOpenmrsIsoString(
   dateValue: string | Date | dayjs.Dayjs | null | undefined,
   options: DateFormatOptions = {},
 ): string {
-  const { includeTime = true, useTimezone = true, defaultToStartOfDay = false, defaultToEndOfDay = false } = options;
+  const { useTimezone = true } = options;
 
   if (!dateValue) {
     throw new Error('Date value is required');
   }
 
   try {
-    let parsedDate: dayjs.Dayjs;
+    let parsedDate = parseDateInput(dateValue);
 
-    // Manejar diferentes tipos de entrada
-    if (dayjs.isDayjs(dateValue)) {
-      parsedDate = dateValue;
-    } else if (dateValue instanceof Date) {
-      parsedDate = dayjs(dateValue);
-    } else if (typeof dateValue === 'string') {
-      // Intentar con OpenMRS parseDate primero
-      if (isOmrsDateStrict(dateValue)) {
-        const omrsDate = parseDate(dateValue);
-        parsedDate = dayjs(omrsDate);
-      } else {
-        // Fallback a dayjs con formatos múltiples
-        parsedDate = dayjs(dateValue);
-
-        // Si no es válido, intentar formatos específicos
-        if (!parsedDate.isValid()) {
-          for (const format of SUPPORTED_DATE_FORMATS) {
-            parsedDate = dayjs(dateValue, format);
-            if (parsedDate.isValid()) break;
-          }
-        }
-      }
-    } else {
-      throw new Error(`Unsupported date type: ${typeof dateValue}`);
-    }
-
-    // Validar que la fecha es válida
     if (!parsedDate.isValid()) {
       throw new Error(`Invalid date: ${dateValue}`);
     }
 
-    // Aplicar modificadores de tiempo
-    if (defaultToStartOfDay) {
-      parsedDate = parsedDate.startOf('day');
-    } else if (defaultToEndOfDay) {
-      parsedDate = parsedDate.endOf('day');
-    }
+    parsedDate = applyTimeModifiers(parsedDate, options);
 
-    // Formatear según opciones
-    if (!includeTime) {
-      // Solo fecha, pero en formato ISO con tiempo 00:00:00
-      parsedDate = parsedDate.startOf('day');
-    }
-
-    // Usar timezone del navegador si se especifica
-    if (useTimezone) {
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      return parsedDate.tz(userTimezone).format(OMRS_DATE_FORMAT);
-    } else {
-      return parsedDate.format(OMRS_DATE_FORMAT);
-    }
+    return formatDayjsDate(parsedDate, useTimezone);
   } catch (error) {
     console.error('Error formatting date for OpenMRS:', { dateValue, error });
     throw new Error(`Failed to format date for OpenMRS: ${error instanceof Error ? error.message : String(error)}`, {

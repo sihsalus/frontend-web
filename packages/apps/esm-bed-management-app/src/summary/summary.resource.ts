@@ -83,6 +83,10 @@ export const useLocationName = (locationUuid: string) => {
   return results;
 };
 
+function mapBedWithLocation(bed, location) {
+  return { ...bed, location };
+}
+
 export function useBedsGroupedByLocation() {
   const { admissionLocations, isLoadingAdmissionLocations } = useLocationsWithAdmissionTag();
 
@@ -101,10 +105,7 @@ export function useBedsGroupedByLocation() {
             method: 'GET',
           });
           if (bedsFetchResult.data.results.length) {
-            return bedsFetchResult.data.results.map((bed) => ({
-              ...bed,
-              location: location,
-            }));
+            return bedsFetchResult.data.results.map((bed) => mapBedWithLocation(bed, location));
           }
           return null;
         });

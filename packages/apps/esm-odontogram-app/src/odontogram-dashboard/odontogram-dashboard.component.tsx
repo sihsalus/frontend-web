@@ -1,0 +1,34 @@
+import { Button } from '@carbon/react';
+import { launchWorkspace } from '@openmrs/esm-framework';
+import { CardHeader } from '@openmrs/esm-patient-common-lib';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import App from '../App';
+
+interface OdontogramDashboardProps {
+  patientUuid: string;
+}
+
+const OdontogramDashboard: React.FC<OdontogramDashboardProps> = ({ patientUuid }) => {
+  const { t } = useTranslation();
+
+  const handleLaunchWorkspace = useCallback(() => {
+    launchWorkspace('odontogram-form-workspace', { patientUuid });
+  }, [patientUuid]);
+
+  return (
+    <div>
+      <CardHeader title={t('odontogram', 'Odontograma')}>
+        <Button kind="ghost" size="sm" onClick={handleLaunchWorkspace}>
+          {t('registerFindings', 'Registrar hallazgos')}
+        </Button>
+      </CardHeader>
+      <div style={{ overflowX: 'auto', padding: '0 1rem 1rem' }}>
+        <App />
+      </div>
+    </div>
+  );
+};
+
+export default OdontogramDashboard;

@@ -149,6 +149,20 @@ export function mapConceptToFormLabel(conceptUuid: string, formConceptMap: objec
   return theDisplay;
 }
 
+function buildQuestionEntry(question): Record<string, unknown> {
+  const answersMap: Record<string, string> = {};
+  question.questionOptions.answers?.forEach((ans) => {
+    answersMap[ans.concept] = ans.label;
+  });
+  return { display: question.label, answers: answersMap };
+}
+
+function processFormSection(section, result: Record<string, unknown>) {
+  section.questions.forEach((question) => {
+    result[question.questionOptions.concept] = buildQuestionEntry(question);
+  });
+}
+
 /**
  * This is a util method stub for generating the mapping for labels in the form schema
  * It should be moved to an appropriate place if not here
@@ -157,17 +171,6 @@ export function generateFormLabelsFromJSON() {
   const htsScreeningJson = { pages: [] };
   const result = {};
   htsScreeningJson.pages.forEach((page) => {
-    page.sections.forEach((section) => {
-      section.questions.forEach((question) => {
-        const answersMap = {};
-        const questionObject = {};
-        question.questionOptions.answers?.forEach((ans) => {
-          answersMap[ans.concept] = ans.label;
-        });
-        questionObject['display'] = question.label;
-        questionObject['answers'] = answersMap;
-        result[question.questionOptions.concept] = questionObject;
-      });
-    });
+    page.sections.forEach((section) => processFormSection(section, result));
   });
 }

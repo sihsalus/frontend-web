@@ -1,3 +1,11 @@
 {
-    "odontogram": "Odontogram"
+    "cancel": "Cancel",
+    "odontogram": "Odontogram",
+    "odontogramSaved": "Odontogram saved",
+    "odontogramSavedSubtitle": "The odontogram findings have been saved successfully.",
+    "odontogramSaveError": "Error saving odontogram",
+    "odontogramSaveErrorSubtitle": "Could not save odontogram findings. Please try again.",
+    "registerFindings": "Register findings",
+    "saveOdontogram": "Save odontogram",
+    "saving": "Saving..."
 }

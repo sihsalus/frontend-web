@@ -1,9 +1,14 @@
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 
 import FuaDashboard from './fua-dashboard.component';
 
 const Root: React.FC = () => {
-  return <FuaDashboard />;
+  return (
+    <AppErrorBoundary appName="esm-fua-app">
+      <FuaDashboard />
+    </AppErrorBoundary>
+  );
 };
 
 export default Root;

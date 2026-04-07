@@ -25,6 +25,20 @@ export default function SupplyTab({ form }: Props) {
   const { supply, isLoading } = useGetSupply();
   const supplyData = watch('supplyCost');
 
+  const handleSupplyChange = (index: number, field: { onChange: (val: string) => void }, id: string) => {
+    field.onChange(id);
+    const selectedSupply = supply.find((sup) => sup.id === Number(id));
+    if (selectedSupply) {
+      setValue(`supplyCost.${index}.unitAcquisition`, selectedSupply.unitAcquisition);
+      setValue(`supplyCost.${index}.unitConsumption`, selectedSupply.unitConsumption);
+      setValue(`supplyCost.${index}.equivalence`, selectedSupply.equivalence);
+      setValue(`supplyCost.${index}.name`, selectedSupply.name);
+      setValue(`supplyCost.${index}.type`, selectedSupply.supplyType);
+      const adquisitionPrice = watch(`supplyCost.${index}.adquisitionPrice`);
+      setValue(`supplyCost.${index}.unitCost`, calculateUnitCostSupply(adquisitionPrice, selectedSupply.equivalence));
+    }
+  };
+
   const handleCreateRow = () => {
     append({
       adquisitionPrice: 0,
@@ -83,26 +97,7 @@ export default function SupplyTab({ form }: Props) {
                               key={row.id}
                               {...field}
                               labelText=""
-                              onChange={(e) => {
-                                const id = e.target.value;
-                                field.onChange(id);
-
-                                const selectedSupply = supply.find((sup) => sup.id === Number(id));
-
-                                if (selectedSupply) {
-                                  setValue(`supplyCost.${index}.unitAcquisition`, selectedSupply.unitAcquisition);
-                                  setValue(`supplyCost.${index}.unitConsumption`, selectedSupply.unitConsumption);
-                                  setValue(`supplyCost.${index}.equivalence`, selectedSupply.equivalence);
-                                  setValue(`supplyCost.${index}.name`, selectedSupply.name);
-                                  setValue(`supplyCost.${index}.type`, selectedSupply.supplyType);
-                                  const adquisitionPrice = watch(`supplyCost.${index}.adquisitionPrice`);
-                                  const costUnit = calculateUnitCostSupply(
-                                    adquisitionPrice,
-                                    selectedSupply.equivalence,
-                                  );
-                                  setValue(`supplyCost.${index}.unitCost`, costUnit);
-                                }
-                              }}
+                              onChange={(e) => handleSupplyChange(index, field, e.target.value)}
                             >
                               <SelectItem
                                 text={t('selectSupplyOrMedicine', 'Seleccione Insumo o Medicamento')}

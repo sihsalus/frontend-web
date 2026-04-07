@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ChangePassword from './change-password/change-password.component';
@@ -8,7 +9,8 @@ import RedirectLogout from './redirect-logout/redirect-logout.component';
 
 const Root: React.FC = () => {
   return (
-    <BrowserRouter basename={window.getOpenmrsSpaBase()}>
+    <AppErrorBoundary appName="esm-login-app">
+      <BrowserRouter basename={window.getOpenmrsSpaBase()}>
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="login/confirm" element={<Login />} />
@@ -17,6 +19,7 @@ const Root: React.FC = () => {
         <Route path="change-password" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 

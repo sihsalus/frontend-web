@@ -24,6 +24,45 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './care-summary-table.scss';
 
+function collectPrefixesFromMember(member: { display: string }, rowDefinitions: RowDefinition[], seenPrefixes: Set<string>) {
+  const matchingRow = rowDefinitions.find((row) => member.display.startsWith(row.prefix));
+  if (matchingRow) seenPrefixes.add(matchingRow.prefix);
+}
+
+function collectPrefixesFromEncounter(encounter: Encounter, rowDefinitions: RowDefinition[], seenPrefixes: Set<string>) {
+  encounter.obs.forEach((obs) => {
+    (obs.groupMembers || []).forEach((member) => collectPrefixesFromMember(member, rowDefinitions, seenPrefixes));
+  });
+}
+
+function applyMemberToRow(
+  member: { display: string },
+  activeRows: RowDefinition[],
+  base: Array<{ id: string; [key: string]: string }>,
+  encounterNumber: number,
+  extractValue: (d: string) => string,
+) {
+  const matchingRow = activeRows.find((row) => member.display.startsWith(row.prefix));
+  if (matchingRow) {
+    const rowRef = base.find((r) => r.id === matchingRow.id);
+    if (rowRef) {
+      rowRef[`atencion${encounterNumber}`] = extractValue(member.display);
+    }
+  }
+}
+
+function applyObsToRows(
+  obs: Encounter['obs'][number],
+  activeRows: RowDefinition[],
+  base: Array<{ id: string; [key: string]: string }>,
+  encounterNumber: number,
+  extractValue: (d: string) => string,
+) {
+  (obs.groupMembers || []).forEach((member) =>
+    applyMemberToRow(member, activeRows, base, encounterNumber, extractValue),
+  );
+}
+
 interface Encounter {
   encounterDatetime: string;
   obs: {
@@ -103,17 +142,7 @@ const CareSummaryTable: React.FC<CareSummaryTableProps> = ({
     const seenPrefixes = new Set<string>();
     seenPrefixes.add('encounterDatetime');
 
-    prenatalEncounters.forEach((encounter) => {
-      encounter.obs.forEach((obs) => {
-        (obs.groupMembers || []).forEach((member) => {
-          rowDefinitions.forEach((row) => {
-            if (member.display.startsWith(row.prefix)) {
-              seenPrefixes.add(row.prefix);
-            }
-          });
-        });
-      });
-    });
+    prenatalEncounters.forEach((encounter) => collectPrefixesFromEncounter(encounter, rowDefinitions, seenPrefixes));
 
     return rowDefinitions.filter((row) => seenPrefixes.has(row.prefix));
   }, [prenatalEncounters, rowDefinitions]);
@@ -169,18 +198,7 @@ const CareSummaryTable: React.FC<CareSummaryTableProps> = ({
         dateRow[`atencion${encounterNumber}`] = dayjs(encounter.encounterDatetime).format('DD/MM/YYYY HH:mm');
       }
 
-      encounter.obs.forEach((obs) => {
-        (obs.groupMembers || []).forEach((member) => {
-          activeRows.forEach((row) => {
-            if (member.display.startsWith(row.prefix)) {
-              const rowRef = base.find((r) => r.id === row.id);
-              if (rowRef) {
-                rowRef[`atencion${encounterNumber}`] = extractValue(member.display);
-              }
-            }
-          });
-        });
-      });
+      encounter.obs.forEach((obs) => applyObsToRows(obs, activeRows, base, encounterNumber, extractValue));
     });
 
     return base;

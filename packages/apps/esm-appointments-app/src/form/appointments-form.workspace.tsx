@@ -61,6 +61,23 @@ import {
 } from './appointments-form.resource';
 import styles from './appointments-form.scss';
 
+function getConflictErrorMessage(
+  responseData: Record<string, unknown>,
+  context: string,
+  t: (key: string, defaultValue: string) => string,
+): string | null {
+  const defaultMessage = t('appointmentConflict', 'Appointment conflict');
+  if (Object.prototype.hasOwnProperty.call(responseData, 'SERVICE_UNAVAILABLE')) {
+    return t('serviceUnavailable', 'Appointment time is outside of service hours');
+  }
+  if (Object.prototype.hasOwnProperty.call(responseData, 'PATIENT_DOUBLE_BOOKING')) {
+    return context !== 'editing'
+      ? t('patientDoubleBooking', 'Patient already booked for an appointment at this time')
+      : null;
+  }
+  return defaultMessage;
+}
+
 interface AppointmentsFormProps {
   appointment?: Appointment;
   recurringPattern?: RecurringPattern;
@@ -288,40 +305,25 @@ const AppointmentsForm: React.FC<AppointmentsFormProps & DefaultWorkspaceProps> 
   };
 
   const handleSelectChange = (e) => {
-    setValue(
-      'selectedDaysOfWeekText',
-      (() => {
-        if (e?.selectedItems?.length < 1) {
-          return t('daysOfWeek', 'Days of the week');
-        } else {
-          return e.selectedItems
-            .map((weekDay) => {
-              return weekDay.label;
-            })
-            .join(', ');
-        }
-      })(),
-    );
+    const daysText =
+      e?.selectedItems?.length < 1
+        ? t('daysOfWeek', 'Days of the week')
+        : e.selectedItems.map((weekDay) => weekDay.label).join(', ');
+    setValue('selectedDaysOfWeekText', daysText);
     setValue(
       'recurringPatternDaysOfWeek',
-      e.selectedItems.map((s) => {
-        return s.id;
-      }),
+      e.selectedItems.map((s) => s.id),
     );
   };
 
-  const defaultSelectedDaysOfWeekText: string = (() => {
-    if (getValues('recurringPatternDaysOfWeek')?.length < 1) {
-      return t('daysOfWeek', 'Days of the week');
-    } else {
-      return weekDays
-        .filter((weekDay) => getValues('recurringPatternDaysOfWeek').includes(weekDay.id))
-        .map((weekDay) => {
-          return weekDay.label;
-        })
-        .join(', ');
-    }
-  })();
+  const selectedDays = getValues('recurringPatternDaysOfWeek') ?? [];
+  const defaultSelectedDaysOfWeekText: string =
+    selectedDays.length < 1
+      ? t('daysOfWeek', 'Days of the week')
+      : weekDays
+          .filter((weekDay) => selectedDays.includes(weekDay.id))
+          .map((weekDay) => weekDay.label)
+          .join(', ');
 
   // Same for creating and editing
   const handleSaveAppointment = async (data: AppointmentFormData) => {
@@ -331,16 +333,7 @@ const AppointmentsForm: React.FC<AppointmentsFormProps & DefaultWorkspaceProps> 
 
     // check if Duplicate Response Occurs
     const response: FetchResponse = await checkAppointmentConflict(appointmentPayload);
-    let errorMessage = t('appointmentConflict', 'Appointment conflict');
-    if (Object.prototype.hasOwnProperty.call(response?.data, 'SERVICE_UNAVAILABLE')) {
-      errorMessage = t('serviceUnavailable', 'Appointment time is outside of service hours');
-    } else if (Object.prototype.hasOwnProperty.call(response?.data, 'PATIENT_DOUBLE_BOOKING')) {
-      if (context !== 'editing') {
-        errorMessage = t('patientDoubleBooking', 'Patient already booked for an appointment at this time');
-      } else {
-        errorMessage = null;
-      }
-    }
+    const errorMessage = getConflictErrorMessage(response?.data, context, t);
 
     if (response.status === 200 && errorMessage) {
       setIsSubmitting(false);

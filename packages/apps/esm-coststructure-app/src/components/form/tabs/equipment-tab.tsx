@@ -27,6 +27,14 @@ export default function EquipmentTab({ form }: Props) {
     name: 'equipmentCost',
   });
 
+  const handleEquipmentChange = (index: number, field: { onChange: (val: number) => void }, id: number) => {
+    field.onChange(id);
+    const equip = equipments?.find((i) => i.id === id);
+    if (equip) {
+      setValue(`equipmentCost.${index}.usefullYears`, equip.usefulLifeYears);
+    }
+  };
+
   const handleCreateRow = () => {
     append({
       equipmentId: 0,
@@ -93,15 +101,7 @@ export default function EquipmentTab({ form }: Props) {
                             <Select
                               {...field}
                               id={`equipment-select-${index}`}
-                              onChange={(e) => {
-                                const id = Number(e.target.value);
-                                field.onChange(id);
-
-                                const equip = equipments?.find((i) => i.id === id);
-                                if (equip) {
-                                  setValue(`equipmentCost.${index}.usefullYears`, equip.usefulLifeYears);
-                                }
-                              }}
+                              onChange={(e) => handleEquipmentChange(index, field, Number(e.target.value))}
                               labelText=""
                             >
                               <SelectItem text={t('selectEquipment', 'Seleccione Equipamiento')} value="" />

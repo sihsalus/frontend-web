@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import ReactJoyride, { ACTIONS, type CallBackProps, EVENTS } from 'react-joyride';
 import { useDefineAppContext } from '@openmrs/esm-framework';
 import { type TutorialContext, type ExtendedStep } from './types';
@@ -102,7 +103,8 @@ const RootComponent: React.FC = () => {
   };
 
   return (
-    <div
+    <AppErrorBoundary appName="esm-user-onboarding-app">
+      <div
       onMouseDown={(e) => {
         e.stopPropagation();
       }}
@@ -127,6 +129,7 @@ const RootComponent: React.FC = () => {
         tooltipComponent={(props) => <CustomTooltip {...props} step={steps[props.index]} totalSteps={steps.length} />}
       />
     </div>
+    </AppErrorBoundary>
   );
 };
 export default RootComponent;

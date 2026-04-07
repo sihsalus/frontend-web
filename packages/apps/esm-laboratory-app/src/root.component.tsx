@@ -1,14 +1,17 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LaboratoryDashboard from './laboratory-dashboard.component';
 
 const Root: React.FC = () => {
   return (
-    <BrowserRouter basename={`${window.spaBase}/home/laboratory`}>
+    <AppErrorBoundary appName="esm-laboratory-app">
+      <BrowserRouter basename={`${window.spaBase}/home/laboratory`}>
       <Routes>
         <Route path="/" element={<LaboratoryDashboard />} />
       </Routes>
     </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 

@@ -1,4 +1,5 @@
 import { Grid, Row } from '@carbon/react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { ExtensionSlot, useConnectivity, useSession } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
@@ -33,7 +34,8 @@ export default function Root() {
   );
 
   return (
-    <main className={classNames('omrs-main-content', styles.root)}>
+    <AppErrorBoundary appName="esm-patient-registration-app">
+      <main className={classNames('omrs-main-content', styles.root)}>
       <Grid className={styles.grid}>
         <Row>
           <ExtensionSlot name="breadcrumbs-slot" />
@@ -61,5 +63,6 @@ export default function Root() {
         </ResourcesContext.Provider>
       </Grid>
     </main>
+      </AppErrorBoundary>
   );
 }

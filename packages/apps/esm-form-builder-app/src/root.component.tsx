@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './components/dashboard/dashboard.component';
@@ -6,13 +7,15 @@ import FormEditor from './components/form-editor/form-editor.component';
 
 const RootComponent: React.FC = () => {
   return (
-    <BrowserRouter basename={`${window.spaBase}/form-builder`}>
+    <AppErrorBoundary appName="esm-form-builder-app">
+      <BrowserRouter basename={`${window.spaBase}/form-builder`}>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/new" element={<FormEditor />} />
         <Route path="/edit/:formUuid" element={<FormEditor />} />
       </Routes>
     </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 

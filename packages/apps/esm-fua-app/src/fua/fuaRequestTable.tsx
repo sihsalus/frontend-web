@@ -59,6 +59,59 @@ const estadoTagType: Record<string, TagType> = {
   Cancelado: 'magenta',
 };
 
+interface FuaActionsCellProps {
+  fuaRequest: FuaRequest;
+  onView: (fuaRequest: FuaRequest) => void;
+  onViewHistory: (fuaRequest: FuaRequest) => void;
+  onChangeStatus: (fuaRequest: FuaRequest) => void;
+  onResend: (fuaRequest: FuaRequest) => void;
+  onCancel: (fuaRequest: FuaRequest) => void;
+  t: (key: string, defaultValue: string) => string;
+}
+
+const FuaActionsCell: React.FC<FuaActionsCellProps> = ({
+  fuaRequest,
+  onView,
+  onViewHistory,
+  onChangeStatus,
+  onResend,
+  onCancel,
+  t,
+}) => (
+  <div>
+    <Button
+      kind="ghost"
+      size="sm"
+      renderIcon={View}
+      iconDescription={t('viewFua', 'Ver FUA')}
+      hasIconOnly
+      onClick={() => onView(fuaRequest)}
+      tooltipPosition="left"
+    />
+    <Button
+      kind="ghost"
+      size="sm"
+      renderIcon={EventSchedule}
+      iconDescription={t('viewHistory', 'Ver historial')}
+      hasIconOnly
+      onClick={() => onViewHistory(fuaRequest)}
+      tooltipPosition="left"
+    />
+    <OverflowMenu size="sm" flipped ariaLabel={t('actions', 'Acciones')}>
+      <OverflowMenuItem itemText={t('changeStatus', 'Cambiar Estado')} onClick={() => onChangeStatus(fuaRequest)} />
+      {fuaRequest?.fuaEstado?.nombre === FUA_ESTADOS.RECHAZADO.nombre && (
+        <OverflowMenuItem itemText={t('resend', 'Reenviar a SETI-SIS')} onClick={() => onResend(fuaRequest)} />
+      )}
+      <OverflowMenuItem
+        itemText={t('cancelFua', 'Cancelar FUA')}
+        onClick={() => onCancel(fuaRequest)}
+        isDelete
+        hasDivider
+      />
+    </OverflowMenu>
+  </div>
+);
+
 /** Resolves visitUuid → patient name + DNI inline with SWR */
 const PatientCell: React.FC<{ visitUuid: string }> = ({ visitUuid }) => {
   const { patient, dni, isLoading } = useVisit(visitUuid);
@@ -252,44 +305,15 @@ const FuaRequestTable: React.FC<FuaRequestTableProps> = ({ statusFilter = 'all' 
                               )}
                             </div>
                           ) : cell.info.header === 'actions' ? (
-                            <div className={styles.actionsCell}>
-                              <Button
-                                kind="ghost"
-                                size="sm"
-                                renderIcon={View}
-                                iconDescription={t('viewFua', 'Ver FUA')}
-                                hasIconOnly
-                                onClick={() => handleViewFua(fuaRequest.uuid)}
-                                tooltipPosition="left"
-                              />
-                              <Button
-                                kind="ghost"
-                                size="sm"
-                                renderIcon={EventSchedule}
-                                iconDescription={t('viewHistory', 'Ver historial')}
-                                hasIconOnly
-                                onClick={() => handleViewHistorial(fuaRequest)}
-                                tooltipPosition="left"
-                              />
-                              <OverflowMenu size="sm" flipped ariaLabel={t('actions', 'Acciones')}>
-                                <OverflowMenuItem
-                                  itemText={t('changeStatus', 'Cambiar Estado')}
-                                  onClick={() => handleChangeStatus(fuaRequest)}
-                                />
-                                {fuaRequest?.fuaEstado?.nombre === FUA_ESTADOS.RECHAZADO.nombre && (
-                                  <OverflowMenuItem
-                                    itemText={t('resend', 'Reenviar a SETI-SIS')}
-                                    onClick={() => handleReenviar(fuaRequest)}
-                                  />
-                                )}
-                                <OverflowMenuItem
-                                  itemText={t('cancelFua', 'Cancelar FUA')}
-                                  onClick={() => handleCancelFua(fuaRequest)}
-                                  isDelete
-                                  hasDivider
-                                />
-                              </OverflowMenu>
-                            </div>
+                            <FuaActionsCell
+                              fuaRequest={fuaRequest}
+                              onView={(req) => handleViewFua(req.uuid)}
+                              onViewHistory={handleViewHistorial}
+                              onChangeStatus={handleChangeStatus}
+                              onResend={handleReenviar}
+                              onCancel={handleCancelFua}
+                              t={t}
+                            />
                           ) : (
                             cell.value
                           )}

@@ -26,6 +26,42 @@ import { OTable } from '../data-table/o-table.component';
 
 import styles from './encounter-list.scss';
 
+function navigateToColumnLink(column: EncounterListColumn, encounter: OpenmrsEncounter) {
+  if (column.link.handleNavigate) {
+    column.link.handleNavigate(encounter);
+  } else if (column.link?.getUrl) {
+    navigate({ to: column.link.getUrl() });
+  }
+}
+
+function renderCellValue(column: EncounterListColumn, encounter: OpenmrsEncounter): React.ReactNode {
+  const val = column.getValue(encounter);
+  if (!column.link) return val;
+  return (
+    <Link
+      onClick={(e) => {
+        e.preventDefault();
+        navigateToColumnLink(column, encounter);
+      }}
+    >
+      {val}
+    </Link>
+  );
+}
+
+function renderActions(actions: Array<{ label: string }>): React.ReactNode {
+  const handleMenuItemClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+  return (
+    <OverflowMenu flipped className={styles.flippedOverflowMenu}>
+      {actions.map((actionItem, index) => (
+        <OverflowMenuItem key={index} itemText={actionItem.label} onClick={handleMenuItemClick} />
+      ))}
+    </OverflowMenu>
+  );
+}
+
 export interface O3FormSchema {
   name: string;
   pages: Array<Record<string, unknown>>;
@@ -152,40 +188,11 @@ export const EncounterList: React.FC<EncounterListProps> = ({
         };
         // process columns
         columns.forEach((column) => {
-          let val = column.getValue(encounter);
-          if (column.link) {
-            val = (
-              <Link
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (column.link.handleNavigate) {
-                    column.link.handleNavigate(encounter);
-                  } else {
-                    column.link?.getUrl && navigate({ to: column.link.getUrl() });
-                  }
-                }}
-              >
-                {val}
-              </Link>
-            );
-          }
-          tableRow[column.key] = val;
+          tableRow[column.key] = renderCellValue(column, encounter);
         });
         // If custom config is available, generate actions accordingly; otherwise, fallback to the default actions.
         const actions = tableRow.actions?.length ? tableRow.actions : defaultActions;
-        tableRow['actions'] = (
-          <OverflowMenu flipped className={styles.flippedOverflowMenu}>
-            {actions.map((actionItem, index) => (
-              <OverflowMenuItem
-                key={index}
-                itemText={actionItem.label}
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              />
-            ))}
-          </OverflowMenu>
-        );
+        tableRow['actions'] = renderActions(actions);
         return tableRow;
       });
       return rows;

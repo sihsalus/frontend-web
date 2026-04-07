@@ -1,9 +1,14 @@
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 
 import HelpMenu from './help-menu/help.component';
 
 const Root: React.FC = () => {
-  return <HelpMenu />;
+  return (
+    <AppErrorBoundary appName="esm-help-menu-app">
+      <HelpMenu />
+    </AppErrorBoundary>
+  );
 };
 
 export default Root;

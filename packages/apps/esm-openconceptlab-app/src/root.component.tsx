@@ -1,4 +1,5 @@
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from '@carbon/react';
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +13,8 @@ import Subscription from './subscription/subscription.component';
 const Root: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <main className={classNames('omrs-main-content', styles.main)}>
+    <AppErrorBoundary appName="esm-openconceptlab-app">
+      <main className={classNames('omrs-main-content', styles.main)}>
       <h3 className={styles.moduleHeader}>{t('moduleTitle', 'OCL Subscription Module')}</h3>
       <Tabs>
         <TabList aria-label="OCL tabs" className={styles.tabList} contained>
@@ -39,6 +41,7 @@ const Root: React.FC = () => {
         </TabPanels>
       </Tabs>
     </main>
+    </AppErrorBoundary>
   );
 };
 

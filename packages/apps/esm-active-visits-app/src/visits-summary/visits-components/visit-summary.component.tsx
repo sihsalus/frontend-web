@@ -7,6 +7,17 @@ import { useTranslation } from 'react-i18next';
 import type { Encounter, Note, Observation, Order, OrderItem } from '../../types';
 import styles from '../visit-detail-overview.scss';
 
+function findGroupMemberValue(obs: Observation, conceptDisplay: string): string | undefined {
+  return obs.groupMembers.find((mem) => mem.concept.display === conceptDisplay)?.value.display;
+}
+
+function extractDiagnosis(obs: Observation): DiagnosisItem | null {
+  const diagnosis = findGroupMemberValue(obs, 'PROBLEM LIST');
+  const order = findGroupMemberValue(obs, 'Diagnosis order');
+  if (!diagnosis || !order) return null;
+  return { diagnosis, order };
+}
+
 import MedicationSummary from './medications-summary.component';
 import NotesSummary from './notes-summary.component';
 import TestsSummary from './tests-summary.component';
@@ -51,10 +62,8 @@ const VisitSummary: React.FC<VisitSummaryProps> = ({ encounters, patientUuid }) 
         enc.obs.forEach((obs: Observation) => {
           if (obs.concept.display === 'Visit Diagnoses') {
             // Putting all the diagnoses in a single array.
-            diagnoses.push({
-              diagnosis: obs.groupMembers.find((mem) => mem.concept.display === 'PROBLEM LIST').value.display,
-              order: obs.groupMembers.find((mem) => mem.concept.display === 'Diagnosis order').value.display,
-            });
+            const diagnosisItem = extractDiagnosis(obs);
+            if (diagnosisItem) diagnoses.push(diagnosisItem);
           } else if (obs.concept.display === 'Text of encounter note') {
             // Putting all notes in a single array.
             notes.push({

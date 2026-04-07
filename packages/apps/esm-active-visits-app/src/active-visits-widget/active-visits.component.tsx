@@ -71,21 +71,17 @@ const ActiveVisitsTable = () => {
   );
 
   const searchResults = useMemo(() => {
-    if (activeVisits !== undefined && activeVisits.length > 0) {
-      if (searchString && searchString.trim() !== '') {
-        const search = searchString.toLowerCase();
-        return activeVisits?.filter((activeVisitRow) =>
-          Object.entries(activeVisitRow).some(([header, value]) => {
-            if (header === 'patientUuid') {
-              return false;
-            }
-            return `${value}`.toLowerCase().includes(search);
-          }),
-        );
-      }
-    }
+    if (!activeVisits?.length) return activeVisits.map(transformVisitForDisplay);
 
-    return activeVisits.map(transformVisitForDisplay);
+    const trimmed = searchString?.trim();
+    if (!trimmed) return activeVisits.map(transformVisitForDisplay);
+
+    const search = trimmed.toLowerCase();
+    return activeVisits.filter((activeVisitRow) =>
+      Object.entries(activeVisitRow).some(
+        ([header, value]) => header !== 'patientUuid' && `${value}`.toLowerCase().includes(search),
+      ),
+    );
   }, [searchString, activeVisits, transformVisitForDisplay]);
 
   const { sortedRows, sortRow } = useActiveVisitsSorting(searchResults);

@@ -13,12 +13,12 @@ import {
 } from '@carbon/react';
 import { Add } from '@carbon/react/icons';
 import {
+  formatDate,
+  isOmrsDateStrict,
   launchWorkspace,
+  parseDate,
   useLayoutType,
   usePagination,
-  formatDate,
-  parseDate,
-  isOmrsDateStrict,
 } from '@openmrs/esm-framework';
 import {
   CardHeader,
@@ -32,6 +32,20 @@ import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './patient-summary-table.scss';
+
+function isDateLike(val: unknown): boolean {
+  if (!val || typeof val === 'number') return false;
+  const strVal = String(val);
+  const datePattern = /^\d{4}-\d{2}-\d{2}|^\d{2}\/\d{2}\/\d{4}/;
+  if (!datePattern.test(strVal)) return false;
+  if (isOmrsDateStrict(strVal)) return true;
+  try {
+    const parsed = parseDate(strVal);
+    return !isNaN(parsed.getTime()) && parsed.getFullYear() > 1900;
+  } catch {
+    return false;
+  }
+}
 
 // Tipar la respuesta del dataHook
 interface DataHookResponse<T> {
@@ -105,25 +119,6 @@ const PatientSummaryTable = <T,>({
         const rawValue = item[dataKey as keyof T];
         let value: string;
 
-        const isDateLike = (val: unknown): boolean => {
-          if (!val || typeof val === 'number') return false;
-          const strVal = String(val);
-
-          // Check if it matches common date patterns, TODO refine this methods
-          const datePattern = /^\d{4}-\d{2}-\d{2}|^\d{2}\/\d{2}\/\d{4}/;
-          if (!datePattern.test(strVal)) return false;
-
-          if (isOmrsDateStrict(strVal)) {
-            return true;
-          }
-
-          try {
-            const parsed = parseDate(strVal);
-            return !isNaN(parsed.getTime()) && parsed.getFullYear() > 1900;
-          } catch (e) {
-            return false;
-          }
-        };
         if (rawValue && typeof rawValue === 'object' && 'display' in rawValue) {
           value = (rawValue as { display: string }).display;
         } else if (Array.isArray(rawValue)) {

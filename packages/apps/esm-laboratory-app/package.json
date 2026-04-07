@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@carbon/react": "^1.83.0",
+    "@sihsalus/rbac": "workspace:*",
     "lodash-es": "^4.17.21",
     "react-hook-form": "^7.52.1"
   },

@@ -14,6 +14,24 @@ import React, { useMemo, useState } from 'react';
 
 import styles from './paginated-clinical-data.scss';
 
+const StyledTableCell: React.FC<{ interpretation: string; children: React.ReactNode }> = ({
+  interpretation,
+  children,
+}) => {
+  switch (interpretation) {
+    case 'critically_high':
+      return <TableCell className={styles.criticallyHigh}>{children}</TableCell>;
+    case 'critically_low':
+      return <TableCell className={styles.criticallyLow}>{children}</TableCell>;
+    case 'high':
+      return <TableCell className={styles.high}>{children}</TableCell>;
+    case 'low':
+      return <TableCell className={styles.low}>{children}</TableCell>;
+    default:
+      return <TableCell>{children}</TableCell>;
+  }
+};
+
 interface PaginatedTableRow {
   id: string;
   [key: string]: string | number | React.ReactNode;
@@ -40,21 +58,6 @@ const PaginatedClinicalData: React.FC<PaginatedClinicalDataProps> = ({
   tableRows,
 }) => {
   const isTablet = useLayoutType() === 'tablet';
-
-  const StyledTableCell = ({ interpretation, children }: { interpretation: string; children: React.ReactNode }) => {
-    switch (interpretation) {
-      case 'critically_high':
-        return <TableCell className={styles.criticallyHigh}>{children}</TableCell>;
-      case 'critically_low':
-        return <TableCell className={styles.criticallyLow}>{children}</TableCell>;
-      case 'high':
-        return <TableCell className={styles.high}>{children}</TableCell>;
-      case 'low':
-        return <TableCell className={styles.low}>{children}</TableCell>;
-      default:
-        return <TableCell>{children}</TableCell>;
-    }
-  };
 
   const [sortParams, setSortParams] = useState<{ key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' }>({
     key: '',
@@ -119,21 +122,22 @@ const PaginatedClinicalData: React.FC<PaginatedClinicalDataProps> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.cells.map((cell) => {
-                      const dataObj = paginatedData.find((obj) => obj.id === row.id);
-                      const interpretationKey = `${cell.id.substring(2)}Interpretation`;
-                      const vitalSignInterpretation = dataObj && dataObj[interpretationKey];
-
-                      return (
-                        <StyledTableCell key={`styled-cell-${cell.id}`} interpretation={vitalSignInterpretation}>
-                          {cell.value?.content ?? cell.value}
-                        </StyledTableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
+                {rows.map((row) => {
+                  const dataObj = paginatedData.find((obj) => obj.id === row.id);
+                  return (
+                    <TableRow key={row.id}>
+                      {row.cells.map((cell) => {
+                        const interpretationKey = `${cell.id.substring(2)}Interpretation`;
+                        const vitalSignInterpretation = dataObj && dataObj[interpretationKey];
+                        return (
+                          <StyledTableCell key={`styled-cell-${cell.id}`} interpretation={vitalSignInterpretation}>
+                            {cell.value?.content ?? cell.value}
+                          </StyledTableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

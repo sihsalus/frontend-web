@@ -35,6 +35,25 @@ export default function InfrastructureTab({ form }: Props) {
     name: 'publicServices',
   });
 
+  const handleInfrastructureChange = (index: number, field: { onChange: (val: string) => void }, id: string) => {
+    field.onChange(id);
+    const infra = infrastructures.find((i) => i.id === Number(id));
+    if (infra) {
+      setValue(`infrastructures.${index}.areaM2`, infra.areaM2);
+      setValue(`infrastructures.${index}.constructionCost`, infra.constructionCost);
+      setValue(`infrastructures.${index}.infrastructureName`, infra.locationName);
+    }
+    const totalConstruction = calculateTotalValidConsruction(infra?.areaM2 || 0, infra?.constructionCost || 0);
+    const depreciationPerMinute = calculateDepreciationByMinutes(totalConstruction);
+    const newCalculateFields = [...calculateFields];
+    if (!newCalculateFields[index]) {
+      newCalculateFields.push({ totalConstruction, depreciationPerMinute });
+    } else {
+      newCalculateFields[index] = { totalConstruction, depreciationPerMinute };
+    }
+    setCalculateFields(newCalculateFields);
+  };
+
   const handleCreateRow = () => {
     append({
       infrastructureId: 0,
@@ -101,29 +120,7 @@ export default function InfrastructureTab({ form }: Props) {
                             id={`infrastructure-select-${index}`}
                             key={row.id}
                             {...field}
-                            onChange={(e) => {
-                              const id = e.target.value;
-                              field.onChange(id);
-
-                              const infra = infrastructures.find((i) => i.id === Number(id));
-                              if (infra) {
-                                setValue(`infrastructures.${index}.areaM2`, infra.areaM2);
-                                setValue(`infrastructures.${index}.constructionCost`, infra.constructionCost);
-                                setValue(`infrastructures.${index}.infrastructureName`, infra.locationName);
-                              }
-                              const totalConstruction = calculateTotalValidConsruction(
-                                infra?.areaM2 || 0,
-                                infra?.constructionCost || 0,
-                              );
-                              const depreciationPerMinute = calculateDepreciationByMinutes(totalConstruction);
-                              const newCalculateFields = [...calculateFields];
-                              if (!newCalculateFields[index]) {
-                                newCalculateFields.push({ totalConstruction, depreciationPerMinute });
-                              } else {
-                                newCalculateFields[index] = { totalConstruction, depreciationPerMinute };
-                              }
-                              setCalculateFields(newCalculateFields);
-                            }}
+                            onChange={(e) => handleInfrastructureChange(index, field, e.target.value)}
                             labelText=""
                           >
                             <SelectItem text={t('selectInfrastructure', 'Seleccione infraestructura')} value="" />

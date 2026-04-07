@@ -1,3 +1,11 @@
 {
-    "odontogram": "Odontograma"
+    "cancel": "Cancelar",
+    "odontogram": "Odontograma",
+    "odontogramSaved": "Odontograma guardado",
+    "odontogramSavedSubtitle": "Los hallazgos del odontograma se guardaron exitosamente.",
+    "odontogramSaveError": "Error al guardar odontograma",
+    "odontogramSaveErrorSubtitle": "No se pudieron guardar los hallazgos. Intente nuevamente.",
+    "registerFindings": "Registrar hallazgos",
+    "saveOdontogram": "Guardar odontograma",
+    "saving": "Guardando..."
 }

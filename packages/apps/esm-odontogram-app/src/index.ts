@@ -11,7 +11,7 @@ const options = {
 const dashboardMeta = {
   slot: 'patient-chart-odontogram-slot',
   columns: 1,
-  title: 'Odontogram',
+  title: 'Odontograma',
   path: 'odontogram',
   isLink: true,
 };
@@ -19,14 +19,15 @@ const dashboardMeta = {
 // Standalone dev page
 export const root = getAsyncLifecycle(() => import('./root.component'), options);
 
-// Patient Chart integration
+// Nav link (renders inside special-clinics-slot)
 export const odontogramDashboardLink = getSyncLifecycle(
   createDashboardLink({ ...dashboardMeta, moduleName: options.moduleName }),
   options,
 );
 
+// Dashboard card shown when the nav link is clicked
 export const odontogramWidget = getAsyncLifecycle(
-  () => import('./odontogram-workspace/odontogram-workspace.component'),
+  () => import('./odontogram-dashboard/odontogram-dashboard.component'),
   options,
 );
 
