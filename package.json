@@ -20,6 +20,7 @@
     "test:coverage": "turbo run test -- --coverage",
     "test:watch": "turbo run test:watch",
     "test:e2e": "playwright test",
+    "test:e2e:a11y": "playwright test -g \"@accessibility\"",
     "lint": "turbo run lint",
     "typecheck": "turbo run typescript",
     "verify": "turbo run lint typescript test",

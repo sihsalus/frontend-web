@@ -117,9 +117,21 @@
         "name": "declinedPanel",
         "title": "Rechazadas"
       }
+    },
+    {
+      "name": "fua-encounter-action-menu",
+      "component": "fuaEncounterActionMenu",
+      "slot": "action-menu-patient-chart-items-slot",
+      "order": 4
     }
   ],
   "workspaces": [
+    {
+      "name": "fua-encounter-workspace",
+      "component": "fuaEncounterWorkspace",
+      "type": "fua-encounter",
+      "title": "createFuaWorkspaceTitle"
+    },
     {
       "name": "fua-viewer-workspace",
       "component": "fuaViewerWorkspace",

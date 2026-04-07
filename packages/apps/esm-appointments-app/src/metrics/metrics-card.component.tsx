@@ -14,8 +14,7 @@ interface MetricsCardProps {
   label: string;
   value: number;
   headerLabel: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  count?: { pendingAppointments: Array<any>; arrivedAppointments: Array<any> };
+  count?: { pendingAppointments: Array<Appointment>; arrivedAppointments: Array<Appointment> };
 }
 
 const MetricsCard: React.FC<MetricsCardProps> = ({ label, value, headerLabel, count }) => {

@@ -85,5 +85,14 @@
   "resend": "Reenviar a SETI-SIS",
   "fuaReset": "FUA devuelto a Pendiente para corrección",
   "setiSisObservation": "Observación SETI-SIS",
-  "noFuaForPatient": "No hay FUAs registrados para este paciente"
+  "noFuaForPatient": "No hay FUAs registrados para este paciente",
+  "createFua": "Crear FUA",
+  "createFuaWorkspaceTitle": "Crear FUA",
+  "creatingFua": "Creando FUA...",
+  "fuaCreated": "FUA creado",
+  "fuaCreatedWithEncounter": "Se creó un encuentro y se inició el FUA correctamente",
+  "errorCreatingFua": "Ocurrió un error al crear el FUA",
+  "couldNotCreateEncounter": "No se pudo crear el encuentro para FUA",
+  "retry": "Reintentar",
+  "noActiveVisitForFua": "No hay una visita activa para crear FUA"
 }

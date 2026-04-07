@@ -28,6 +28,7 @@ export enum AppointmentKind {
   WALKIN = 'WalkIn',
   VIRTUAL = 'Virtual',
 }
+
 // TODO: remove interface elements that aren't actually present on the Appointment object returned from the Appointment API
 export interface Appointment {
   appointmentKind: AppointmentKind;
@@ -54,10 +55,10 @@ export interface Appointment {
   additionalInfo?: string | null;
   serviceTypes?: Array<ServiceTypes> | null;
   voided: boolean;
-  extensions: {};
+  extensions: Record<string, unknown>;
   teleconsultationLink: string | null;
 }
-  value: unknown;
+
 export interface AppointmentsFetchResponse {
   data: Array<Appointment>;
 }
@@ -115,7 +116,7 @@ export interface Observation {
       display: string;
     };
   }>;
-  value: any;
+  value: unknown;
   obsDatetime: string;
 }
 

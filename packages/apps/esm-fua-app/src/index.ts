@@ -1,6 +1,7 @@
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle } from '@openmrs/esm-framework';
 
 import { configSchema } from './config-schema';
+import fuaEncounterActionComponent from './fua-encounter-action.component';
 import { createLeftPanelLink } from './left-panel-link.component';
 import rootComponent from './root.component';
 
@@ -91,6 +92,14 @@ export const fuaHtmlViewer = getAsyncLifecycle(() => import('./components/fua-ht
 // WORKSPACES
 // ================================================================================
 export const fuaViewerWorkspace = getAsyncLifecycle(() => import('./workspaces/fua-viewer.workspace'), options);
+
+// t('createFuaWorkspaceTitle', 'Crear FUA')
+export const fuaEncounterWorkspace = getAsyncLifecycle(() => import('./workspaces/fua-encounter.workspace'), options);
+
+// ================================================================================
+// PATIENT CHART ACTION MENU
+// ================================================================================
+export const fuaEncounterActionMenu = getSyncLifecycle(fuaEncounterActionComponent, options);
 
 // ================================================================================
 // FUA VIEWER PAGE

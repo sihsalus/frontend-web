@@ -1,10 +1,10 @@
 import { getGlobalStore } from '@openmrs/esm-framework';
+import { type ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface OverlayStore {
   isOverlayOpen: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component?: any;
+  component?: ReactNode;
   header: string;
 }
 
@@ -14,8 +14,7 @@ const getOverlayStore = () => {
   return getGlobalStore('appointment-store', initialState);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const launchOverlay = (headerTitle: string, componentToRender: any) => {
+export const launchOverlay = (headerTitle: string, componentToRender: ReactNode) => {
   const store = getOverlayStore();
   store.setState({ isOverlayOpen: true, component: componentToRender, header: headerTitle });
 };
