@@ -1,3 +1,4 @@
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -7,7 +8,7 @@ import styles from './root.scss';
 
 export default function Root() {
   return (
-    <>
+    <AppErrorBoundary appName="esm-patient-chart-app">
       <div className={styles.patientChartWrapper}>
         <BrowserRouter basename={spaRoot}>
           <Routes>
@@ -16,7 +17,7 @@ export default function Root() {
           </Routes>
         </BrowserRouter>
       </div>
-    </>
+    </AppErrorBoundary>
   );
 }
 
