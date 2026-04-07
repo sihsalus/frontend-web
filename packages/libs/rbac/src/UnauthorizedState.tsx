@@ -1,5 +1,5 @@
 import { Tile } from '@carbon/react';
-import { Lock } from '@carbon/react/icons';
+import { Locked } from '@carbon/react/icons';
 import React from 'react';
 
 interface UnauthorizedStateProps {
@@ -14,7 +14,7 @@ export function UnauthorizedState({ privilege, description }: UnauthorizedStateP
   return (
     <Tile>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-        <Lock size={20} />
+        <Locked size={20} />
         <strong>Access Denied</strong>
       </div>
       <p>{body}</p>

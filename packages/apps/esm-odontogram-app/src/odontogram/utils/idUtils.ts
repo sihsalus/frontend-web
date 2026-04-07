@@ -13,19 +13,27 @@ export type EntityType = 'tooth' | 'space';
  * Soporta sistema dual de identificación para dientes y espacios
  */
 export class IdUtils {
+  private static getTeethMap(): Record<string, string> {
+    return idMapping.teeth as Record<string, string>;
+  }
+
+  private static getSpacesMap(position: ToothPosition): Record<string, string> | null {
+    return (idMapping.spaces as Record<string, Record<string, string>>)[position] ?? null;
+  }
+
   /**
    * Obtiene el UUID de un diente basado en su ID numérico
    */
   static getToothUuid(numericId: number): string | null {
     const toothId = numericId.toString();
-    return (idMapping.teeth as Record<string, string>)[toothId] || null;
+    return this.getTeethMap()[toothId] ?? null;
   }
 
   /**
    * Obtiene el ID numérico de un diente basado en su UUID
    */
   static getToothNumericId(uuid: string): number | null {
-    const teeth = idMapping.teeth as Record<string, string>;
+    const teeth = this.getTeethMap();
     for (const [numericId, toothUuid] of Object.entries(teeth)) {
       if (toothUuid === uuid) {
         return parseInt(numericId);
@@ -39,17 +47,17 @@ export class IdUtils {
    */
   static getSpaceUuid(numericId: number, position: ToothPosition): string | null {
     const spaceId = numericId.toString();
-    const spaces = (idMapping.spaces as Record<string, Record<string, string>>)[position];
-    return spaces?.[spaceId] || null;
+    const spaces = this.getSpacesMap(position);
+    return spaces?.[spaceId] ?? null;
   }
 
   /**
    * Obtiene el ID numérico de un espacio basado en su UUID y posición
    */
   static getSpaceNumericId(uuid: string, position: ToothPosition): number | null {
-    const spaces = (idMapping.spaces as Record<string, Record<string, string>>)[position];
+    const spaces = this.getSpacesMap(position);
     if (!spaces) return null;
-    
+
     for (const [numericId, spaceUuid] of Object.entries(spaces)) {
       if (spaceUuid === uuid) {
         return parseInt(numericId, 10);
@@ -65,10 +73,13 @@ export class IdUtils {
     if (type === 'tooth') {
       const uuid = this.getToothUuid(numericId);
       return uuid ? { numericId, uuid } : null;
-    } else if (type === 'space' && position) {
+    }
+
+    if (type === 'space' && position) {
       const uuid = this.getSpaceUuid(numericId, position);
       return uuid ? { numericId, uuid } : null;
     }
+
     return null;
   }
 
@@ -78,11 +89,14 @@ export class IdUtils {
   static fromDualId(uuid: string, type: EntityType, position?: ToothPosition): DualId | null {
     if (type === 'tooth') {
       const numericId = this.getToothNumericId(uuid);
-      return numericId ? { numericId, uuid } : null;
-    } else if (type === 'space' && position) {
-      const numericId = this.getSpaceNumericId(uuid, position);
-      return numericId ? { numericId, uuid } : null;
+      return numericId !== null ? { numericId, uuid } : null;
     }
+
+    if (type === 'space' && position) {
+      const numericId = this.getSpaceNumericId(uuid, position);
+      return numericId !== null ? { numericId, uuid } : null;
+    }
+
     return null;
   }
 
@@ -91,12 +105,13 @@ export class IdUtils {
    */
   static isValidUuid(uuid: string, type: EntityType, position?: ToothPosition): boolean {
     if (type === 'tooth') {
-      const teeth = idMapping.teeth as Record<string, string>;
-      return Object.values(teeth).includes(uuid);
-    } else if (type === 'space' && position) {
-      const spaces = (idMapping.spaces as Record<string, Record<string, string>>)[position];
-      return Object.values(spaces).includes(uuid);
+      return Object.values(this.getTeethMap()).includes(uuid);
     }
+
+    if (type === 'space' && position) {
+      return Object.values(this.getSpacesMap(position) ?? {}).includes(uuid);
+    }
+
     return false;
   }
 
@@ -104,9 +119,9 @@ export class IdUtils {
    * Obtiene todos los UUIDs de dientes de una posición específica
    */
   static getToothUuidsByPosition(position: ToothPosition): string[] {
-    const teeth = idMapping.teeth as Record<string, string>;
+    const teeth = this.getTeethMap();
     const uuids: string[] = [];
-    
+
     for (const [numericId, uuid] of Object.entries(teeth)) {
       const numId = parseInt(numericId, 10);
       if (position === 'upper' && (numId >= 11 && numId <= 28)) {
@@ -123,7 +138,7 @@ export class IdUtils {
    * Obtiene todos los UUIDs de espacios de una posición específica
    */
   static getSpaceUuidsByPosition(position: ToothPosition): string[] {
-    const spaces = (idMapping.spaces as Record<string, Record<string, string>>)[position];
+    const spaces = this.getSpacesMap(position);
     return spaces ? Object.values(spaces) : [];
   }
 } 
