@@ -1,3 +1,4 @@
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import { useConfig, useLeftNav } from '@openmrs/esm-framework';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -16,14 +17,16 @@ const Root: React.FC = () => {
   });
 
   return (
-    <main className="omrs-main-content">
-      <BrowserRouter basename={window.spaBase}>
-        <Routes>
-          <Route path="/home" element={<DefaultDashboardRedirect />} />
-          <Route path="/home/:dashboard/*" element={<DashboardContainer />} />
-        </Routes>
-      </BrowserRouter>
-    </main>
+    <AppErrorBoundary appName="esm-home-app">
+      <main className="omrs-main-content">
+        <BrowserRouter basename={window.spaBase}>
+          <Routes>
+            <Route path="/home" element={<DefaultDashboardRedirect />} />
+            <Route path="/home/:dashboard/*" element={<DashboardContainer />} />
+          </Routes>
+        </BrowserRouter>
+      </main>
+    </AppErrorBoundary>
   );
 };
 

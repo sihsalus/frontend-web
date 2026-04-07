@@ -1,5 +1,3 @@
-/**
- * @sihsalus/audit-logger
- * Client-side audit trail logging for HIPAA compliance.
- */
-export {};
+export { auditLogger } from './AuditLogger';
+export { useAuditLogger } from './useAuditLogger';
+export type { AuditEvent, AuditLoggerConfig } from './types';

@@ -76,7 +76,6 @@
     "@typescript-eslint/parser": "^8.54.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.3.1",
-    "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",

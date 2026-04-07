@@ -84,7 +84,7 @@
     "lint": {
       "inputs": [
         "src/**/*.{ts,tsx}",
-        "$TURBO_ROOT$/.eslintrc"
+        "$TURBO_ROOT$/eslint.config.js"
       ]
     },
     "typescript": {

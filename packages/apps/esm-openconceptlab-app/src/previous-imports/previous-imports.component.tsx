@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import { formatDatetime, showNotification, usePagination } from '@openmrs/esm-framework';
+import { ErrorState, formatDatetime, usePagination } from '@openmrs/esm-framework';
 import React, { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -46,10 +46,7 @@ const PreviousImports: React.FC = () => {
   }
 
   if (error) {
-    showNotification({
-      kind: 'error',
-      description: t('previousImportsFetchError', 'Error occured while fetching the imports'),
-    });
+    return <ErrorState headerTitle={t('previousImports', 'Previous Imports')} error={error} />;
   }
 
   const headerData = [
@@ -77,8 +74,6 @@ const PreviousImports: React.FC = () => {
   });
 
   return (
-    !isLoading &&
-    !error && (
       <Grid className={styles.grid}>
         <Column sm={4} md={8} lg={10}>
           <h3 className={styles.productiveHeading03}>{t('previousImports', 'Previous Imports')}</h3>
@@ -123,7 +118,7 @@ const PreviousImports: React.FC = () => {
             page={currentPage}
             pageSize={pageSize}
             pageSizes={[10, 20, 50, 100]}
-            totalItems={prevImports.length}
+            totalItems={prevImports?.length ?? 0}
             onChange={({ page, pageSize }) => {
               goTo(page);
               setPageSize(pageSize);
@@ -131,7 +126,6 @@ const PreviousImports: React.FC = () => {
           />
         </Column>
       </Grid>
-    )
   );
 };
 

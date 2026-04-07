@@ -77,7 +77,6 @@
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
     "dayjs": "^1.11.7",
-    "eslint": "^8.50.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest-dom": "^5.5.0",
     "eslint-plugin-playwright": "^2.2.0",

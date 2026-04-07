@@ -1,0 +1,54 @@
+import { Button, Tile } from '@carbon/react';
+import { reportError } from '@openmrs/esm-framework';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+
+import { auditLogger } from '@sihsalus/audit-logger';
+
+interface AppErrorBoundaryProps {
+  appName: string;
+  children: ReactNode;
+  onError?: (error: Error, info: ErrorInfo) => void;
+}
+
+interface AppErrorBoundaryState {
+  error: Error | null;
+}
+
+export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorBoundaryState> {
+  state: AppErrorBoundaryState = { error: null };
+
+  static getDerivedStateFromError(error: Error): AppErrorBoundaryState {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo): void {
+    reportError(error);
+    auditLogger.log({
+      eventType: 'UNHANDLED_ERROR',
+      metadata: {
+        appName: this.props.appName,
+        message: error.message,
+        componentStack: info.componentStack ?? '',
+      },
+    });
+    this.props.onError?.(error, info);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <Tile>
+          <p>
+            <strong>An unexpected error occurred in {this.props.appName}.</strong>
+          </p>
+          <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>{this.state.error.message}</p>
+          <Button kind="ghost" size="sm" style={{ marginTop: '1rem' }} onClick={() => window.location.reload()}>
+            Reload page
+          </Button>
+        </Tile>
+      );
+    }
+
+    return this.props.children;
+  }
+}

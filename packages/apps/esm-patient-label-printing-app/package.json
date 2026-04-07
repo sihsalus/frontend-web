@@ -46,7 +46,6 @@
     "react-router-dom": "6.x"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
     "openmrs": "*",
     "typescript": "^5.8.3"
   }

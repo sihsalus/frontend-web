@@ -1,21 +1,8 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
 
-import type { Import, Subscription } from '../types';
+import type { Import } from '../types';
 
-export function useSubscription() {
-  const { data, error, isLoading, isValidating } = useSWR<{ data: { results: Subscription[] } }, Error>(
-    '/ws/rest/v1/openconceptlab/subscription?v=full',
-    openmrsFetch,
-  );
-
-  return {
-    data: data?.data?.results[0],
-    error,
-    isLoading,
-    isValidating,
-  };
-}
+export { useSubscription } from '../subscription/subscription.resource';
 
 export async function startImportWithSubscription(abortController?: AbortController) {
   const url = '/ws/rest/v1/openconceptlab/import';

@@ -39,7 +39,6 @@
     "single-spa": "6.x"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
     "jest": "^29.7.0",
     "typescript": "^5.8.3"
   }

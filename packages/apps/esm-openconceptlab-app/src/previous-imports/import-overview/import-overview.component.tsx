@@ -1,4 +1,5 @@
 import { formatDatetime } from '@openmrs/esm-framework';
+import { isRunningImport } from '../../types';
 import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +23,11 @@ const ImportOverview: React.FC<ImportOverviewProps> = ({ selectedImportObject })
       <br />
 
       <span className={styles.heading01}>{t('completedOn', 'Completed on')} </span>
-      <span className="body">{formatDatetime(new Date(selectedImportObject.localDateStopped))}</span>
+      <span className="body">
+        {isRunningImport(selectedImportObject)
+          ? t('inProgress', 'In progress')
+          : formatDatetime(new Date(selectedImportObject.localDateStopped))}
+      </span>
       <br />
 
       <span className={styles.heading01}>{t('duration', 'Duration')} </span>

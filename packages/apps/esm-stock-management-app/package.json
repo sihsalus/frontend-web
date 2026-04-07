@@ -83,7 +83,6 @@
     "@typescript-eslint/parser": "^8.58.0",
     "css-loader": "^6.8.1",
     "dayjs": "^1.11.9",
-    "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-testing-library": "^6.3.0",

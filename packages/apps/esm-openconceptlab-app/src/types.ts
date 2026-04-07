@@ -1,3 +1,14 @@
+export const enum OclErrorCode {
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  CONFLICT = 409,
+  UNAVAILABLE = 503,
+}
+
+export function isRunningImport(imp: Import): boolean {
+  return imp.status === 'RUNNING' && !imp.localDateStopped;
+}
+
 export interface Subscription {
   uuid: string;
   url: string;

@@ -55,7 +55,6 @@
   "devDependencies": {
     "@rspack/cli": "1.7.11",
     "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^8.55.0",
     "happy-dom": "^20.6.0",
     "openmrs": "*",
     "react": "^18.3.1",

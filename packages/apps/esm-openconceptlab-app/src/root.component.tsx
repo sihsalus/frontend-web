@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import OclErrorBoundary from './error-boundary.component';
 import Import from './import/import.component';
 import PreviousImports from './previous-imports/previous-imports.component';
 import styles from './root.scss';
@@ -21,13 +22,19 @@ const Root: React.FC = () => {
         </TabList>
         <TabPanels>
           <TabPanel className={styles.tabPanel}>
-            <Subscription />
+            <OclErrorBoundary headerTitle="Subscription">
+              <Subscription />
+            </OclErrorBoundary>
           </TabPanel>
           <TabPanel className={styles.tabPanel}>
-            <Import />
+            <OclErrorBoundary headerTitle="Import">
+              <Import />
+            </OclErrorBoundary>
           </TabPanel>
           <TabPanel className={styles.tabPanel}>
-            <PreviousImports />
+            <OclErrorBoundary headerTitle="Previous Imports">
+              <PreviousImports />
+            </OclErrorBoundary>
           </TabPanel>
         </TabPanels>
       </Tabs>

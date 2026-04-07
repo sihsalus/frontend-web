@@ -81,7 +81,6 @@
     "@typescript-eslint/parser": "^8.58.0",
     "dayjs": "^1.11.13",
     "dotenv": "^17.3.1",
-    "eslint": "^8.50.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jest-dom": "^5.4.0",
     "eslint-plugin-prettier": "^5.1.3",

@@ -13,12 +13,12 @@ import {
   TextInput,
   TextInputSkeleton,
 } from '@carbon/react';
-import { showNotification } from '@openmrs/esm-framework';
+import { ErrorState, showSnackbar } from '@openmrs/esm-framework';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSWRConfig } from 'swr';
 
-import { isVersionDefinedInUrl } from '../utils';
+import { extractOclErrorMessage, isAbortError, isVersionDefinedInUrl } from '../utils';
 
 import { deleteSubscription, updateSubscription, useSubscription } from './subscription.resource';
 import styles from './subscription.scss';
@@ -72,9 +72,9 @@ const Subscription: React.FC = () => {
       evt.stopPropagation();
 
       if (isSnapshotOptionDisabled && isSubscribedToSnapshot) {
-        showNotification({
+        showSnackbar({
           kind: 'error',
-          description: t(
+          subtitle: t(
             'snapshotDisabledError',
             "You cannot subscribe to a SNAPSHOT if you've provided the collection version",
           ),
@@ -84,36 +84,45 @@ const Subscription: React.FC = () => {
 
       const abortController = new AbortController();
 
-      const updatedSubscription = {
-        ...subscription,
-        url: subscriptionUrl,
-        token: token,
-        validationType: validationType,
-        subscribedToSnapshot: isSubscribedToSnapshot,
-      };
-      mutate('/ws/rest/v1/openconceptlab/subscription?v=full', updatedSubscription, false);
+      try {
+        const updatedSubscription = {
+          ...subscription,
+          url: subscriptionUrl,
+          token: token,
+          validationType: validationType,
+          subscribedToSnapshot: isSubscribedToSnapshot,
+        };
+        mutate('/ws/rest/v1/openconceptlab/subscription?v=full', updatedSubscription, false);
 
-      const response = await updateSubscription(updatedSubscription, abortController);
-      mutate('/ws/rest/v1/openconceptlab/subscription?v=full');
+        const response = await updateSubscription(updatedSubscription, abortController);
+        mutate('/ws/rest/v1/openconceptlab/subscription?v=full');
 
-      if (response.ok) {
-        showNotification({
-          kind: 'success',
-          description: t(
-            response.status === 201 ? 'subscriptionCreated' : 'subscriptionUpdated',
-            response.status === 201 ? 'Subscription created successfully' : 'Subscription updated successfully',
-          ),
-        });
-      } else {
-        showNotification({
-          title: t('errorSavingSubscription', 'Error occured while saving the subscription'),
-          kind: 'error',
-          critical: true,
-          description: JSON.stringify(response.data),
-        });
+        if (response.ok) {
+          showSnackbar({
+            kind: 'success',
+            subtitle: t(
+              response.status === 201 ? 'subscriptionCreated' : 'subscriptionUpdated',
+              response.status === 201 ? 'Subscription created successfully' : 'Subscription updated successfully',
+            ),
+          });
+        } else {
+          showSnackbar({
+            title: t('errorSavingSubscription', 'Error saving subscription'),
+            kind: 'error',
+            subtitle: extractOclErrorMessage(response, t),
+          });
+        }
+      } catch (err) {
+        if (!isAbortError(err)) {
+          showSnackbar({
+            title: t('errorSavingSubscription', 'Error saving subscription'),
+            kind: 'error',
+            subtitle: t('networkError', 'A network error occurred — check your connection'),
+          });
+        }
+      } finally {
+        abortController.abort();
       }
-
-      return () => abortController.abort();
     },
     [subscriptionUrl, token, validationType, isSubscribedToSnapshot, isSnapshotOptionDisabled, subscription, t, mutate],
   );
@@ -125,9 +134,9 @@ const Subscription: React.FC = () => {
     setValidationType(subscription?.validationType || 'FULL');
     setIsSnapshotOptionDisabled(subscription ? isVersionDefinedInUrl(subscription.url) : false);
 
-    showNotification({
+    showSnackbar({
       kind: 'info',
-      description: t('cancelledChanges', 'Cancelled changes successfully'),
+      subtitle: t('cancelledChanges', 'Cancelled changes successfully'),
     });
   }, [subscription, t]);
 
@@ -137,29 +146,38 @@ const Subscription: React.FC = () => {
       evt.stopPropagation();
       const abortController = new AbortController();
 
-      const response = await deleteSubscription(subscription, abortController);
-      mutate('/ws/rest/v1/openconceptlab/subscription?v=full');
+      try {
+        const response = await deleteSubscription(subscription, abortController);
+        mutate('/ws/rest/v1/openconceptlab/subscription?v=full');
 
-      if (response.status === 204) {
-        setSubscriptionUrl('');
-        setToken('');
-        setIsSubscribedToSnapshot(false);
-        setValidationType('FULL');
-        setIsSnapshotOptionDisabled(false);
-        showNotification({
-          kind: 'success',
-          description: t('subscriptionDeleted', 'Successfully unsubscribed'),
-        });
-      } else {
-        showNotification({
-          title: t('errorDeletingSubscription', 'Error occured while deleting the subscription'),
-          kind: 'error',
-          critical: true,
-          description: JSON.stringify(response.data),
-        });
+        if (response.status === 204) {
+          setSubscriptionUrl('');
+          setToken('');
+          setIsSubscribedToSnapshot(false);
+          setValidationType('FULL');
+          setIsSnapshotOptionDisabled(false);
+          showSnackbar({
+            kind: 'success',
+            subtitle: t('subscriptionDeleted', 'Successfully unsubscribed'),
+          });
+        } else {
+          showSnackbar({
+            title: t('errorDeletingSubscription', 'Error deleting subscription'),
+            kind: 'error',
+            subtitle: extractOclErrorMessage(response, t),
+          });
+        }
+      } catch (err) {
+        if (!isAbortError(err)) {
+          showSnackbar({
+            title: t('errorDeletingSubscription', 'Error deleting subscription'),
+            kind: 'error',
+            subtitle: t('networkError', 'A network error occurred — check your connection'),
+          });
+        }
+      } finally {
+        abortController.abort();
       }
-
-      return () => abortController.abort();
     },
     [subscription, t, mutate],
   );
@@ -192,10 +210,7 @@ const Subscription: React.FC = () => {
   }
 
   if (error) {
-    showNotification({
-      kind: 'error',
-      description: t('subscriptionError', 'Error occured while fetching the subscription'),
-    });
+    return <ErrorState headerTitle={t('subscription', 'Subscription')} error={error} />;
   }
 
   return (

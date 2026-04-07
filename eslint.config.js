@@ -15,7 +15,9 @@ module.exports = [
       "**/.rspack/**",
       "**/.cache/**",
       "**/.turbo/**",
-      "**/coverage/**"
+      "**/coverage/**",
+      "packages/apps/esm-stock-management-app/**/*.d.ts",
+      "packages/apps/esm-patient-imaging-app/**/*.d.tsx"
     ]
   },
 
@@ -48,7 +50,6 @@ module.exports = [
       "@typescript-eslint/no-require-imports": "off",
       "no-empty-pattern": "off",
       "no-unsafe-optional-chaining": "off",
-      "no-useless-assignment": "off",
       "no-useless-escape": "off",
       "prefer-const": "off",
 
@@ -91,7 +92,8 @@ module.exports = [
     files: ["packages/libs/**/*.ts"],
 
     languageOptions: {
-      parser: tseslint.parser
+      parser: tseslint.parser,
+      sourceType: "module"
     },
 
     plugins: {

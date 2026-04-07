@@ -11,8 +11,9 @@ import {
   Stack,
   SkeletonText,
 } from '@carbon/react';
-import { showNotification } from '@openmrs/esm-framework';
+import { ErrorState, showSnackbar } from '@openmrs/esm-framework';
 import React, { useCallback, useEffect, useState } from 'react';
+import { extractOclErrorMessage, isAbortError } from '../utils';
 import { useTranslation } from 'react-i18next';
 
 import { startImportWithFile, startImportWithSubscription, useSubscription } from './import.resource';
@@ -38,9 +39,9 @@ const Import: React.FC = () => {
     (evt: React.DragEvent<HTMLInputElement>, { addedFiles }) => {
       const fileToUpload: File = addedFiles[0];
       if (!allowedMimeTypes.includes(fileToUpload.type)) {
-        showNotification({
+        showSnackbar({
           kind: 'error',
-          description: t('fileFormatError', 'Only .zip files are allowed'),
+          subtitle: t('fileFormatError', 'Only .zip files are allowed'),
         });
       } else {
         setFile(fileToUpload);
@@ -60,26 +61,39 @@ const Import: React.FC = () => {
       evt.stopPropagation();
 
       if (!isSubscriptionAvailable) {
-        showNotification({
+        showSnackbar({
           kind: 'error',
-          description: t('noSubscriptionError', 'No saved subscription'),
+          subtitle: t('noSubscriptionError', 'No saved subscription'),
         });
         return;
       }
 
       const abortController = new AbortController();
-      const response = await startImportWithSubscription(abortController);
+      try {
+        const response = await startImportWithSubscription(abortController);
 
-      if (response.status === 201) {
-        showNotification({
-          kind: 'success',
-          description: t('importSuccess', 'Import started successfully'),
-        });
-      } else {
-        showNotification({
-          kind: 'error',
-          description: t('importFailed', 'Import failed'),
-        });
+        if (response.status === 201) {
+          showSnackbar({
+            kind: 'success',
+            subtitle: t('importSuccess', 'Import started successfully'),
+          });
+        } else {
+          showSnackbar({
+            title: t('importFailed', 'Import failed'),
+            kind: 'error',
+            subtitle: extractOclErrorMessage(response, t),
+          });
+        }
+      } catch (err) {
+        if (!isAbortError(err)) {
+          showSnackbar({
+            title: t('importFailed', 'Import failed'),
+            kind: 'error',
+            subtitle: t('networkError', 'A network error occurred — check your connection'),
+          });
+        }
+      } finally {
+        abortController.abort();
       }
     },
     [isSubscriptionAvailable, t],
@@ -93,29 +107,41 @@ const Import: React.FC = () => {
 
       if (!file) {
         setIsFileUploading(false);
-        showNotification({
+        showSnackbar({
           kind: 'error',
-          description: t('noFileSelected', 'No file selected'),
+          subtitle: t('noFileSelected', 'No file selected'),
         });
         return;
       }
 
       const abortController = new AbortController();
-      const response = await startImportWithFile(file, abortController);
+      try {
+        const response = await startImportWithFile(file, abortController);
 
-      if (response.status === 201) {
-        setFile(null);
+        if (response.status === 201) {
+          setFile(null);
+          showSnackbar({
+            kind: 'success',
+            subtitle: t('importSuccess', 'Import started successfully'),
+          });
+        } else {
+          showSnackbar({
+            title: t('importFailed', 'Import failed'),
+            kind: 'error',
+            subtitle: extractOclErrorMessage(response, t),
+          });
+        }
+      } catch (err) {
+        if (!isAbortError(err)) {
+          showSnackbar({
+            title: t('importFailed', 'Import failed'),
+            kind: 'error',
+            subtitle: t('networkError', 'A network error occurred — check your connection'),
+          });
+        }
+      } finally {
         setIsFileUploading(false);
-        showNotification({
-          kind: 'success',
-          description: t('importSuccess', 'Import started successfully'),
-        });
-      } else {
-        setIsFileUploading(false);
-        showNotification({
-          kind: 'error',
-          description: t('importFailed', 'Import failed'),
-        });
+        abortController.abort();
       }
     },
     [file, t],
@@ -143,10 +169,7 @@ const Import: React.FC = () => {
   }
 
   if (error) {
-    showNotification({
-      kind: 'error',
-      description: t('subscriptionError', 'Error occured while fetching the subscription'),
-    });
+    return <ErrorState headerTitle={t('import', 'Import')} error={error} />;
   }
 
   return (

@@ -13,10 +13,16 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "9.0.2"
+    "@carbon/react": ">=1.0.0",
+    "@openmrs/esm-framework": "9.0.2",
+    "@sihsalus/audit-logger": "*",
+    "react": ">=18.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
+    "@carbon/react": "^1.102.0",
+    "@openmrs/esm-framework": "9.0.2",
+    "@sihsalus/audit-logger": "workspace:*",
+    "react": "^18.3.1",
     "typescript": "^5.8.3",
     "vitest": "^4.0.18"
   }

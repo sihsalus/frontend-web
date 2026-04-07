@@ -6,6 +6,7 @@
  * and provides access to the emergency workflow.
  */
 
+import { AppErrorBoundary } from '@sihsalus/rbac';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import EmergencyDashboard from './emergency-dashboard/emergency-dashboard.component';
@@ -14,13 +15,15 @@ const Root: React.FC = () => {
   const basename = window.getOpenmrsSpaBase() + 'emergency';
 
   return (
-    <BrowserRouter basename={basename}>
-      <main>
-        <Routes>
-          <Route path="/" element={<EmergencyDashboard />} />
-        </Routes>
-      </main>
-    </BrowserRouter>
+    <AppErrorBoundary appName="esm-emergency-app">
+      <BrowserRouter basename={basename}>
+        <main>
+          <Routes>
+            <Route path="/" element={<EmergencyDashboard />} />
+          </Routes>
+        </main>
+      </BrowserRouter>
+    </AppErrorBoundary>
   );
 };
 
