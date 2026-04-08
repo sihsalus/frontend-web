@@ -10,14 +10,14 @@
  * ```
  */
 
-import React from "react";
-import { OdontogramProvider } from "../providers/OdontogramProvider";
-import FormDentalClinicalFindings from "./FormDentalClinicalFindings";
-import TeethArch from "./TeethArch";
-import ResponsiveOdontogramWrapper from "./ResponsiveOdontogramWrapper";
-import "./AdultOdontogram.css";
+import React from 'react';
+import { OdontogramProvider } from '../providers/OdontogramProvider';
+import FormDentalClinicalFindings from './FormDentalClinicalFindings';
+import TeethArch from './TeethArch';
+import ResponsiveOdontogramWrapper from './ResponsiveOdontogramWrapper';
+import './AdultOdontogram.css';
 
-import type { OdontogramConfig, OdontogramData } from "../types/odontogram";
+import type { OdontogramConfig, OdontogramData } from '../types/odontogram';
 
 export interface OdontogramProps {
   /** Structural config (adult / child) */
@@ -34,21 +34,9 @@ export interface OdontogramProps {
   description?: string;
 }
 
-const Odontogram: React.FC<OdontogramProps> = ({
-  config,
-  data,
-  onChange,
-  readOnly = false,
-  title,
-  description,
-}) => {
+const Odontogram: React.FC<OdontogramProps> = ({ config, data, onChange, readOnly = false, title, description }) => {
   return (
-    <OdontogramProvider
-      config={config}
-      data={data}
-      onChange={onChange}
-      readOnly={readOnly}
-    >
+    <OdontogramProvider config={config} data={data} onChange={onChange} readOnly={readOnly}>
       <div className="adult-odontogram-container">
         {(title || description) && (
           <div className="odontogram-header">
@@ -88,7 +76,7 @@ const Odontogram: React.FC<OdontogramProps> = ({
             <textarea
               id="odon-especificaciones"
               className="odontogram-textarea"
-              value={data.especificaciones ?? ""}
+              value={data.especificaciones ?? ''}
               onChange={(e) => onChange({ ...data, especificaciones: e.target.value })}
               disabled={readOnly}
               rows={3}
@@ -101,7 +89,7 @@ const Odontogram: React.FC<OdontogramProps> = ({
             <textarea
               id="odon-observaciones"
               className="odontogram-textarea"
-              value={data.observaciones ?? ""}
+              value={data.observaciones ?? ''}
               onChange={(e) => onChange({ ...data, observaciones: e.target.value })}
               disabled={readOnly}
               rows={3}

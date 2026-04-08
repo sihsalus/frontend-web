@@ -20,7 +20,8 @@ module.exports = {
   moduleNameMapper: {
     '@openmrs/esm-framework': '@openmrs/esm-framework/mock',
     '\\.(s?css)$': 'identity-obj-proxy',
-    '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__mocks__/fileMock.js', // images
+    '\\.(png|jpg|jpeg|gif|svg)$': path.resolve(__dirname, '../../__mocks__/fileMock.js'),
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
     '^lodash-es/(.*)$': 'lodash/$1',
     'lodash-es': 'lodash',
     '^dexie$': require.resolve('dexie'),

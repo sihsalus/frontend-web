@@ -23,6 +23,7 @@ module.exports = {
     '^lodash-es/(.*)$': 'lodash/$1',
     'lodash-es': 'lodash',
     '^dexie$': require.resolve('dexie'),
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
   },
   setupFilesAfterEnv: ['<rootDir>/src/setup-tests.ts'],
   testPathIgnorePatterns: [path.resolve(__dirname, 'e2e')],

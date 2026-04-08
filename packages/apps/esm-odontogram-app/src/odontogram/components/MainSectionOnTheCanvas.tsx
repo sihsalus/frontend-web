@@ -1,37 +1,34 @@
-import React, { useState } from "react";
-import "./ToothDetails.css";
-import "./spacing/SpaceBetweenStyles.css";
-import { getDesignComponentByPosition } from "../config/designMapping";
-import { ODONTOGRAM_CONFIG } from "../config/odontogramConfig";
-import DesignSelector from "./DesignSelector";
-import { useOdontogramContext } from "../providers/OdontogramProvider";
-import { isRowFinding } from "../logic/findingDesignLogic";
+import React, { useState } from 'react';
+import './ToothDetails.css';
+import './spacing/SpaceBetweenStyles.css';
+import { getDesignComponentByPosition } from '../config/designMapping';
+import { ODONTOGRAM_CONFIG } from '../config/odontogramConfig';
+import DesignSelector from './DesignSelector';
+import { useOdontogramContext } from '../providers/OdontogramProvider';
+import { isRowFinding } from '../logic/findingDesignLogic';
 
 interface MainSectionOnTheCanvasProps {
   idTooth: number;
   optionId: number;
 }
 
-const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ 
-  idTooth, 
-  optionId 
-}) => {
+const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ idTooth, optionId }) => {
   const [showDesignSelector, setShowDesignSelector] = useState(false);
-  
+
   const { data, config, formSelection, toothActions, readOnly, showToast } = useOdontogramContext();
 
   const { selectedFindingId, selectedColor, selectedSuboption, isComplete } = formSelection;
 
   // Obtener el diente
   const tooth = data.teeth.find((t) => t.toothId === idTooth);
-  
+
   // Obtener información del hallazgo seleccionado
   const selectedItem = config.findingOptions.find((op) => op.id === selectedFindingId);
 
   // Obtener la config del diente para saber posición
-  const toothConfig = config.teeth.upper.find((t) => t.id === idTooth)
-    || config.teeth.lower.find((t) => t.id === idTooth);
-  const isLowerTeeth = toothConfig?.position === "lower";
+  const toothConfig =
+    config.teeth.upper.find((t) => t.id === idTooth) || config.teeth.lower.find((t) => t.id === idTooth);
+  const isLowerTeeth = toothConfig?.position === 'lower';
 
   // Buscar el hallazgo registrado en el diente para esta opción
   const currentFinding = tooth?.findings.find((f) => f.findingId === optionId);
@@ -50,15 +47,15 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({
     if (readOnly) return;
     if (!isComplete || !isSelected) {
       if (selectedFindingId && !isComplete) {
-        const opt = config.findingOptions.find(o => o.id === selectedFindingId);
+        const opt = config.findingOptions.find((o) => o.id === selectedFindingId);
         const needsColor = (opt?.colores?.length ?? 0) > 0 && !selectedColor;
         const needsSub = (opt?.subopciones?.length ?? 0) > 0 && !selectedSuboption;
         const parts: string[] = [];
-        if (needsSub) parts.push("tipo");
-        if (needsColor) parts.push("color");
-        if (parts.length) showToast(`Seleccione ${parts.join(" y ")} para "${opt?.nombre}"`);
+        if (needsSub) parts.push('tipo');
+        if (needsColor) parts.push('color');
+        if (parts.length) showToast(`Seleccione ${parts.join(' y ')} para "${opt?.nombre}"`);
       } else if (!selectedFindingId) {
-        showToast("Seleccione un hallazgo clínico en el formulario");
+        showToast('Seleccione un hallazgo clínico en el formulario');
       }
       return;
     }
@@ -74,7 +71,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({
 
     // Para todos los demás, toggle directo
     if (!selectedColor) return;
-    
+
     // Row findings and others: always use registerToothFinding (it handles toggle + row cascade)
     toothActions.registerToothFinding({
       toothId: idTooth,
@@ -99,7 +96,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === 'Enter' || e.key === ' ') {
       handleClick();
     }
   };
@@ -111,11 +108,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({
       return null;
     }
 
-    const DesignComponent = getDesignComponentByPosition(
-      optionId,
-      currentFinding.designNumber,
-      isLowerTeeth ?? false
-    );
+    const DesignComponent = getDesignComponentByPosition(optionId, currentFinding.designNumber, isLowerTeeth ?? false);
     if (!DesignComponent) return null;
 
     return <DesignComponent strokeColor={currentFinding.color.name} />;
@@ -144,7 +137,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({
           {renderDesign()}
         </svg>
       </div>
-      
+
       {isHallazgo13 && (
         <DesignSelector
           isOpen={showDesignSelector}

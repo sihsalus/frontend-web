@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 // @ts-ignore
-import { getPolygonPoints } from "../poligonPoints/ToothPolygonDesigns";
-import "./Tooth.css";
+import { getPolygonPoints } from '../poligonPoints/ToothPolygonDesigns';
+import './Tooth.css';
 
 interface ToothProps {
   zones: number;
@@ -16,7 +16,7 @@ const Tooth: React.FC<ToothProps> = ({ zones }) => {
           points={points}
           strokeWidth="0.15"
           stroke="black"
-          style={{ transition: "fill 0.3s ease" }}
+          style={{ transition: 'fill 0.3s ease' }}
         />
       ))}
     </svg>

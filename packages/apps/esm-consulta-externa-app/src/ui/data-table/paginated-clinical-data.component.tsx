@@ -14,7 +14,7 @@ import React, { useMemo, useState } from 'react';
 
 import styles from './paginated-clinical-data.scss';
 
-const StyledTableCell: React.FC<{ interpretation: string; children: React.ReactNode }> = ({
+const StyledTableCell: React.FC<{ interpretation: unknown; children: React.ReactNode }> = ({
   interpretation,
   children,
 }) => {

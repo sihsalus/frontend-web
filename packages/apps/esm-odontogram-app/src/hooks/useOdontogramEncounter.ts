@@ -36,14 +36,14 @@ export function useOdontogramEncounter() {
           })),
         );
 
+      const url = encounterUuid ? `/ws/rest/v1/encounter/${encounterUuid}` : '/ws/rest/v1/encounter';
       const payload = {
         patient: patientUuid,
         encounterType: config.encounterTypeUuid,
         obs,
-        ...(encounterUuid ? { uuid: encounterUuid } : {}),
       };
 
-      const response = await openmrsFetch('/ws/rest/v1/encounter', {
+      const response = await openmrsFetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: payload,

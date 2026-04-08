@@ -1,9 +1,9 @@
 /**
  * Tipos públicos del componente Odontograma.
- * 
+ *
  * Estos tipos definen la interfaz pública que los consumidores del componente
  * usarán para pasar datos (desde BBDD) y recibir cambios (para guardar en BBDD).
- * 
+ *
  * Patrón de uso:
  * ```tsx
  * const [data, setData] = useState<OdontogramData>(initialData);
@@ -129,7 +129,7 @@ export interface LegendSpaceData {
 
 /**
  * Datos completos del odontograma — LO QUE SE GUARDA EN BBDD.
- * 
+ *
  * Este es el tipo principal que fluye entre la aplicación y el componente:
  * - Se lee de BBDD → se pasa como prop `data`
  * - El componente emite cambios vía `onChange(newData)`
@@ -163,8 +163,8 @@ export interface OdontogramData {
 // CONFIGURACIÓN DEL ODONTOGRAMA
 // =============================================================================
 
-export type ToothPosition = "upper" | "lower";
-export type ToothType = "molar" | "premolar" | "canino" | "incisivo";
+export type ToothPosition = 'upper' | 'lower';
+export type ToothType = 'molar' | 'premolar' | 'canino' | 'incisivo';
 
 /**
  * Definición de un diente en la configuración del odontograma.
@@ -191,14 +191,14 @@ export type SpacingFindingId = number;
 
 /**
  * Configuración completa de un tipo de odontograma (adulto o infantil).
- * 
+ *
  * Esto define la ESTRUCTURA — no los datos. Es inmutable.
  * El componente usa esta config para saber cuántos dientes renderizar,
  * qué filas de hallazgos mostrar, etc.
  */
 export interface OdontogramConfig {
   /** Identificador del tipo de odontograma */
-  type: "adult" | "child";
+  type: 'adult' | 'child';
   /** Nombre descriptivo */
   name: string;
   /** Definición de todos los dientes (ordenados como se renderizan) */
@@ -230,7 +230,7 @@ export interface FindingOptionConfig {
   /** Variantes de diseño visual disponibles */
   designs?: FindingDesign[];
   /** Fuente de la abreviatura para el recuadro del diente */
-  abreviaturaSource?: "none" | "tipo" | "identificador";
+  abreviaturaSource?: 'none' | 'tipo' | 'identificador';
   /** Categoría de renderizado */
   renderCategory: FindingRenderCategory;
   /** Si se aplica a toda la fila (todos los dientes de la misma posición) */
@@ -246,11 +246,7 @@ export interface FindingOptionConfig {
  * - "legend": en el área de leyenda/label del diente (click en label)
  * - "text-only": solo texto en textarea, sin visual SVG
  */
-export type FindingRenderCategory =
-  | "on-tooth"
-  | "spacing-row"
-  | "legend"
-  | "text-only";
+export type FindingRenderCategory = 'on-tooth' | 'spacing-row' | 'legend' | 'text-only';
 
 // =============================================================================
 // PROPS PÚBLICOS DEL COMPONENTE
@@ -290,14 +286,14 @@ export function createEmptyOdontogramData(config: OdontogramConfig): OdontogramD
   const teeth: ToothData[] = allTeeth.map((t) => ({
     toothId: t.id,
     findings: [],
-    notes: "",
+    notes: '',
   }));
 
   // Crear espacios vacíos para cada finding de spacing
   const spacingFindings: Record<number, SpaceData[]> = {};
   for (const findingId of config.spacingFindingIds) {
     spacingFindings[findingId] = [];
-    for (const position of ["upper", "lower"] as const) {
+    for (const position of ['upper', 'lower'] as const) {
       const posTeeth = config.teeth[position];
       for (let i = 0; i < posTeeth.length - 1; i++) {
         spacingFindings[findingId].push({
@@ -311,7 +307,7 @@ export function createEmptyOdontogramData(config: OdontogramConfig): OdontogramD
 
   // Crear espacios de leyenda vacíos
   const legendSpaces: LegendSpaceData[] = [];
-  for (const position of ["upper", "lower"] as const) {
+  for (const position of ['upper', 'lower'] as const) {
     const posTeeth = config.teeth[position];
     for (let i = 0; i < posTeeth.length - 1; i++) {
       legendSpaces.push({
@@ -322,5 +318,5 @@ export function createEmptyOdontogramData(config: OdontogramConfig): OdontogramD
     }
   }
 
-  return { teeth, spacingFindings, legendSpaces, especificaciones: "", observaciones: "" };
+  return { teeth, spacingFindings, legendSpaces, especificaciones: '', observaciones: '' };
 }

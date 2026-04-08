@@ -19,6 +19,8 @@ module.exports = {
     '^lodash-es/(.*)$': 'lodash/$1',
     'lodash-es': 'lodash',
     '^react-i18next$': path.resolve(__dirname, '__mocks__', 'react-i18next.js'),
+    '^react-markdown$': path.resolve(__dirname, '__mocks__', 'react-markdown.tsx'),
+    '\\.(png|jpg|jpeg|gif|svg)$': path.resolve(__dirname, '__mocks__', 'fileMock.js'),
     '^uuid$': require.resolve('uuid'),
     '^react$': require.resolve('react'),
     '^react-dom$': require.resolve('react-dom'),

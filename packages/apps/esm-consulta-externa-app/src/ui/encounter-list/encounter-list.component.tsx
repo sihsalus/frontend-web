@@ -190,9 +190,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
         columns.forEach((column) => {
           tableRow[column.key] = renderCellValue(column, encounter);
         });
-        // If custom config is available, generate actions accordingly; otherwise, fallback to the default actions.
-        const actions = tableRow.actions?.length ? tableRow.actions : defaultActions;
-        tableRow['actions'] = renderActions(actions);
+        tableRow['actions'] = renderActions(defaultActions);
         return tableRow;
       });
       return rows;

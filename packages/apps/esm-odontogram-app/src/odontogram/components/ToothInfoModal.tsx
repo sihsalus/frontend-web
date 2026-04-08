@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
-import Tooth from "./Tooth";
-import ToothDesigns from "./ToothDesigns";
-import type { ToothFinding, FindingOptionConfig, ToothAnnotation } from "../types/odontogram";
-import { COLOR_CSS, COLOR_LABEL, TOOTH_DESIGN_COMPONENT_MAP } from "./constants";
-import "./ToothInfoModal.css";
+import React, { useState, useCallback, useEffect } from 'react';
+import Tooth from './Tooth';
+import ToothDesigns from './ToothDesigns';
+import type { ToothFinding, FindingOptionConfig, ToothAnnotation } from '../types/odontogram';
+import { COLOR_CSS, COLOR_LABEL, TOOTH_DESIGN_COMPONENT_MAP } from './constants';
+import './ToothInfoModal.css';
 
 interface ToothInfoModalProps {
   toothId: number;
@@ -14,7 +14,13 @@ interface ToothInfoModalProps {
   rootDesign: string;
   readOnly: boolean;
   onRemoveFinding: (params: { toothId: number; findingId: number; instanceId?: string }) => void;
-  onRegisterFinding: (params: { toothId: number; findingId: number; subOptionId?: number; color: { id: number; name: string }; designNumber?: number | null }) => void;
+  onRegisterFinding: (params: {
+    toothId: number;
+    findingId: number;
+    subOptionId?: number;
+    color: { id: number; name: string };
+    designNumber?: number | null;
+  }) => void;
   onClose: () => void;
 }
 
@@ -36,17 +42,15 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
   // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
   }, [onClose]);
-
-
 
   const getFindingName = useCallback(
     (findingId: number) => findingOptions.find((o) => o.id === findingId)?.nombre ?? `Hallazgo ${findingId}`,
-    [findingOptions]
+    [findingOptions],
   );
 
   const getSuboptionName = useCallback(
@@ -55,7 +59,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
       const cfg = findingOptions.find((o) => o.id === findingId);
       return cfg?.subopciones?.find((s) => s.id === subOptionId)?.nombre ?? null;
     },
-    [findingOptions]
+    [findingOptions],
   );
 
   const handleDelete = useCallback(
@@ -63,7 +67,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
       onRemoveFinding({ toothId, findingId: finding.findingId, instanceId: finding.id });
       setRemovedItems((prev) => new Map(prev).set(finding.id, finding));
     },
-    [toothId, onRemoveFinding]
+    [toothId, onRemoveFinding],
   );
 
   const handleUndo = useCallback(
@@ -83,7 +87,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
         return next;
       });
     },
-    [removedItems, onRegisterFinding, toothId]
+    [removedItems, onRegisterFinding, toothId],
   );
 
   // Render design preview for a finding
@@ -97,7 +101,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
       <svg width="40" height="80" viewBox="0 0 60 120" className="tim-design-preview">
         <ToothDesigns design={rootDesign as any} />
         <Tooth zones={zones} />
-        <Comp strokeColor={finding.color?.name || "black"} />
+        <Comp strokeColor={finding.color?.name || 'black'} />
       </svg>
     );
   };
@@ -107,7 +111,10 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
     const map = new Map<number, ToothFinding[]>();
     for (const f of findings) {
       let arr = map.get(f.findingId);
-      if (!arr) { arr = []; map.set(f.findingId, arr); }
+      if (!arr) {
+        arr = [];
+        map.set(f.findingId, arr);
+      }
       arr.push(f);
     }
     return Array.from(map.entries()).map(([fId, items]) => ({
@@ -124,9 +131,13 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
         <div className="tim-header">
           <div className="tim-header-left">
             <span className="tim-tooth-id">Diente {toothId}</span>
-            <span className="tim-finding-count">{findings.length} hallazgo{findings.length !== 1 ? "s" : ""}</span>
+            <span className="tim-finding-count">
+              {findings.length} hallazgo{findings.length !== 1 ? 's' : ''}
+            </span>
           </div>
-          <button className="tim-close" onClick={onClose} aria-label="Cerrar">×</button>
+          <button className="tim-close" onClick={onClose} aria-label="Cerrar">
+            ×
+          </button>
         </div>
 
         {/* Body */}
@@ -143,7 +154,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                   if (!Comp) return null;
                   return (
                     <g key={f.id || i}>
-                      <Comp strokeColor={f.color?.name || "black"} />
+                      <Comp strokeColor={f.color?.name || 'black'} />
                     </g>
                   );
                 })}
@@ -174,9 +185,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
             <div className="tim-findings-list">
               {groupedFindings.map((group) => {
                 // Removed items that belong to this group
-                const ghostsForGroup = Array.from(removedItems.values()).filter(
-                  (f) => f.findingId === group.findingId
-                );
+                const ghostsForGroup = Array.from(removedItems.values()).filter((f) => f.findingId === group.findingId);
                 return (
                   <div key={group.findingId} className="tim-finding-group">
                     <div className="tim-group-header">
@@ -190,13 +199,12 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           <div className="tim-finding-info">
                             {renderDesignPreview(f)}
                             <div className="tim-finding-meta">
-                              {f.designNumber != null && (
-                                <span className="tim-meta-tag">Diseño {f.designNumber}</span>
-                              )}
-                              {subName && (
-                                <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>
-                              )}
-                              <span className="tim-meta-color" style={{ "--dot-color": COLOR_CSS[f.color?.name] ?? "#888" } as React.CSSProperties}>
+                              {f.designNumber != null && <span className="tim-meta-tag">Diseño {f.designNumber}</span>}
+                              {subName && <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>}
+                              <span
+                                className="tim-meta-color"
+                                style={{ '--dot-color': COLOR_CSS[f.color?.name] ?? '#888' } as React.CSSProperties}
+                              >
                                 <span className="tim-color-dot" />
                                 {COLOR_LABEL[f.color?.name] ?? f.color?.name}
                               </span>
@@ -224,13 +232,12 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           <div className="tim-finding-info">
                             {renderDesignPreview(f)}
                             <div className="tim-finding-meta">
-                              {f.designNumber != null && (
-                                <span className="tim-meta-tag">Diseño {f.designNumber}</span>
-                              )}
-                              {subName && (
-                                <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>
-                              )}
-                              <span className="tim-meta-color" style={{ "--dot-color": COLOR_CSS[f.color?.name] ?? "#888" } as React.CSSProperties}>
+                              {f.designNumber != null && <span className="tim-meta-tag">Diseño {f.designNumber}</span>}
+                              {subName && <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>}
+                              <span
+                                className="tim-meta-color"
+                                style={{ '--dot-color': COLOR_CSS[f.color?.name] ?? '#888' } as React.CSSProperties}
+                              >
                                 <span className="tim-color-dot" />
                                 {COLOR_LABEL[f.color?.name] ?? f.color?.name}
                               </span>
@@ -238,7 +245,9 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           </div>
                           <div className="tim-finding-actions">
                             <span className="tim-ghost-label">Eliminado</span>
-                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>Deshacer</button>
+                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
+                              Deshacer
+                            </button>
                           </div>
                         </div>
                       );
@@ -271,13 +280,12 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           <div className="tim-finding-info">
                             {renderDesignPreview(f)}
                             <div className="tim-finding-meta">
-                              {f.designNumber != null && (
-                                <span className="tim-meta-tag">Diseño {f.designNumber}</span>
-                              )}
-                              {subName && (
-                                <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>
-                              )}
-                              <span className="tim-meta-color" style={{ "--dot-color": COLOR_CSS[f.color?.name] ?? "#888" } as React.CSSProperties}>
+                              {f.designNumber != null && <span className="tim-meta-tag">Diseño {f.designNumber}</span>}
+                              {subName && <span className="tim-meta-tag tim-meta-tag--tipo">Tipo: {subName}</span>}
+                              <span
+                                className="tim-meta-color"
+                                style={{ '--dot-color': COLOR_CSS[f.color?.name] ?? '#888' } as React.CSSProperties}
+                              >
                                 <span className="tim-color-dot" />
                                 {COLOR_LABEL[f.color?.name] ?? f.color?.name}
                               </span>
@@ -285,7 +293,9 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           </div>
                           <div className="tim-finding-actions">
                             <span className="tim-ghost-label">Eliminado</span>
-                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>Deshacer</button>
+                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
+                              Deshacer
+                            </button>
                           </div>
                         </div>
                       );

@@ -12,22 +12,22 @@
  * Para la arcada inferior el orden se invierte (teeth → findings → details).
  */
 
-import React, { useMemo } from "react";
-import { useOdontogramContext } from "../providers/OdontogramProvider";
-import ToothDetails from "./ToothDetails";
-import ToothVisualization from "./ToothVisualization";
-import ToothColumn from "./ToothColumn";
-import SpaceBetweenTeeth from "./spacing/SpaceBetweenTeeth";
-import SpaceBetweenLegends from "./spacing/SpaceBetweenLegends";
-import SpacingFinding from "./spacing/SpacingFinding";
-import MainSectionOnTheCanvas from "./MainSectionOnTheCanvas";
+import React, { useMemo } from 'react';
+import { useOdontogramContext } from '../providers/OdontogramProvider';
+import ToothDetails from './ToothDetails';
+import ToothVisualization from './ToothVisualization';
+import ToothColumn from './ToothColumn';
+import SpaceBetweenTeeth from './spacing/SpaceBetweenTeeth';
+import SpaceBetweenLegends from './spacing/SpaceBetweenLegends';
+import SpacingFinding from './spacing/SpacingFinding';
+import MainSectionOnTheCanvas from './MainSectionOnTheCanvas';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 interface TeethArchProps {
-  position: "upper" | "lower";
+  position: 'upper' | 'lower';
 }
 
 interface AdjacentPair {
@@ -40,14 +40,14 @@ interface AdjacentPair {
 // ---------------------------------------------------------------------------
 
 const ROW_STYLE: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "flex-end",
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-end',
 };
 
 const ROW_STYLE_LOWER: React.CSSProperties = {
   ...ROW_STYLE,
-  alignItems: "flex-start",
+  alignItems: 'flex-start',
 };
 
 // ---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ const TeethArch: React.FC<TeethArchProps> = ({ position }) => {
         leftId: t.id,
         rightId: teeth[i + 1].id,
       })),
-    [teeth]
+    [teeth],
   );
 
   // Which spacing finding IDs that have data OR are currently selected
@@ -83,34 +83,23 @@ const TeethArch: React.FC<TeethArchProps> = ({ position }) => {
       const spaces = data.spacingFindings[fId] || [];
       return spaces.some((space) => {
         // Check this space belongs to a tooth on this arch
-        const belongsToArch = teeth.some(
-          (t) =>
-            t.id === space.leftToothId || t.id === space.rightToothId
-        );
+        const belongsToArch = teeth.some((t) => t.id === space.leftToothId || t.id === space.rightToothId);
         return belongsToArch && space.findings.length > 0;
       });
     });
   }, [config.spacingFindingIds, formSelection.selectedFindingId, data.spacingFindings, teeth]);
 
   // Order spacing rows for lower arch: reversed
-  const orderedSpacingRows =
-    position === "lower" ? [...visibleSpacingRows].reverse() : visibleSpacingRows;
+  const orderedSpacingRows = position === 'lower' ? [...visibleSpacingRows].reverse() : visibleSpacingRows;
 
   // ---- Row: Tooth Details / Legends ----
   const detailsRow = (
     <div style={ROW_STYLE}>
       {teeth.map((tooth, index) => (
         <React.Fragment key={tooth.id}>
-          <ToothDetails
-            idTooth={tooth.id}
-            initialText=""
-            legend={String(tooth.id)}
-          />
+          <ToothDetails idTooth={tooth.id} initialText="" legend={String(tooth.id)} />
           {index < pairs.length && (
-            <SpaceBetweenLegends
-              leftToothId={pairs[index].leftId}
-              rightToothId={pairs[index].rightId}
-            />
+            <SpaceBetweenLegends leftToothId={pairs[index].leftId} rightToothId={pairs[index].rightId} />
           )}
         </React.Fragment>
       ))}
@@ -137,22 +126,14 @@ const TeethArch: React.FC<TeethArchProps> = ({ position }) => {
 
   // ---- Row: Tooth Visualization ----
   const visualizationRow = (
-    <div style={position === "lower" ? ROW_STYLE_LOWER : ROW_STYLE}>
+    <div style={position === 'lower' ? ROW_STYLE_LOWER : ROW_STYLE}>
       {teeth.map((tooth, index) => (
         <React.Fragment key={tooth.id}>
           <ToothColumn toothId={tooth.id}>
-            <ToothVisualization
-              idTooth={tooth.id}
-              zones={tooth.zones}
-              design={tooth.rootDesign}
-              position={position}
-            />
+            <ToothVisualization idTooth={tooth.id} zones={tooth.zones} design={tooth.rootDesign} position={position} />
           </ToothColumn>
           {index < pairs.length && (
-            <SpaceBetweenTeeth
-              leftToothId={pairs[index].leftId}
-              rightToothId={pairs[index].rightId}
-            />
+            <SpaceBetweenTeeth leftToothId={pairs[index].leftId} rightToothId={pairs[index].rightId} />
           )}
         </React.Fragment>
       ))}
@@ -161,7 +142,7 @@ const TeethArch: React.FC<TeethArchProps> = ({ position }) => {
 
   // Upper: details → findings → visualization
   // Lower: visualization → findings → details
-  if (position === "upper") {
+  if (position === 'upper') {
     return (
       <>
         {detailsRow}

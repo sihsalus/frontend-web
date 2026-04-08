@@ -1,36 +1,4 @@
-import dayjs from 'dayjs';
-import type { Dayjs } from 'dayjs';
-
-import type { AppointmentSummary, ObsReferenceRanges, ObservationInterpretation } from '../types';
-
-interface FlattenedAppointmentSummary {
-  serviceName: string;
-  countMap: Array<{ allAppointmentsCount: number }>;
-}
-
-export const getHighestAppointmentServiceLoad = (appointmentSummary: Array<FlattenedAppointmentSummary> = []) => {
-  const groupedAppointments = appointmentSummary?.map(({ countMap, serviceName }) => ({
-    serviceName: serviceName,
-    count: countMap.reduce((cummulator, currentValue) => cummulator + currentValue.allAppointmentsCount, 0),
-  }));
-  return groupedAppointments.find((summary) => summary.count === Math.max(...groupedAppointments.map((x) => x.count)));
-};
-
-export const flattenAppointmentSummary = (appointmentToTransfrom: Array<AppointmentSummary>) =>
-  appointmentToTransfrom.flatMap((el) => ({
-    serviceName: el.appointmentService.name,
-    countMap: Object.entries(el.appointmentCountMap).flatMap((entry) => entry[1]),
-  }));
-
-export const getServiceCountByAppointmentType = (
-  appointmentSummary: Array<AppointmentSummary>,
-  appointmentType: string,
-) => {
-  return appointmentSummary
-    .map((el) => Object.entries(el.appointmentCountMap).flatMap((el) => el[1][appointmentType]))
-    .flat(1)
-    .reduce((count, val) => count + val, 0);
-};
+import type { ObsReferenceRanges, ObservationInterpretation } from '../types';
 
 export const formatAMPM = (date) => {
   let hours = date.getHours();
@@ -41,34 +9,6 @@ export const formatAMPM = (date) => {
   minutes = minutes < 10 ? '0' + minutes : minutes;
   const strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
-};
-
-export const isSameMonth = (cellDate: Dayjs, currentDate: Dayjs) => {
-  return cellDate.isSame(currentDate, 'month');
-};
-
-export const monthDays = (currentDate: Dayjs) => {
-  const monthStart = dayjs(currentDate).startOf('month');
-  const monthEnd = dayjs(currentDate).endOf('month');
-  const monthDays = dayjs(currentDate).daysInMonth();
-  const lastMonth = dayjs(currentDate).subtract(1, 'month');
-  const nextMonth = dayjs(currentDate).add(1, 'month');
-  const days: Dayjs[] = [];
-
-  for (let i = lastMonth.daysInMonth() - monthStart.day() + 1; i <= lastMonth.daysInMonth(); i++) {
-    days.push(dayjs().month(lastMonth.month()).date(i));
-  }
-
-  for (let i = 1; i <= monthDays; i++) {
-    days.push(currentDate.date(i));
-  }
-
-  const dayLen = days.length > 30 ? 7 : 14;
-
-  for (let i = 1; i < dayLen - monthEnd.day(); i++) {
-    days.push(dayjs().month(nextMonth.month()).date(i));
-  }
-  return days;
 };
 
 export const getGender = (gender, t) => {

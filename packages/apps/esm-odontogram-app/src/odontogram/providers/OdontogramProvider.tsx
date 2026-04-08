@@ -1,19 +1,19 @@
 /**
  * OdontogramProvider — Core del nuevo sistema de estado.
- * 
+ *
  * Cada <OdontogramProvider> crea su propia instancia de estado.
  * Múltiples odontogramas en la misma página NO comparten estado.
- * 
+ *
  * Patrón: Componente controlado.
  * - `data` viene del padre (leído de BBDD)
  * - `onChange` notifica al padre de cambios (para guardar en BBDD)
  * - Sin `onChange` → modo solo lectura
- * 
+ *
  * El estado UI efímero (qué hallazgo está seleccionado en el form)
  * vive dentro del Provider y NO se persiste.
  */
 
-import React, { createContext, useContext, useState, useCallback, useMemo, useEffect, useRef } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type {
   OdontogramData,
   OdontogramConfig,
@@ -27,11 +27,8 @@ import type {
   ToothConfig,
   FindingOptionConfig,
   ToothPosition,
-} from "../types/odontogram";
-import type {
-  OdontogramContextValue,
-  FormSelectionState,
-} from "../types/context";
+} from '../types/odontogram';
+import type { OdontogramContextValue, FormSelectionState } from '../types/context';
 import {
   recalculateSpacingDesigns,
   recalculateToothDesigns,
@@ -45,8 +42,8 @@ import {
   getPositionBasedDesign,
   calculateLegendDesign,
   recalculateLegendDesigns,
-} from "../logic/findingDesignLogic";
-import { computeToothAnnotations } from "../utils/computeToothAnnotations";
+} from '../logic/findingDesignLogic';
+import { computeToothAnnotations } from '../utils/computeToothAnnotations';
 
 // =============================================================================
 // CONSTANTS
@@ -78,8 +75,8 @@ export function useOdontogramContext(): OdontogramContextValue {
   const ctx = useContext(OdontogramContext);
   if (!ctx) {
     throw new Error(
-      "useOdontogramContext must be used within an <OdontogramProvider>. " +
-      "Wrap your <Odontogram> component in an <OdontogramProvider>."
+      'useOdontogramContext must be used within an <OdontogramProvider>. ' +
+        'Wrap your <Odontogram> component in an <OdontogramProvider>.',
     );
   }
   return ctx;
@@ -95,8 +92,8 @@ function generateId(): string {
 
 /** Devuelve la posición de un diente dado su ID y la config */
 function getToothPosition(toothId: number, config: OdontogramConfig): ToothPosition | null {
-  if (config.teeth.upper.some((t) => t.id === toothId)) return "upper";
-  if (config.teeth.lower.some((t) => t.id === toothId)) return "lower";
+  if (config.teeth.upper.some((t) => t.id === toothId)) return 'upper';
+  if (config.teeth.lower.some((t) => t.id === toothId)) return 'lower';
   return null;
 }
 
@@ -139,7 +136,9 @@ export function OdontogramProvider({
   }, []);
 
   useEffect(() => {
-    return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
+    return () => {
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
   }, []);
 
   // When switching to readOnly, clear form selection so grey overlays disappear
@@ -168,20 +167,11 @@ export function OdontogramProvider({
     return map;
   }, [config]);
 
-  const getToothConfig = useCallback(
-    (toothId: number) => toothConfigMap.get(toothId),
-    [toothConfigMap]
-  );
+  const getToothConfig = useCallback((toothId: number) => toothConfigMap.get(toothId), [toothConfigMap]);
 
-  const getTeethByPosition = useCallback(
-    (position: ToothPosition) => config.teeth[position],
-    [config]
-  );
+  const getTeethByPosition = useCallback((position: ToothPosition) => config.teeth[position], [config]);
 
-  const getFindingOption = useCallback(
-    (findingId: number) => findingOptionMap.get(findingId),
-    [findingOptionMap]
-  );
+  const getFindingOption = useCallback((findingId: number) => findingOptionMap.get(findingId), [findingOptionMap]);
 
   // ---------------------------------------------------------------------------
   // Emit helper — inmutable, notifica al padre
@@ -190,7 +180,7 @@ export function OdontogramProvider({
     (newData: OdontogramData) => {
       if (onChange) onChange(newData);
     },
-    [onChange]
+    [onChange],
   );
 
   // ---------------------------------------------------------------------------
@@ -201,8 +191,7 @@ export function OdontogramProvider({
       const option = findingId ? findingOptionMap.get(findingId) : null;
       const hasColors = (option?.colores?.length ?? 0) > 0;
       const hasSuboptions = (option?.subopciones?.length ?? 0) > 0;
-      const autoColor =
-        option?.colores?.length === 1 && !hasSuboptions ? option.colores[0] : null;
+      const autoColor = option?.colores?.length === 1 && !hasSuboptions ? option.colores[0] : null;
 
       // isComplete: true si no hay campos pendientes por llenar
       let autoIsComplete = false;
@@ -216,7 +205,6 @@ export function OdontogramProvider({
         }
       }
 
-
       setFormSelection({
         selectedFindingId: findingId,
         selectedColor: autoColor,
@@ -225,55 +213,59 @@ export function OdontogramProvider({
         isComplete: autoIsComplete,
       });
     },
-    [findingOptionMap]
+    [findingOptionMap],
   );
 
-  const selectColor = useCallback((color: FindingColor | null) => {
-    setFormSelection((prev) => {
-      const option = prev.selectedFindingId ? findingOptionMap.get(prev.selectedFindingId) : null;
-      const hasSuboptions = (option?.subopciones?.length ?? 0) > 0;
-      const hasColors = (option?.colores?.length ?? 0) > 0;
+  const selectColor = useCallback(
+    (color: FindingColor | null) => {
+      setFormSelection((prev) => {
+        const option = prev.selectedFindingId ? findingOptionMap.get(prev.selectedFindingId) : null;
+        const hasSuboptions = (option?.subopciones?.length ?? 0) > 0;
+        const hasColors = (option?.colores?.length ?? 0) > 0;
 
-      const isCompleteNow = 
-        prev.selectedFindingId !== null &&
-        (!hasColors || color !== null) &&
-        (!hasSuboptions || prev.selectedSuboption !== null);
+        const isCompleteNow =
+          prev.selectedFindingId !== null &&
+          (!hasColors || color !== null) &&
+          (!hasSuboptions || prev.selectedSuboption !== null);
 
+        return {
+          ...prev,
+          selectedColor: color,
+          isComplete: isCompleteNow,
+        };
+      });
+    },
+    [findingOptionMap],
+  );
 
-      return {
-        ...prev,
-        selectedColor: color,
-        isComplete: isCompleteNow,
-      };
-    });
-  }, [findingOptionMap]);
+  const selectSuboption = useCallback(
+    (suboption: FindingSuboption | null) => {
+      setFormSelection((prev) => {
+        const option = prev.selectedFindingId ? findingOptionMap.get(prev.selectedFindingId) : null;
+        const hasSuboptions = (option?.subopciones?.length ?? 0) > 0;
+        const hasColors = (option?.colores?.length ?? 0) > 0;
 
-  const selectSuboption = useCallback((suboption: FindingSuboption | null) => {
-    setFormSelection((prev) => {
-      const option = prev.selectedFindingId ? findingOptionMap.get(prev.selectedFindingId) : null;
-      const hasSuboptions = (option?.subopciones?.length ?? 0) > 0;
-      const hasColors = (option?.colores?.length ?? 0) > 0;
+        // Autocompletar color si hay 1 solo y no estaba seleccionado
+        let autoColor = prev.selectedColor;
+        if (!autoColor && option?.colores?.length === 1) {
+          autoColor = option.colores[0];
+        }
 
-      // Autocompletar color si hay 1 solo y no estaba seleccionado
-      let autoColor = prev.selectedColor;
-      if (!autoColor && option?.colores?.length === 1) {
-        autoColor = option.colores[0];
-      }
+        const isCompleteNow =
+          prev.selectedFindingId !== null &&
+          (!hasColors || autoColor !== null) &&
+          (!hasSuboptions || suboption !== null);
 
-      const isCompleteNow = 
-        prev.selectedFindingId !== null &&
-        (!hasColors || autoColor !== null) &&
-        (!hasSuboptions || suboption !== null);
-
-
-      return {
-        ...prev,
-        selectedSuboption: suboption,
-        selectedColor: autoColor,
-        isComplete: isCompleteNow,
-      };
-    });
-  }, [findingOptionMap]);
+        return {
+          ...prev,
+          selectedSuboption: suboption,
+          selectedColor: autoColor,
+          isComplete: isCompleteNow,
+        };
+      });
+    },
+    [findingOptionMap],
+  );
 
   const selectDesign = useCallback((design: FindingDesign | null) => {
     setFormSelection((prev) => ({ ...prev, selectedDesign: design }));
@@ -342,7 +334,7 @@ export function OdontogramProvider({
           // MULTI-DESIGN: each designNumber is independent.
           // Toggle the specific designNumber on/off.
           const exactIndex = tooth.findings.findIndex(
-            (f) => f.findingId === params.findingId && f.designNumber === params.designNumber
+            (f) => f.findingId === params.findingId && f.designNumber === params.designNumber,
           );
           if (exactIndex >= 0) {
             // Exact design already exists → remove it
@@ -359,9 +351,7 @@ export function OdontogramProvider({
         }
 
         // SINGLE-DESIGN or NO-DESIGN findings
-        const existingIndex = tooth.findings.findIndex(
-          (f) => f.findingId === params.findingId
-        );
+        const existingIndex = tooth.findings.findIndex((f) => f.findingId === params.findingId);
 
         if (existingIndex >= 0) {
           const existingFinding = tooth.findings[existingIndex];
@@ -371,9 +361,7 @@ export function OdontogramProvider({
             return {
               ...tooth,
               findings: tooth.findings.map((f, i) =>
-                i === existingIndex
-                  ? { ...f, designNumber, color: params.color, subOptionId: params.subOptionId }
-                  : f
+                i === existingIndex ? { ...f, designNumber, color: params.color, subOptionId: params.subOptionId } : f,
               ),
             };
           }
@@ -397,9 +385,9 @@ export function OdontogramProvider({
       // Si es row-finding con spacing (7, 31), toggle spacings de la posición
       if (isRowFinding(params.findingId) && data.spacingFindings[params.findingId]) {
         const spaces = data.spacingFindings[params.findingId];
-        const wasActive = data.teeth.find(
-          (t) => t.toothId === params.toothId
-        )?.findings.some((f) => f.findingId === params.findingId);
+        const wasActive = data.teeth
+          .find((t) => t.toothId === params.toothId)
+          ?.findings.some((f) => f.findingId === params.findingId);
 
         const posTeethIds = new Set(config.teeth[position].map((t) => t.id));
 
@@ -432,19 +420,10 @@ export function OdontogramProvider({
         const spacesForFinding = newSpacingFindings[params.findingId] || [];
 
         // 1) Recalcular diseños de ESPACIOS basándose en DIENTES actualizados
-        newSpacingFindings[params.findingId] = recalculateSpacingDesigns(
-          spacesForFinding,
-          params.findingId,
-          newTeeth
-        );
+        newSpacingFindings[params.findingId] = recalculateSpacingDesigns(spacesForFinding, params.findingId, newTeeth);
 
         // 2) Recalcular diseños de DIENTES basándose en ESPACIOS actualizados
-        newTeeth = recalculateToothDesigns(
-          newTeeth,
-          params.findingId,
-          newSpacingFindings[params.findingId]
-        );
-
+        newTeeth = recalculateToothDesigns(newTeeth, params.findingId, newSpacingFindings[params.findingId]);
       }
 
       // =====================================================================
@@ -458,7 +437,12 @@ export function OdontogramProvider({
         newTeeth = recalculateToothDesignsFromLegendSpaces(newTeeth, params.findingId, newLegendSpaces);
       }
 
-      const newData: OdontogramData = { ...data, teeth: newTeeth, spacingFindings: newSpacingFindings, legendSpaces: newLegendSpaces };
+      const newData: OdontogramData = {
+        ...data,
+        teeth: newTeeth,
+        spacingFindings: newSpacingFindings,
+        legendSpaces: newLegendSpaces,
+      };
       // Recompute annotations for all teeth that changed
       newData.teeth = newData.teeth.map((tooth) => ({
         ...tooth,
@@ -466,31 +450,26 @@ export function OdontogramProvider({
       }));
       emit(newData);
     },
-    [data, config, readOnly, emit]
+    [data, config, readOnly, emit],
   );
 
   const removeToothFinding = useCallback(
-    (params: {
-      toothId: number;
-      findingId: number;
-      instanceId?: string;
-    }) => {
+    (params: { toothId: number; findingId: number; instanceId?: string }) => {
       if (readOnly) return;
 
       // For row findings (7, 31), determine the arch and remove from all teeth + spacings
-      const position = config.teeth.upper.some((t) => t.id === params.toothId) ? "upper" : "lower";
+      const position = config.teeth.upper.some((t) => t.id === params.toothId) ? 'upper' : 'lower';
       const isRow = isRowFinding(params.findingId);
-      const toothIdsToRemove = isRow
-        ? config.teeth[position].map((t) => t.id)
-        : [params.toothId];
+      const toothIdsToRemove = isRow ? config.teeth[position].map((t) => t.id) : [params.toothId];
 
       const newTeeth = data.teeth.map((tooth) => {
         if (!toothIdsToRemove.includes(tooth.toothId)) return tooth;
 
         // For row findings always remove all instances by findingId (ignore instanceId)
-        const newFindings = (isRow || !params.instanceId)
-          ? tooth.findings.filter((f) => f.findingId !== params.findingId)
-          : tooth.findings.filter((f) => f.id !== params.instanceId);
+        const newFindings =
+          isRow || !params.instanceId
+            ? tooth.findings.filter((f) => f.findingId !== params.findingId)
+            : tooth.findings.filter((f) => f.id !== params.instanceId);
 
         return { ...tooth, findings: newFindings };
       });
@@ -499,7 +478,7 @@ export function OdontogramProvider({
       const teethWithAnnotations = newTeeth.map((tooth) =>
         toothIdsToRemove.includes(tooth.toothId)
           ? { ...tooth, annotations: computeToothAnnotations(tooth.findings, config.findingOptions) }
-          : tooth
+          : tooth,
       );
 
       // For row findings, also remove from spacingFindings
@@ -514,18 +493,16 @@ export function OdontogramProvider({
 
       emit({ ...data, teeth: teethWithAnnotations, spacingFindings: newSpacingFindings });
     },
-    [data, config, readOnly, emit]
+    [data, config, readOnly, emit],
   );
 
   const updateToothNotes = useCallback(
     (toothId: number, notes: string) => {
       if (readOnly) return;
-      const newTeeth = data.teeth.map((tooth) =>
-        tooth.toothId === toothId ? { ...tooth, notes } : tooth
-      );
+      const newTeeth = data.teeth.map((tooth) => (tooth.toothId === toothId ? { ...tooth, notes } : tooth));
       emit({ ...data, teeth: newTeeth });
     },
-    [data, readOnly, emit]
+    [data, readOnly, emit],
   );
 
   // ---------------------------------------------------------------------------
@@ -549,17 +526,13 @@ export function OdontogramProvider({
 
       // Encontrar el espacio correcto
       const spaceIndex = spaces.findIndex(
-        (s) =>
-          s.leftToothId === params.leftToothId &&
-          s.rightToothId === params.rightToothId
+        (s) => s.leftToothId === params.leftToothId && s.rightToothId === params.rightToothId,
       );
 
       if (spaceIndex < 0) return;
 
       const space = spaces[spaceIndex];
-      const existingFindingIdx = space.findings.findIndex(
-        (f) => f.findingId === findingId
-      );
+      const existingFindingIdx = space.findings.findIndex((f) => f.findingId === findingId);
 
       let updatedSpaces: SpaceData[];
 
@@ -569,11 +542,9 @@ export function OdontogramProvider({
           i === spaceIndex
             ? {
                 ...s,
-                findings: s.findings.filter(
-                  (_, fi) => fi !== existingFindingIdx
-                ),
+                findings: s.findings.filter((_, fi) => fi !== existingFindingIdx),
               }
-            : s
+            : s,
         );
       } else {
         // Toggle on: agregar
@@ -585,9 +556,7 @@ export function OdontogramProvider({
         };
 
         updatedSpaces = spaces.map((s, i) =>
-          i === spaceIndex
-            ? { ...s, findings: [...s.findings, newSpaceFinding] }
-            : s
+          i === spaceIndex ? { ...s, findings: [...s.findings, newSpaceFinding] } : s,
         );
       }
 
@@ -610,13 +579,9 @@ export function OdontogramProvider({
             i === spaceIndex
               ? {
                   ...s,
-                  findings: s.findings.map((f) =>
-                    f.findingId === findingId
-                      ? { ...f, designNumber: designNum }
-                      : f
-                  ),
+                  findings: s.findings.map((f) => (f.findingId === findingId ? { ...f, designNumber: designNum } : f)),
                 }
-              : s
+              : s,
           );
         }
       }
@@ -632,34 +597,25 @@ export function OdontogramProvider({
 
       emit(newData);
     },
-    [data, config, readOnly, emit]
+    [data, config, readOnly, emit],
   );
 
   // ---------------------------------------------------------------------------
   // Legend Actions
   // ---------------------------------------------------------------------------
   const toggleLegendFinding = useCallback(
-    (params: {
-      leftToothId: number;
-      rightToothId: number;
-      findingId: number;
-      color: FindingColor;
-    }) => {
+    (params: { leftToothId: number; rightToothId: number; findingId: number; color: FindingColor }) => {
       if (readOnly) return;
 
       const legendSpaces = [...data.legendSpaces];
       const index = legendSpaces.findIndex(
-        (ls) =>
-          ls.leftToothId === params.leftToothId &&
-          ls.rightToothId === params.rightToothId
+        (ls) => ls.leftToothId === params.leftToothId && ls.rightToothId === params.rightToothId,
       );
 
       if (index < 0) return;
 
       const space = legendSpaces[index];
-      const existingIdx = space.findings.findIndex(
-        (f) => f.findingId === params.findingId
-      );
+      const existingIdx = space.findings.findIndex((f) => f.findingId === params.findingId);
 
       let updatedSpaces: LegendSpaceData[];
 
@@ -671,7 +627,7 @@ export function OdontogramProvider({
                 ...ls,
                 findings: ls.findings.filter((_, fi) => fi !== existingIdx),
               }
-            : ls
+            : ls,
         );
       } else {
         // Toggle on
@@ -683,9 +639,7 @@ export function OdontogramProvider({
           designNumber: designNum,
         };
         updatedSpaces = legendSpaces.map((ls, i) =>
-          i === index
-            ? { ...ls, findings: [...ls.findings, newFinding] }
-            : ls
+          i === index ? { ...ls, findings: [...ls.findings, newFinding] } : ls,
         );
       }
 
@@ -697,7 +651,7 @@ export function OdontogramProvider({
 
       emit({ ...data, teeth: newTeethFromLegend, legendSpaces: updatedSpaces });
     },
-    [data, config, readOnly, emit]
+    [data, config, readOnly, emit],
   );
 
   // ---------------------------------------------------------------------------
@@ -753,7 +707,7 @@ export function OdontogramProvider({
       getTeethByPosition,
       getFindingOption,
       showToast,
-    ]
+    ],
   );
 
   return (
@@ -763,7 +717,11 @@ export function OdontogramProvider({
       {toastMsg && (
         <div className="odon-toast" role="alert">
           <svg className="odon-toast-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.168 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/>
+            <path
+              fillRule="evenodd"
+              d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.168 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 8a1 1 0 100-2 1 1 0 000 2z"
+              clipRule="evenodd"
+            />
           </svg>
           <span>{toastMsg}</span>
         </div>

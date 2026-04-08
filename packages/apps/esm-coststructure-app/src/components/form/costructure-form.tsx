@@ -1,10 +1,12 @@
 import { Button, Tabs, Tab, TabList, TabPanels, TabPanel } from '@carbon/react';
 import { WhitePaper } from '@carbon/react/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { openmrsFetch, showSnackbar } from '@openmrs/esm-framework';
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { baseUrl } from '../../constants';
 import { type Procedure } from '../../hooks/use-get-procedures';
 import PageHeader from '../ui/PageHeader/pageHeader';
 
@@ -21,6 +23,7 @@ import SupplyTab from './tabs/supply-tab';
 
 export default function CostStructureForm() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
 
   const form = useForm<CostStructureFormValues>({
@@ -44,15 +47,45 @@ export default function CostStructureForm() {
   const {
     control,
     handleSubmit,
+    reset,
     setValue,
     formState: { errors },
   } = form;
-  const onSubmit = (_data: CostStructureFormValues) => {
-    // TODO: Implementar guardado via API (POST al OMOD de coststructure)
+
+  const onSubmit = async (data: CostStructureFormValues) => {
+    setIsSubmitting(true);
+    try {
+      await openmrsFetch(`${baseUrl}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: data,
+      });
+      showSnackbar({
+        kind: 'success',
+        isLowContrast: true,
+        title: t('costStructureSaved', 'Cost structure saved'),
+        subtitle: t('costStructureSavedSubtitle', 'The cost structure was saved successfully'),
+      });
+      reset();
+    } catch (error) {
+      showSnackbar({
+        kind: 'error',
+        isLowContrast: false,
+        title: t('errorSavingCostStructure', 'Error saving cost structure'),
+        subtitle: error?.message ?? t('unknownError', 'Unknown error'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const onError = (_formErrors: Record<string, unknown>) => {
-    // TODO: Mostrar notificación de errores de validación al usuario
+  const onError = () => {
+    showSnackbar({
+      kind: 'warning',
+      isLowContrast: true,
+      title: t('validationErrors', 'Validation errors'),
+      subtitle: t('fixValidationErrors', 'Please fix the highlighted fields before saving'),
+    });
   };
 
   const handleTanbChange = (state: { selectedIndex: number }) => {
@@ -123,8 +156,8 @@ export default function CostStructureForm() {
         </section>
 
         <div className="flex gap-2">
-          <Button kind="primary" type="submit">
-            {t('saveStructure', 'Save structure')}
+          <Button kind="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? t('saving', 'Saving...') : t('saveStructure', 'Save structure')}
           </Button>
           <Button kind="secondary" type="reset">
             {t('clear', 'Clear')}

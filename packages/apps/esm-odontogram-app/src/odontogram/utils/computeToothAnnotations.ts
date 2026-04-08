@@ -12,11 +12,7 @@
  * Color: taken from the finding's applied color.
  */
 
-import type {
-  ToothFinding,
-  ToothAnnotation,
-  FindingOptionConfig,
-} from "../types/odontogram";
+import type { ToothFinding, ToothAnnotation, FindingOptionConfig } from '../types/odontogram';
 
 /**
  * Recompute annotations for a tooth given its current findings array
@@ -24,7 +20,7 @@ import type {
  */
 export function computeToothAnnotations(
   findings: ToothFinding[],
-  findingOptions: FindingOptionConfig[]
+  findingOptions: FindingOptionConfig[],
 ): ToothAnnotation[] {
   const annotations: ToothAnnotation[] = [];
   /** Track (findingId, text) to avoid duplicates from multi-design findings */
@@ -34,14 +30,14 @@ export function computeToothAnnotations(
     const cfg = findingOptions.find((o) => o.id === finding.findingId);
     if (!cfg) continue;
 
-    const source = cfg.abreviaturaSource ?? "none";
-    if (source === "none") continue;
+    const source = cfg.abreviaturaSource ?? 'none';
+    if (source === 'none') continue;
 
     let text: string | undefined;
 
-    if (source === "identificador") {
+    if (source === 'identificador') {
       text = cfg.identificador;
-    } else if (source === "tipo") {
+    } else if (source === 'tipo') {
       // Look up the suboption nombre from the finding's subOptionId
       if (finding.subOptionId != null && cfg.subopciones) {
         const sub = cfg.subopciones.find((s) => s.id === finding.subOptionId);

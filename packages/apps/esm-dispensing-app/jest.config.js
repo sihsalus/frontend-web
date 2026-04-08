@@ -1,5 +1,7 @@
 /** @type {import('jest').Config} */
 
+const path = require('path');
+
 module.exports = {
   transform: {
     '^.+\\.[jt]sx?$': ['@swc/jest'],
@@ -12,6 +14,7 @@ module.exports = {
     '^lodash-es$': 'lodash',
     '^uuid$': '<rootDir>/node_modules/uuid/dist/index.js',
     dexie: require.resolve('dexie'),
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
   },
   collectCoverageFrom: ['!**/node_modules/**', '!**/e2e/**'],
   testPathIgnorePatterns: [

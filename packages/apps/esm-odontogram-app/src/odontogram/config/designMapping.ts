@@ -36,7 +36,7 @@ import {
   Finding39Design1Inverted,
   Finding39Design2Inverted,
   Finding39Design3Inverted,
-} from "../designs/figuras";
+} from '../designs/figuras';
 
 export interface DesignMapping {
   [optionId: number]: {
@@ -161,9 +161,9 @@ export const getDesignComponentByPosition = (optionId: number, designNumber: num
  */
 export const SPACING_DESIGN_MAPPING: DesignMapping = {
   1: {
-    1: Finding1Design5,  // line going left
-    2: Finding1Design4,  // line going right
-    3: Finding1Design6,  // straight through (both sides)
+    1: Finding1Design5, // line going left
+    2: Finding1Design4, // line going right
+    3: Finding1Design6, // straight through (both sides)
   },
   2: {
     1: Finding2Design2,
@@ -249,7 +249,11 @@ export const SPACING_DESIGN_MAPPING_LOWER: DesignMapping = {
 };
 
 /** Selecciona el diseño de 20px (spacing cells) según la posición */
-export const getSpacingDesignComponentByPosition = (optionId: number, designNumber: number, isLowerTeeth: boolean = false) => {
+export const getSpacingDesignComponentByPosition = (
+  optionId: number,
+  designNumber: number,
+  isLowerTeeth: boolean = false,
+) => {
   const mapping = isLowerTeeth ? SPACING_DESIGN_MAPPING_LOWER : SPACING_DESIGN_MAPPING;
   return mapping[optionId]?.[designNumber];
 };

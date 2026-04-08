@@ -1,6 +1,6 @@
 /**
  * Tipos internos del contexto del odontograma.
- * 
+ *
  * Estos tipos NO son parte de la API pública.
  * Definen el estado UI efímero (selección actual, modales, etc.)
  * y las acciones internas que los sub-componentes pueden invocar.
@@ -15,7 +15,7 @@ import type {
   FindingOptionConfig,
   ToothPosition,
   ToothConfig,
-} from "./odontogram";
+} from './odontogram';
 
 // =============================================================================
 // ESTADO UI EFÍMERO — No se guarda en BBDD

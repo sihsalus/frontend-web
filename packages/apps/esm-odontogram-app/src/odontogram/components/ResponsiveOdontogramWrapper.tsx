@@ -13,9 +13,9 @@
  *  - Modals (position: fixed) are unaffected by the transform.
  */
 
-import React, { useRef, useState, useEffect } from "react";
-import { usePinchZoom } from "./usePinchZoom";
-import "./ResponsiveOdontogramWrapper.css";
+import React, { useRef, useState, useEffect } from 'react';
+import { usePinchZoom } from './usePinchZoom';
+import './ResponsiveOdontogramWrapper.css';
 
 interface ResponsiveOdontogramWrapperProps {
   children: React.ReactNode;
@@ -23,10 +23,7 @@ interface ResponsiveOdontogramWrapperProps {
   naturalWidth?: number;
 }
 
-const ResponsiveOdontogramWrapper: React.FC<ResponsiveOdontogramWrapperProps> = ({
-  children,
-  naturalWidth = 1260,
-}) => {
+const ResponsiveOdontogramWrapper: React.FC<ResponsiveOdontogramWrapperProps> = ({ children, naturalWidth = 1260 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [baseScale, setBaseScale] = useState(1);
   const [contentHeight, setContentHeight] = useState(0);
@@ -89,7 +86,7 @@ const ResponsiveOdontogramWrapper: React.FC<ResponsiveOdontogramWrapperProps> = 
         style={{
           width: naturalWidth,
           transform: `translate(${panX}px, ${panY}px) scale(${effectiveScale})`,
-          transformOrigin: "top left",
+          transformOrigin: 'top left',
         }}
       >
         {children}

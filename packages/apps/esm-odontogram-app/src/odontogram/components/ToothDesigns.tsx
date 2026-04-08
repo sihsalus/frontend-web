@@ -48,15 +48,15 @@ const ToothDesigns: React.FC<ToothDesignProps> = ({ design }) => {
           <>
             <line x1="0" y1="20" x2="5" y2="0" stroke="black" strokeWidth="0.15" />
             <line x1="5" y1="0" x2="10" y2="20" stroke="black" strokeWidth="0.15" />
-            <line x1="10" y1="20" x2="15" y2="0" stroke="black" strokeWidth="0.15" strokeDasharray="1"/>
-            <line x1="15" y1="0" x2="20" y2="20" stroke="black" strokeWidth="0.15" strokeDasharray="1"/>
+            <line x1="10" y1="20" x2="15" y2="0" stroke="black" strokeWidth="0.15" strokeDasharray="1" />
+            <line x1="15" y1="0" x2="20" y2="20" stroke="black" strokeWidth="0.15" strokeDasharray="1" />
           </>
         );
       case 'design4':
         return (
           <>
-            <line x1="0" y1="20" x2="5" y2="0" stroke="black" strokeWidth="0.15" strokeDasharray="1"/>
-            <line x1="5" y1="0" x2="10" y2="20" stroke="black" strokeWidth="0.15" strokeDasharray="1"/>
+            <line x1="0" y1="20" x2="5" y2="0" stroke="black" strokeWidth="0.15" strokeDasharray="1" />
+            <line x1="5" y1="0" x2="10" y2="20" stroke="black" strokeWidth="0.15" strokeDasharray="1" />
             <line x1="10" y1="20" x2="15" y2="0" stroke="black" strokeWidth="0.15" />
             <line x1="15" y1="0" x2="20" y2="20" stroke="black" strokeWidth="0.15" />
           </>

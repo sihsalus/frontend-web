@@ -22,7 +22,14 @@ export const FINDINGS_CONFIG: Record<number, FindingConfig> = {
   4: { id: 4, name: 'Corona temporal', hasSpacing: false, hasZones: false, hasDesigns: false },
   5: { id: 5, name: 'Defectos del desarrollo del esmalte', hasSpacing: false, hasZones: true, hasDesigns: true },
   6: { id: 6, name: 'Diastema', hasSpacing: true, hasZones: false, hasDesigns: false },
-  7: { id: 7, name: 'Edéntulo total superior / inferior', hasSpacing: true, hasZones: false, hasDesigns: false, applyToRow: true },
+  7: {
+    id: 7,
+    name: 'Edéntulo total superior / inferior',
+    hasSpacing: true,
+    hasZones: false,
+    hasDesigns: false,
+    applyToRow: true,
+  },
   8: { id: 8, name: 'Espigo - Muñón', hasSpacing: false, hasZones: false, hasDesigns: true },
   9: { id: 9, name: 'Fosas y fisuras profundas', hasSpacing: false, hasZones: false, hasDesigns: false },
   10: { id: 10, name: 'Fractura dental', hasSpacing: false, hasZones: true, hasDesigns: true },
@@ -54,7 +61,7 @@ export const FINDINGS_CONFIG: Record<number, FindingConfig> = {
   36: { id: 36, name: 'Tratamiento pulpar', hasSpacing: false, hasZones: false, hasDesigns: false },
   37: { id: 37, name: 'Caries dental', hasSpacing: false, hasZones: true, hasDesigns: false },
   38: { id: 38, name: 'Obturación', hasSpacing: false, hasZones: true, hasDesigns: false },
-  39: { id: 39, name: 'Transposición dentaria', hasSpacing: true, hasZones: false, hasDesigns: false }
+  39: { id: 39, name: 'Transposición dentaria', hasSpacing: true, hasZones: false, hasDesigns: false },
 };
 
 /**
@@ -96,19 +103,19 @@ export const applyToRow = (optionId: number): boolean => {
  * Obtiene todos los hallazgos que tienen espaciado
  */
 export const getFindingsWithSpacing = (): FindingConfig[] => {
-  return Object.values(FINDINGS_CONFIG).filter(config => config.hasSpacing);
+  return Object.values(FINDINGS_CONFIG).filter((config) => config.hasSpacing);
 };
 
 /**
  * Obtiene todos los hallazgos que tienen zonas
  */
 export const getFindingsWithZones = (): FindingConfig[] => {
-  return Object.values(FINDINGS_CONFIG).filter(config => config.hasZones);
+  return Object.values(FINDINGS_CONFIG).filter((config) => config.hasZones);
 };
 
 /**
  * Obtiene todos los hallazgos que tienen diseños
  */
 export const getFindingsWithDesigns = (): FindingConfig[] => {
-  return Object.values(FINDINGS_CONFIG).filter(config => config.hasDesigns);
+  return Object.values(FINDINGS_CONFIG).filter((config) => config.hasDesigns);
 };

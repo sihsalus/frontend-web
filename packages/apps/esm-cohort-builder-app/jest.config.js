@@ -14,6 +14,7 @@ module.exports = {
     '^lodash-es/(.*)$': 'lodash/$1',
     '^lodash-es$': 'lodash',
     '^uuid$': '<rootDir>/node_modules/uuid/dist/index.js',
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
   },
   setupFilesAfterEnv: ['<rootDir>/tools/setup-tests.ts'],
   testEnvironment: 'jsdom',

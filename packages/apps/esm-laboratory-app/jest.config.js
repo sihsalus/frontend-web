@@ -18,6 +18,7 @@ module.exports = {
     '^@tools/(.*)$': path.resolve(__dirname, 'tools', '$1'),
     '^@mocks/(.*)$': path.resolve(__dirname, '__mocks__', '$1'),
     '^uuid$': path.resolve(__dirname, 'node_modules', 'uuid', 'dist', 'index.js'),
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
   },
   collectCoverageFrom: [
     '!**/node_modules/**',

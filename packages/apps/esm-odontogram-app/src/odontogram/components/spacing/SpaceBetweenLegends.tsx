@@ -4,24 +4,17 @@
  * en el espacio entre labels de dientes adyacentes.
  */
 
-import React from "react";
-import { useOdontogramContext } from "../../providers/OdontogramProvider";
-import {
-  EllipseDesignCenter,
-  EllipseDesignLeftCenter,
-  EllipseDesignRightCenter,
-} from "../../designs/figuras";
-import "./SpaceBetweenStyles.css";
+import React from 'react';
+import { useOdontogramContext } from '../../providers/OdontogramProvider';
+import { EllipseDesignCenter, EllipseDesignLeftCenter, EllipseDesignRightCenter } from '../../designs/figuras';
+import './SpaceBetweenStyles.css';
 
 interface SpaceBetweenLegendsProps {
   leftToothId: number;
   rightToothId: number;
 }
 
-const SpaceBetweenLegends: React.FC<SpaceBetweenLegendsProps> = ({
-  leftToothId,
-  rightToothId,
-}) => {
+const SpaceBetweenLegends: React.FC<SpaceBetweenLegendsProps> = ({ leftToothId, rightToothId }) => {
   const { data, formSelection, legendActions, readOnly } = useOdontogramContext();
 
   const { selectedFindingId, selectedColor, isComplete } = formSelection;
@@ -34,7 +27,7 @@ const SpaceBetweenLegends: React.FC<SpaceBetweenLegendsProps> = ({
 
   // Obtener datos del legendSpace para este par
   const legendSpace = data.legendSpaces.find(
-    (ls) => ls.leftToothId === leftToothId && ls.rightToothId === rightToothId
+    (ls) => ls.leftToothId === leftToothId && ls.rightToothId === rightToothId,
   );
 
   // Finding 11 - Fusión (con diseños de adyacencia)
@@ -72,20 +65,10 @@ const SpaceBetweenLegends: React.FC<SpaceBetweenLegendsProps> = ({
       width="20"
       height="30"
       onClick={handleClick}
-      style={{ cursor: readOnly || isDisabled ? "default" : "pointer" }}
-      className={isSelected && !isDisabled && !readOnly ? "interactive-svg" : ""}
+      style={{ cursor: readOnly || isDisabled ? 'default' : 'pointer' }}
+      className={isSelected && !isDisabled && !readOnly ? 'interactive-svg' : ''}
     >
-      <rect
-        width="20"
-        height="30"
-        fill={
-          isDisabled || readOnly
-            ? "white"
-            : isSelected
-            ? "lightgray"
-            : "white"
-        }
-      />
+      <rect width="20" height="30" fill={isDisabled || readOnly ? 'white' : isSelected ? 'lightgray' : 'white'} />
       {renderDesign()}
     </svg>
   );

@@ -8,7 +8,7 @@
  * Final values are flushed to state on touchEnd.
  */
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 interface PinchZoomOptions {
   /** Minimum effective scale (baseScale × userZoom). Default: 0.2 */
@@ -134,14 +134,14 @@ export function usePinchZoom({ minScale = 0.2, maxScale = 3, baseScale }: PinchZ
     }
 
     // { passive: false } is critical — allows preventDefault() in onTouchMove
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    el.addEventListener("touchend", onTouchEnd, { passive: true });
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
 
     return () => {
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
     };
   }, [minScale, maxScale]);
 

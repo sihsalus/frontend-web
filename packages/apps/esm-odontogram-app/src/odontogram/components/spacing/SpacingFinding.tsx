@@ -1,16 +1,16 @@
 /**
  * Componente genérico para renderizar un espacio entre dientes
  * para cualquier hallazgo de spacing.
- * 
+ *
  * Reemplaza los 10+ componentes SpacingBetweenFinding{N} duplicados.
  * Usa el Context en vez de stores globales.
  */
 
-import React from "react";
-import { useOdontogramContext } from "../../providers/OdontogramProvider";
-import { getSpacingDesignComponentByPosition } from "../../config/designMapping";
-import { isRowFinding } from "../../logic/findingDesignLogic";
-import "./SpaceBetweenStyles.css";
+import React from 'react';
+import { useOdontogramContext } from '../../providers/OdontogramProvider';
+import { getSpacingDesignComponentByPosition } from '../../config/designMapping';
+import { isRowFinding } from '../../logic/findingDesignLogic';
+import './SpaceBetweenStyles.css';
 
 // Findings that should NOT show gray highlighting in spacing cells
 const NO_HIGHLIGHT_SPACING = new Set([13, 24, 25]);
@@ -35,19 +35,18 @@ const SpacingFinding: React.FC<SpacingFindingProps> = ({
   width = 20,
   height = 20,
 }) => {
-  const { data, config, formSelection, spacingActions, toothActions, readOnly, getToothConfig, showToast } = useOdontogramContext();
+  const { data, config, formSelection, spacingActions, toothActions, readOnly, getToothConfig, showToast } =
+    useOdontogramContext();
 
   const { selectedFindingId, selectedColor, selectedSuboption, isComplete } = formSelection;
 
   // ¿Este espacio pertenece a un diente inferior?
   const toothConfig = getToothConfig(leftToothId);
-  const isLower = toothConfig?.position === "lower";
+  const isLower = toothConfig?.position === 'lower';
 
   // Obtener los datos de spacing para este hallazgo
   const spaces = data.spacingFindings[findingId] || [];
-  const space = spaces.find(
-    (s) => s.leftToothId === leftToothId && s.rightToothId === rightToothId
-  );
+  const space = spaces.find((s) => s.leftToothId === leftToothId && s.rightToothId === rightToothId);
 
   // Obtener el hallazgo activo en este espacio (si existe)
   const activeFinding = space?.findings.find((f) => f.findingId === findingId);
@@ -61,15 +60,15 @@ const SpacingFinding: React.FC<SpacingFindingProps> = ({
     if (readOnly) return;
     if (!isComplete || !isSelected || !selectedColor) {
       if (selectedFindingId && !isComplete) {
-        const opt = config.findingOptions.find(o => o.id === selectedFindingId);
+        const opt = config.findingOptions.find((o) => o.id === selectedFindingId);
         const needsColor = (opt?.colores?.length ?? 0) > 0 && !selectedColor;
         const needsSub = (opt?.subopciones?.length ?? 0) > 0 && !selectedSuboption;
         const parts: string[] = [];
-        if (needsSub) parts.push("tipo");
-        if (needsColor) parts.push("color");
-        if (parts.length) showToast(`Seleccione ${parts.join(" y ")} para "${opt?.nombre}"`);
+        if (needsSub) parts.push('tipo');
+        if (needsColor) parts.push('color');
+        if (parts.length) showToast(`Seleccione ${parts.join(' y ')} para "${opt?.nombre}"`);
       } else if (!selectedFindingId) {
-        showToast("Seleccione un hallazgo clínico en el formulario");
+        showToast('Seleccione un hallazgo clínico en el formulario');
       }
       return;
     }
@@ -97,11 +96,7 @@ const SpacingFinding: React.FC<SpacingFindingProps> = ({
   const renderDesign = () => {
     if (!storedColor || !dynamicDesign) return null;
 
-    const DesignComponent = getSpacingDesignComponentByPosition(
-      findingId,
-      dynamicDesign,
-      isLower
-    );
+    const DesignComponent = getSpacingDesignComponentByPosition(findingId, dynamicDesign, isLower);
     if (!DesignComponent) return null;
 
     return <DesignComponent strokeColor={storedColor.name} />;
@@ -112,13 +107,13 @@ const SpacingFinding: React.FC<SpacingFindingProps> = ({
       width={width}
       height={height}
       onClick={handleClick}
-      style={{ cursor: readOnly ? "default" : "pointer" }}
-      className={isSelected && !readOnly ? "interactive-svg" : ""}
+      style={{ cursor: readOnly ? 'default' : 'pointer' }}
+      className={isSelected && !readOnly ? 'interactive-svg' : ''}
     >
       <rect
         width={width}
         height={height}
-        fill={isSelected && !readOnly && !NO_HIGHLIGHT_SPACING.has(findingId) ? "lightgray" : "white"}
+        fill={isSelected && !readOnly && !NO_HIGHLIGHT_SPACING.has(findingId) ? 'lightgray' : 'white'}
       />
       {renderDesign()}
     </svg>

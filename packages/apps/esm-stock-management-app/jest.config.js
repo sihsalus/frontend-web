@@ -19,7 +19,7 @@ module.exports = {
     '^@mocks$': path.resolve(__dirname, '__mocks__'),
     '^@mocks/(.*)$': path.resolve(__dirname, '__mocks__', '$1'),
     '^dexie$': require.resolve('dexie'),
-    '^react-i18next$': path.resolve(__dirname, '__mocks__', 'react-i18next.js'),
+    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
   },
   setupFilesAfterEnv: ['<rootDir>/tools/setup-tests.ts'],
   testEnvironment: 'jsdom',

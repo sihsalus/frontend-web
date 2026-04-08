@@ -1,15 +1,15 @@
-import React from "react";
-import "./ToothDetails.css";
-import "./spacing/SpaceBetweenStyles.css";
-import { COLOR_CSS } from "./constants";
+import React from 'react';
+import './ToothDetails.css';
+import './spacing/SpaceBetweenStyles.css';
+import { COLOR_CSS } from './constants';
 import {
   EllipseDesignLeft,
   EllipseDesignRight,
   EllipseDesignLeftAndRight,
   Finding12Design1,
   Finding21Design1,
-} from "../designs/figuras";
-import { useOdontogramContext } from "../providers/OdontogramProvider";
+} from '../designs/figuras';
+import { useOdontogramContext } from '../providers/OdontogramProvider';
 
 interface ToothDetailsProps {
   idTooth: number;
@@ -18,10 +18,7 @@ interface ToothDetailsProps {
 }
 
 // Se manejan los hallazgos 11, 12 y 21
-const ToothDetails: React.FC<ToothDetailsProps> = ({
-  idTooth,
-  legend = "Leyenda"
-}) => {
+const ToothDetails: React.FC<ToothDetailsProps> = ({ idTooth, legend = 'Leyenda' }) => {
   const { data, config: ctxConfig, formSelection, toothActions, readOnly, showToast } = useOdontogramContext();
 
   const { selectedFindingId, selectedSuboption, selectedColor, isComplete } = formSelection;
@@ -60,15 +57,15 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({
     if (readOnly) return;
     if (!isComplete || !predefinedMarkedOptions.includes(selectedFindingId!)) {
       if (selectedFindingId && !isComplete) {
-        const opt = ctxConfig.findingOptions.find(o => o.id === selectedFindingId);
+        const opt = ctxConfig.findingOptions.find((o) => o.id === selectedFindingId);
         const needsColor = (opt?.colores?.length ?? 0) > 0 && !selectedColor;
         const needsSub = (opt?.subopciones?.length ?? 0) > 0 && !selectedSuboption;
         const parts: string[] = [];
-        if (needsSub) parts.push("tipo");
-        if (needsColor) parts.push("color");
-        if (parts.length) showToast(`Seleccione ${parts.join(" y ")} para "${opt?.nombre}"`);
+        if (needsSub) parts.push('tipo');
+        if (needsColor) parts.push('color');
+        if (parts.length) showToast(`Seleccione ${parts.join(' y ')} para "${opt?.nombre}"`);
       } else if (!selectedFindingId) {
-        showToast("Seleccione un hallazgo clínico en el formulario");
+        showToast('Seleccione un hallazgo clínico en el formulario');
       }
       return;
     }
@@ -85,7 +82,7 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({
   };
 
   // Determinar la clase CSS para el SVG
-  const svgClassName = "tooth-details-legend interactive-svg";
+  const svgClassName = 'tooth-details-legend interactive-svg';
 
   const renderDesignForFinding = (optionId: number, finding: any) => {
     switch (optionId) {
@@ -116,10 +113,7 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({
               {group.items.map((ann, i) => (
                 <React.Fragment key={`${ann.findingId}-${ann.text}-${i}`}>
                   {i > 0 && <span className="tooth-annotation-sep">/</span>}
-                  <span
-                    className="tooth-annotation"
-                    style={{ color: COLOR_CSS[ann.color] ?? ann.color }}
-                  >
+                  <span className="tooth-annotation" style={{ color: COLOR_CSS[ann.color] ?? ann.color }}>
                     {ann.text}
                   </span>
                 </React.Fragment>
@@ -135,24 +129,19 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({
         height="30"
         onClick={handleLegendClick}
         className={svgClassName}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: 'pointer' }}
         viewBox="0 0 60 30"
       >
         {/* Fondo con sombreado dependiendo de la opción seleccionada */}
         <rect
           width="60"
           height="30"
-          fill={selectedFindingId != null && predefinedMarkedOptions.includes(selectedFindingId) ? "lightgray" : "white"}
+          fill={
+            selectedFindingId != null && predefinedMarkedOptions.includes(selectedFindingId) ? 'lightgray' : 'white'
+          }
         />
 
-        <text
-          x="30"
-          y="20"
-          fontSize="13"
-          fill="black"
-          textAnchor="middle"
-          className="tooth-details-legend-text"
-        >
+        <text x="30" y="20" fontSize="13" fill="black" textAnchor="middle" className="tooth-details-legend-text">
           {legend}
         </text>
 
