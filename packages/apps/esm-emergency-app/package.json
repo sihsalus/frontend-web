@@ -56,7 +56,7 @@
     "rxjs": "6.x"
   },
   "devDependencies": {
-    "@openmrs/esm-framework": "next",
+    "@openmrs/esm-framework": "*",
     "@openmrs/esm-styleguide": "next",
     "cross-env": "^7.0.3",
     "openmrs": "next"
