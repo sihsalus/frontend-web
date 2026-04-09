@@ -65,7 +65,8 @@ async function startWithProxy(cliArgs) {
   const express = require('express');
   const { createProxyMiddleware } = require('http-proxy-middleware');
 
-  const cliPort = await findFreePort();
+  const configuredCliPort = Number(process.env.SIHSALUS_INTERNAL_CLI_PORT);
+  const cliPort = Number.isFinite(configuredCliPort) && configuredCliPort > 0 ? configuredCliPort : await findFreePort();
 
   // Files managed by the openmrs CLI — always proxy these to the CLI
   const cliManagedPaths = new Set(['/importmap.json', '/routes.registry.json', '/routes.json']);
