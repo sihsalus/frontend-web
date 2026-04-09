@@ -5,6 +5,10 @@ on:
     branches: [main]
     tags: ['v*']
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -13,6 +17,8 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: docker/setup-buildx-action@v3
 
@@ -28,7 +34,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/sihsalus/frontend-web:${{ github.sha }}
-            ghcr.io/sihsalus/frontend-web:latest
+            ${{ startsWith(github.ref, 'refs/tags/v') && 'ghcr.io/sihsalus/frontend-web:latest' || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

@@ -56,7 +56,7 @@ jobs:
         run: yarn test
 
       - name: Generate Coverage Report
-        run: yarn test:coverage || true
+        run: yarn test:coverage
         continue-on-error: true
 
       - name: Upload Coverage to Codecov
