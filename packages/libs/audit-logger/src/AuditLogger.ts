@@ -1,6 +1,7 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
 
-import { clearEntries, countEntries, deleteOldestEntries, getAllEntries, putEntry } from './db';
+import { clearKeyCache } from './crypto';
+import { clearEntries, getEntriesForUser, queueEntry } from './db';
 import type { AuditEvent, AuditLoggerConfig, StoredAuditEntry } from './types';
 
 const DEFAULTS: Required<AuditLoggerConfig> = {
@@ -10,7 +11,6 @@ const DEFAULTS: Required<AuditLoggerConfig> = {
 };
 
 const FLUSH_BATCH_SIZE = 50;
-// Max events accepted per second to prevent log-flood attacks.
 const RATE_LIMIT_PER_SECOND = 20;
 
 class AuditLogger {
@@ -19,7 +19,6 @@ class AuditLogger {
   private onlineHandler: (() => void) | null = null;
   private initialized = false;
 
-  // Rate-limiting state
   private rateLimitCount = 0;
   private rateLimitResetAt = 0;
 
@@ -27,7 +26,7 @@ class AuditLogger {
     if (config.endpoint !== undefined && !AuditLogger.isSafeEndpoint(config.endpoint)) {
       console.error('[AuditLogger] Rejected unsafe endpoint:', config.endpoint);
       const { endpoint: _ignored, ...rest } = config;
-      this.config = { ...DEFAULTS, ...rest };
+      this.config = { ...this.config, ...rest };
       return;
     }
     this.config = { ...DEFAULTS, ...config };
@@ -39,6 +38,8 @@ class AuditLogger {
 
   clearSession(): void {
     this.sessionRef = null;
+    // Release the derived key from memory so it cannot be read after logout.
+    clearKeyCache();
   }
 
   init(): void {
@@ -61,39 +62,53 @@ class AuditLogger {
     this.initialized = false;
   }
 
-  log(event: Omit<AuditEvent, 'timestamp' | 'userUuid' | 'sessionId'>): Promise<void> {
-    if (!this.sessionRef) return Promise.resolve();
+  async log(event: Omit<AuditEvent, 'timestamp' | 'userUuid' | 'sessionId'>): Promise<void> {
+    if (!this.sessionRef) return;
 
     if (this.isRateLimited()) {
       console.warn('[AuditLogger] Rate limit exceeded, event dropped:', event.eventType);
-      return Promise.resolve();
+      return;
     }
 
     const entry: StoredAuditEntry = {
       ...event,
       timestamp: new Date().toISOString(),
       userUuid: this.sessionRef.userUuid,
+      // sessionId is intentionally embedded in the entry so the server can
+      // correlate the action with the exact session — but it travels only in
+      // the encrypted offline payload or over TLS; it is never stored in plaintext.
       sessionId: this.sessionRef.sessionId,
       id: crypto.randomUUID(),
     };
 
     if (navigator.onLine) {
-      return this.sendEntries([entry]).catch((err) => {
-        console.error('[AuditLogger] Send failed, queuing:', err);
-        return this.queueEntry(entry).catch((qErr) =>
-          console.error('[AuditLogger] Queue failed, event lost:', qErr),
-        );
-      });
+      try {
+        await this.sendEntries([entry]);
+      } catch (err) {
+        console.error('[AuditLogger] Send failed, queuing offline:', err);
+        try {
+          await this.storeOffline(entry);
+        } catch (qErr) {
+          console.error('[AuditLogger] Queue failed, event lost:', qErr);
+        }
+      }
+      return;
     }
 
-    return this.queueEntry(entry).catch((err) =>
-      console.error('[AuditLogger] Queue failed, event lost:', err),
-    );
+    try {
+      await this.storeOffline(entry);
+    } catch (err) {
+      console.error('[AuditLogger] Queue failed, event lost:', err);
+    }
   }
 
   async flush(): Promise<void> {
+    // Can only decrypt if we know the current user's key.
+    if (!this.sessionRef) return;
+
     const { dbName } = this.config;
-    const entries = await getAllEntries(dbName);
+    const { userUuid } = this.sessionRef;
+    const entries = await getEntriesForUser(dbName, userUuid);
     if (!entries.length) return;
 
     for (let i = 0; i < entries.length; i += FLUSH_BATCH_SIZE) {
@@ -108,13 +123,8 @@ class AuditLogger {
     }
   }
 
-  private async queueEntry(entry: StoredAuditEntry): Promise<void> {
-    const { dbName, maxOfflineEntries } = this.config;
-    const count = await countEntries(dbName);
-    if (count >= maxOfflineEntries) {
-      await deleteOldestEntries(dbName, maxOfflineEntries - 1);
-    }
-    await putEntry(dbName, entry);
+  private async storeOffline(entry: StoredAuditEntry): Promise<void> {
+    await queueEntry(this.config.dbName, entry, this.config.maxOfflineEntries);
   }
 
   private async sendEntries(entries: StoredAuditEntry[]): Promise<void> {
@@ -140,7 +150,7 @@ class AuditLogger {
 
   /**
    * Only allow relative paths (same-origin) or absolute URLs on the current origin.
-   * Prevents config injection from redirecting audit logs to external servers.
+   * Prevents config injection from redirecting audit logs to an external server.
    */
   private static isSafeEndpoint(endpoint: string): boolean {
     if (endpoint.startsWith('/')) return true;

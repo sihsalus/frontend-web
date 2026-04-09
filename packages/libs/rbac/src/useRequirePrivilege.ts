@@ -11,15 +11,16 @@ export function useRequirePrivilege(
 ): UseRequirePrivilegeResult {
   const session = useSession();
 
-  if (!session?.authenticated) {
+  if (!session?.authenticated || !session.user) {
     return { status: 'unauthenticated' };
   }
 
   const privileges = Array.isArray(privilege) ? privilege : [privilege];
+  const user = session.user;
 
   const hasAccess = requireAll
-    ? privileges.every((p) => userHasAccess(p, session.user))
-    : privileges.some((p) => userHasAccess(p, session.user));
+    ? privileges.every((p) => userHasAccess(p, user))
+    : privileges.some((p) => userHasAccess(p, user));
 
   if (hasAccess) {
     return { status: 'authorized' };

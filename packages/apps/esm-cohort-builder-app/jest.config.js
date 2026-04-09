@@ -1,25 +1,10 @@
-/**
- * @returns {Promise<import('jest').Config>}
- */
+const path = require('path');
+const rootConfig = require('../../jest.config.js');
+
 module.exports = {
-  clearMocks: true,
-  transform: {
-    '^.+\\.m?[jt]sx?$': ['@swc/jest'],
-  },
-  transformIgnorePatterns: ['/node_modules/(?!@openmrs|.+\\.pnp\\.[^\\/]+$)'],
-  moduleNameMapper: {
-    '\\.(s?css)$': 'identity-obj-proxy',
-    '@openmrs/esm-framework': '@openmrs/esm-framework/mock',
-    '^dexie$': require.resolve('dexie'),
-    '^lodash-es/(.*)$': 'lodash/$1',
-    '^lodash-es$': 'lodash',
-    '^uuid$': '<rootDir>/node_modules/uuid/dist/index.js',
-    '^react-i18next$': path.resolve(__dirname, '../../__mocks__/react-i18next.js'),
-  },
-  setupFilesAfterEnv: ['<rootDir>/tools/setup-tests.ts'],
-  testEnvironment: 'jsdom',
-  testEnvironmentOptions: {
-    url: 'http://localhost/',
-  },
-  testPathIgnorePatterns: ['<rootDir>/e2e'],
+  ...rootConfig,
+  setupFilesAfterEnv: [
+    ...rootConfig.setupFilesAfterEnv,
+    path.resolve(__dirname, 'tools/setup-tests.ts'),
+  ],
 };

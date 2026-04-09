@@ -1,7 +1,26 @@
+import { decryptPayload, encryptPayload } from './crypto';
 import type { StoredAuditEntry } from './types';
 
 const STORE_NAME = 'entries';
+/**
+ * v2 schema: encrypted payload + timestamp index + userUuid index.
+ * Upgrading from v1 drops the plaintext store — old data is intentionally
+ * discarded because it was stored without encryption (PHI risk).
+ */
 const DB_VERSION = 2;
+
+/**
+ * What actually lives in IndexedDB. Only `id`, `userUuid`, and `timestamp`
+ * are in plaintext (needed for index lookups and eviction). Everything else —
+ * including `sessionId`, `patientUuid`, `encounterUuid`, `eventType`, and
+ * `metadata` — is inside the AES-GCM encrypted `payload`.
+ */
+interface EncryptedEntry {
+  id: string;
+  userUuid: string; // plaintext — key derivation and IDB index filtering
+  timestamp: string; // plaintext — IDB index for timestamp-ordered eviction
+  payload: string; // base64(IV ∥ AES-GCM ciphertext) of the full StoredAuditEntry
+}
 
 // Cache connections to avoid opening a new handle on every operation.
 const dbCache = new Map<string, IDBDatabase>();
@@ -13,24 +32,19 @@ function openDb(dbName: string): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(dbName, DB_VERSION);
 
-    req.onupgradeneeded = (event) => {
+    req.onupgradeneeded = () => {
       const db = req.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        // Fresh install: create store with timestamp index for efficient eviction.
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        store.createIndex('timestamp', 'timestamp');
-      } else if (event.oldVersion < 2) {
-        // Migrate v1 → v2: add timestamp index.
-        const store = req.transaction!.objectStore(STORE_NAME);
-        if (!store.indexNames.contains('timestamp')) {
-          store.createIndex('timestamp', 'timestamp');
-        }
+      // Drop any v1 plaintext store before creating the encrypted schema.
+      if (db.objectStoreNames.contains(STORE_NAME)) {
+        db.deleteObjectStore(STORE_NAME);
       }
+      const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      store.createIndex('timestamp', 'timestamp');
+      store.createIndex('userUuid', 'userUuid');
     };
 
     req.onsuccess = () => {
       const db = req.result;
-      // Evict cache entry if the connection is closed externally (e.g. version bump).
       db.onclose = () => dbCache.delete(dbName);
       dbCache.set(dbName, db);
       resolve(db);
@@ -40,24 +54,93 @@ function openDb(dbName: string): Promise<IDBDatabase> {
   });
 }
 
-export async function putEntry(dbName: string, entry: StoredAuditEntry): Promise<void> {
-  const db = await openDb(dbName);
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    tx.objectStore(STORE_NAME).put(entry);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error ?? new Error('Failed to put entry in IndexedDB'));
-  });
+/**
+ * Atomically: count → evict oldest if at capacity → insert.
+ * All within a single IDB `readwrite` transaction, so concurrent tabs cannot
+ * race between the count check and the write (TOCTOU eliminated).
+ */
+function putEncryptedEntry(
+  dbName: string,
+  encEntry: EncryptedEntry,
+  maxEntries: number,
+): Promise<void> {
+  return openDb(dbName).then(
+    (db) =>
+      new Promise<void>((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+
+        const countReq = store.count();
+        countReq.onsuccess = () => {
+          const count = countReq.result;
+          if (count >= maxEntries) {
+            // Walk the timestamp index oldest-first and delete until we have room.
+            const toDelete = count - maxEntries + 1;
+            let deleted = 0;
+            const cursorReq = store.index('timestamp').openCursor();
+            cursorReq.onsuccess = () => {
+              const cursor = cursorReq.result;
+              if (cursor && deleted < toDelete) {
+                cursor.delete();
+                deleted++;
+                cursor.continue();
+              } else {
+                store.put(encEntry);
+              }
+            };
+            cursorReq.onerror = () =>
+              reject(cursorReq.error ?? new Error('Cursor error during eviction'));
+          } else {
+            store.put(encEntry);
+          }
+        };
+
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error ?? new Error('Failed to put entry in IndexedDB'));
+      }),
+  );
 }
 
-export async function getAllEntries(dbName: string): Promise<StoredAuditEntry[]> {
+/**
+ * Encrypt `entry` with the user's derived key and store it atomically,
+ * evicting the oldest entry if the store is at capacity.
+ */
+export async function queueEntry(
+  dbName: string,
+  entry: StoredAuditEntry,
+  maxEntries: number,
+): Promise<void> {
+  const encEntry: EncryptedEntry = {
+    id: entry.id,
+    userUuid: entry.userUuid,
+    timestamp: entry.timestamp,
+    payload: await encryptPayload(entry, entry.userUuid),
+  };
+  await putEncryptedEntry(dbName, encEntry, maxEntries);
+}
+
+/**
+ * Fetch and decrypt all entries belonging to `userUuid`.
+ * Entries that cannot be decrypted (wrong key, corrupted) are silently skipped.
+ */
+export async function getEntriesForUser(
+  dbName: string,
+  userUuid: string,
+): Promise<StoredAuditEntry[]> {
   const db = await openDb(dbName);
-  return new Promise((resolve, reject) => {
+  const encEntries = await new Promise<EncryptedEntry[]>((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
-    const req = tx.objectStore(STORE_NAME).getAll();
-    req.onsuccess = () => resolve(req.result as StoredAuditEntry[]);
-    req.onerror = () => reject(req.error ?? new Error('Failed to get all entries from IndexedDB'));
+    const req = tx.objectStore(STORE_NAME).index('userUuid').getAll(userUuid);
+    req.onsuccess = () => resolve(req.result as EncryptedEntry[]);
+    req.onerror = () => reject(req.error ?? new Error('Failed to get entries from IndexedDB'));
   });
+
+  const results: StoredAuditEntry[] = [];
+  for (const enc of encEntries) {
+    const entry = await decryptPayload<StoredAuditEntry>(enc.payload, userUuid);
+    if (entry) results.push(entry);
+  }
+  return results;
 }
 
 export async function clearEntries(dbName: string, ids: string[]): Promise<void> {
@@ -69,24 +152,4 @@ export async function clearEntries(dbName: string, ids: string[]): Promise<void>
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error ?? new Error('Failed to clear entries from IndexedDB'));
   });
-}
-
-export async function countEntries(dbName: string): Promise<number> {
-  const db = await openDb(dbName);
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const req = tx.objectStore(STORE_NAME).count();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error ?? new Error('Failed to count entries in IndexedDB'));
-  });
-}
-
-export async function deleteOldestEntries(dbName: string, keepCount: number): Promise<void> {
-  const all = await getAllEntries(dbName);
-  if (all.length <= keepCount) return;
-  const toDelete = [...all]
-    .sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
-    .slice(0, all.length - keepCount)
-    .map((e) => e.id);
-  await clearEntries(dbName, toDelete);
 }
