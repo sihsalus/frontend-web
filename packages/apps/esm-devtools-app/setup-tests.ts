@@ -1,6 +1,8 @@
 import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
+import type { ImportMapOverridesApi } from './src/devtools/import-map-overrides.types';
+
 // Node.js v25+ provides a broken native localStorage (missing methods unless --localstorage-file is set).
 // This shadows happy-dom's working implementation, so we restore a complete in-memory shim.
 if (typeof localStorage.clear !== 'function') {
@@ -21,8 +23,19 @@ if (typeof localStorage.clear !== 'function') {
   });
 }
 
-(window as any).importMapOverrides = {
-  getOverrideMap: vi.fn().mockReturnValue({ imports: {} }),
-};
+const emptyMap = { imports: {} };
+
+window.importMapOverrides = {
+  getOverrideMap: vi.fn().mockReturnValue(emptyMap),
+  getNextPageMap: vi.fn().mockResolvedValue(emptyMap),
+  getCurrentPageMap: vi.fn().mockResolvedValue(emptyMap),
+  getDefaultMap: vi.fn().mockResolvedValue(emptyMap),
+  getDisabledOverrides: vi.fn().mockReturnValue([]),
+  isDisabled: vi.fn().mockReturnValue(false),
+  enableOverride: vi.fn(),
+  addOverride: vi.fn(),
+  removeOverride: vi.fn(),
+  resetOverrides: vi.fn(),
+} as unknown as ImportMapOverridesApi;
 
 afterEach(cleanup);

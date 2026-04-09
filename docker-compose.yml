@@ -2,7 +2,7 @@ services:
   frontend:
     image: node:22-alpine
     working_dir: /app
-    command: sh -c "corepack enable && yarn install --immutable && yarn build:apps && yarn assemble && yarn start"
+    command: sh -c "corepack enable && yarn install --immutable --immutable-cache --check-cache && yarn build:apps && yarn assemble && yarn start"
     volumes:
       - .:/app
       - /app/node_modules
@@ -13,3 +13,4 @@ services:
       - SIHSALUS_BACKEND_URL=${SIHSALUS_BACKEND_URL:-http://hii1sc-dev.inf.pucp.edu.pe}
       - SIHSALUS_AUTH_MODE=openmrs
       - SIHSALUS_INTERNAL_CLI_PORT=8081
+      - YARN_ENABLE_NETWORK=0

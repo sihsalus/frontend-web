@@ -13,7 +13,8 @@ COPY .yarn/ ./.yarn/
 COPY packages/ ./packages/
 
 ENV CI=true
-RUN yarn install --immutable
+ENV YARN_ENABLE_NETWORK=0
+RUN yarn install --immutable --immutable-cache --check-cache
 
 RUN yarn turbo run build --filter='./packages/apps/*' --filter='!@sihsalus/esm-form-entry-react-app'
 

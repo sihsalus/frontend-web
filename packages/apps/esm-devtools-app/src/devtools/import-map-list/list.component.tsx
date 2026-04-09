@@ -15,8 +15,11 @@ import fuzzy from 'fuzzy';
 import React, { useEffect, forwardRef, useReducer, type Dispatch, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { ImportMapOverridesApi } from '../import-map-overrides.types';
 import styles from './list.scss';
 import type { Module } from './types';
+
+const importMapOverrides = globalThis.importMapOverrides as unknown as ImportMapOverridesApi;
 
 interface ImportMapListState {
   notOverriddenMap: ImportMap;
@@ -77,9 +80,7 @@ const initialImportMapState: ImportMapListState = {
 
 function updateToNext(dispatch: Dispatch<ImportMapDispatchAction>) {
   return () => {
-    void globalThis.importMapOverrides
-      .getNextPageMap()
-      .then((nextPageMap) => dispatch({ type: 'set_next_map', nextPageMap }));
+    void importMapOverrides.getNextPageMap().then((nextPageMap) => dispatch({ type: 'set_next_map', nextPageMap }));
   };
 }
 
@@ -107,7 +108,7 @@ function reducer(state: ImportMapListState, action: ImportMapDispatchAction) {
         dialogModule: null,
       };
     case 'reset_all_overrides':
-      globalThis.importMapOverrides.resetOverrides();
+      importMapOverrides.resetOverrides();
       resetAllRoutesOverrides();
       return state;
   }
@@ -123,10 +124,8 @@ const ImportMapList = forwardRef<HTMLDivElement>((props, ref) => {
 
   useEffect(() => {
     // load initial values from importMapOverrides
-    void globalThis.importMapOverrides
-      .getDefaultMap()
-      .then((notOverriddenMap) => dispatch({ type: 'set_default_map', notOverriddenMap }));
-    void globalThis.importMapOverrides
+    void importMapOverrides.getDefaultMap().then((notOverriddenMap) => dispatch({ type: 'set_default_map', notOverriddenMap }));
+    void importMapOverrides
       .getCurrentPageMap()
       .then((currentPageMap) => dispatch({ type: 'set_current_map', currentPageMap }));
 
@@ -161,9 +160,9 @@ const ImportMapList = forwardRef<HTMLDivElement>((props, ref) => {
     externalOverrideModules: Array<Module> = [],
     pendingRefreshDefaultModules: Array<Module> = [];
 
-  const overrideMap = globalThis.importMapOverrides.getOverrideMap(true).imports;
+  const overrideMap = importMapOverrides.getOverrideMap(true).imports;
   const notOverriddenKeys = Object.keys(state.notOverriddenMap.imports);
-  const disabledModules = globalThis.importMapOverrides.getDisabledOverrides();
+  const disabledModules = importMapOverrides.getDisabledOverrides();
 
   const searchableKeys = [...new Set([...notOverriddenKeys, ...Object.keys(overrideMap)])];
   searchableKeys.sort();

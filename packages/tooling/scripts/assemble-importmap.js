@@ -11,6 +11,24 @@ const importmap = { imports: {} };
 const routesRegistry = {};
 const outDir = process.env.SPA_OUTPUT_DIR || 'dist/spa';
 
+function copyFileReplacingIfNeeded(src, dest) {
+  try {
+    fs.copyFileSync(src, dest);
+    return;
+  } catch (e) {
+    const canRetryWithReplace = (e.code === 'EACCES' || e.code === 'EPERM') && fs.existsSync(dest);
+    if (!canRetryWithReplace) {
+      throw e;
+    }
+
+    // Some previous runs may leave root-owned artifacts in outDir.
+    // If the directory is writable, removing the destination and retrying
+    // avoids permission errors when opening the file for overwrite.
+    fs.rmSync(dest, { force: true });
+    fs.copyFileSync(src, dest);
+  }
+}
+
 /** Ensures resolvedPath stays inside baseDir. Exits on traversal attempt. */
 function assertInsideDir(resolvedPath, baseDir, label) {
   const real = path.resolve(resolvedPath);
@@ -64,7 +82,7 @@ for (const distDir of appDirs) {
     continue;
   }
 
-  fs.copyFileSync(entryFilePath, path.join(outDir, entryFileName));
+  copyFileReplacingIfNeeded(entryFilePath, path.join(outDir, entryFileName));
   importmap.imports[pkg.name] = `./${entryFileName}`;
   localBaseNames.add(pkg.name.replace(/^@[^/]+\//, ''));
 
@@ -76,7 +94,7 @@ for (const distDir of appDirs) {
     if (entry.name.endsWith('.buildmanifest.json')) continue;
     const dest = path.join(outDir, entry.name);
     if (fs.existsSync(dest)) continue;
-    fs.copyFileSync(path.join(distDir, entry.name), dest);
+    copyFileReplacingIfNeeded(path.join(distDir, entry.name), dest);
     chunkCount++;
   }
 
@@ -176,7 +194,7 @@ async function downloadNpmModules() {
         fs.cpSync(pkgDistDir, versionedDir, { recursive: true, force: true });
       } else {
         // browserField is at the package root (no subdirectory)
-        fs.copyFileSync(path.join(tmpDir, browserField), path.join(versionedDir, path.basename(browserField)));
+        copyFileReplacingIfNeeded(path.join(tmpDir, browserField), path.join(versionedDir, path.basename(browserField)));
       }
 
       const entryFileName = path.basename(browserField);
