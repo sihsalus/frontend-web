@@ -2,7 +2,7 @@ services:
   frontend:
     image: node:22-alpine
     working_dir: /app
-    command: sh -c "corepack enable && yarn dev"
+    command: sh -c "corepack enable && yarn install --immutable && yarn start"
     volumes:
       - .:/app
       - /app/node_modules
@@ -11,10 +11,6 @@ services:
     environment:
       - SIHSALUS_BACKEND_URL=http://backend:8080
       - SIHSALUS_AUTH_MODE=openmrs
+      - SIHSALUS_DEV_APPS=esm-login-app,esm-home-app
     depends_on:
       - backend
-
-  backend:
-    image: openmrs/openmrs-reference-application:nightly
-    ports:
-      - "8081:8080"
