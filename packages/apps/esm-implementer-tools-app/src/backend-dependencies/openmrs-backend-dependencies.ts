@@ -39,18 +39,28 @@ interface BackendModule {
 }
 
 let cachedFrontendModules: Array<ResolvedDependenciesModule>;
+let backendConnectionError: Error | null = null;
 
 const MAX_PAGES = 50;
 
+function clearBackendConnectionError() {
+  backendConnectionError = null;
+}
+
 async function initInstalledBackendModules(): Promise<Array<BackendModule>> {
   try {
+    clearBackendConnectionError();
     const modules = await fetchInstalledBackendModules();
     return modules;
   } catch (err) {
-    console.error(err);
+    const errorMessage =
+      err instanceof Error ? err.message : typeof err === 'string' ? err : 'Unknown error fetching backend modules';
+    console.error(`Error initializing installed backend modules: ${errorMessage}`, err);
+    // Store the error so UI can display it
+    backendConnectionError = err instanceof Error ? err : new Error(errorMessage);
+    // Return empty array to allow frontend to continue, but log so implementers can debug
+    return [];
   }
-
-  return [];
 }
 
 function checkIfModulesAreInstalled(
@@ -111,7 +121,20 @@ async function fetchInstalledBackendModules(): Promise<Array<BackendModule>> {
 
   while (nextUrl && safetyCounter < MAX_PAGES) {
     try {
-      const { data } = await openmrsFetch(nextUrl, { method: 'GET' });
+      const response = await openmrsFetch(nextUrl, { method: 'GET' });
+      const { data } = response;
+
+      // Handle error responses (e.g., authentication failures)
+      if (data?.error) {
+        console.error(
+          `Backend API error when fetching modules: ${data.error.message || 'Unknown error'}`,
+          data.error,
+        );
+        throw new Error(
+          `Backend returned error: ${data.error.message || 'Unknown error when fetching backend modules'}`,
+        );
+      }
+
       const pageResults: Array<BackendModule> = Array.isArray(data?.results) ? data.results : [];
 
       collected.push(...pageResults);
@@ -218,7 +241,12 @@ export function hasInvalidDependencies(frontendModules: Array<ResolvedDependenci
   return frontendModules.some((m) => m.dependencies.some((n) => n.type !== 'okay'));
 }
 
+export function getBackendConnectionErrorMessage(): string | null {
+  return backendConnectionError ? backendConnectionError.message : null;
+}
+
 // For use in tests
 export function clearCache() {
   cachedFrontendModules = undefined as any;
+  clearBackendConnectionError();
 }

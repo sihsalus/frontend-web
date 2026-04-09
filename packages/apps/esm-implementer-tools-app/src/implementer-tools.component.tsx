@@ -13,14 +13,17 @@ const UiEditor = React.lazy(() => import('./ui-editor/ui-editor'));
 
 function PopupHandler() {
   const frontendModules = useFrontendModules();
-  const backendDependencies = useBackendDependencies();
+  const { modules: backendDependencies, error: backendError } = useBackendDependencies();
   const [shouldShowNotification, setShouldShowNotification] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
     // displaying actionable notification if backend modules have missing dependencies
-    setShouldShowNotification((alreadyShowing) => alreadyShowing || hasInvalidDependencies(backendDependencies));
-  }, [backendDependencies]);
+    setShouldShowNotification(
+      (alreadyShowing) =>
+        alreadyShowing || (backendError ? true : hasInvalidDependencies(backendDependencies)),
+    );
+  }, [backendDependencies, backendError]);
 
   useEffect(() => {
     // only show notification max. 1 time
@@ -28,16 +31,23 @@ function PopupHandler() {
       showToast({
         critical: false,
         kind: 'error',
-        description: t(
-          'checkImplementerToolsMessage',
-          'Check the Backend Modules tab in the Implementer Tools for more details',
-        ),
-        title: t('modulesWithMissingDependenciesWarning', 'Some modules have unresolved backend dependencies'),
+        description: backendError
+          ? t(
+              'backendConnectionError',
+              'Could not connect to backend to fetch module list. Check the Implementer Tools for details.',
+            )
+          : t(
+              'checkImplementerToolsMessage',
+              'Check the Backend Modules tab in the Implementer Tools for more details',
+            ),
+        title: backendError
+          ? t('backendConnectionProblem', 'Backend Connection Problem')
+          : t('modulesWithMissingDependenciesWarning', 'Some modules have unresolved backend dependencies'),
         actionButtonLabel: t('viewModules', 'View modules'),
         onActionButtonClick: showModuleDiagnostics,
       });
     }
-  }, [t, shouldShowNotification]);
+  }, [t, shouldShowNotification, backendError]);
 
   const { isOpen, isUIEditorEnabled, openTabIndex } = useStore(implementerToolsStore);
 
@@ -48,6 +58,7 @@ function PopupHandler() {
           close={togglePopup}
           frontendModules={frontendModules}
           backendDependencies={backendDependencies}
+          backendError={backendError}
           visibleTabIndex={openTabIndex}
         />
       ) : null}

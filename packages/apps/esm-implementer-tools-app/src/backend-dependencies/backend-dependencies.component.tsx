@@ -1,12 +1,13 @@
 import {
   DataTable,
+  InlineNotification,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@carbon/react';
 import React, { Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +17,10 @@ import type { ResolvedDependenciesModule } from './openmrs-backend-dependencies'
 
 export interface BackendDependencies {
   backendDependencies: Array<ResolvedDependenciesModule>;
+  error?: string | null;
 }
 
-export const BackendDependencies: React.FC<BackendDependencies> = ({ backendDependencies }) => {
+export const BackendDependencies: React.FC<BackendDependencies> = ({ backendDependencies, error }) => {
   const { t } = useTranslation();
 
   const headers = useMemo(
@@ -38,6 +40,30 @@ export const BackendDependencies: React.FC<BackendDependencies> = ({ backendDepe
     ],
     [t],
   );
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <InlineNotification
+          kind="error"
+          title={t('backendConnectionProblem', 'Backend Connection Problem')}
+          subtitle={error}
+          style={{ marginBottom: '1rem' }}
+        />
+        <p style={{ marginTop: '1rem', color: '#666' }}>
+          {t(
+            'backendConnectionHint',
+            'The frontend was unable to connect to the backend to fetch installed modules. This could mean:',
+          )}
+        </p>
+        <ul style={{ color: '#666', marginLeft: '2rem' }}>
+          <li>{t('hint1', 'The backend server is not running or not reachable')}</li>
+          <li>{t('hint2', 'Authentication failed or session expired')}</li>
+          <li>{t('hint3', 'Network connectivity issues between frontend and backend')}</li>
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

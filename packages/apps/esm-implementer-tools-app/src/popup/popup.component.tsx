@@ -16,6 +16,7 @@ interface DevToolsPopupProps {
   close(): void;
   frontendModules: Array<FrontendModule>;
   backendDependencies: Array<ResolvedDependenciesModule>;
+  backendError?: string | null;
   visibleTabIndex?: number;
 }
 
@@ -29,6 +30,7 @@ export default function Popup({
   close,
   frontendModules,
   backendDependencies,
+  backendError,
   visibleTabIndex = 0,
 }: DevToolsPopupProps) {
   const { t } = useTranslation();
@@ -39,11 +41,11 @@ export default function Popup({
     } else if (activeTab === 1) {
       return <FrontendModules frontendModules={frontendModules} />;
     } else if (activeTab === 2) {
-      return <BackendDependencies backendDependencies={backendDependencies} />;
+      return <BackendDependencies backendDependencies={backendDependencies} error={backendError} />;
     } else {
       return <FeatureFlags />;
     }
-  }, [activeTab, backendDependencies, frontendModules]);
+  }, [activeTab, backendDependencies, backendError, frontendModules]);
 
   return (
     <div className={styles.popup}>
