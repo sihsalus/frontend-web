@@ -1,5 +1,22 @@
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 
+interface FormResource {
+  name?: string;
+  valueReference?: string;
+}
+
+interface FormWithResourcesResponse {
+  data?: {
+    resources?: Array<FormResource>;
+  };
+}
+
+interface ClobTranslationsResponse {
+  data?: {
+    translations?: Record<string, string>;
+  };
+}
+
 export async function fetchBackendTranslations(
   formUuid: string,
   langCode: string,
@@ -7,16 +24,16 @@ export async function fetchBackendTranslations(
 ): Promise<Record<string, string>> {
   try {
     const formUrl = `${restBaseUrl}/form/${formUuid}?v=full`;
-    const formResponse = await openmrsFetch(formUrl);
-    const form = formResponse?.data;
+    const formResponse = await openmrsFetch<FormWithResourcesResponse>(formUrl);
+    const resources = formResponse.data?.resources ?? [];
 
-    const translationResource = form?.resources?.find((r: any) => r.name?.endsWith(`translations_${langCode}`));
+    const translationResource = resources.find((r) => r.name?.endsWith(`translations_${langCode}`));
 
     if (!translationResource?.valueReference) return fallbackStrings;
 
     const clobUrl = `${restBaseUrl}/clobdata/${translationResource.valueReference}`;
-    const clobResponse = await openmrsFetch(clobUrl);
-    const backendTranslations: Record<string, string> = clobResponse?.data?.translations ?? {};
+    const clobResponse = await openmrsFetch<ClobTranslationsResponse>(clobUrl);
+    const backendTranslations = clobResponse.data?.translations ?? {};
 
     // Merge only existing keys
     return Object.entries(fallbackStrings).reduce(

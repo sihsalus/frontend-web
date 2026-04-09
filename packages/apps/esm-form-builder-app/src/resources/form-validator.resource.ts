@@ -25,6 +25,29 @@ interface WarningMessageResponse {
   warningMessage?: string;
 }
 
+interface ConceptDatatype {
+  name: string;
+}
+
+interface ConceptAnswerRef {
+  uuid: string;
+}
+
+interface ConceptSearchResult {
+  datatype: ConceptDatatype;
+  answers: Array<ConceptAnswerRef>;
+}
+
+interface ConceptSearchResponse {
+  data: {
+    results: Array<ConceptSearchResult>;
+  };
+}
+
+interface PatientIdentifierTypeResponse {
+  data?: unknown;
+}
+
 export const handleFormValidation = async (
   schema: string | Schema,
   configObject: ConfigObject['dataTypeToRenderingMap'],
@@ -33,7 +56,14 @@ export const handleFormValidation = async (
   const warnings: Array<WarningMessageResponse> = [];
 
   if (schema) {
-    const parsedForm: Schema = typeof schema === 'string' ? JSON.parse(schema) : schema;
+    let parsedForm: Schema;
+
+    if (typeof schema === 'string') {
+      const parsed = JSON.parse(schema) as unknown;
+      parsedForm = parsed as Schema;
+    } else {
+      parsedForm = schema;
+    }
 
     const asyncTasks: Array<Promise<void>> = [];
 
@@ -72,9 +102,9 @@ const handleQuestionValidation = async (
   const conceptRepresentation =
     'custom:(uuid,display,datatype,answers,conceptMappings:(conceptReferenceTerm:(conceptSource:(name),code)))';
 
-  const conceptMappings = (conceptObject.questionOptions as { conceptMappings?: Array<ConceptMapping> })
-    .conceptMappings;
-  const searchRef = conceptObject.questionOptions.concept
+  const conceptMappings = (conceptObject.questionOptions as { conceptMappings?: Array<ConceptMapping> } | undefined)
+    ?.conceptMappings;
+  const searchRef = conceptObject.questionOptions?.concept
     ? conceptObject.questionOptions.concept
     : conceptMappings?.length
       ? conceptMappings
@@ -86,9 +116,13 @@ const handleQuestionValidation = async (
 
   if (searchRef) {
     try {
-      const { data } = await openmrsFetch(`${restBaseUrl}/concept?references=${searchRef}&v=${conceptRepresentation}`);
-      if (data.results.length) {
-        const [resObject] = data.results;
+      const response = await openmrsFetch<ConceptSearchResponse>(
+        `${restBaseUrl}/concept?references=${searchRef}&v=${conceptRepresentation}`,
+      );
+      const results = response.data.results;
+
+      if (results.length) {
+        const [resObject] = results;
         if (resObject.datatype.name === 'Boolean') {
           conceptObject.questionOptions.answers?.forEach((answer) => {
             if (
@@ -143,10 +177,10 @@ const handlePatientIdentifierValidation = async (question: FormField, errors: Ar
 
   if (patientIdentifier) {
     try {
-      const { data } = await openmrsFetch(
+      const response = await openmrsFetch<PatientIdentifierTypeResponse>(
         `${restBaseUrl}/patientidentifiertype/${question.questionOptions.identifierType}`,
       );
-      if (!data) {
+      if (!response.data) {
         errors.push({
           errorMessage: `❓ The identifier type does not exist`,
           field: question,
@@ -201,7 +235,7 @@ const handleAnswerValidation = async (questionObject: FormField, array: Array<Er
           : '';
 
       try {
-        const response = await openmrsFetch(
+        const response = await openmrsFetch<ConceptSearchResponse>(
           `${restBaseUrl}/concept?references=${searchRef}&v=${conceptRepresentation}`,
         );
         if (!response.data.results.length) {

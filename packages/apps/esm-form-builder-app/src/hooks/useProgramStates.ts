@@ -1,6 +1,5 @@
 import useSWR from 'swr';
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import { type ProgramWorkflowState } from '@openmrs/esm-form-engine-lib';
 import type { Program, ProgramWorkflow } from '@types';
 
 export function usePrograms() {

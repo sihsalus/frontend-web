@@ -1,66 +1,78 @@
 import { type FormField, type QuestionAnswerOption } from '@openmrs/esm-form-engine-lib';
 
-export function extractTranslatableStrings(form: any): Record<string, string> {
+interface TranslationSection {
+  label?: string;
+  questions?: Array<FormField>;
+}
+
+interface TranslationPage {
+  label?: string;
+  sections?: Array<TranslationSection>;
+}
+
+interface TranslationSchemaLike {
+  pages?: Array<TranslationPage>;
+  translations?: Record<string, Record<string, string>>;
+}
+
+export function extractTranslatableStrings(form: TranslationSchemaLike | null | undefined): Record<string, string> {
   const result: Record<string, string> = {};
-  if (form.pages) {
-    form.pages.forEach((page: any) => {
-      if (page.label) result[page.label] = page.label;
-      if (page.sections) {
-        page.sections.forEach((section: any) => {
-          if (section.label) result[section.label] = section.label;
-          if (section.questions) {
-            section.questions.forEach((question: FormField) => handleExtractQuestion(question, result));
-          }
-        });
+
+  form?.pages?.forEach((page) => {
+    if (page.label) {
+      result[page.label] = page.label;
+    }
+
+    page.sections?.forEach((section) => {
+      if (section.label) {
+        result[section.label] = section.label;
       }
+
+      section.questions?.forEach((question) => handleExtractQuestion(question, result));
     });
-  }
+  });
+
   return result;
 }
 
-export function mergeTranslatedSchema(schema: any, langCode: string): any {
-  if (!schema?.translations?.[langCode]) return schema;
-
-  const merged = JSON.parse(JSON.stringify(schema));
-  const translations = schema.translations[langCode];
-
-  if (merged.pages) {
-    merged.pages = merged.pages.map((page: any) => {
-      if (translations[page.label]) {
-        page.label = translations[page.label];
-      }
-      if (page.sections) {
-        page.sections = page.sections.map((section: any) => {
-          if (translations[section.label]) {
-            section.label = translations[section.label];
-          }
-          if (section.questions) {
-            section.questions = section.questions.map((question: any) => handleMergeQuestion(question, translations));
-          }
-          return section;
-        });
-      }
-      return page;
-    });
+export function mergeTranslatedSchema<T extends TranslationSchemaLike>(schema: T, langCode: string): T {
+  const translations = schema.translations?.[langCode];
+  if (!translations) {
+    return schema;
   }
+
+  const merged = JSON.parse(JSON.stringify(schema)) as T;
+
+  merged.pages?.forEach((page) => {
+    if (page.label && translations[page.label]) {
+      page.label = translations[page.label];
+    }
+
+    page.sections?.forEach((section) => {
+      if (section.label && translations[section.label]) {
+        section.label = translations[section.label];
+      }
+
+      if (section.questions) {
+        section.questions = section.questions.map((question) => handleMergeQuestion(question, translations));
+      }
+    });
+  });
 
   return merged;
 }
 
 function handleExtractQuestion(question: FormField, translatableStrings: Record<string, string>) {
-  // handle question label
   if (question.label) {
     translatableStrings[question.label] = question.label;
   }
 
-  // handle answer labels
   question.questionOptions?.answers?.forEach((answer: QuestionAnswerOption) => {
     if (answer.label) {
       translatableStrings[answer.label] = answer.label;
     }
   });
 
-  // handle markdown content
   if (question.questionOptions?.rendering === 'markdown') {
     if (Array.isArray(question.value)) {
       question.value.forEach((item) => {
@@ -77,27 +89,26 @@ function handleExtractQuestion(question: FormField, translatableStrings: Record<
 }
 
 function handleMergeQuestion(question: FormField, translations: Record<string, string>): FormField {
-  // handle label
   if (question.label && translations[question.label]) {
     question.label = translations[question.label];
   }
 
-  // handle answer labels
   if (question.questionOptions?.answers) {
     question.questionOptions = {
       ...question.questionOptions,
-      answers: question.questionOptions.answers.map((answer: any) => ({
+      answers: question.questionOptions.answers.map((answer: QuestionAnswerOption) => ({
         ...answer,
         label: answer.label && translations[answer.label] ? translations[answer.label] : answer.label,
       })),
     };
   }
 
-  // handle markdown content
   if (question.questionOptions?.rendering === 'markdown') {
     if (Array.isArray(question.value)) {
-      question.value = question.value.map((item) => translations[item]);
-    } else {
+      question.value = question.value.map((item) =>
+        typeof item === 'string' && translations[item] ? translations[item] : item,
+      );
+    } else if (typeof question.value === 'string' && translations[question.value]) {
       question.value = translations[question.value];
     }
   }

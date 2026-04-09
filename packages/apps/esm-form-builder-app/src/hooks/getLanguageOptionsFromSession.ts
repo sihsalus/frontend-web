@@ -15,7 +15,7 @@ export function useLanguageOptions(): { label: string; code: string }[] {
   let displayNames: Intl.DisplayNames;
   try {
     displayNames = new Intl.DisplayNames([baseLocale], { type: 'language' });
-  } catch (err) {
+  } catch {
     console.warn('Intl.DisplayNames not supported, falling back to raw locale codes.');
     return localeCodes.map((code) => ({ label: code, code }));
   }

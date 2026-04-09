@@ -11,9 +11,16 @@ import { fetchBackendTranslations } from '@hooks/useBackendTranslations';
 import { extractTranslatableStrings } from '../../utils/translationSchemaUtils';
 import styles from './translation-builder.module.scss';
 
+interface TranslatableFormSchema {
+  uuid?: string;
+  name?: string;
+  translations?: Record<string, Record<string, string>>;
+  [key: string]: unknown;
+}
+
 interface TranslationBuilderProps {
-  formSchema: any;
-  onUpdateSchema: (updatedSchema: any) => void;
+  formSchema: TranslatableFormSchema | null | undefined;
+  onUpdateSchema: (updatedSchema: TranslatableFormSchema) => void;
 }
 
 const TranslationBuilder: React.FC<TranslationBuilderProps> = ({ formSchema, onUpdateSchema }) => {
@@ -135,7 +142,7 @@ const TranslationBuilder: React.FC<TranslationBuilderProps> = ({ formSchema, onU
       };
 
       onUpdateSchema(updatedSchema);
-    } catch (err) {
+    } catch {
       setError('Failed to load backend translations.');
     } finally {
       setLoading(false);
@@ -188,13 +195,17 @@ const TranslationBuilder: React.FC<TranslationBuilderProps> = ({ formSchema, onU
     }
     setTranslationsUploading(true);
     try {
+      if (!formUuid || !formSchema.name) {
+        throw new Error('Missing form UUID or form name');
+      }
+
       await uploadBackendTranslations(formUuid, langCode, formSchema.name, translationsToUpload);
       showSnackbar({
         title: t('translationsUploaded', 'Translations Uploaded.'),
         kind: 'success',
         subtitle: t('translationsUploadedSuccessfully', `Translation file uploaded successfully.`),
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(t('translationFileUploadFail', 'Failed to upload translation file.'));
       showSnackbar({
         title: t('uploadFailed', 'Upload Failed'),
@@ -221,7 +232,11 @@ const TranslationBuilder: React.FC<TranslationBuilderProps> = ({ formSchema, onU
               label=""
               titleText=""
               selectedItem={languageOptions.find((opt) => opt.code === selectedLanguageCode)}
-              onChange={({ selectedItem }) => selectedItem && languageChanger(selectedItem.code)}
+              onChange={({ selectedItem }) => {
+                if (selectedItem) {
+                  void languageChanger(selectedItem.code);
+                }
+              }}
             />
           </div>
 
@@ -232,7 +247,9 @@ const TranslationBuilder: React.FC<TranslationBuilderProps> = ({ formSchema, onU
             </button>
             <button
               className={styles.linkButton}
-              onClick={handleUploadTranslationFromSchema}
+              onClick={() => {
+                void handleUploadTranslationFromSchema();
+              }}
               disabled={translationsUploading}
             >
               {t('uploadTranslation', 'Upload translation')}

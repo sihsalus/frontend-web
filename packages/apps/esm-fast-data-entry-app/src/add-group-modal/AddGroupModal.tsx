@@ -10,13 +10,64 @@ import {
   usePatient,
   useSession,
 } from '@openmrs/esm-framework';
-import styles from './styles.scss';
+import './styles.scss';
 import GroupFormWorkflowContext from '../context/GroupFormWorkflowContext';
 import { usePostCohort } from '../hooks';
 import PatientLocationMismatchModal from '../form-entry-workflow/patient-search-header/PatienMismatchedLocationModal';
 import { useHsuIdIdentifier } from '../hooks/location-tag.resource';
 
-const PatientRow = ({ patient, removePatient }) => {
+interface PatientSummary {
+  uuid: string;
+  name?: Array<{ given?: Array<string>; family?: string }>;
+  identifier?: Array<{ value?: string }>;
+  [key: string]: unknown;
+}
+
+interface FormErrors {
+  name?: string | null;
+  patientList?: string | null;
+  [key: string]: string | null | undefined;
+}
+
+interface NewGroupFormProps {
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  patientList: Array<PatientSummary>;
+  updatePatientList: (patientUuid: string) => void;
+  errors: FormErrors;
+  validate: (field?: 'name' | 'patientList') => boolean;
+  removePatient: (patientUuid: string) => void;
+}
+
+interface AddGroupModalProps {
+  patients?: Array<PatientSummary>;
+  isCreate?: boolean;
+  groupName?: string;
+  cohortUuid?: string;
+  isOpen: boolean;
+  onPostCancel?: () => void;
+  onPostSubmit?: () => void;
+}
+
+interface CohortPostPayload {
+  uuid?: string;
+  name: string;
+  cohortType?: string;
+  location?: string;
+  cohortMembers: Array<{ patient: string; startDate: string }>;
+}
+
+interface CohortPostError {
+  message?: string;
+  fieldErrors?: Record<string, Array<{ message?: string }>>;
+}
+
+interface SessionLocation {
+  uuid: string;
+  display?: string;
+}
+
+const PatientRow = ({ patient, removePatient }: { patient: PatientSummary; removePatient: (uuid: string) => void }) => {
   const { t } = useTranslation();
   const { patient: patientInfo, error, isLoading } = usePatient(patient?.uuid);
   const onClickHandler = useCallback(() => removePatient(patient?.uuid), [patient, removePatient]);
@@ -32,7 +83,7 @@ const PatientRow = ({ patient, removePatient }) => {
   }, [isLoading, error, patientInfo]);
 
   return (
-    <li className={styles.patientRow}>
+    <li className="patientRow">
       <span>
         <Button
           kind="tertiary"
@@ -45,12 +96,12 @@ const PatientRow = ({ patient, removePatient }) => {
           iconDescription={t('remove', 'Remove')}
         />
       </span>
-      <span className={styles.patientName}>{patientDisplay}</span>
+      <span className="patientName">{patientDisplay}</span>
     </li>
   );
 };
 
-const NewGroupForm = (props) => {
+const NewGroupForm = (props: NewGroupFormProps) => {
   const { name, setName, patientList, updatePatientList, errors, validate, removePatient } = props;
   const { t } = useTranslation();
 
@@ -80,7 +131,7 @@ const NewGroupForm = (props) => {
         onBlur={() => validate('name')}
       />
       {errors?.name && (
-        <p className={styles.formError}>
+        <p className="formError">
           {errors.name === 'required' ? t('groupNameError', 'Please enter a group name.') : errors.name}
         </p>
       )}
@@ -88,10 +139,10 @@ const NewGroupForm = (props) => {
         {patientList.length} {t('patientsInGroup', 'Patients in group')}
       </FormLabel>
       {errors?.patientList && (
-        <p className={styles.formError}>{t('noPatientError', 'Please enter at least one patient.')}</p>
+        <p className="formError">{t('noPatientError', 'Please enter at least one patient.')}</p>
       )}
       {!errors?.patientList && (
-        <ul className={styles.patientList}>
+        <ul className="patientList">
           {patientList?.map((patient) => (
             <PatientRow patient={patient} removePatient={removePatient} key={patient.uuid} />
           ))}
@@ -99,7 +150,7 @@ const NewGroupForm = (props) => {
       )}
 
       <FormLabel>{t('searchForPatientsToAddToGroup', 'Search for patients to add to group')}</FormLabel>
-      <div className={styles.searchBar}>
+      <div className="searchBar">
         <ExtensionSlot name="patient-search-bar-slot" state={extensionSlotState} />
       </div>
     </div>
@@ -114,18 +165,28 @@ const AddGroupModal = ({
   isOpen,
   onPostCancel,
   onPostSubmit,
-}) => {
+}: AddGroupModalProps) => {
   const { setGroup } = useContext(GroupFormWorkflowContext);
   const { t } = useTranslation();
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [name, setName] = useState(groupName);
-  const [patientList, setPatientList] = useState(patients || []);
-  const { post, result, error } = usePostCohort();
-  const config = useConfig();
+  const [patientList, setPatientList] = useState<Array<PatientSummary>>(patients || []);
+  const { post, result, error } = usePostCohort() as {
+    post: (payload: CohortPostPayload) => Promise<unknown>;
+    result: Record<string, unknown> | null;
+    error: CohortPostError | null;
+  };
+  const config = useConfig<{
+    enforcePatientListLocationMatch?: boolean;
+    patientLocationMismatchCheck?: boolean;
+    groupSessionConcepts?: {
+      cohortTypeId?: string;
+    };
+  }>();
   const [patientLocationMismatchModalOpen, setPatientLocationMismatchModalOpen] = useState(false);
-  const [selectedPatientUuid, setSelectedPatientUuid] = useState<string | undefined>(undefined);
-  const { hsuIdentifier } = useHsuIdIdentifier(selectedPatientUuid);
-  const { sessionLocation } = useSession();
+  const [selectedPatientUuid, setSelectedPatientUuid] = useState<string | null>(null);
+  const { hsuIdentifier } = useHsuIdIdentifier(selectedPatientUuid ?? '');
+  const { sessionLocation } = useSession() as { sessionLocation: SessionLocation };
 
   const removePatient = useCallback(
     (patientUuid: string) =>
@@ -134,7 +195,7 @@ const AddGroupModal = ({
   );
 
   const validate = useCallback(
-    (field?: string | undefined) => {
+    (field?: 'name' | 'patientList') => {
       let valid = true;
       if (field) {
         valid = field === 'name' ? !!name : !!patientList.length;
@@ -162,12 +223,16 @@ const AddGroupModal = ({
   );
 
   const addSelectedPatientToList = useCallback(() => {
-    function getPatientName(patient) {
+    function getPatientName(patient: PatientSummary) {
       return [patient?.name?.[0]?.given, patient?.name?.[0]?.family].join(' ');
     }
+    if (!selectedPatientUuid) {
+      return;
+    }
+
     if (!patientList.find((p) => p.uuid === selectedPatientUuid)) {
-      fetchCurrentPatient(selectedPatientUuid).then((result) => {
-        const newPatient = { uuid: selectedPatientUuid, ...result };
+      void fetchCurrentPatient(selectedPatientUuid).then((result: unknown) => {
+        const newPatient = { uuid: selectedPatientUuid, ...(result as Record<string, unknown>) } as PatientSummary;
         setPatientList(
           [...patientList, newPatient].sort((a, b) =>
             getPatientName(a).localeCompare(getPatientName(b), undefined, {
@@ -181,7 +246,7 @@ const AddGroupModal = ({
     setSelectedPatientUuid(null);
   }, [selectedPatientUuid, patientList, setPatientList]);
 
-  const updatePatientList = (patientUuid) => {
+  const updatePatientList = (patientUuid: string) => {
     setSelectedPatientUuid(patientUuid);
   };
 
@@ -221,10 +286,10 @@ const AddGroupModal = ({
 
   const handleSubmit = () => {
     if (validate()) {
-      post({
+      void post({
         uuid: cohortUuid,
         name: name,
-        cohortType: config?.groupSessionConcepts?.cohortTypeId,
+        cohortType: config.groupSessionConcepts?.cohortTypeId,
         location: sessionLocation?.uuid,
         cohortMembers: patientList.map((p) => ({ patient: p.uuid, startDate: new Date().toISOString() })),
       });
@@ -243,14 +308,18 @@ const AddGroupModal = ({
 
   useEffect(() => {
     if (result) {
+      const resultGroup = result as { uuid?: string; name?: string };
       setGroup({
+        id: resultGroup.uuid ?? '',
+        name: resultGroup.name ?? name,
+        members: [],
         ...result,
         // the result doesn't come with cohortMembers.
         // need to add it in based on our local state
         cohortMembers: patientList.map((p) => ({ patient: { uuid: p.uuid } })),
       });
     }
-  }, [result, setGroup, patientList]);
+  }, [result, setGroup, patientList, name]);
 
   useEffect(() => {
     if (error) {
@@ -273,7 +342,7 @@ const AddGroupModal = ({
 
   return (
     <>
-      <div className={styles.modal}>
+      <div className="modal">
         <ComposedModal open={isOpen} onClose={handleCancel}>
           <ModalHeader>{isCreate ? t('createNewGroup', 'Create New Group') : t('editGroup', 'Edit Group')}</ModalHeader>
           <ModalBody>
