@@ -14,18 +14,39 @@ export function useOdontogramEncounter() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const getConceptUuidForFinding = (findingId: number): string => {
+    const mappedConcept = config.findingConceptUuids?.[String(findingId)]?.trim();
+    if (mappedConcept) {
+      return mappedConcept;
+    }
+
+    const fallbackConcept = config.findingConceptUuid?.trim();
+    if (fallbackConcept) {
+      return fallbackConcept;
+    }
+
+    throw new Error(
+      `Missing odontogram concept mapping for finding ${findingId}. Configure findingConceptUuid or findingConceptUuids.`,
+    );
+  };
+
   const save = async ({ patientUuid, encounterUuid }: SaveOdontogramParams) => {
     setIsSaving(true);
     setError(null);
 
     try {
+      const encounterTypeUuid = config.encounterTypeUuid?.trim();
+      if (!encounterTypeUuid) {
+        throw new Error('Missing required config: encounterTypeUuid');
+      }
+
       const data = useOdontogramDataStore.getState().data;
 
       const obs = data.teeth
         .filter((tooth) => tooth.findings.length > 0)
         .flatMap((tooth) =>
           tooth.findings.map((finding) => ({
-            concept: config.findingConceptUuid,
+            concept: getConceptUuidForFinding(finding.findingId),
             value: String(tooth.toothId),
             comment: JSON.stringify({
               optionId: finding.findingId,
@@ -39,7 +60,7 @@ export function useOdontogramEncounter() {
       const url = encounterUuid ? `/ws/rest/v1/encounter/${encounterUuid}` : '/ws/rest/v1/encounter';
       const payload = {
         patient: patientUuid,
-        encounterType: config.encounterTypeUuid,
+        encounterType: encounterTypeUuid,
         obs,
       };
 

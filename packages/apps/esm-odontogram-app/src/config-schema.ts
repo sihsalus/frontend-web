@@ -8,12 +8,19 @@ export const configSchema = {
   },
   findingConceptUuid: {
     _type: Type.UUID,
-    _description: 'UUID of the parent concept for dental findings (obs concept)',
+    _description: 'Default UUID of the concept for dental findings (fallback obs concept)',
     _default: '',
+  },
+  findingConceptUuids: {
+    _type: Type.Object,
+    _description:
+      'Optional map of findingId -> concept UUID to store specific obs concept per odontogram finding',
+    _default: {},
   },
 };
 
 export interface OdontogramConfig {
   encounterTypeUuid: string;
-  findingConceptUuid: string;
+  findingConceptUuid?: string;
+  findingConceptUuids?: Record<string, string>;
 }

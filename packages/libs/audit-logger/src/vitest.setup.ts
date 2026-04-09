@@ -1,23 +1,29 @@
 /**
- * Vitest setup: ensure globalThis.addEventListener is an own, configurable property
- * so that vi.spyOn(globalThis, 'addEventListener') works in jsdom.
+ * Vitest setup: expose addEventListener / removeEventListener as own,
+ * writable, configurable properties on globalThis so that vi.spyOn works.
  *
- * In jsdom the method lives on EventTarget.prototype, not on the window object
- * itself, which makes it invisible to vi.spyOn's property lookup.
+ * In jsdom the methods live on EventTarget.prototype, not as own properties
+ * of the global object, which Vitest 4 requires for vi.spyOn to succeed.
+ * We bind to window before replacing so jsdom's instanceof check stays valid.
  */
-if (typeof globalThis.addEventListener === 'function') {
-  const original = globalThis.addEventListener.bind(globalThis);
-  Object.defineProperty(globalThis, 'addEventListener', {
-    value: original,
-    writable: true,
-    configurable: true,
-  });
-}
-if (typeof globalThis.removeEventListener === 'function') {
-  const original = globalThis.removeEventListener.bind(globalThis);
-  Object.defineProperty(globalThis, 'removeEventListener', {
-    value: original,
-    writable: true,
-    configurable: true,
-  });
-}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const win = globalThis as any;
+
+// Capture originals bound to window BEFORE we overwrite them on globalThis.
+const boundAdd: typeof globalThis.addEventListener = win.addEventListener.bind(win);
+const boundRemove: typeof globalThis.removeEventListener = win.removeEventListener.bind(win);
+
+Object.defineProperty(win, 'addEventListener', {
+  value: boundAdd,
+  writable: true,
+  configurable: true,
+  enumerable: false,
+});
+
+Object.defineProperty(win, 'removeEventListener', {
+  value: boundRemove,
+  writable: true,
+  configurable: true,
+  enumerable: false,
+});
