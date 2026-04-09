@@ -1,14 +1,41 @@
 import type { StoredAuditEntry } from './types';
 
 const STORE_NAME = 'entries';
+const DB_VERSION = 2;
+
+// Cache connections to avoid opening a new handle on every operation.
+const dbCache = new Map<string, IDBDatabase>();
 
 function openDb(dbName: string): Promise<IDBDatabase> {
+  const cached = dbCache.get(dbName);
+  if (cached) return Promise.resolve(cached);
+
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(dbName, 1);
-    req.onupgradeneeded = () => {
-      req.result.createObjectStore(STORE_NAME, { keyPath: 'id' });
+    const req = indexedDB.open(dbName, DB_VERSION);
+
+    req.onupgradeneeded = (event) => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        // Fresh install: create store with timestamp index for efficient eviction.
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        store.createIndex('timestamp', 'timestamp');
+      } else if (event.oldVersion < 2) {
+        // Migrate v1 → v2: add timestamp index.
+        const store = req.transaction!.objectStore(STORE_NAME);
+        if (!store.indexNames.contains('timestamp')) {
+          store.createIndex('timestamp', 'timestamp');
+        }
+      }
     };
-    req.onsuccess = () => resolve(req.result);
+
+    req.onsuccess = () => {
+      const db = req.result;
+      // Evict cache entry if the connection is closed externally (e.g. version bump).
+      db.onclose = () => dbCache.delete(dbName);
+      dbCache.set(dbName, db);
+      resolve(db);
+    };
+
     req.onerror = () => reject(req.error ?? new Error('Failed to open IndexedDB'));
   });
 }
@@ -57,8 +84,8 @@ export async function countEntries(dbName: string): Promise<number> {
 export async function deleteOldestEntries(dbName: string, keepCount: number): Promise<void> {
   const all = await getAllEntries(dbName);
   if (all.length <= keepCount) return;
-  const toDelete = all
-    .toSorted((a, b) => a.timestamp.localeCompare(b.timestamp))
+  const toDelete = [...all]
+    .sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
     .slice(0, all.length - keepCount)
     .map((e) => e.id);
   await clearEntries(dbName, toDelete);

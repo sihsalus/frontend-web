@@ -10,13 +10,26 @@ const DEFAULTS: Required<AuditLoggerConfig> = {
 };
 
 const FLUSH_BATCH_SIZE = 50;
+// Max events accepted per second to prevent log-flood attacks.
+const RATE_LIMIT_PER_SECOND = 20;
 
 class AuditLogger {
   private config: Required<AuditLoggerConfig> = { ...DEFAULTS };
   private sessionRef: { userUuid: string; sessionId: string } | null = null;
   private onlineHandler: (() => void) | null = null;
+  private initialized = false;
+
+  // Rate-limiting state
+  private rateLimitCount = 0;
+  private rateLimitResetAt = 0;
 
   configure(config: Partial<AuditLoggerConfig>): void {
+    if (config.endpoint !== undefined && !AuditLogger.isSafeEndpoint(config.endpoint)) {
+      console.error('[AuditLogger] Rejected unsafe endpoint:', config.endpoint);
+      const { endpoint: _ignored, ...rest } = config;
+      this.config = { ...DEFAULTS, ...rest };
+      return;
+    }
     this.config = { ...DEFAULTS, ...config };
   }
 
@@ -24,13 +37,19 @@ class AuditLogger {
     this.sessionRef = { userUuid, sessionId };
   }
 
+  clearSession(): void {
+    this.sessionRef = null;
+  }
+
   init(): void {
+    if (this.initialized) return;
+    this.initialized = true;
     this.onlineHandler = () => {
-      this.flush().catch(() => {});
+      this.flush().catch((err) => console.error('[AuditLogger] Online flush failed:', err));
     };
     globalThis.addEventListener('online', this.onlineHandler);
     if (navigator.onLine) {
-      this.flush().catch(() => {});
+      this.flush().catch((err) => console.error('[AuditLogger] Initial flush failed:', err));
     }
   }
 
@@ -39,10 +58,16 @@ class AuditLogger {
       globalThis.removeEventListener('online', this.onlineHandler);
       this.onlineHandler = null;
     }
+    this.initialized = false;
   }
 
-  log(event: Omit<AuditEvent, 'timestamp' | 'userUuid' | 'sessionId'>): void {
-    if (!this.sessionRef) return;
+  log(event: Omit<AuditEvent, 'timestamp' | 'userUuid' | 'sessionId'>): Promise<void> {
+    if (!this.sessionRef) return Promise.resolve();
+
+    if (this.isRateLimited()) {
+      console.warn('[AuditLogger] Rate limit exceeded, event dropped:', event.eventType);
+      return Promise.resolve();
+    }
 
     const entry: StoredAuditEntry = {
       ...event,
@@ -53,12 +78,17 @@ class AuditLogger {
     };
 
     if (navigator.onLine) {
-      this.sendEntries([entry]).catch(() => {
-        this.queueEntry(entry).catch(() => {});
+      return this.sendEntries([entry]).catch((err) => {
+        console.error('[AuditLogger] Send failed, queuing:', err);
+        return this.queueEntry(entry).catch((qErr) =>
+          console.error('[AuditLogger] Queue failed, event lost:', qErr),
+        );
       });
-    } else {
-      this.queueEntry(entry).catch(() => {});
     }
+
+    return this.queueEntry(entry).catch((err) =>
+      console.error('[AuditLogger] Queue failed, event lost:', err),
+    );
   }
 
   async flush(): Promise<void> {
@@ -71,7 +101,8 @@ class AuditLogger {
       try {
         await this.sendEntries(batch);
         await clearEntries(dbName, batch.map((e) => e.id));
-      } catch {
+      } catch (err) {
+        console.error('[AuditLogger] Flush batch failed, stopping:', err);
         break;
       }
     }
@@ -94,6 +125,30 @@ class AuditLogger {
     });
     if (!response.ok) {
       throw new Error(`Audit flush failed: ${response.status}`);
+    }
+  }
+
+  private isRateLimited(): boolean {
+    const now = Date.now();
+    if (now >= this.rateLimitResetAt) {
+      this.rateLimitCount = 0;
+      this.rateLimitResetAt = now + 1000;
+    }
+    this.rateLimitCount++;
+    return this.rateLimitCount > RATE_LIMIT_PER_SECOND;
+  }
+
+  /**
+   * Only allow relative paths (same-origin) or absolute URLs on the current origin.
+   * Prevents config injection from redirecting audit logs to external servers.
+   */
+  private static isSafeEndpoint(endpoint: string): boolean {
+    if (endpoint.startsWith('/')) return true;
+    try {
+      const url = new URL(endpoint);
+      return url.origin === globalThis.location?.origin;
+    } catch {
+      return false;
     }
   }
 }
