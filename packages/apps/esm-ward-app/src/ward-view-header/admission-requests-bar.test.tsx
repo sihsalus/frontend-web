@@ -2,7 +2,7 @@ import { launchWorkspaceGroup, useAppContext } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { mockWardViewContext } from '../../mock';
 import { type WardViewContext } from '../types';

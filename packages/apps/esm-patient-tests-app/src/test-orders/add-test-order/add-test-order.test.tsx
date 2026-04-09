@@ -12,7 +12,7 @@ import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockSessionDataResponse } from '__mocks__';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { configSchema, type ConfigObject } from '../../config-schema';
 import { type PostDataPrepLabOrderFunction } from '../api';

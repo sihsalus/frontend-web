@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { renderWithRouter } from 'tools';
+import { renderWithRouter } from 'test-utils';
 
 import { Autosuggest } from './autosuggest.component';
 

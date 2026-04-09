@@ -10,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 import { mockedAddressTemplate } from '__mocks__';
 import React from 'react';
 import { BrowserRouter as Router, useParams } from 'react-router-dom';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { esmPatientRegistrationSchema, type RegistrationConfig } from '../config-schema';
 import { ResourcesContext } from '../offline.resources';

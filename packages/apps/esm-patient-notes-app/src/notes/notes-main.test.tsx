@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import { mockVisitNotes } from '__mocks__';
 import React from 'react';
-import { mockPatient, patientChartBasePath, renderWithSwr } from 'tools';
+import { mockPatient, patientChartBasePath, renderWithSwr } from 'test-utils';
 
 import NotesMain from './notes-main.component';
 import { useVisitNotes } from './visit-notes.resource';

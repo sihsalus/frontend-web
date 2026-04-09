@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { mockOrderStockData } from '__mocks__';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { useOrderStockInfo } from '../hooks/useOrderStockInfo';
 

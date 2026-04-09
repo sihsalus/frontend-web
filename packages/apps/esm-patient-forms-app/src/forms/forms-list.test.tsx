@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import FormsList, { type FormsListProps } from './forms-list.component';
 

@@ -3,7 +3,7 @@ import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import FormEntry from './form-entry.workspace';
 

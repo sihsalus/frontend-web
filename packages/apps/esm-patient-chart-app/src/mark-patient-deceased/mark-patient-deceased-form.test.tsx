@@ -2,7 +2,7 @@ import { getDefaultsFromConfigSchema, showSnackbar, useConfig } from '@openmrs/e
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { esmPatientChartSchema, type ChartConfig } from '../config-schema';
 import { markPatientDeceased, useCausesOfDeath } from '../data.resource';

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { mockFhirConditionsResponse, searchedCondition } from '__mocks__';
 import dayjs from 'dayjs';
 import React from 'react';
-import { getByTextWithMarkup, mockPatient } from 'tools';
+import { getByTextWithMarkup, mockPatient } from 'test-utils';
 
 import ConditionsForm from './conditions-form.workspace';
 import { createCondition, useConditionsSearch } from './conditions.resource';

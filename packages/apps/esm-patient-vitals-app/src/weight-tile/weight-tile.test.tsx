@@ -2,7 +2,7 @@ import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import { formattedBiometrics, mockBiometricsConfig, mockConceptMetadata, mockVitalsSignsConcepts } from '__mocks__';
 import React from 'react';
-import { getByTextWithMarkup, mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { getByTextWithMarkup, mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import { useVitalsAndBiometrics } from '../common';
 import { configSchema, type ConfigObject } from '../config-schema';

@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { formattedVitals, mockConceptMetadata, mockConceptUnits, mockVitalsConfig } from '__mocks__';
 import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import { useVitalsAndBiometrics } from '../common';
 import { type ConfigObject, configSchema } from '../config-schema';

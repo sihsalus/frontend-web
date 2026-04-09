@@ -2,7 +2,7 @@ import { getLocale } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import { mockOrderPriceData } from '__mocks__';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { useOrderPrice } from '../hooks/useOrderPrice';
 

@@ -1,7 +1,7 @@
 import { usePatient } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import type { AppointmentKind, AppointmentStatus, Appointment } from '../../types';
 

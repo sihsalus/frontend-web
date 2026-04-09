@@ -2,7 +2,7 @@ import { getDefaultsFromConfigSchema, useConfig, useLayoutType, usePatient } fro
 import { render, screen } from '@testing-library/react';
 import { mockGroupedResults, mockResults } from '__mocks__';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { type ConfigObject, configSchema } from '../../config-schema';
 import FilterContext from '../filter/filter-context';

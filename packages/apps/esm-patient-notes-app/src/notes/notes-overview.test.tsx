@@ -2,7 +2,7 @@ import { useConfig } from '@openmrs/esm-framework';
 import { screen, within } from '@testing-library/react';
 import { mockVisitNotes, ConfigMock } from '__mocks__';
 import React from 'react';
-import { mockPatient, patientChartBasePath, renderWithSwr } from 'tools';
+import { mockPatient, patientChartBasePath, renderWithSwr } from 'test-utils';
 
 import NotesOverview from './notes-overview.extension';
 import { useVisitNotes } from './visit-notes.resource';

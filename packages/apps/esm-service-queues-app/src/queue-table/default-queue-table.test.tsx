@@ -9,7 +9,7 @@ import {
   mockSession,
 } from '__mocks__';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { useQueueRooms } from '../add-provider-queue-room-modal/add-provider-queue-room.resource';
 import { type ConfigObject, configSchema } from '../config-schema';

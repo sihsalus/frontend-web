@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockEncounters2 } from '__mocks__';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import EncountersTable from './encounters-table.component';
 

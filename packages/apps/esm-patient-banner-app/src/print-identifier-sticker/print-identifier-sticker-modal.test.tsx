@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import Barcode from 'react-barcode';
 import { useReactToPrint } from 'react-to-print';
-import { getByTextWithMarkup } from 'tools';
+import { getByTextWithMarkup } from 'test-utils';
 
 import { mockFhirPatient } from '../../../../__mocks__/patient.mock';
 import { type ConfigObject, configSchema } from '../config-schema';

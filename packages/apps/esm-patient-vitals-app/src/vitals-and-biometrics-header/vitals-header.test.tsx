@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { mockVitalsConfig, mockCurrentVisit, mockConceptUnits, mockConceptMetadata, formattedVitals } from '__mocks__';
 import dayjs from 'dayjs';
 import React from 'react';
-import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import { invalidateCachedVitalsAndBiometrics, useVitalsAndBiometrics } from '../common';
 import { configSchema, type ConfigObject } from '../config-schema';

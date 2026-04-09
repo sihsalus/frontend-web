@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockPastVisit } from '__mocks__';
 import React from 'react';
-import { mockPatient, renderWithSwr } from 'tools';
+import { mockPatient, renderWithSwr } from 'test-utils';
 
 import PastVisitSummary from './past-visit-details/past-visit-summary.component';
 import { usePastVisits } from './past-visit.resource';

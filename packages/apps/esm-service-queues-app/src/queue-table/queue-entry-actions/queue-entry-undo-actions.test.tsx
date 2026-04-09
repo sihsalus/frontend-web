@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockQueues, mockQueueEntryAlice } from '__mocks__';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import UndoTransitionQueueEntryModal from './undo-transition-queue-entry.modal';
 import VoidQueueEntryModal from './void-queue-entry.modal';

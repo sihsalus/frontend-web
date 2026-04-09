@@ -6,7 +6,7 @@
  * Scans packages/apps/* and generates config/spa-assemble-config.json
  * listing all locally-buildable frontend modules.
  *
- * Run: node packages/tooling/generate-assemble-config.js
+ * Run: node packages/tooling/scripts/generate-assemble-config.js
  * Or:  yarn generate-config
  *
  * The output file is the authoritative input for assemble-importmap.js.

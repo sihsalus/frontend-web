@@ -3,7 +3,7 @@ import { screen, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockAllergens, mockAllergicReactions, mockAllergy } from '__mocks__';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { type AllergiesConfigObject, configSchema } from '../../config-schema';
 import { AllergenType } from '../../types';

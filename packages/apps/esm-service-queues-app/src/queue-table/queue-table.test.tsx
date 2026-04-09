@@ -3,7 +3,7 @@ import { getDefaultsFromConfigSchema, useConfig, useSession } from '@openmrs/esm
 import { screen, within } from '@testing-library/react';
 import { mockPriorityNonUrgent, mockPriorityUrgent, mockQueueEntries, mockSession } from '__mocks__';
 import React from 'react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { type ConfigObject, configSchema } from '../config-schema';
 

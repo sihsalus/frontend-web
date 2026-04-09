@@ -2,7 +2,7 @@ import { type FetchResponse, showSnackbar } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import DeleteProgramModal from './delete-program.modal';
 import { deleteProgramEnrollment, useEnrollments } from './programs.resource';

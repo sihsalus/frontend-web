@@ -2,7 +2,7 @@ import { openmrsFetch } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import { mockFhirAllergyIntoleranceResponse } from '__mocks__';
 import React from 'react';
-import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import AllergiesOverview from './allergies-overview.component';
 

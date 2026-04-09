@@ -50,7 +50,7 @@ module.exports = {
       lines: 85,
     },
   },
-  setupFilesAfterEnv: [path.resolve(__dirname, 'tooling', 'setup-tests.ts')],
+  setupFilesAfterEnv: [path.resolve(__dirname, 'tooling', 'scripts', 'setup-tests.ts')],
   testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {

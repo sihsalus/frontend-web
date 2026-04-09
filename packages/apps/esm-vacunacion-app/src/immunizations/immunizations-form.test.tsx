@@ -12,7 +12,7 @@ import userEvent from '@testing-library/user-event';
 import { mockCurrentVisit, mockSessionDataResponse } from '__mocks__';
 import dayjs from 'dayjs';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { configSchema, type ImmunizationConfigObject } from '../config-schema';
 

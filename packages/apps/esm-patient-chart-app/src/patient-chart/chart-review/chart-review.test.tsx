@@ -7,7 +7,7 @@ import {
 import { screen, render } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import ChartReview from './chart-review.component';
 

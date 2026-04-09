@@ -2,7 +2,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDrugSearchResultApiData, mockPatientDrugOrdersApiData } from '__mocks__';
 import React from 'react';
-import { getByTextWithMarkup } from 'tools';
+import { getByTextWithMarkup } from 'test-utils';
 
 import { getTemplateOrderBasketItem } from '../add-drug-order/drug-search/drug-search.resource';
 import { type DrugOrderBasketItem } from '../types';

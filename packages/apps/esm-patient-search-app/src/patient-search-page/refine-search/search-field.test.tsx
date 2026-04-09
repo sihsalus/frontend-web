@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 
 import { type AdvancedPatientSearchState, type SearchFieldConfig } from '../../types';
 

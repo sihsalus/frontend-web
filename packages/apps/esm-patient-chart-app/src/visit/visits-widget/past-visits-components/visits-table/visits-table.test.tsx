@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockEncounters } from '__mocks__';
 import React from 'react';
-import { mockPatient, renderWithSwr } from 'tools';
+import { mockPatient, renderWithSwr } from 'test-utils';
 
 import VisitsTable from './visits-table.component';
 

@@ -3,7 +3,7 @@ import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { type ChartConfig, esmPatientChartSchema } from '../config-schema';
 

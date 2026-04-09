@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockPatientFlags } from '__mocks__';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import FlagsHighlightBar from './flags-highlight-bar.component';
 import { usePatientFlags } from './hooks/usePatientFlags';

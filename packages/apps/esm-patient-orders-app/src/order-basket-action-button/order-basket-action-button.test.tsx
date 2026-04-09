@@ -4,7 +4,7 @@ import { orderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/sto
 import { screen, render, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import OrderBasketActionButton from './order-basket-action-button.extension';
 

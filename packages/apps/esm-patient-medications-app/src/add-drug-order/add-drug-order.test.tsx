@@ -11,7 +11,7 @@ import {
   mockSessionDataResponse,
 } from '__mocks__';
 import React from 'react';
-import { getByTextWithMarkup } from 'tools';
+import { getByTextWithMarkup } from 'test-utils';
 
 import AddDrugOrderWorkspace from './add-drug-order.workspace';
 import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './drug-search/drug-search.resource';

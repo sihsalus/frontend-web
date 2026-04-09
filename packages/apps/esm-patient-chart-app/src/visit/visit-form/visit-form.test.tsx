@@ -15,7 +15,7 @@ import userEvent from '@testing-library/user-event';
 import { mockLocations, mockVisitTypes, mockVisitWithAttributes } from '__mocks__';
 import dayjs from 'dayjs';
 import React from 'react';
-import { mockPatient } from 'tools';
+import { mockPatient } from 'test-utils';
 
 import { type ChartConfig, esmPatientChartSchema } from '../../config-schema';
 import { useEmrConfiguration } from '../hooks/useEmrConfiguration';

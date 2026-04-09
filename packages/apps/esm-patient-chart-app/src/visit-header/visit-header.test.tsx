@@ -14,7 +14,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockCurrentVisit } from '__mocks__';
 import React from 'react';
-import { getByTextWithMarkup, mockPatient, mockPatientWithLongName } from 'tools';
+import { getByTextWithMarkup, mockPatient, mockPatientWithLongName } from 'test-utils';
 
 import VisitHeader from './visit-header.component';
 

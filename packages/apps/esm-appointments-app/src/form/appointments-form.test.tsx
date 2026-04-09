@@ -11,7 +11,7 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockUseAppointmentServiceData, mockSession, mockLocations, mockProviders } from '__mocks__';
 import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import { configSchema, type ConfigObject } from '../config-schema';
 import { useProviders } from '../hooks/useProviders';

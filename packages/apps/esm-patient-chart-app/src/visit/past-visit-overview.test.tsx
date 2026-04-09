@@ -2,7 +2,7 @@ import { openmrsFetch, setCurrentVisit } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'tools';
+import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 
 import PastVisitOverview from './past-visit-overview.component';
 

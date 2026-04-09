@@ -9,7 +9,7 @@ import {
   mockSessionDataResponse,
 } from '__mocks__';
 import React from 'react';
-import { mockPatient, getByTextWithMarkup } from 'tools';
+import { mockPatient, getByTextWithMarkup } from 'test-utils';
 
 import { configSchema, type ConfigObject } from '../config-schema';
 
