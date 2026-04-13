@@ -29,10 +29,15 @@ interface PatientListDetailsTableProps {
   listMembers: Array<MappedListMembers>;
 }
 
+type WindowWithSpaBase = Window & {
+  getOpenmrsSpaBase?: () => string;
+};
+
 const PatientListDetailsTable: React.FC<PatientListDetailsTableProps> = ({ listMembers, isLoading }) => {
   const { t } = useTranslation();
   const id = useId();
   const layout = useLayoutType();
+  const spaBase = (globalThis as WindowWithSpaBase).getOpenmrsSpaBase?.() ?? '/openmrs/spa/';
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm);
@@ -140,7 +145,7 @@ const PatientListDetailsTable: React.FC<PatientListDetailsTableProps> = ({ listM
                             <ConfigurableLink
                               className={styles.link}
                               key={row.id}
-                              to={globalThis.getOpenmrsSpaBase() + `patient/${currentPatient.patientUuid}/chart`}
+                              to={`${spaBase}patient/${currentPatient.patientUuid}/chart`}
                             >
                               {currentPatient.name}
                             </ConfigurableLink>

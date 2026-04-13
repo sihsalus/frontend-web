@@ -23,7 +23,7 @@ import fuzzy from 'fuzzy';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { usePatientLists } from '../patient-lists.resource';
+import { type MappedList, usePatientLists } from '../patient-lists.resource';
 
 import styles from './patient-lists.scss';
 
@@ -35,7 +35,7 @@ function PatientListsWorkspace() {
   const debouncedSearchTerm = useDebounce(searchTerm);
   const { patientLists, isLoading } = usePatientLists();
 
-  const launchListDetailsWorkspace = useCallback((list) => {
+  const launchListDetailsWorkspace = useCallback((list: MappedList) => {
     launchPatientWorkspace('patient-list-details', { list, workspaceTitle: list.name });
   }, []);
 
@@ -123,7 +123,14 @@ function PatientListsWorkspace() {
                         return (
                           <TableRow {...getRowProps({ row })} key={row.id}>
                             <TableCell>
-                              <Link className={styles.link} onClick={() => launchListDetailsWorkspace(currentList)}>
+                              <Link
+                                className={styles.link}
+                                onClick={() => {
+                                  if (currentList) {
+                                    launchListDetailsWorkspace(currentList);
+                                  }
+                                }}
+                              >
                                 {currentList?.name ?? ''}
                               </Link>
                             </TableCell>
