@@ -3,7 +3,7 @@
 'use strict';
 
 require('dotenv').config({ quiet: true });
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const { existsSync, statSync } = require('fs');
 const net = require('net');
 const { resolve } = require('path');
@@ -41,7 +41,7 @@ function findFreePort() {
 }
 
 function startCli(args) {
-  const openmrsBin = resolve(__dirname, '..', '..', '..', 'node_modules', 'openmrs', 'dist', 'cli.js');
+  const openmrsBin = ensureOpenmrsCli();
   const fullArgs = [openmrsBin, 'develop', '--backend', backend, ...args];
 
   const child = spawn('node', ['--disable-warning=DEP0060', ...fullArgs], { stdio: 'inherit' });
@@ -51,6 +51,51 @@ function startCli(args) {
   process.on('SIGTERM', () => child.kill('SIGTERM'));
 
   return child;
+}
+
+function ensureOpenmrsCli() {
+  const workspaceRoot = resolve(__dirname, '..', '..', '..');
+  const rspackConfigEntry = resolve(
+    workspaceRoot,
+    'node_modules',
+    '@openmrs',
+    'rspack-config',
+    'dist',
+    'index.js',
+  );
+  const openmrsBin = resolve(workspaceRoot, 'node_modules', 'openmrs', 'dist', 'cli.js');
+
+  if (!existsSync(rspackConfigEntry)) {
+    logWarn('@openmrs/rspack-config no encontrado en dist. Compilando workspace "@openmrs/rspack-config"...');
+    runWorkspaceBuild('@openmrs/rspack-config', workspaceRoot);
+  }
+
+  if (existsSync(openmrsBin)) {
+    return openmrsBin;
+  }
+
+  logWarn('openmrs CLI no encontrado en node_modules/openmrs/dist/cli.js. Compilando workspace "openmrs"...');
+  runWorkspaceBuild('openmrs', workspaceRoot);
+
+  if (!existsSync(openmrsBin)) {
+    logFail('La compilación terminó, pero sigue faltando node_modules/openmrs/dist/cli.js.');
+    process.exit(1);
+  }
+
+  return openmrsBin;
+}
+
+function runWorkspaceBuild(workspaceName, workspaceRoot) {
+  const yarnCmd = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
+  const build = spawnSync(yarnCmd, ['workspace', workspaceName, 'build'], {
+    cwd: workspaceRoot,
+    stdio: 'inherit',
+  });
+
+  if (build.error || build.status !== 0) {
+    logFail(`No se pudo compilar el workspace "${workspaceName}".`);
+    process.exit(build.status || 1);
+  }
 }
 
 /**

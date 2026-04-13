@@ -21,6 +21,7 @@ interface LeftNavMenuProps extends SideNavProps {
    * When false, it renders an empty fragment.
    */
   isChildOfHeader?: boolean;
+  inert?: boolean;
 }
 
 /**
@@ -35,6 +36,37 @@ export const LeftNavMenu = React.forwardRef<HTMLElement, LeftNavMenuProps>((prop
   const currentPath = window.location ?? { pathname: '' };
   const navMenuItems = useAssignedExtensions(slotName ?? '');
   const { inert, ...restProps } = props;
+  const sideNavRef = React.useRef<HTMLElement | null>(null);
+
+  const setRefs = React.useCallback(
+    (node: HTMLElement | null) => {
+      sideNavRef.current = node;
+
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    },
+    [ref],
+  );
+
+  React.useEffect(() => {
+    if (!sideNavRef.current) {
+      return;
+    }
+
+    if (typeof inert === 'boolean') {
+      if (inert) {
+        sideNavRef.current.setAttribute('inert', '');
+      } else {
+        sideNavRef.current.removeAttribute('inert');
+      }
+      return;
+    }
+
+    sideNavRef.current.removeAttribute('inert');
+  }, [inert]);
 
   if (props.isChildOfHeader && slotName && navMenuItems.length > 0) {
     return (
@@ -43,8 +75,7 @@ export const LeftNavMenu = React.forwardRef<HTMLElement, LeftNavMenuProps>((prop
         className={styles.leftNav}
         expanded
         isFixedNav
-        inert={typeof inert === 'boolean' ? inert : undefined}
-        ref={ref}
+        ref={setRefs}
         {...restProps}
       >
         <ExtensionSlot name="global-nav-menu-slot" />
