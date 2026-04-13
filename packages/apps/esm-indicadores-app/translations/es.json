@@ -6,7 +6,7 @@
   "clinicalIndicators": "Indicadores clínicos",
   "close": "Cerrar",
   "conceptIds": "IDs de Conceptos",
-  "conceptIdsSeparated": "Concept IDs (separados por coma)",
+  "conceptIdsSeparated": "IDs de conceptos (separados por coma)",
   "confirmDelete": "¿Estás seguro de que deseas eliminar este indicador?",
   "connectionError": "Error de conexión",
   "connectionErrorDetail": "No se pudo conectar al OMOD de indicators. ¿Está instalado? Error: {{errorMessage}}",

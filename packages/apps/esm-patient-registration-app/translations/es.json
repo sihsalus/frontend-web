@@ -28,7 +28,7 @@
   "deathDateRequired": "La fecha de fallecimiento es obligatoria",
   "deathdayInvalidDate": "La fecha y hora del fallecimiento no pueden ser anteriores a la fecha de nacimiento",
   "deathdayIsRequired": "La fecha de fallecimiento es obligatoria cuando el paciente está marcado como fallecido",
-  "deathdayNotInTheFuture": "",
+  "deathdayNotInTheFuture": "La fecha de fallecimiento no puede estar en el futuro",
   "deathSection": "Información de Fallecimiento",
   "deathTimeFormatInvalid": "El formato de hora es inválido",
   "deathTimeFormatRequired": "El formato de hora es obligatorio",

@@ -389,7 +389,7 @@
   "obstetricalCharts": "Gráficos Obstétricos",
   "occurrenceDate": "Fecha de ocurrencia del evento",
   "onsetDate": "Fecha de inicio",
-  "onsetDateCannotBeInTheFuture": "Onset date cannot be in the future",
+  "onsetDateCannotBeInTheFuture": "La fecha de inicio no puede estar en el futuro",
   "outcomes": "Resultados",
   "overdue": "Atrasado",
   "oxygenSaturation": "Saturación de oxígeno",

@@ -21,7 +21,7 @@
   "appointmentHistory": "Historial de Citas",
   "appointmentMarkedChecked": "Llegada a la Cita marcada como Registrada",
   "appointmentMetrics": "Métricas de citas",
-  "appointmentMetricsLoadError": "",
+  "appointmentMetricsLoadError": "Error al cargar las métricas de citas",
   "appointmentNoteLabel": "Escriba una nota adicional",
   "appointmentNotePlaceholder": "Escriba cualquier punto adicional aquí",
   "appointmentNotes": "Notas de la Cita",
