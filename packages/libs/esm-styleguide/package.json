@@ -36,7 +36,7 @@
     }
   },
   "scripts": {
-    "build": "node ./node_modules/.bin/rspack build -c rspack.config.cjs",
+    "build": "rspack build -c rspack.config.cjs",
     "typescript": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
@@ -49,6 +49,16 @@
     "lodash-es": "^4.17.21",
     "react-aria-components": "^1.7.1",
     "react-avatar": "^5.0.3"
+  },
+  "devDependencies": {
+    "@rspack/cli": "1.7.11",
+    "@rspack/core": "1.7.11",
+    "clean-webpack-plugin": "4.0.0",
+    "css-loader": "7.1.4",
+    "sass-embedded": "1.89.0",
+    "sass-loader": "16.0.5",
+    "swc-loader": "0.2.7",
+    "webpack-bundle-analyzer": "4.10.2"
   },
   "peerDependencies": {
     "@openmrs/esm-api": "9.x",
