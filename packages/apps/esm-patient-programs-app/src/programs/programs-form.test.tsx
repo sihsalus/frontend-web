@@ -7,6 +7,37 @@ import {
 } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+// Carbon DatePicker uses flatpickr which does not work in JSDOM.
+// Replace it with a plain input that calls onChange with a Date array.
+jest.mock('@carbon/react', () => {
+  const actual = jest.requireActual('@carbon/react') as Record<string, unknown>;
+  return {
+    ...actual,
+    DatePicker: ({
+      onChange,
+      children,
+    }: {
+      onChange?: (dates: Date[]) => void;
+      children?: React.ReactNode;
+    }) =>
+      React.cloneElement(children as React.ReactElement, {
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+          const d = new Date(e.target.value);
+          if (!isNaN(d.getTime())) onChange?.([d]);
+        },
+      }),
+    DatePickerInput: (props: React.InputHTMLAttributes<HTMLInputElement> & { labelText?: string }) => {
+      const { labelText, ...rest } = props;
+      return (
+        <>
+          <label htmlFor={rest.id as string}>{labelText}</label>
+          <input type="text" {...rest} />
+        </>
+      );
+    },
+  };
+});
 import { mockCareProgramsResponse, mockEnrolledProgramsResponse, mockLocationsResponse } from '__mocks__';
 import React from 'react';
 import { mockPatient } from 'test-utils';
@@ -128,8 +159,7 @@ describe('ProgramsForm', () => {
       statusText: 'OK',
     } as unknown as FetchResponse);
 
-    await user.type(completionDateInput, '05/05/2020');
-    await user.tab();
+    await user.type(completionDateInput, '2020-05-05');
     await user.click(enrollButton);
 
     expect(mockUpdateProgramEnrollment).toHaveBeenCalledTimes(1);
