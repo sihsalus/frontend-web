@@ -1,0 +1,73 @@
+{
+  "name": "@openmrs/esm-styleguide",
+  "version": "9.0.2",
+  "license": "MPL-2.0",
+  "description": "OpenMRS Styleguide — vendored fork with local patches",
+  "browser": "dist/openmrs-esm-styleguide.js",
+  "main": "src/index.ts",
+  "source": true,
+  "types": "dist/public.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/internal.ts",
+      "default": "./src/internal.ts"
+    },
+    "./src/internal": {
+      "types": "./src/internal.ts",
+      "default": "./src/internal.ts"
+    },
+    "./dist/openmrs-esm-styleguide.css": {
+      "default": "./dist/openmrs-esm-styleguide.css"
+    },
+    "./src/public": {
+      "types": "./src/public.ts",
+      "default": "./src/public.ts"
+    },
+    "./src/index": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./src/vars": {
+      "sass": "./src/_vars.scss"
+    },
+    "./mock": {
+      "import": "./mock.tsx",
+      "require": "./mock-jest.tsx"
+    }
+  },
+  "scripts": {
+    "build": "node ./node_modules/.bin/rspack build -c rspack.config.cjs",
+    "typescript": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@carbon/charts": "^1.27.0",
+    "@carbon/react": "^1.92.1",
+    "@internationalized/date": "^3.8.0",
+    "core-js-pure": "^3.36.0",
+    "d3": "^7.8.0",
+    "geopattern": "^1.2.3",
+    "lodash-es": "^4.17.21",
+    "react-aria-components": "^1.7.1",
+    "react-avatar": "^5.0.3"
+  },
+  "peerDependencies": {
+    "@openmrs/esm-api": "9.x",
+    "@openmrs/esm-config": "9.x",
+    "@openmrs/esm-emr-api": "9.x",
+    "@openmrs/esm-error-handling": "9.x",
+    "@openmrs/esm-extensions": "9.x",
+    "@openmrs/esm-globals": "9.x",
+    "@openmrs/esm-navigation": "9.x",
+    "@openmrs/esm-react-utils": "9.x",
+    "@openmrs/esm-state": "9.x",
+    "@openmrs/esm-translations": "9.x",
+    "@openmrs/esm-utils": "9.x",
+    "dayjs": "1.x",
+    "i18next": "25.x",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "react-i18next": "16.x",
+    "rxjs": "6.x",
+    "swr": "2.x"
+  }
+}

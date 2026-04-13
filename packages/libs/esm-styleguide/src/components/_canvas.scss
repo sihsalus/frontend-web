@@ -1,0 +1,8 @@
+@use '../vars' as *;
+
+html,
+body {
+  background-color: $ui-01;
+  margin: 0;
+  padding: 0;
+}
