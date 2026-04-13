@@ -16,11 +16,11 @@ vi.mock('@openmrs/esm-framework', () => ({
 import { openmrsFetch } from '@openmrs/esm-framework';
 const mockFetch = vi.mocked(openmrsFetch);
 
-function okResponse() {
+function okResponse(): Promise<{ ok: boolean; status: number }> {
   return Promise.resolve({ ok: true, status: 200 });
 }
 
-function failResponse(status = 500) {
+function failResponse(status = 500): Promise<{ ok: boolean; status: number }> {
   return Promise.resolve({ ok: false, status });
 }
 
@@ -46,7 +46,7 @@ afterEach(() => {
   clearKeyCache();
 });
 
-function setupSession() {
+function setupSession(): void {
   auditLogger.configure({ dbName: DB });
   auditLogger.setSession(USER, SESSION);
 }
