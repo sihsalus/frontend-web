@@ -99,7 +99,9 @@ export const mockPatientAlice: Patient = {
     preferredName: {
       display: 'Alice Johnson',
       givenName: 'Alice',
+      middleName: '',
       familyName: 'Johnson',
+      familyName2: '',
       uuid: 'preferred-name-uuid',
     },
     preferredAddress: mockAddress as PersonAddress,
@@ -130,7 +132,9 @@ export const mockPatientBrian: Patient = {
     preferredName: {
       display: 'Brian Johnson',
       givenName: 'Brian ',
+      middleName: '',
       familyName: 'Johnson',
+      familyName2: '',
       uuid: 'preferred-name-uuid',
     },
     names: [null],

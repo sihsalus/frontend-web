@@ -20,10 +20,14 @@ export function formatDeceasedName(patient: fhir.Patient): string {
   if (!patient?.name?.[0]) return '';
 
   const nameObj = patient.name[0];
+  if (nameObj.text) {
+    return nameObj.text;
+  }
+
   const givenNames = nameObj.given?.join(' ') || '';
   const familyName = nameObj.family || '';
 
-  return `${givenNames} ${familyName}`.trim();
+  return `${familyName} ${givenNames}`.trim();
 }
 
 /**

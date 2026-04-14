@@ -23,9 +23,11 @@ export const mockSearchResults = {
           deathDate: null,
           display: 'Eric Test Ric',
           personName: {
+            display: 'Ric Test Eric',
             givenName: 'Eric',
             middleName: 'Test',
             familyName: 'Ric',
+            familyName2: '',
           },
         },
         uuid: 'cc75ad73-c24b-499c-8db9-a7ef4fc0b36d',
@@ -60,7 +62,9 @@ export const mockAdvancedSearchResults = [
       personName: {
         display: 'Joshua Johnson',
         givenName: 'Joshua',
+        middleName: '',
         familyName: 'Johnson',
+        familyName2: '',
       },
       addresses: [
         {
@@ -110,7 +114,9 @@ export const mockAdvancedSearchResults = [
       personName: {
         display: 'Joseph Davis',
         givenName: 'Joseph',
+        middleName: '',
         familyName: 'Davis',
+        familyName2: '',
       },
       addresses: [
         {
