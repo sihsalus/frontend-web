@@ -1,6 +1,5 @@
 import { Add, Information } from '@carbon/icons-react';
 import {
-  Button,
   IconButton,
   Select,
   SelectItem,
@@ -47,17 +46,11 @@ const OdontogramEmpty: React.FC<{ onGenerate: () => void }> = ({ onGenerate }) =
   const { t } = useTranslation();
 
   return (
-    <div>
-      <EmptyState
-        displayText={t('noOdontogramBase', 'No base odontogram recorded')}
-        headerTitle={t('odontogram', 'Odontogram')}
-      />
-      <div className={styles.emptyAction}>
-        <Button kind="primary" size="md" renderIcon={Add} onClick={onGenerate} data-testid="generate-base-btn">
-          {t('generateBase', 'Generate base odontogram')}
-        </Button>
-      </div>
-    </div>
+    <EmptyState
+      displayText={t('odontogramBase', 'base odontogram')}
+      headerTitle={t('odontogram', 'Odontogram')}
+      launchForm={onGenerate}
+    />
   );
 };
 

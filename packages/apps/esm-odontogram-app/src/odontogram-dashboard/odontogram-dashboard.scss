@@ -27,13 +27,6 @@
   border-radius: 4px;
 }
 
-// Empty state action button (EmptyState already provides its own tile/layer)
-.emptyAction {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
 // Record selector row (shown in the CardHeader actions slot)
 .selectorRow {
   display: flex;

@@ -1,4 +1,4 @@
-import { Button, InlineLoading, Tag } from '@carbon/react';
+import { Button, ButtonSet, InlineLoading, Tag } from '@carbon/react';
 import { showSnackbar, type DefaultWorkspaceProps } from '@openmrs/esm-framework';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -67,14 +67,16 @@ const OdontogramWorkspace: React.FC<OdontogramWorkspaceProps> = ({
   const tagMeta = modeTagI18nKeys[workspaceMode];
 
   return (
-    <div>
-      <div className={styles.tagContainer}>
-        <Tag type={tagMeta.type} size="sm">
-          {t(tagMeta.key, tagMeta.fallback)}
-        </Tag>
+    <div className={styles.workspaceContainer}>
+      <div className={styles.workspaceContent}>
+        <div className={styles.tagContainer}>
+          <Tag type={tagMeta.type} size="sm">
+            {t(tagMeta.key, tagMeta.fallback)}
+          </Tag>
+        </div>
+        <OdontogramCanvas config={adultConfig} data={data} onChange={setData} />
       </div>
-      <OdontogramCanvas config={adultConfig} data={data} onChange={setData} />
-      <div className={styles.actions}>
+      <ButtonSet className={styles.buttonSet}>
         <Button kind="secondary" onClick={() => closeWorkspace()} data-testid="odontogram-cancel-btn">
           {t('cancel', 'Cancel')}
         </Button>
@@ -87,7 +89,7 @@ const OdontogramWorkspace: React.FC<OdontogramWorkspaceProps> = ({
             t('saveAttention', 'Save attention')
           )}
         </Button>
-      </div>
+      </ButtonSet>
     </div>
   );
 };

@@ -1,11 +1,5 @@
-import {
-  clearHistory,
-  navigate,
-  setUserLanguage,
-  useConfig,
-  useConnectivity,
-  useSession,
-} from '@openmrs/esm-framework';
+import { navigate, setUserLanguage, useConfig, useConnectivity, useSession } from '@openmrs/esm-framework';
+import { clearHistory } from '@openmrs/esm-framework/src/internal';
 import { useEffect } from 'react';
 
 import { type ConfigSchema } from '../config-schema';
