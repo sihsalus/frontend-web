@@ -7,14 +7,11 @@ import { mockLoggedInUser } from '../../../__mocks__/mock-user';
 
 import UserPanelSwitcher from './user-panel-switcher.component';
 
-vi.mock('@openmrs/esm-framework', async (importOriginal) => {
-   
-  const actual = await importOriginal<typeof import('@openmrs/esm-framework')>();
-  return {
-    ...actual,
-    useSession: vi.fn(),
-  };
-});
+vi.mock('@openmrs/esm-framework', () => ({
+  __esModule: true,
+  useSession: vi.fn(),
+  UserAvatarIcon: () => null,
+}));
 
 const mockUseSession = vi.mocked(useSession);
 

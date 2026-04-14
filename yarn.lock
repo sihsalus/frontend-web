@@ -8696,6 +8696,7 @@ __metadata:
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@sihsalus/rbac": "workspace:*"
     cross-env: "npm:^7.0.3"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
     react-hook-form: "npm:^7.51.0"
@@ -8974,6 +8975,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-home-app@workspace:packages/apps/esm-home-app"
   dependencies:
+    jest: "npm:^29.7.0"
     openmrs: "npm:*"
     typescript: "npm:^5.8.3"
   peerDependencies:
@@ -9176,6 +9178,7 @@ __metadata:
     "@carbon/react": "npm:^1.92.1"
     "@carbon/styles": "npm:^1.102.0"
     "@sihsalus/rbac": "workspace:*"
+    jest: "npm:^29.7.0"
     konva: "npm:^9.3.18"
     openmrs: "workspace:*"
     react-konva: "npm:^19.0.5"
@@ -9229,6 +9232,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.83.0"
     "@sihsalus/rbac": "workspace:*"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
     swr: "npm:^2.2.5"
@@ -9500,6 +9504,7 @@ __metadata:
   resolution: "@sihsalus/esm-patient-label-printing-app@workspace:packages/apps/esm-patient-label-printing-app"
   dependencies:
     "@carbon/react": "npm:^1.83.0"
+    jest: "npm:^29.7.0"
     openmrs: "npm:*"
     typescript: "npm:^5.8.3"
   peerDependencies:
@@ -9787,6 +9792,7 @@ __metadata:
     "@datasert/cronjs-parser": "npm:^1.2.0"
     cronstrue: "npm:^2.41.0"
     dayjs: "npm:^1.8.36"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
     react-image-annotate: "npm:^1.8.0"
@@ -9937,6 +9943,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.83.0"
     "@sihsalus/rbac": "workspace:*"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
     swr: "npm:^2.2.5"
@@ -11677,12 +11684,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.11.11":
-  version: 18.19.130
-  resolution: "@types/node@npm:18.19.130"
+"@types/node@npm:^25.5.0":
+  version: 25.6.0
+  resolution: "@types/node@npm:25.6.0"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10c0/22ba2bc9f8863101a7e90a56aaeba1eb3ebdc51e847cef4a6d188967ab1acbce9b4f92251372fd0329ecb924bbf610509e122c3dfe346c04dbad04013d4ad7d0
+    undici-types: "npm:~7.19.0"
+  checksum: 10c0/d2d2015630ff098a201407f55f5077a20270ae4f465c739b40865cd9933b91b9c5d2b85568eadaf3db0801b91e267333ca7eb39f007428b173d1cdab4b339ac5
   languageName: node
   linkType: hard
 
@@ -25953,7 +25960,7 @@ __metadata:
     "@types/express": "npm:^4.11.1"
     "@types/glob": "npm:^7.1.1"
     "@types/lodash": "npm:^4.17.12"
-    "@types/node": "npm:^18.11.11"
+    "@types/node": "npm:^25.5.0"
     "@types/pacote": "npm:^11.1.8"
     "@types/react": "npm:^18.3.21"
     "@types/semver": "npm:^7"
@@ -32465,17 +32472,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~5.26.4":
-  version: 5.26.5
-  resolution: "undici-types@npm:5.26.5"
-  checksum: 10c0/bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
-  languageName: node
-  linkType: hard
-
 "undici-types@npm:~7.18.0":
   version: 7.18.2
   resolution: "undici-types@npm:7.18.2"
   checksum: 10c0/85a79189113a238959d7a647368e4f7c5559c3a404ebdb8fc4488145ce9426fcd82252a844a302798dfc0e37e6fb178ff481ed03bc4caf634c5757d9ef43521d
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~7.19.0":
+  version: 7.19.2
+  resolution: "undici-types@npm:7.19.2"
+  checksum: 10c0/7159f10546f9f6c47d36776bb1bbf8671e87c1e587a6fee84ae1f111ae8de4f914efa8ca0dfcd224f4f4a9dfc3f6028f627ccb5ddaccf82d7fd54671b89fac3e
   languageName: node
   linkType: hard
 
@@ -34374,16 +34381,6 @@ __metadata:
     "@types/trusted-types": "npm:^2.0.2"
     workbox-core: "npm:6.6.0"
   checksum: 10c0/7e3fdfaa9d018644bf67ad51820838a18227ba612f8dbe13711e2ebdfd5e112ad5b165b50358eff3d0e7ced4bade49b456d4702254fcf57a3cfe193bd011e86b
-  languageName: node
-  linkType: hard
-
-"workbox-window@patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch":
-  version: 6.6.0
-  resolution: "workbox-window@patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch::version=6.6.0&hash=eae6c5"
-  dependencies:
-    "@types/trusted-types": "npm:^2.0.2"
-    workbox-core: "npm:6.6.0"
-  checksum: 10c0/30a04c0c5727320cc084a177bf34f7d58319d490e46b78568ffb13089fb79881a9af3d421d0956c4c89b29d8f042340880225cb4793514bab672a66da6900150
   languageName: node
   linkType: hard
 

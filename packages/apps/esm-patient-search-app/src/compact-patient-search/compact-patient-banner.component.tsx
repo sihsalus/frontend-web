@@ -85,7 +85,9 @@ const CompactPatientBanner = forwardRef<HTMLDivElement, CompactPatientBannerProp
           {
             id: nameId,
             given: [patient.person.personName.givenName, patient.person.personName.middleName],
-            family: patient.person.personName.familyName,
+            family: [patient.person.personName.familyName, patient.person.personName.familyName2]
+              .filter(Boolean)
+              .join(' '),
             text: patient.person.personName.display,
           },
         ],

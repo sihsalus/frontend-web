@@ -1,12 +1,12 @@
 {
   "$schema": "https://json.openmrs.org/routes.schema.json",
   "backendDependencies": {
-    "webservices.rest": "^2.2.0"
+    "webservices.rest": ">=2.2.0"
   },
   "optionalBackendDependencies": {
-    "fhirproxy": "^1.0.0-SNAPSHOT",
-    "stockmanagement": "^2.0.2-SNAPSHOT",
-    "billing": "^1.2.0-SNAPSHOT"
+    "fhirproxy": ">=1.0.0",
+    "stockmanagement": ">=2.0.2",
+    "billing": ">=1.2.0"
   },
   "extensions": [
     {

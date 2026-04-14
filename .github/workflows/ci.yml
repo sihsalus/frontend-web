@@ -55,20 +55,19 @@ jobs:
       - name: Test
         run: yarn test
 
-      - name: Generate Coverage Report
-        run: yarn test:coverage
-        continue-on-error: true
-
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ./coverage/coverage-final.json
           flags: unittests
           fail_ci_if_error: false
-          verbose: true
+        continue-on-error: true
 
       - name: Build
         run: yarn build
+
+      - name: Assemble
+        run: yarn assemble
 
       - name: Security Audit
         run: yarn npm audit --severity high

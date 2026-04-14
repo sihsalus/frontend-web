@@ -72,6 +72,12 @@ export interface MappedListMembers {
   patientUuid: string;
 }
 
+type OpenmrsFetchResponse<T> = {
+  data: {
+    results: Array<T>;
+  };
+};
+
 /**
  * Fetches patient lists from the OpenMRS Cohort resource.
  * @returns An object containing the patient lists, loading state, and error state.
@@ -87,8 +93,8 @@ export function usePatientLists() {
     totalCount: 'true',
   });
 
-  const { data, error, isLoading } = useSWR<{ data: { results: Array<Cohort> } }, Error>(
-    listsUrl + urlSearchParams,
+  const { data, error, isLoading } = useSWR<OpenmrsFetchResponse<Cohort>, Error>(
+    `${listsUrl}${urlSearchParams.toString()}`,
     openmrsFetch,
   );
 
@@ -131,19 +137,19 @@ export function usePatientListMembers(listUuid: string, searchQuery = '', startI
     v: 'full',
   });
 
-  const { data, error, isLoading } = useSWR<{ data: { results: Array<CohortMember> } }, Error>(
-    listUuid ? listMembersUrl + urlSearchParams : null,
+  const { data, error, isLoading } = useSWR<OpenmrsFetchResponse<CohortMember>, Error>(
+    listUuid ? `${listMembersUrl}${urlSearchParams.toString()}` : null,
     openmrsFetch,
   );
 
   // Map the properties of the fetched members to a simpler object.
-  const mapProperties = (listMember) => ({
-    identifier: listMember?.patient?.identifiers[0]?.identifier ?? null,
-    membershipUuid: listMember?.uuid,
-    name: listMember?.patient?.person?.display,
-    sex: listMember?.patient?.person?.gender,
-    startDate: formatDate(parseDate(listMember?.startDate)),
-    patientUuid: `${listMember?.patient?.uuid}`,
+  const mapProperties = (listMember: CohortMember): MappedListMembers => ({
+    identifier: listMember.patient.identifiers[0]?.identifier ?? '',
+    membershipUuid: listMember.uuid,
+    name: listMember.patient.person.display,
+    sex: listMember.patient.person.gender,
+    startDate: listMember.startDate ? formatDate(parseDate(listMember.startDate)) : '',
+    patientUuid: listMember.patient.uuid,
   });
 
   const listMembers: Array<MappedListMembers> = data?.data?.results ? data.data.results.map(mapProperties) : [];

@@ -13,7 +13,7 @@
     "build": "rspack --mode=production",
     "analyze": "rspack --mode=production --env analyze=true",
     "lint": "eslint .",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
+    "test": "jest --config jest.config.js --verbose false --passWithNoTests --color",
     "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
     "coverage": "yarn test --coverage",
     "typescript": "tsc",
@@ -46,6 +46,7 @@
     "react-router-dom": "6.x"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "openmrs": "*",
     "typescript": "^5.8.3"
   }

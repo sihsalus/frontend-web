@@ -46,10 +46,14 @@ export const formatPatientName = (patient): string => {
   }
 
   const nameObj = patient.name[0];
+  if (nameObj.text) {
+    return nameObj.text;
+  }
+
   const givenNames = nameObj.given ? nameObj.given.join(' ') : '';
   const familyName = nameObj.family || '';
 
-  return `${givenNames} ${familyName}`.trim();
+  return `${familyName} ${givenNames}`.trim();
 };
 
 export const uppercaseText = (text): string => {
