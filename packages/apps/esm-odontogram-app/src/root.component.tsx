@@ -1,14 +1,27 @@
 import '@carbon/styles/css/styles.css';
 import { AppErrorBoundary } from '@sihsalus/rbac';
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import OdontogramNuevoBridge from './components/OdontogramNuevoBridge';
+import OdontogramCanvas from './odontogram/components/Odontogram';
+import { adultConfig } from './odontogram/config/adultConfig';
+import type { OdontogramData } from './odontogram/types/odontogram';
+import useOdontogramDataStore from './store/odontogramDataStore';
 
 export default function OdontogramRoot() {
+  const data = useOdontogramDataStore((state) => state.data);
+  const setData = useOdontogramDataStore((state) => state.setData);
+
+  const handleChange = useCallback(
+    (nextData: OdontogramData) => {
+      setData(nextData);
+    },
+    [setData],
+  );
+
   return (
     <AppErrorBoundary appName="esm-odontogram-app">
       <div style={{ padding: '1rem 0' }}>
-        <OdontogramNuevoBridge />
+        <OdontogramCanvas config={adultConfig} data={data} onChange={handleChange} />
       </div>
     </AppErrorBoundary>
   );

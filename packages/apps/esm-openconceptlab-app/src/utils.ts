@@ -7,7 +7,7 @@ export function isAbortError(err: unknown): boolean {
 }
 
 export function extractOclErrorMessage(response: { status: number; data?: unknown }, t: TFunction): string {
-  switch (response.status) {
+  switch (response.status as OclErrorCode) {
     case OclErrorCode.UNAUTHORIZED:
       return t('oclErrorUnauthorized', 'Invalid or expired token — check your subscription settings');
     case OclErrorCode.FORBIDDEN:
@@ -36,7 +36,7 @@ export const isVersionDefinedInUrl = (subscriptionUrl: string) => {
     subscriptionUrl = subscriptionUrl.substring(0, subscriptionUrl.lastIndexOf('/'));
   }
 
-  let url;
+  let url: URL | undefined;
   try {
     url = new URL(subscriptionUrl);
   } catch {

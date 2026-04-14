@@ -13,7 +13,7 @@ const mockShowSnackbar = jest.mocked(showSnackbar);
 const mockStartImportWithSubscription = jest.mocked(startImportWithSubscription);
 
 jest.mock('./import.resource', () => {
-  const originalModule = jest.requireActual('./import.resource');
+  const originalModule = jest.requireActual<Record<string, unknown>>('./import.resource');
 
   return {
     ...originalModule,
