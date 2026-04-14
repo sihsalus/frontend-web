@@ -71,6 +71,25 @@ module.exports = [
     }
   },
 
+  // 🔹 Legacy app with incremental typing migration
+  {
+    files: ["packages/apps/esm-form-entry-react-app/**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/unbound-method": "off",
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/prefer-promise-reject-errors": "off",
+      "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-unnecessary-type-assertion": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off"
+    }
+  },
+
   // 🔹 Libs (más estrictas 🔥)
   {
     files: ["packages/libs/**/*.{ts,tsx}"],

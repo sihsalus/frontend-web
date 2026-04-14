@@ -9937,6 +9937,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.83.0"
     "@sihsalus/rbac": "workspace:*"
+    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
     swr: "npm:^2.2.5"

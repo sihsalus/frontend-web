@@ -8,14 +8,11 @@ import { type ConfigSchema } from '../../config-schema';
 
 import Logo from './logo.component';
 
-vi.mock('@openmrs/esm-framework', async (importOriginal) => {
-   
-  const actual = await importOriginal<typeof import('@openmrs/esm-framework')>();
-  return {
-    ...actual,
-    useConfig: vi.fn(),
-  };
-});
+vi.mock('@openmrs/esm-framework', () => ({
+  __esModule: true,
+  useConfig: vi.fn(),
+  interpolateUrl: vi.fn((url: string) => url),
+}));
 
 const mockUseConfig = vi.mocked(useConfig);
 
