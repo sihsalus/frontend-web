@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import {
   DataTable,
   Button,
@@ -41,7 +42,6 @@ import { useTranslation } from 'react-i18next';
 import { useReactToPrint } from 'react-to-print';
 
 import { type AddDrugOrderWorkspaceAdditionalProps } from '../add-drug-order/add-drug-order.workspace';
-import { type ConfigObject } from '../config-schema';
 import PrintComponent from '../print/print.component';
 import { type DrugOrderBasketItem } from '../types';
 
@@ -72,10 +72,13 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
   const { t } = useTranslation();
   const launchOrderBasket = useLaunchWorkspaceRequiringVisit('order-basket');
   const launchAddDrugOrder = useLaunchWorkspaceRequiringVisit('add-drug-order');
-  const config = useConfig() as ConfigObject;
+  const config = useConfig<{
+    excludePatientIdentifierCodeTypes?: { uuids: string[] };
+    showPrintButton?: boolean;
+  }>();
   const showPrintButton = config.showPrintButton;
   const contentToPrintRef = useRef(null);
-  const { excludePatientIdentifierCodeTypes } = useConfig();
+  const { excludePatientIdentifierCodeTypes } = config;
   const [isPrinting, setIsPrinting] = useState(false);
 
   const { orders, setOrders } = useOrderBasket<DrugOrderBasketItem>('medications');

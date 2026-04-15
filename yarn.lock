@@ -9561,7 +9561,7 @@ __metadata:
   resolution: "@sihsalus/esm-patient-medications-app@workspace:packages/apps/esm-patient-medications-app"
   dependencies:
     "@carbon/react": "npm:^1.12.0"
-    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.7.11"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
@@ -9606,7 +9606,7 @@ __metadata:
   resolution: "@sihsalus/esm-patient-orders-app@workspace:packages/apps/esm-patient-orders-app"
   dependencies:
     "@carbon/react": "npm:^1.12.0"
-    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.7.11"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
@@ -9705,7 +9705,7 @@ __metadata:
     "@carbon/charts": "npm:^1.5.2"
     "@carbon/charts-react": "npm:^1.5.2"
     "@carbon/react": "npm:^1.12.0"
-    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@openmrs/esm-patient-common-lib": "workspace:*"
     "@rspack/cli": "npm:1.7.11"
     d3: "npm:^7.6.1"
     fuzzy: "npm:^0.1.3"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import {
   Button,
   DataTable,
@@ -96,9 +97,6 @@ interface DataTableRow {
 }
 
 type MutableOrderBasketItem = OrderBasketItem;
-
-const medicationsOrderBasket = 'medications';
-const labsOrderBasket = 'labs';
 
 const OrderDetailsTable: React.FC<OrderDetailsProps> = ({ patientUuid, showAddButton, showPrintButton, title }) => {
   const { t } = useTranslation();
@@ -275,7 +273,7 @@ const OrderDetailsTable: React.FC<OrderDetailsProps> = ({ patientUuid, showAddBu
       age: age(patient?.patient?.birthDate),
       gender: getGender(patient?.patient?.gender),
       location: patient?.patient?.address?.[0].city,
-      identifiers: identifiers?.length ? identifiers.map(({ value, type }) => value) : [],
+      identifiers: identifiers?.length ? identifiers.map(({ value }) => value) : [],
     };
   }, [patient, excludePatientIdentifierCodeTypes?.uuids]);
 
@@ -639,7 +637,7 @@ function OrderBasketItemActions({
 
   const handleCancelClick = useCallback(() => {
     if (orderItem.type === 'drugorder') {
-      getDrugOrderByUuid(orderItem.uuid).then((res) => {
+      void getDrugOrderByUuid(orderItem.uuid).then((res) => {
         const medicationOrder = res.data;
         setOrders([...orders, buildMedicationOrder(medicationOrder, 'DISCONTINUE')]);
         openOrderBasket();

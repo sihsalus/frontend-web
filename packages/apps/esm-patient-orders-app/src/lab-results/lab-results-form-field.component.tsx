@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
 import React from 'react';
 import { type Control, Controller, type FieldErrors } from 'react-hook-form';

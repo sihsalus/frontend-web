@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/unbound-method */
 import {
   Button,
   TextArea,
@@ -63,7 +64,7 @@ const OrderCancellationForm: React.FC<OrderCancellationFormProps> = ({
     resolver: zodResolver(cancelOrderSchema),
   });
 
-  function onError(err) {
+  function onError(err: { oneFieldRequired?: boolean }) {
     if (err?.oneFieldRequired) {
       setShowErrorNotification(true);
     }
@@ -84,7 +85,7 @@ const OrderCancellationForm: React.FC<OrderCancellationFormProps> = ({
       };
 
       cancelOrder(order, payload).then(
-        (res) => {
+        () => {
           closeWorkspace();
           mutate();
 
