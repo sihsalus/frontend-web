@@ -4,6 +4,9 @@ App para la ficha familiar y el contexto relacional del hogar.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 29733, Ley de Protección de Datos Personales (Perú).
+
 ## Límites funcionales
 - Gestiona relaciones familiares, parentescos y listas de contactos asociados al paciente.
 - Expone vistas para historia familiar y relación entre miembros del núcleo familiar.

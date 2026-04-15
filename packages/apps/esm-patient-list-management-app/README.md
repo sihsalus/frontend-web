@@ -4,6 +4,9 @@ App para crear y administrar listas de pacientes.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 29733, Ley de Protección de Datos Personales (Perú).
+
 ## Límites funcionales
 - Crea, edita y elimina listas de pacientes.
 - Agrega o remueve pacientes, y muestra el detalle de cada lista.

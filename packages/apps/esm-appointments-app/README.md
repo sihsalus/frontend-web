@@ -4,6 +4,9 @@ App para la gestión de citas y agenda del paciente.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 26842, Ley General de Salud (Perú).
+
 ## Límites funcionales
 - Crea, consulta, reprograma y cancela citas.
 - Organiza vistas de calendario, carga de trabajo y citas del paciente.

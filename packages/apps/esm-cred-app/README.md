@@ -4,6 +4,9 @@ App orientada al seguimiento de CRED y control preventivo infantil.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 26842, Ley General de Salud (Perú).
+
 ## Límites funcionales
 - Gestiona flujos de crecimiento y desarrollo, así como planes de inmunización asociados.
 - Expone vistas para seguimiento pediátrico preventivo y cuidado del niño sano.

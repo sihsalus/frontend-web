@@ -4,6 +4,9 @@ App para búsqueda de pacientes y selección contextual.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 29733, Ley de Protección de Datos Personales (Perú).
+
 ## Límites funcionales
 - Proporciona búsqueda compacta, overlay y página de resultados.
 - Facilita la selección de paciente para otros módulos del portal.

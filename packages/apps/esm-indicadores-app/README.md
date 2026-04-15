@@ -4,6 +4,9 @@ App para tableros e indicadores de gestión.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 26842, Ley General de Salud (Perú).
+
 ## Límites funcionales
 - Construye vistas de indicadores, métricas y resúmenes analíticos.
 - Consume datos agregados para monitoreo y toma de decisiones.

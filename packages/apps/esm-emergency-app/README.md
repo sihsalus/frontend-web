@@ -4,6 +4,9 @@ App para flujos de urgencias y triage.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 26842, Ley General de Salud (Perú).
+
 ## Límites funcionales
 - Administra la experiencia operativa del servicio de emergencia.
 - Incluye triage, paneles de urgencias, flujos de atención y vistas de seguimiento clínico.

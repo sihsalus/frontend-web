@@ -4,6 +4,9 @@ App transversal para el menú de ayuda y soporte.
 
 Terminología de dominio: visita = consulta, encounter = atención, appointment = cita.
 
+## Marco normativo
+- Ley N.° 29733, Ley de Protección de Datos Personales (Perú).
+
 ## Límites funcionales
 - Muestra accesos de ayuda, documentación y enlaces de soporte.
 - No administra datos clínicos ni flujos operativos del paciente.
