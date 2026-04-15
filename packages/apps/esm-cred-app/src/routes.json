@@ -347,6 +347,78 @@
       "order": 100
     }
   ],
-  "modals": [],
-  "workspaces": []
+  "modals": [
+    {
+      "name": "condition-delete-confirmation-dialog",
+      "component": "conditionFilterDeleteConfirmationDialog"
+    }
+  ],
+  "workspaces": [
+    {
+      "name": "adverse-reaction-form-workspace",
+      "component": "adverseReactionFormWorkspace",
+      "title": "Reacción Adversa",
+      "type": "form"
+    },
+    {
+      "name": "antecedentes-patologicos-form-workspace",
+      "component": "antecedentesPatologicosFormWorkspace",
+      "title": "Antecedentes Patológicos",
+      "type": "form"
+    },
+    {
+      "name": "conditions-filter-form-workspace",
+      "component": "conditionsFilterWorkspace",
+      "title": "Agregar Condición",
+      "type": "form"
+    },
+    {
+      "name": "maternal-conditions-form-workspace",
+      "component": "conditionsFilterWorkspace",
+      "title": "Agregar Condición",
+      "type": "form"
+    },
+    {
+      "name": "forms-selector-workspace",
+      "component": "formsSelectorWorkspace",
+      "title": "Selección de Formularios",
+      "type": "form"
+    },
+    {
+      "name": "newborn-anthropometric-form",
+      "component": "newbornAnthropometricsworkspace",
+      "title": "Antropometría del Recién Nacido",
+      "type": "form"
+    },
+    {
+      "name": "newborn-fluidBalance-form",
+      "component": "newbornFluidBalanceworkspace",
+      "title": "Balance Hídrico del Recién Nacido",
+      "type": "form"
+    },
+    {
+      "name": "perinatal-register-form",
+      "component": "perinatalRegisterworkspace",
+      "title": "Registro Perinatal",
+      "type": "form"
+    },
+    {
+      "name": "wellchild-control-form",
+      "component": "wellchildControlsworkspace",
+      "title": "Control de Niño Sano",
+      "type": "form"
+    },
+    {
+      "name": "tepsi-form",
+      "component": "tepsiFormWorkspace",
+      "title": "Evaluación TEPSI",
+      "type": "form"
+    },
+    {
+      "name": "test-peruano-form",
+      "component": "testPeruanoFormWorkspace",
+      "title": "Test Peruano de Desarrollo",
+      "type": "form"
+    }
+  ]
 }
