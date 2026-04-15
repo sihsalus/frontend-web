@@ -2,7 +2,7 @@ import { Button, Tile } from '@carbon/react';
 import { reportError } from '@openmrs/esm-framework';
 import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import { auditLogger } from '@sihsalus/audit-logger';
+import { auditLogger } from '@sihsalus/esm-audit-logger';
 
 interface AppErrorBoundaryProps {
   readonly appName: string;

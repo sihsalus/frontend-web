@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@carbon/react": "^1.83.0",
-    "@sihsalus/rbac": "workspace:*",
+    "@sihsalus/esm-rbac": "workspace:*",
     "lodash-es": "^4.17.21",
     "swr": "^2.2.5"
   },

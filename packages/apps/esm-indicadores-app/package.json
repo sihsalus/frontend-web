@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@sihsalus/rbac": "workspace:*",
+    "@sihsalus/esm-rbac": "workspace:*",
     "swr": "^2.3.6"
   },
   "peerDependencies": {

@@ -14,123 +14,12 @@
       }
     },
     {
-      "name": "case-encounter-link",
-      "component": "caseEncounterDashboardLink",
-      "slot": "patient-chart-dashboard-slot",
-      "order": 14,
-      "meta": {
-        "columns": 1,
-        "columnSpan": 1,
-        "slot": "patient-chart-case-encounter-slot",
-        "path": "case-management-encounters",
-        "layoutMode": "anchored"
-      }
-    },
-    {
-      "name": "case-encounter-table",
-      "slot": "patient-chart-case-encounter-slot",
-      "component": "caseEncounterTable",
-      "order": 0,
-      "online": true,
-      "offline": false
-    },
-    {
-      "name": "case-management-dashboard-link",
-      "component": "caseManagementDashboardLink",
-      "slot": "homepage-dashboard-slot",
-      "meta": {
-        "name": "case-management",
-        "title": "Seguimiento de Pacientes",
-        "slot": "case-management-dashboard-slot",
-        "path": "/case-management"
-      }
-    },
-    {
-      "name": "wrap-component-view",
-      "slot": "case-management-dashboard-slot",
-      "component": "wrapComponent",
-      "order": 2,
-      "online": true,
-      "offline": false
-    },
-    {
       "name": "clinical-encounter",
       "slot": "patient-chart-clinical-encounter-slot",
       "component": "inPatientClinicalEncounter",
       "order": 0,
       "online": true,
       "offline": false
-    },
-    {
-      "name": "defaulter-tracing-dashboard",
-      "slot": "patient-chart-defaulter-tracing-dashboard-slot",
-      "component": "defaulterTracing",
-      "order": 3,
-      "online": true,
-      "offline": false
-    },
-    {
-      "name": "defaulter-tracing-dashboard-link",
-      "component": "defaulterTracingLink",
-      "slot": "hiv-care-and-treatment-slot",
-      "meta": {
-        "columns": 1,
-        "columnSpan": 1,
-        "slot": "patient-chart-defaulter-tracing-dashboard-slot",
-        "path": "defaulter-tracing-dashboard",
-        "layoutMode": "anchored"
-      }
-    },
-    {
-      "name": "genericNavLinks",
-      "slot": "special-clinics-slot",
-      "component": "genericNavLinks",
-      "meta": {
-        "columns": 1,
-        "columnSpan": 1,
-        "slot": "patient-chart-special-clinic-dashboard-slot",
-        "path": "special-clinics-dashboard",
-        "layoutMode": "anchored"
-      }
-    },
-    {
-      "name": "hiv-care-and-treatment-dashboard-group-link",
-      "slot": "special-clinics-slot",
-      "component": "hivCareAndTreatMentSideNavGroup",
-      "meta": {
-        "slot": "hiv-care-and-treatment-slot",
-        "isFolder": true
-      }
-    },
-    {
-      "name": "hts-clinical-view",
-      "slot": "patient-chart-hts-dashboard-slot",
-      "component": "htsClinicalView",
-      "order": 2,
-      "online": true,
-      "offline": false
-    },
-    {
-      "name": "hts-dashboard-link",
-      "component": "htsDashboardLink",
-      "slot": "hiv-care-and-treatment-slot",
-      "meta": {
-        "columns": 1,
-        "columnSpan": 1,
-        "slot": "patient-chart-hts-dashboard-slot",
-        "path": "hts-dashboard",
-        "layoutMode": "anchored"
-      }
-    },
-    {
-      "name": "patient-chart-special-clinic-dashboard-slot",
-      "slot": "patient-chart-special-clinic-dashboard-slot",
-      "component": "genericDashboard"
-    },
-    {
-      "name": "special-clinics-dashboard-group-link",
-      "component": "specialClinicsSideNavGroup",
-      "slot": "clinical-view-section"
     },
     {
       "name": "consulta-externa-dashboard-link",
@@ -177,18 +66,6 @@
   ],
   "modals": [],
   "workspaces": [
-    {
-      "name": "case-management-form",
-      "component": "caseManagementForm",
-      "title": "Formulario de Seguimiento de Pacientes",
-      "type": "form"
-    },
-    {
-      "name": "end-relationship-form",
-      "component": "endRelationshipWorkspace",
-      "title": "Discontinue relationship form",
-      "type": "form"
-    },
     {
       "name": "conditions-filter-form-workspace",
       "component": "conditionsFilterWorkspace",

@@ -1,9 +1,9 @@
 {
-  "name": "@sihsalus/rbac",
+  "name": "@sihsalus/esm-audit-logger",
   "version": "0.1.0",
   "private": true,
   "license": "MPL-2.0",
-  "description": "HIPAA role-based access control for SIH Salus",
+  "description": "Client-side audit trail logging for HIPAA compliance",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
@@ -13,15 +13,11 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
-    "@carbon/react": ">=1.0.0",
     "@openmrs/esm-framework": ">=9.0.2",
-    "@sihsalus/audit-logger": "*",
     "react": ">=18.0.0"
   },
   "devDependencies": {
-    "@carbon/react": "^1.102.0",
     "@openmrs/esm-framework": ">=9.0.2",
-    "@sihsalus/audit-logger": "workspace:*",
     "react": "^18.3.1",
     "typescript": "^5.8.3",
     "vitest": "^4.0.18"

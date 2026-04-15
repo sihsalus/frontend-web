@@ -12,7 +12,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice } from '../../../../../__mocks__';
-import { renderWithSwr } from '../../../../../tools';
+import { renderWithSwr } from 'test-utils';
 import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useWardLocation from '../../hooks/useWardLocation';

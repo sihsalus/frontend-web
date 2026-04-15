@@ -8287,20 +8287,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sihsalus/audit-logger@workspace:*, @sihsalus/audit-logger@workspace:packages/libs/audit-logger":
-  version: 0.0.0-use.local
-  resolution: "@sihsalus/audit-logger@workspace:packages/libs/audit-logger"
-  dependencies:
-    "@openmrs/esm-framework": "npm:>=9.0.2"
-    react: "npm:^18.3.1"
-    typescript: "npm:^5.8.3"
-    vitest: "npm:^4.0.18"
-  peerDependencies:
-    "@openmrs/esm-framework": ">=9.0.2"
-    react: ">=18.0.0"
-  languageName: unknown
-  linkType: soft
-
 "@sihsalus/esm-active-visits-app@workspace:packages/apps/esm-active-visits-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-active-visits-app@workspace:packages/apps/esm-active-visits-app"
@@ -8330,7 +8316,7 @@ __metadata:
     "@hookform/resolvers": "npm:^3.9.1"
     "@openmrs/esm-patient-common-lib": "npm:*"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     formik: "npm:^2.2.9"
     jest: "npm:^29.7.0"
@@ -8388,6 +8374,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sihsalus/esm-audit-logger@workspace:*, @sihsalus/esm-audit-logger@workspace:packages/libs/esm-audit-logger":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-audit-logger@workspace:packages/libs/esm-audit-logger"
+  dependencies:
+    "@openmrs/esm-framework": "npm:>=9.0.2"
+    react: "npm:^18.3.1"
+    typescript: "npm:^5.8.3"
+    vitest: "npm:^4.0.18"
+  peerDependencies:
+    "@openmrs/esm-framework": ">=9.0.2"
+    react: ">=18.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@sihsalus/esm-bed-management-app@workspace:packages/apps/esm-bed-management-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-bed-management-app@workspace:packages/apps/esm-bed-management-app"
@@ -8395,7 +8395,7 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@hookform/resolvers": "npm:^3.9.1"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
@@ -8421,7 +8421,7 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.4"
     "@openmrs/esm-framework": "npm:*"
     "@playwright/test": "npm:^1.53.2"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.3.2"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.31"
@@ -8550,7 +8550,7 @@ __metadata:
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@playwright/test": "npm:^1.58.2"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.3.12"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.36"
@@ -8766,7 +8766,7 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.0"
     "@openmrs/esm-framework": "npm:*"
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     cross-env: "npm:^7.0.3"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
@@ -8881,7 +8881,7 @@ __metadata:
     "@openmrs/esm-framework": "npm:*"
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@playwright/test": "npm:^1.50.1"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.1.65"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.36"
@@ -8992,7 +8992,7 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.1"
     "@openmrs/esm-patient-common-lib": "npm:*"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@types/webpack-env": "npm:^1.18.0"
     classnames: "npm:^2.5.1"
     jest: "npm:^29.7.0"
@@ -9047,7 +9047,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.92.1"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@vitest/coverage-v8": "npm:^4.0.18"
     fuzzy: "npm:^0.1.3"
     happy-dom: "npm:^20.6.0"
@@ -9120,7 +9120,7 @@ __metadata:
     "@openmrs/esm-framework": "npm:9.0.2"
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.3.12"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.36"
@@ -9160,7 +9160,7 @@ __metadata:
     "@carbon/react": "npm:^1.83.0"
     "@openmrs/esm-framework": "npm:*"
     "@playwright/test": "npm:^1.52.0"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.1.62"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.26"
@@ -9205,7 +9205,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.92.1"
     "@hookform/resolvers": "npm:^3.6.0"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@vitest/coverage-v8": "npm:^4.0.18"
     happy-dom: "npm:^20.6.0"
     lodash-es: "npm:^4.17.21"
@@ -9239,7 +9239,7 @@ __metadata:
     "@carbon/react": "npm:^1.92.1"
     "@carbon/styles": "npm:^1.102.0"
     "@openmrs/esm-patient-common-lib": "workspace:*"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     jest: "npm:^29.7.0"
     konva: "npm:^9.3.18"
     openmrs: "workspace:*"
@@ -9262,7 +9262,7 @@ __metadata:
     "@carbon/icons-react": "npm:^11.58.0"
     "@carbon/react": "npm:^1.92.1"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@types/lodash-es": "npm:^4.17.12"
     "@vitest/coverage-v8": "npm:^4.0.18"
     happy-dom: "npm:^20.6.0"
@@ -9293,7 +9293,7 @@ __metadata:
   resolution: "@sihsalus/esm-openconceptlab-app@workspace:packages/apps/esm-openconceptlab-app"
   dependencies:
     "@carbon/react": "npm:^1.83.0"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
@@ -9391,7 +9391,7 @@ __metadata:
   resolution: "@sihsalus/esm-patient-chart-app@workspace:packages/apps/esm-patient-chart-app"
   dependencies:
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@types/uuid": "npm:^9.0.4"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
@@ -9555,12 +9555,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sihsalus/esm-patient-immunizations-app@workspace:packages/apps/esm-patient-immunizations-app":
-  version: 0.0.0-use.local
-  resolution: "@sihsalus/esm-patient-immunizations-app@workspace:packages/apps/esm-patient-immunizations-app"
-  languageName: unknown
-  linkType: soft
-
 "@sihsalus/esm-patient-label-printing-app@workspace:packages/apps/esm-patient-label-printing-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-patient-label-printing-app@workspace:packages/apps/esm-patient-label-printing-app"
@@ -9583,7 +9577,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     dexie: "npm:^3.0.3"
     fuzzy: "npm:^0.1.3"
@@ -9719,7 +9713,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     formik: "npm:^2.1.5"
     husky: "npm:^9.1.7"
@@ -9747,7 +9741,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     i18next: "npm:^25.0.0"
     jest: "npm:^29.7.0"
@@ -9821,7 +9815,7 @@ __metadata:
   dependencies:
     "@carbon/react": "npm:^1.92.1"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@vitest/coverage-v8": "npm:^4.0.18"
     happy-dom: "npm:^20.6.0"
     lodash-es: "npm:^4.17.21"
@@ -9842,6 +9836,24 @@ __metadata:
     react-router-dom: 6.x
     rxjs: 6.x
     single-spa: 6.x
+  languageName: unknown
+  linkType: soft
+
+"@sihsalus/esm-rbac@workspace:*, @sihsalus/esm-rbac@workspace:packages/libs/esm-rbac":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-rbac@workspace:packages/libs/esm-rbac"
+  dependencies:
+    "@carbon/react": "npm:^1.102.0"
+    "@openmrs/esm-framework": "npm:>=9.0.2"
+    "@sihsalus/esm-audit-logger": "workspace:*"
+    react: "npm:^18.3.1"
+    typescript: "npm:^5.8.3"
+    vitest: "npm:^4.0.18"
+  peerDependencies:
+    "@carbon/react": ">=1.0.0"
+    "@openmrs/esm-framework": ">=9.0.2"
+    "@sihsalus/esm-audit-logger": "*"
+    react: ">=18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -9913,7 +9925,7 @@ __metadata:
     "@carbon/react": "npm:^1.71.0"
     "@hookform/resolvers": "npm:^3.9.1"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
@@ -9965,7 +9977,7 @@ __metadata:
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@playwright/test": "npm:^1.58.2"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.1.62"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.26"
@@ -10030,7 +10042,7 @@ __metadata:
   resolution: "@sihsalus/esm-system-admin-app@workspace:packages/apps/esm-system-admin-app"
   dependencies:
     "@carbon/react": "npm:^1.83.0"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
     openmrs: "npm:*"
@@ -10056,7 +10068,7 @@ __metadata:
     "@openmrs/esm-framework": "npm:*"
     "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch"
     "@playwright/test": "npm:^1.52.0"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     "@swc/cli": "npm:^0.3.12"
     "@swc/core": "npm:1.15.21"
     "@swc/jest": "npm:^0.2.36"
@@ -10136,13 +10148,39 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sihsalus/esm-vih-app@workspace:packages/apps/esm-vih-app":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-vih-app@workspace:packages/apps/esm-vih-app"
+  dependencies:
+    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@rspack/cli": "npm:1.7.11"
+    "@sihsalus/esm-sihsalus-shared": "workspace:*"
+    jest: "npm:^29.7.0"
+    lodash-es: "npm:^4.17.21"
+    openmrs: "workspace:*"
+    typescript: "npm:^5.8.3"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@carbon/styles": 1.x
+    "@openmrs/esm-framework": 9.0.2
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 16.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
 "@sihsalus/esm-ward-app@workspace:packages/apps/esm-ward-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-ward-app@workspace:packages/apps/esm-ward-app"
   dependencies:
     "@carbon/react": "npm:^1.71.0"
     "@rspack/cli": "npm:1.7.11"
-    "@sihsalus/rbac": "workspace:*"
+    "@sihsalus/esm-rbac": "workspace:*"
     classnames: "npm:^2.3.2"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
@@ -10199,24 +10237,6 @@ __metadata:
     turbo: "npm:^2.9.1"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.58.0"
-  languageName: unknown
-  linkType: soft
-
-"@sihsalus/rbac@workspace:*, @sihsalus/rbac@workspace:packages/libs/rbac":
-  version: 0.0.0-use.local
-  resolution: "@sihsalus/rbac@workspace:packages/libs/rbac"
-  dependencies:
-    "@carbon/react": "npm:^1.102.0"
-    "@openmrs/esm-framework": "npm:>=9.0.2"
-    "@sihsalus/audit-logger": "workspace:*"
-    react: "npm:^18.3.1"
-    typescript: "npm:^5.8.3"
-    vitest: "npm:^4.0.18"
-  peerDependencies:
-    "@carbon/react": ">=1.0.0"
-    "@openmrs/esm-framework": ">=9.0.2"
-    "@sihsalus/audit-logger": "*"
-    react: ">=18.0.0"
   languageName: unknown
   linkType: soft
 

@@ -1,5 +1,10 @@
-import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl, useConfig, type FetchResponse } from '@openmrs/esm-framework';
 import useSWRInfinite from 'swr/infinite';
+
+interface VisitPageData {
+  results: Array<Record<string, unknown>>;
+  links: Array<{ rel: string }>;
+}
 
 export interface ChartConfig {
   freeTextFieldConceptUuid: string;
@@ -59,10 +64,10 @@ export function useInfiniteVisits(patientUuid: string) {
   const customRepresentation =
     'custom:(visitType:(uuid,name,display),uuid,encounters:(uuid,diagnoses:(uuid,display,rank,diagnosis),form:(uuid,display),encounterDatetime,orders:full,obs:(uuid,concept:(uuid,display,conceptClass:(uuid,display)),display,groupMembers:(uuid,concept:(uuid,display),value:(uuid,display),display),value,obsDatetime),encounterType:(uuid,display,viewPrivilege,editPrivilege),encounterProviders:(uuid,display,encounterRole:(uuid,display),provider:(uuid,person:(uuid,display)))),visitType:(uuid,name,display),startDatetime,stopDatetime,patient,attributes:(attributeType:ref,display,uuid,value)';
 
-  const getKey = (pageIndex, previousPageData) => {
+  const getKey = (pageIndex: number, previousPageData: FetchResponse<VisitPageData> | null) => {
     const pageSize = config.numberOfVisitsToLoad;
 
-    if (previousPageData && !previousPageData?.data?.links.some((link) => link.rel === 'next')) {
+    if (previousPageData && !previousPageData.data?.links.some((link) => link.rel === 'next')) {
       return null;
     }
 
@@ -75,14 +80,14 @@ export function useInfiniteVisits(patientUuid: string) {
     return url;
   };
 
-  const { data, error, isLoading, isValidating, mutate, size, setSize } = useSWRInfinite(
+  const { data, error, isLoading, isValidating, mutate, size, setSize } = useSWRInfinite<FetchResponse<VisitPageData>, Error>(
     patientUuid ? getKey : null,
     openmrsFetch,
     { parallel: true },
   );
 
   return {
-    visits: data ? [].concat(data?.flatMap((page) => page.data.results)) : null,
+    visits: data ? ([] as Array<Record<string, unknown>>).concat(data.flatMap((page) => page.data.results)) : null,
     error,
     hasMore: data?.length ? !!data[data.length - 1].data?.links?.some((link) => link.rel === 'next') : false,
     isLoading,

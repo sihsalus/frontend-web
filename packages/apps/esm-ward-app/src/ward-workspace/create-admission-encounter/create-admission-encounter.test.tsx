@@ -11,7 +11,7 @@ import {
 } from '__mocks__';
 import React from 'react';
 
-import { renderWithSwr } from '../../../../../tools';
+import { renderWithSwr } from 'test-utils';
 import { mockWardViewContext } from '../../../mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useEmrConfiguration from '../../hooks/useEmrConfiguration';

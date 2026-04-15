@@ -1,5 +1,5 @@
 import { Grid, Row } from '@carbon/react';
-import { AppErrorBoundary } from '@sihsalus/rbac';
+import { AppErrorBoundary } from '@sihsalus/esm-rbac';
 import { ExtensionSlot, useConnectivity, useSession } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';

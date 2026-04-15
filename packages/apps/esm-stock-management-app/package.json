@@ -43,7 +43,7 @@
     "@carbon/react": "^1.92.1",
     "@hookform/resolvers": "^3.3.0",
     "@playwright/test": "^1.58.2",
-    "@sihsalus/rbac": "workspace:*",
+    "@sihsalus/esm-rbac": "workspace:*",
     "dotenv": "^17.3.1",
     "file-saver": "^2.0.5",
     "lodash-es": "^4.17.21",

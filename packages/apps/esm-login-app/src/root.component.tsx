@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppErrorBoundary } from '@sihsalus/rbac';
+import { AppErrorBoundary } from '@sihsalus/esm-rbac';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ChangePassword from './change-password/change-password.component';

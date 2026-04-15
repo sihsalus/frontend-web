@@ -47,7 +47,7 @@
   "dependencies": {
     "@carbon/react": "^1.83.0",
     "@openmrs/esm-form-engine-lib": "next",
-    "@sihsalus/rbac": "workspace:*",
+    "@sihsalus/esm-rbac": "workspace:*",
     "ajv": "^8.17.1",
     "dotenv": "^16.4.5",
     "file-loader": "^6.2.0",
