@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ConfigObject } from '../../../../../../config-schema';
-import { getObsFromEncounter } from '../../../../../../ui/encounter-list/encounter-list-utils';
-import type { EncounterListColumn } from '../../../../../../ui/encounter-list/encounter-list.component';
-import { EncounterList } from '../../../../../../ui/encounter-list/encounter-list.component';
+import { getObsFromEncounter } from '@sihsalus/esm-sihsalus-shared';
+import type { EncounterListColumn } from '@sihsalus/esm-sihsalus-shared';
+import { EncounterList } from '@sihsalus/esm-sihsalus-shared';
 import {
   populationTypeConcept,
   disabilityListConcept,

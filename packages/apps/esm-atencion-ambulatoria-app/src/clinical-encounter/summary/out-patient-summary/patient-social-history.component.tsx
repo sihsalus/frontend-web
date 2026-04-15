@@ -22,7 +22,7 @@ import { mutate } from 'swr';
 
 import type { ConfigObject } from '../../../config-schema';
 import type { OpenmrsEncounter } from '../../../types';
-import { getObsFromEncounter } from '../../../ui/encounter-list/encounter-list-utils';
+import { getObsFromEncounter } from '@sihsalus/esm-sihsalus-shared';
 import {
   Alcohol_Use_UUID,
   Alcohol_Use_Duration_UUID,

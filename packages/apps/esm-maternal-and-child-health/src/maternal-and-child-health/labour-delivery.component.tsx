@@ -2,8 +2,8 @@ import { Report, ChartMultitype } from '@carbon/react/icons';
 import { BabyIcon, usePatient } from '@openmrs/esm-framework';
 import React, { useMemo } from 'react';
 
-import TabbedDashboard from '../ui/tabbed-dashboard/tabbed-dashboard.component';
-import type { TabConfig } from '../ui/tabbed-dashboard/tabbed-dashboard.component';
+import { TabbedDashboard } from '@sihsalus/esm-sihsalus-shared';
+import type { TabConfig } from '@sihsalus/esm-sihsalus-shared';
 
 export interface LabourDeliveryProps {
   patient?: fhir.Patient | null;

@@ -2,8 +2,8 @@ import { WatsonHealthCobbAngle, Stethoscope, ChartLineData } from '@carbon/react
 import { usePatient } from '@openmrs/esm-framework';
 import React, { useMemo } from 'react';
 
-import TabbedDashboard from '../ui/tabbed-dashboard/tabbed-dashboard.component';
-import type { TabConfig } from '../ui/tabbed-dashboard/tabbed-dashboard.component';
+import { TabbedDashboard } from '@sihsalus/esm-sihsalus-shared';
+import type { TabConfig } from '@sihsalus/esm-sihsalus-shared';
 
 export interface CancerPreventionProps {
   patient?: fhir.Patient | null;

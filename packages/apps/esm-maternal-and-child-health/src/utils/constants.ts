@@ -47,4 +47,4 @@ export const TRUE_CONCEPT_UUID = 'cf82933b-3f3f-45e7-a5ab-5d31aaee3da3';
 export const omrsDateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
 
 // ── App info ──
-export const moduleName = '@sihsalus/esm-maternal-and-child-health-app';
+export const moduleName = '@sihsalus/esm-salud-materna-app';

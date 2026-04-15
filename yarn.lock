@@ -8352,6 +8352,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sihsalus/esm-atencion-ambulatoria-app@workspace:packages/apps/esm-atencion-ambulatoria-app":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-atencion-ambulatoria-app@workspace:packages/apps/esm-atencion-ambulatoria-app"
+  dependencies:
+    "@carbon/charts": "npm:^1.23.7"
+    "@carbon/charts-react": "npm:^1.23.7"
+    "@hookform/resolvers": "npm:^3.3.1"
+    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@rspack/cli": "npm:1.7.11"
+    "@sihsalus/esm-sihsalus-shared": "workspace:*"
+    classnames: "npm:^2.5.1"
+    jest: "npm:^29.7.0"
+    lodash-es: "npm:^4.17.21"
+    openmrs: "workspace:*"
+    react-hook-form: "npm:^7.56.1"
+    typescript: "npm:^5.8.3"
+    xlsx: "npm:^0.18.5"
+    zod: "npm:^3.24.1"
+  peerDependencies:
+    "@carbon/colors": 1.x
+    "@carbon/layout": 1.x
+    "@carbon/react": 1.x
+    "@carbon/styles": 1.x
+    "@openmrs/esm-framework": 9.0.2
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 16.x
+    react-is: 19.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
 "@sihsalus/esm-bed-management-app@workspace:packages/apps/esm-bed-management-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-bed-management-app@workspace:packages/apps/esm-bed-management-app"
@@ -8568,6 +8604,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sihsalus/esm-cred-app@workspace:packages/apps/esm-cred-app":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-cred-app@workspace:packages/apps/esm-cred-app"
+  dependencies:
+    "@carbon/charts": "npm:^1.23.7"
+    "@carbon/charts-react": "npm:^1.23.7"
+    "@hookform/resolvers": "npm:^3.3.1"
+    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@rspack/cli": "npm:1.7.11"
+    "@sihsalus/esm-sihsalus-shared": "workspace:*"
+    classnames: "npm:^2.5.1"
+    jest: "npm:^29.7.0"
+    lodash-es: "npm:^4.17.21"
+    openmrs: "workspace:*"
+    react-hook-form: "npm:^7.56.1"
+    typescript: "npm:^5.8.3"
+    xlsx: "npm:^0.18.5"
+    zod: "npm:^3.24.1"
+  peerDependencies:
+    "@carbon/colors": 1.x
+    "@carbon/layout": 1.x
+    "@carbon/react": 1.x
+    "@carbon/styles": 1.x
+    "@openmrs/esm-framework": 9.0.2
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 16.x
+    react-is: 19.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
 "@sihsalus/esm-devtools-app@workspace:packages/apps/esm-devtools-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-devtools-app@workspace:packages/apps/esm-devtools-app"
@@ -8767,6 +8839,30 @@ __metadata:
     react: 18.x
     react-dom: 18.x
     react-i18next: ^16.0.0
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@sihsalus/esm-ficha-familiar-app@workspace:packages/apps/esm-ficha-familiar-app":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-ficha-familiar-app@workspace:packages/apps/esm-ficha-familiar-app"
+  dependencies:
+    "@hookform/resolvers": "npm:^3.3.1"
+    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@rspack/cli": "npm:1.7.11"
+    jest: "npm:^29.7.0"
+    lodash-es: "npm:^4.17.21"
+    openmrs: "workspace:*"
+    typescript: "npm:^5.8.3"
+    zod: "npm:^3.24.1"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 9.0.2
+    "@openmrs/esm-patient-common-lib": "*"
+    react: 18.x
+    react-hook-form: ^7.56.1
+    react-i18next: 16.x
     react-router-dom: 6.x
     swr: 2.x
   languageName: unknown
@@ -9132,41 +9228,6 @@ __metadata:
     react-i18next: 16.x
     react-router-dom: 6.x
     rxjs: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@sihsalus/esm-maternal-and-child-health-app@workspace:packages/apps/esm-maternal-and-child-health":
-  version: 0.0.0-use.local
-  resolution: "@sihsalus/esm-maternal-and-child-health-app@workspace:packages/apps/esm-maternal-and-child-health"
-  dependencies:
-    "@carbon/charts": "npm:^1.23.7"
-    "@carbon/charts-react": "npm:^1.23.7"
-    "@hookform/resolvers": "npm:^3.3.1"
-    "@openmrs/esm-patient-common-lib": "npm:*"
-    "@rspack/cli": "npm:1.7.11"
-    classnames: "npm:^2.5.1"
-    jest: "npm:^29.7.0"
-    lodash-es: "npm:^4.17.21"
-    openmrs: "workspace:*"
-    react-hook-form: "npm:^7.56.1"
-    typescript: "npm:^5.8.3"
-    xlsx: "npm:^0.18.5"
-    zod: "npm:^3.24.1"
-  peerDependencies:
-    "@carbon/colors": 1.x
-    "@carbon/layout": 1.x
-    "@carbon/react": 1.x
-    "@carbon/styles": 1.x
-    "@openmrs/esm-framework": 9.0.2
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    react: 18.x
-    react-i18next: 16.x
-    react-is: 19.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 6.x
     swr: 2.x
   languageName: unknown
   linkType: soft
@@ -9809,6 +9870,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sihsalus/esm-salud-materna-app@workspace:packages/apps/esm-maternal-and-child-health":
+  version: 0.0.0-use.local
+  resolution: "@sihsalus/esm-salud-materna-app@workspace:packages/apps/esm-maternal-and-child-health"
+  dependencies:
+    "@carbon/charts": "npm:^1.23.7"
+    "@carbon/charts-react": "npm:^1.23.7"
+    "@hookform/resolvers": "npm:^3.3.1"
+    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@rspack/cli": "npm:1.7.11"
+    "@sihsalus/esm-sihsalus-shared": "workspace:*"
+    classnames: "npm:^2.5.1"
+    jest: "npm:^29.7.0"
+    lodash-es: "npm:^4.17.21"
+    openmrs: "workspace:*"
+    react-hook-form: "npm:^7.56.1"
+    typescript: "npm:^5.8.3"
+    xlsx: "npm:^0.18.5"
+    zod: "npm:^3.24.1"
+  peerDependencies:
+    "@carbon/colors": 1.x
+    "@carbon/layout": 1.x
+    "@carbon/react": 1.x
+    "@carbon/styles": 1.x
+    "@openmrs/esm-framework": 9.0.2
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 16.x
+    react-is: 19.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
 "@sihsalus/esm-service-queues-app@workspace:packages/apps/esm-service-queues-app":
   version: 0.0.0-use.local
   resolution: "@sihsalus/esm-service-queues-app@workspace:packages/apps/esm-service-queues-app"
@@ -9833,23 +9930,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sihsalus/esm-sihsalus-consulta-externa-app@workspace:packages/apps/esm-consulta-externa-app":
+"@sihsalus/esm-sihsalus-shared@workspace:*, @sihsalus/esm-sihsalus-shared@workspace:packages/libs/esm-sihsalus-shared":
   version: 0.0.0-use.local
-  resolution: "@sihsalus/esm-sihsalus-consulta-externa-app@workspace:packages/apps/esm-consulta-externa-app"
+  resolution: "@sihsalus/esm-sihsalus-shared@workspace:packages/libs/esm-sihsalus-shared"
   dependencies:
     "@carbon/charts": "npm:^1.23.7"
     "@carbon/charts-react": "npm:^1.23.7"
-    "@hookform/resolvers": "npm:^3.3.1"
     "@openmrs/esm-patient-common-lib": "npm:*"
-    "@rspack/cli": "npm:1.7.11"
-    classnames: "npm:^2.5.1"
     jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.21"
-    openmrs: "workspace:*"
-    react-hook-form: "npm:^7.56.1"
     typescript: "npm:^5.8.3"
-    xlsx: "npm:^0.18.5"
-    zod: "npm:^3.24.1"
   peerDependencies:
     "@carbon/colors": 1.x
     "@carbon/layout": 1.x
@@ -9860,10 +9950,7 @@ __metadata:
     dayjs: 1.x
     react: 18.x
     react-i18next: 16.x
-    react-is: 19.x
     react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 6.x
     swr: 2.x
   languageName: unknown
   linkType: soft

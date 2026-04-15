@@ -7,7 +7,7 @@ import type { KeyedMutator } from 'swr';
 
 import type { ConfigObject } from '../../../config-schema';
 import type { OpenmrsEncounter } from '../../../types';
-import { getObsFromEncounter } from '../../../ui/encounter-list/encounter-list-utils';
+import { getObsFromEncounter } from '@sihsalus/esm-sihsalus-shared';
 import { AdmissionDate_UUID, PriorityOfAdmission_UUID, AdmissionWard_UUID } from '../../../utils/constants';
 import styles from '../../dashboard/in-patient.scss';
 import SummaryCard from '../summary-card.component';

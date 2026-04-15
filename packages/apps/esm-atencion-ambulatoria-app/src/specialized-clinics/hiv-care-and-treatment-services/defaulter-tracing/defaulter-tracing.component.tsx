@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { ConfigObject } from '../../../config-schema';
 import { usePatientTracing } from '../../../hooks/usePatientTracing';
-import { getObsFromEncounter } from '../../../ui/encounter-list/encounter-list-utils';
+import { getObsFromEncounter } from '@sihsalus/esm-sihsalus-shared';
 import {
   Contacted_UUID,
   MissedAppointmentDate_UUID,

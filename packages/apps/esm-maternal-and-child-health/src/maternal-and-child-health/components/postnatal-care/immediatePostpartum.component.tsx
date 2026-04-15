@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { ConfigObject } from '../../../config-schema';
 import { useInmmediatePostpartumPeriod } from '../../../hooks/useInmmediatePostpartum';
-import CareSummaryTable from '../../../ui/care-summary-table/cara-summary-table';
+import { CareSummaryTable } from '@sihsalus/esm-sihsalus-shared';
 
 const ImmediatePostpartumTable: React.FC<{ patientUuid: string }> = ({ patientUuid }) => {
   const { t } = useTranslation();
