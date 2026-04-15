@@ -5,6 +5,7 @@ import {
   setLeftNav,
   unsetLeftNav,
   usePatient,
+  useVisit,
   useWorkspaces,
 } from '@openmrs/esm-framework';
 import { getPatientChartStore } from '@openmrs/esm-patient-common-lib';
@@ -25,6 +26,7 @@ const PatientChart: React.FC = () => {
   const { patientUuid, view: encodedView } = useParams();
   const view = encodedView ? decodeURIComponent(encodedView) : undefined;
   const { isLoading: isLoadingPatient, patient } = usePatient(patientUuid);
+  const { currentVisit, mutate: mutateVisitContext } = useVisit(patientUuid);
   const state = useMemo(() => ({ patient, patientUuid }), [patient, patientUuid]);
   const { workspaceWindowState, active } = useWorkspaces();
   const [layoutMode, setLayoutMode] = useState<LayoutMode>();
@@ -46,14 +48,20 @@ const PatientChart: React.FC = () => {
 
   useEffect(() => {
     getPatientChartStore().setState({
-      patientUuid,
+      patientUuid: patientUuid ?? null,
+      patient,
+      visitContext: currentVisit ?? null,
+      mutateVisitContext,
     });
     return () => {
       getPatientChartStore().setState({
         patientUuid: null,
+        patient: null,
+        visitContext: null,
+        mutateVisitContext: null,
       });
     };
-  }, [patientUuid]);
+  }, [currentVisit, mutateVisitContext, patient, patientUuid]);
 
   const leftNavBasePath = useMemo(() => spaBasePath.replace(':patientUuid', patientUuid), [patientUuid]);
   useEffect(() => {

@@ -1,57 +1,79 @@
 import { InlineLoading } from '@carbon/react';
 import { FormEngine } from '@openmrs/esm-form-engine-lib';
-import { showModal, type Visit } from '@openmrs/esm-framework';
+import { showModal, type Encounter, type Visit } from '@openmrs/esm-framework';
 import {
   clinicalFormsWorkspace,
-  type DefaultPatientWorkspaceProps,
+  type FormRendererProps,
   launchPatientWorkspace,
 } from '@openmrs/esm-patient-common-lib';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { FormField, SessionMode } from '@openmrs/esm-form-engine-lib';
 
 import useFormSchema from '../hooks/useFormSchema';
 
 import FormError from './form-error.component';
 import styles from './form-renderer.scss';
 
-interface FormRendererProps extends DefaultPatientWorkspaceProps {
-  additionalProps?: Record<string, unknown>;
-  encounterUuid?: string;
-  formUuid: string;
-  patientUuid: string;
-  visit?: Visit;
+interface FormRendererComponentProps extends FormRendererProps {
   clinicalFormsWorkspaceName?: string;
 }
 
-const FormRenderer: React.FC<FormRendererProps> = ({
-  additionalProps,
-  closeWorkspace,
-  closeWorkspaceWithSavedChanges,
-  encounterUuid,
-  formUuid,
-  patientUuid,
-  promptBeforeClosing,
-  visit,
-  clinicalFormsWorkspaceName = clinicalFormsWorkspace,
-}) => {
+interface FormRendererAdditionalProps {
+  formSessionIntent?: string;
+  mode?: SessionMode;
+  openClinicalFormsWorkspaceOnFormClose?: boolean;
+}
+
+interface FormSubmissionPayload {
+  encounters?: Array<Encounter>;
+  uuid?: string;
+}
+
+const FormRenderer: React.FC<FormRendererComponentProps> = (props) => {
+  const {
+    additionalProps,
+    closeWorkspaceWithSavedChanges,
+    encounterUuid,
+    formUuid,
+    handlePostResponse,
+    hideControls,
+    hidePatientBanner,
+    patientUuid,
+    preFilledQuestions,
+    visit: visitRaw,
+    visitUuid,
+    clinicalFormsWorkspaceName = clinicalFormsWorkspace,
+  } = props;
   const { t } = useTranslation();
   const { schema, error, isLoading } = useFormSchema(formUuid);
-  const openClinicalFormsWorkspaceOnFormClose = additionalProps?.openClinicalFormsWorkspaceOnFormClose ?? true;
-  const formSessionIntent = additionalProps?.formSessionIntent ?? '*';
+  const typedAdditionalProps = additionalProps as FormRendererAdditionalProps | undefined;
+  const openClinicalFormsWorkspaceOnFormClose = typedAdditionalProps?.openClinicalFormsWorkspaceOnFormClose ?? true;
+  const formSessionIntent = typedAdditionalProps?.formSessionIntent ?? '*';
+
+  const visit = useMemo(() => {
+    if (visitRaw) {
+      return visitRaw;
+    }
+
+    if (visitUuid) {
+      return { uuid: visitUuid } as Visit;
+    }
+  }, [visitRaw, visitUuid]);
 
   const handleCloseForm = useCallback(() => {
-    closeWorkspace();
+    props.closeWorkspace?.();
     if (!encounterUuid && openClinicalFormsWorkspaceOnFormClose) {
       launchPatientWorkspace(clinicalFormsWorkspaceName);
     }
-  }, [closeWorkspace, encounterUuid, openClinicalFormsWorkspaceOnFormClose, clinicalFormsWorkspaceName]);
+  }, [props, encounterUuid, openClinicalFormsWorkspaceOnFormClose, clinicalFormsWorkspaceName]);
 
-  const handleConfirmQuestionDeletion = useCallback(() => {
+  const handleConfirmQuestionDeletion = useCallback((_question: Readonly<FormField>) => {
     return new Promise<void>((resolve, reject) => {
       const dispose = showModal('form-engine-delete-question-confirm-modal', {
         onCancel() {
           dispose();
-          reject();
+          reject(new Error('Question deletion cancelled'));
         },
         onConfirm() {
           dispose();
@@ -61,9 +83,17 @@ const FormRenderer: React.FC<FormRendererProps> = ({
     });
   }, []);
 
-  const handleMarkFormAsDirty = useCallback(
-    (isDirty: boolean) => promptBeforeClosing(() => isDirty),
-    [promptBeforeClosing],
+  const handleOnSubmit = useCallback(
+    (data?: FormSubmissionPayload) => {
+      if (closeWorkspaceWithSavedChanges) {
+        closeWorkspaceWithSavedChanges();
+      } else {
+        props.closeWorkspace?.({ ignoreChanges: true, closeWorkspaceGroup: true });
+      }
+
+      handlePostResponse?.(data?.encounters?.[0]);
+    },
+    [props, closeWorkspaceWithSavedChanges, handlePostResponse],
   );
 
   if (isLoading) {
@@ -90,11 +120,20 @@ const FormRenderer: React.FC<FormRendererProps> = ({
           formJson={schema}
           handleClose={handleCloseForm}
           handleConfirmQuestionDeletion={handleConfirmQuestionDeletion}
-          markFormAsDirty={handleMarkFormAsDirty}
-          mode={additionalProps?.mode}
+          hideControls={hideControls}
+          hidePatientBanner={hidePatientBanner}
+          markFormAsDirty={
+            props.setHasUnsavedChanges
+              ? (isDirty) => {
+                  props.setHasUnsavedChanges?.(isDirty);
+                }
+              : undefined
+          }
+          mode={typedAdditionalProps?.mode}
           formSessionIntent={formSessionIntent}
-          onSubmit={closeWorkspaceWithSavedChanges}
+          onSubmit={handleOnSubmit}
           patientUUID={patientUuid}
+          preFilledQuestions={preFilledQuestions}
           visit={visit}
         />
       )}

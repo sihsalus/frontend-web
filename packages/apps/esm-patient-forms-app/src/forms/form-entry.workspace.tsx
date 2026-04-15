@@ -8,22 +8,33 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 
 interface FormEntryComponentProps extends DefaultPatientWorkspaceProps {
-  mutateForm: () => void;
-  formInfo: FormEntryProps;
+  mutateForm?: () => void;
+  formInfo?: FormEntryProps;
+  form?: { uuid: string; name?: string };
+  encounterUuid?: string;
+  additionalProps?: Record<string, unknown>;
   clinicalFormsWorkspaceName?: string;
 }
 
-const FormEntry: React.FC<FormEntryComponentProps> = ({
-  patientUuid,
-  clinicalFormsWorkspaceName = clinicalFormsWorkspace,
-  closeWorkspace,
-  closeWorkspaceWithSavedChanges,
-  promptBeforeClosing,
-  mutateForm,
-  formInfo,
-}) => {
-  const { encounterUuid, formUuid, visitStartDatetime, visitStopDatetime, visitTypeUuid, visitUuid, additionalProps } =
-    formInfo || {};
+const FormEntry: React.FC<FormEntryComponentProps> = (props) => {
+  const {
+    patientUuid,
+    clinicalFormsWorkspaceName = clinicalFormsWorkspace,
+    mutateForm,
+    formInfo,
+    form,
+    encounterUuid: workspaceEncounterUuid,
+    additionalProps: workspaceAdditionalProps,
+  } = props;
+  const {
+    encounterUuid = workspaceEncounterUuid,
+    formUuid = form?.uuid,
+    visitStartDatetime,
+    visitStopDatetime,
+    visitTypeUuid,
+    visitUuid,
+    additionalProps = workspaceAdditionalProps,
+  } = formInfo || {};
   const { patient } = usePatient(patientUuid);
   const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
   const [showForm, setShowForm] = useState(true);
@@ -44,15 +55,17 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
         if (typeof mutateForm === 'function') {
           mutateForm();
         }
-        closeWorkspace();
+        props.closeWorkspace();
       },
       closeWorkspaceWithSavedChanges: () => {
         if (typeof mutateForm === 'function') {
           mutateForm();
         }
-        closeWorkspaceWithSavedChanges();
+        props.closeWorkspaceWithSavedChanges();
       },
-      promptBeforeClosing,
+      promptBeforeClosing: (testFcn: () => boolean) => {
+        props.promptBeforeClosing(testFcn);
+      },
       additionalProps,
       clinicalFormsWorkspaceName,
     }),
@@ -71,9 +84,7 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
       patient,
       isOnline,
       mutateForm,
-      closeWorkspace,
-      closeWorkspaceWithSavedChanges,
-      promptBeforeClosing,
+      props,
       additionalProps,
       clinicalFormsWorkspaceName,
     ],
@@ -91,7 +102,7 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
 
   return (
     <div>
-      {showForm && formInfo && patientUuid && patient && <ExtensionSlot name="form-widget-slot" state={state} />}
+      {showForm && state.formUuid && patientUuid && patient && <ExtensionSlot name="form-widget-slot" state={state} />}
     </div>
   );
 };
