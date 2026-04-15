@@ -64,7 +64,12 @@
       }
     }
   ],
-  "modals": [],
+  "modals": [
+    {
+      "name": "condition-delete-confirmation-dialog",
+      "component": "conditionFilterDeleteConfirmationDialog"
+    }
+  ],
   "workspaces": [
     {
       "name": "conditions-filter-form-workspace",
