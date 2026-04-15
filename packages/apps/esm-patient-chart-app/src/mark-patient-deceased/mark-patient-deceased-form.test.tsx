@@ -124,7 +124,7 @@ describe('MarkPatientDeceasedForm', () => {
 
     expect(screen.getByText(/please enter the non-coded cause of death/i)).toBeInTheDocument();
 
-    await user.type(screen.getByRole('textbox', { name: /non\-coded cause of death/i }), 'Septicemia');
+    await user.type(screen.getByRole('textbox', { name: /non-coded cause of death/i }), 'Septicemia');
     await user.click(submitButton);
 
     expect(markPatientDeceased).toHaveBeenCalledWith(

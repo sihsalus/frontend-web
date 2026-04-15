@@ -25,8 +25,15 @@ test.beforeEach(async ({ api, patient }) => {
   drugOrder = await generateRandomDrugOrder(api, patient.uuid, encounter, orderer.uuid);
 });
 
+test.afterEach(async ({ api }) => {
+  await deleteEncounter(api, encounter.uuid);
+  await deleteDrugOrder(api, drugOrder.uuid);
+  await endVisit(api, visit);
+});
+
 test('Dispense prescription', async ({ page, patient }) => {
   const dispensingPage = new DispensingPage(page);
+
   await test.step('When I navigate to the dispensing app', async () => {
     await dispensingPage.goTo();
     await expect(page).toHaveURL(process.env.E2E_BASE_URL + `/spa/dispensing`);
@@ -48,7 +55,6 @@ test('Dispense prescription', async ({ page, patient }) => {
   });
 
   await test.step('Then I submit the form by clicking the Dispense prescription button', async () => {
-    await page.waitForLoadState('networkidle');
     const dispenseButton = page.getByRole('button', { name: 'Dispense prescription' });
     await dispenseButton.scrollIntoViewIfNeeded();
     await dispenseButton.click();
@@ -62,10 +68,4 @@ test('Dispense prescription', async ({ page, patient }) => {
     await page.getByRole('tab', { name: 'History and comments' }).click();
     await expect(page.getByText('Dispensed', { exact: true })).toBeVisible();
   });
-});
-
-test.afterEach(async ({ api }) => {
-  await deleteEncounter(api, encounter.uuid);
-  await deleteDrugOrder(api, drugOrder.uuid);
-  await endVisit(api, visit);
 });

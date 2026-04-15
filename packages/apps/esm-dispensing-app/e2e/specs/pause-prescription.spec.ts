@@ -25,6 +25,12 @@ test.beforeEach(async ({ api, patient }) => {
   drugOrder = await generateRandomDrugOrder(api, patient.uuid, encounter, orderer.uuid);
 });
 
+test.afterEach(async ({ api }) => {
+  await deleteEncounter(api, encounter.uuid);
+  await deleteDrugOrder(api, drugOrder.uuid);
+  await endVisit(api, visit);
+});
+
 test('Pause prescription', async ({ page, patient }) => {
   const dispensingPage = new DispensingPage(page);
 
@@ -50,7 +56,6 @@ test('Pause prescription', async ({ page, patient }) => {
   });
 
   await test.step('And I select "Allergy" as the reason for pausing the prescription and then submit the form', async () => {
-    await page.waitForLoadState('networkidle');
     const openDropdownButton = page.getByRole('button', { name: 'Open', exact: true });
     await openDropdownButton.scrollIntoViewIfNeeded();
     await openDropdownButton.click();
@@ -63,10 +68,4 @@ test('Pause prescription', async ({ page, patient }) => {
   await test.step('Then I should see a success notification', async () => {
     await expect(page.getByText(/medication dispense paused./i)).toBeVisible();
   });
-});
-
-test.afterEach(async ({ api }) => {
-  await deleteEncounter(api, encounter.uuid);
-  await deleteDrugOrder(api, drugOrder.uuid);
-  await endVisit(api, visit);
 });

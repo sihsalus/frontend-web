@@ -176,7 +176,7 @@ describe('OrderDetailsTable', () => {
 
     expect(
       screen.getByRole('cell', {
-        name: /\(NEW\) Permethrin\: 1\.0 Ampule\(s\) Oral Once daily 1 Days take after eating/i,
+        name: /\(NEW\) Permethrin: 1\.0 Ampule\(s\) Oral Once daily 1 Days take after eating/i,
       }),
     ).toBeInTheDocument();
     expect(
