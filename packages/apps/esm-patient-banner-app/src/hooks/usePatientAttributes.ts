@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import useSWRImmutable from 'swr/immutable';
-
 import { type ConfigObject } from '../config-schema';
 import { type Patient } from '../types';
 
@@ -35,7 +35,7 @@ export const usePatientAttributes = (patientUuid: string | null) => {
  * @returns Object containing `contactAttribute` {@link Attribute} loading status
  */
 export const usePatientContactAttributes = (patientUuid: string) => {
-  const { contactAttributeTypes } = useConfig() as ConfigObject;
+  const { contactAttributeTypes } = useConfig<ConfigObject>();
   const { attributes, isLoading } = usePatientAttributes(contactAttributeTypes.length ? patientUuid : null);
   const contactAttributes = attributes?.filter(({ attributeType }) =>
     contactAttributeTypes.includes(attributeType?.uuid),

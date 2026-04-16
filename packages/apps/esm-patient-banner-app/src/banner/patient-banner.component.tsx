@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 import {
   getPatientName,
   PatientBannerActionsMenu,
@@ -6,9 +9,6 @@ import {
   PatientBannerToggleContactDetailsButton,
   PatientPhoto,
 } from '@openmrs/esm-framework';
-import classNames from 'classnames';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-
 import styles from './patient-banner.scss';
 
 interface PatientBannerProps {
@@ -58,18 +58,17 @@ const PatientBanner: React.FC<PatientBannerProps> = ({ patient, patientUuid, hid
       ref={patientBannerRef}
     >
       <div className={styles.patientBanner}>
-        <div className={styles.patientAvatar} role="img">
+        <div className={styles.patientAvatar}>
           <PatientPhoto patientUuid={patientUuid} patientName={patientName} />
         </div>
-        <PatientBannerPatientInfo patient={patient} />
+        <PatientBannerPatientInfo patient={patient} renderedFrom="patient-chart" />
         <div className={styles.buttonCol}>
           <div className={styles.buttonRow}>
             {!hideActionsOverflow ? (
               <PatientBannerActionsMenu
                 actionsSlotName="patient-actions-slot"
-                isDeceased={patient?.deceasedBoolean}
-                patientUuid={patientUuid}
                 patient={patient}
+                patientUuid={patientUuid}
               />
             ) : null}
           </div>
@@ -92,7 +91,7 @@ const PatientBanner: React.FC<PatientBannerProps> = ({ patient, patientUuid, hid
       {showContactDetails && (
         <div
           className={classNames(styles.contactDetails, {
-            [styles.deceasedContactDetails]: patient?.deceasedBoolean,
+            [styles.deceasedContactDetails]: patient.deceasedBoolean,
             [styles.tabletContactDetails]: isTabletViewport,
           })}
         >

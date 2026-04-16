@@ -1,13 +1,11 @@
-import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
-import { showModal, useLayoutType } from '@openmrs/esm-framework';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
+import { launchWorkspace2, showModal, useLayoutType } from '@openmrs/esm-framework';
+import { type Allergy } from '../types';
 import { patientAllergiesFormWorkspace } from '../constants';
-
 import styles from './allergies-action-menu.scss';
-import { type Allergy } from './allergy-intolerance.resource';
 
 interface allergiesActionMenuProps {
   allergy: Allergy;
@@ -19,15 +17,14 @@ export const AllergiesActionMenu = ({ allergy, patientUuid }: allergiesActionMen
   const isTablet = useLayoutType() === 'tablet';
 
   const launchEditAllergiesForm = useCallback(() => {
-    launchPatientWorkspace(patientAllergiesFormWorkspace, {
-      workspaceTitle: t('editAllergy', 'Edit an Allergy'),
+    launchWorkspace2(patientAllergiesFormWorkspace, {
       allergy,
       formContext: 'editing',
     });
-  }, [allergy, t]);
+  }, [allergy]);
 
   const launchDeleteAllergyDialog = (allergyId: string) => {
-    const dispose = showModal('allergy-delete-confirmation-dialog', {
+    const dispose = showModal('delete-allergy-modal', {
       closeDeleteModal: () => dispose(),
       allergyId,
       patientUuid,
@@ -38,9 +35,9 @@ export const AllergiesActionMenu = ({ allergy, patientUuid }: allergiesActionMen
     <Layer className={styles.layer}>
       <OverflowMenu
         aria-label={t('editOrDeleteAllergy', 'Edit or delete allergy')}
+        align="left"
         size={isTablet ? 'lg' : 'sm'}
         flipped
-        align="left"
       >
         <OverflowMenuItem
           className={styles.menuItem}

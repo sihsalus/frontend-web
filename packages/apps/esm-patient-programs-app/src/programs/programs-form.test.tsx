@@ -1,3 +1,6 @@
+import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
   type FetchResponse,
   showSnackbar,
@@ -5,21 +8,17 @@ import {
   useConfig,
   getDefaultsFromConfigSchema,
 } from '@openmrs/esm-framework';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mockCareProgramsResponse, mockEnrolledProgramsResponse, mockLocationsResponse } from '__mocks__';
-import React from 'react';
-import { mockPatient } from 'test-utils';
-
-import { type ConfigObject, configSchema } from '../config-schema';
-
-import ProgramsForm from './programs-form.workspace';
+import { mockPatient } from 'tools';
 import {
   createProgramEnrollment,
   updateProgramEnrollment,
   useAvailablePrograms,
   useEnrollments,
 } from './programs.resource';
+import ProgramsForm, { type ProgramsFormProps } from './programs-form.workspace';
+import { type ConfigObject, configSchema } from '../config-schema';
+import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
 
 const mockUseAvailablePrograms = jest.mocked(useAvailablePrograms);
 const mockUseEnrollments = jest.mocked(useEnrollments);
@@ -28,16 +27,23 @@ const mockUpdateProgramEnrollment = jest.mocked(updateProgramEnrollment);
 const mockShowSnackbar = jest.mocked(showSnackbar);
 const mockUseLocations = jest.mocked(useLocations);
 const mockCloseWorkspace = jest.fn();
-const mockCloseWorkspaceWithSavedChanges = jest.fn();
-const mockPromptBeforeClosing = jest.fn();
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
 
-const testProps = {
+const testProps: PatientWorkspace2DefinitionProps<ProgramsFormProps, {}> = {
   closeWorkspace: mockCloseWorkspace,
-  closeWorkspaceWithSavedChanges: mockCloseWorkspaceWithSavedChanges,
-  patientUuid: mockPatient.id,
-  promptBeforeClosing: mockPromptBeforeClosing,
-  setTitle: jest.fn(),
+  groupProps: {
+    patientUuid: mockPatient.id,
+    patient: mockPatient,
+    visitContext: null,
+    mutateVisitContext: null,
+  },
+  workspaceName: '',
+  launchChildWorkspace: jest.fn(),
+  workspaceProps: {},
+  windowProps: {},
+  windowName: '',
+  isRootWorkspace: false,
+  showActionMenu: true,
 };
 
 jest.mock('./programs.resource', () => ({
@@ -75,23 +81,26 @@ describe('ProgramsForm', () => {
   it('renders a success toast notification upon successfully recording a program enrollment', async () => {
     const user = userEvent.setup();
 
-    const inpatientWardUuid = 'b1a8b05e-3542-4037-bbd3-998ee9c40574';
     const oncologyScreeningProgramUuid = '11b129ca-a5e7-4025-84bf-b92a173e20de';
+    const mockLocation = {
+      uuid: 'uuid_2',
+      name: 'location_2',
+    };
 
     renderProgramsForm();
 
     const programNameInput = screen.getByRole('combobox', { name: /program name/i });
     const enrollmentDateInput = screen.getByRole('textbox', { name: /date enrolled/i });
-    const enrollmentLocationInput = screen.getByRole('combobox', { name: /enrollment location/i });
+    const enrollmentLocationInput = screen.getByRole('radio', { name: mockLocation.name });
     const enrollButton = screen.getByRole('button', { name: /save and close/i });
 
     await user.click(enrollButton);
     expect(screen.getByText(/program is required/i)).toBeInTheDocument();
 
-    await user.type(enrollmentDateInput, '2020-05-05');
+    fireEvent.change(enrollmentDateInput, { target: { value: '2020-05-05' } });
     await user.selectOptions(programNameInput, [oncologyScreeningProgramUuid]);
-    await user.selectOptions(enrollmentLocationInput, [inpatientWardUuid]);
-    expect(screen.getByRole('option', { name: /Inpatient Ward/i })).toBeInTheDocument();
+    await user.click(enrollmentLocationInput);
+    expect(screen.getByRole('radio', { name: mockLocation.name })).toBeInTheDocument();
 
     await user.click(enrollButton);
 
@@ -99,14 +108,15 @@ describe('ProgramsForm', () => {
     expect(mockCreateProgramEnrollment).toHaveBeenCalledWith(
       expect.objectContaining({
         dateCompleted: null,
-        location: inpatientWardUuid,
+        location: mockLocation.uuid,
         patient: mockPatient.id,
         program: oncologyScreeningProgramUuid,
+        dateEnrolled: expect.stringMatching(/^2020-05-05/),
       }),
       new AbortController(),
     );
 
-    expect(mockCloseWorkspaceWithSavedChanges).toHaveBeenCalledTimes(1);
+    expect(mockCloseWorkspace).toHaveBeenCalledTimes(1);
     expect(mockShowSnackbar).toHaveBeenCalledTimes(1);
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       subtitle: 'It is now visible in the Programs table',
@@ -121,6 +131,7 @@ describe('ProgramsForm', () => {
     renderProgramsForm(mockEnrolledProgramsResponse[0].uuid);
 
     const enrollButton = screen.getByRole('button', { name: /save and close/i });
+
     const completionDateInput = screen.getByRole('textbox', { name: /date completed/i });
 
     mockUpdateProgramEnrollment.mockResolvedValue({
@@ -128,7 +139,8 @@ describe('ProgramsForm', () => {
       statusText: 'OK',
     } as unknown as FetchResponse);
 
-    await user.type(completionDateInput, '05/05/2020');
+    await user.click(completionDateInput);
+    await user.paste('2020-05-05');
     await user.tab();
     await user.click(enrollButton);
 
@@ -167,5 +179,9 @@ describe('ProgramsForm', () => {
 });
 
 function renderProgramsForm(programEnrollmentUuidToEdit?: string) {
-  render(<ProgramsForm {...testProps} programEnrollmentId={programEnrollmentUuidToEdit} />);
+  const props = {
+    ...testProps,
+    workspaceProps: { programEnrollmentId: programEnrollmentUuidToEdit },
+  };
+  render(<ProgramsForm {...props} />);
 }
