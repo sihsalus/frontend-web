@@ -28,6 +28,23 @@ const isNamedColumn = (value: ColumnValue): value is NamedColumn =>
 const isFormColumn = (value: unknown): value is FormColumn =>
   typeof value === 'object' && value !== null && 'label' in value;
 
+const getNamedDisplay = (value: unknown) => {
+  if (typeof value === 'object' && value !== null) {
+    const namedValue = value as { display?: string; name?: string | { display?: string; name?: string } };
+    if (typeof namedValue.display === 'string') {
+      return namedValue.display;
+    }
+    if (typeof namedValue.name === 'string') {
+      return namedValue.name;
+    }
+    if (typeof namedValue.name === 'object' && namedValue.name !== null) {
+      return namedValue.name.display ?? namedValue.name.name ?? '--';
+    }
+  }
+
+  return '--';
+};
+
 const renderCellValue = (value: ColumnValue) => {
   if (value == null) {
     return null;
@@ -44,12 +61,12 @@ const renderCellValue = (value: ColumnValue) => {
           return item;
         }
 
-        return isFormColumn(item) ? item.label : item.name.name;
+        return isFormColumn(item) ? item.label : getNamedDisplay(item);
       })
       .join(', ');
   }
 
-  return isNamedColumn(value) ? value.name.name : null;
+  return isNamedColumn(value) ? getNamedDisplay(value) : null;
 };
 
 export const EncounterListDataTable: React.FC<TableProps> = ({ tableHeaders, tableRows }) => {

@@ -13,6 +13,10 @@ interface EncounterObservationsProps {
   formConceptMap: Record<string, { display?: string; answers?: Record<string, string> }>;
 }
 
+type NamedValue = {
+  uuid?: string;
+};
+
 const EncounterObservations: React.FC<EncounterObservationsProps> = ({ observations, formConceptMap }) => {
   const { t } = useTranslation();
   const { obsConceptUuidsToHide = [] } = useConfig();
@@ -44,7 +48,7 @@ const EncounterObservations: React.FC<EncounterObservationsProps> = ({ observati
                       {mapObsValueToFormLabel(
                         member?.concept?.uuid,
                         typeof member.value === 'object' && member.value !== null
-                          ? (member.value as Record<string, any>).uuid
+                          ? (member.value as NamedValue).uuid
                           : undefined,
                         formConceptMap,
                         member.display,
@@ -58,14 +62,16 @@ const EncounterObservations: React.FC<EncounterObservationsProps> = ({ observati
             return (
               <React.Fragment key={parentIndex}>
                 <span className={styles.questionText}>
-                  {mapConceptToFormLabel(obs?.concept?.uuid, formConceptMap, obs?.concept?.name.name)}
+                  {mapConceptToFormLabel(
+                    obs?.concept?.uuid,
+                    formConceptMap,
+                    obs?.concept?.display ?? obs?.concept?.name?.name ?? '',
+                  )}
                 </span>
                 <span>
                   {mapObsValueToFormLabel(
                     obs?.concept?.uuid,
-                    typeof obs?.value === 'object' && obs?.value !== null
-                      ? (obs.value as Record<string, any>).uuid
-                      : undefined,
+                    typeof obs?.value === 'object' && obs?.value !== null ? (obs.value as NamedValue).uuid : undefined,
                     formConceptMap,
                     obs?.value,
                   )}

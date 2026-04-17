@@ -2,6 +2,32 @@ import { formatDate, parseDate } from '@openmrs/esm-framework';
 
 import { TRUE_CONCEPT_UUID } from '../../utils/constants';
 
+type NamedConcept = {
+  uuid?: string;
+  name?: {
+    name?: string;
+  };
+  names?: Array<{
+    conceptNameType: string;
+    name: string;
+  }>;
+  display?: string;
+};
+
+type EncounterObservation = {
+  concept: {
+    uuid: string;
+  };
+  obsDatetime: string;
+  value: string | number | NamedConcept | null;
+};
+
+type EncounterWithObservations = {
+  obs?: Array<EncounterObservation>;
+};
+
+type FormConceptMap = Record<string, { display?: string; answers?: Record<string, string> }>;
+
 export function getEncounterValues(encounter: Record<string, string>, param: string, isDate?: boolean) {
   if (isDate) {
     return formatDate(parseDate(encounter[param]));
@@ -21,18 +47,18 @@ export function obsArrayDateComparator(left: { obsDatetime: string }, right: { o
   return new Date(right.obsDatetime).getTime() - new Date(left.obsDatetime).getTime();
 }
 
-export function findObs(encounter: Record<string, any>, obsConcept: string): Record<string, any> {
+export function findObs(encounter: EncounterWithObservations, obsConcept: string): EncounterObservation | undefined {
   const allObs = encounter?.obs?.filter((observation) => observation.concept.uuid === obsConcept) || [];
   return allObs?.length == 1 ? allObs[0] : allObs?.sort(obsArrayDateComparator)[0];
 }
 
-export function getObsFromEncounters(encounters: Array<Record<string, any>>, obsConcept: string) {
+export function getObsFromEncounters(encounters: Array<EncounterWithObservations>, obsConcept: string) {
   const filteredEnc = encounters?.find((enc) => enc.obs.find((obs) => obs.concept.uuid === obsConcept));
   return getObsFromEncounter(filteredEnc, obsConcept);
 }
 
-export function getMultipleObsFromEncounter(encounter: Record<string, any>, obsConcepts: Array<string>) {
-  const observations = [];
+export function getMultipleObsFromEncounter(encounter: EncounterWithObservations, obsConcepts: Array<string>) {
+  const observations: Array<string | number> = [];
   obsConcepts.map((concept) => {
     const obs = getObsFromEncounter(encounter, concept);
     if (obs !== '--') {
@@ -44,42 +70,43 @@ export function getMultipleObsFromEncounter(encounter: Record<string, any>, obsC
 }
 
 export function getObsFromEncounter(
-  encounter: Record<string, any>,
+  encounter: EncounterWithObservations,
   obsConcept: string,
   isDate?: boolean,
   isTrueFalseConcept?: boolean,
-) {
+): string | number {
   const obs = findObs(encounter, obsConcept);
 
-  if (isTrueFalseConcept) {
-    if (obs.value.uuid == TRUE_CONCEPT_UUID) {
-      return 'Yes';
-    } else {
-      return 'No';
-    }
-  }
   if (!obs) {
     return '--';
   }
+
+  if (isTrueFalseConcept) {
+    if (typeof obs.value === 'object' && obs.value?.uuid === TRUE_CONCEPT_UUID) {
+      return 'Yes';
+    }
+    return 'No';
+  }
   if (isDate) {
-    return formatDate(parseDate(obs.value), { mode: 'wide' });
+    return typeof obs.value === 'string' ? formatDate(parseDate(obs.value), { mode: 'wide' }) : '--';
   }
   if (typeof obs.value === 'object' && obs.value?.names) {
-    return (
-      obs.value?.names?.find((conceptName) => conceptName.conceptNameType === 'SHORT')?.name || obs.value.name.name
-    );
+    return obs.value?.names?.find((conceptName) => conceptName.conceptNameType === 'SHORT')?.name || '--';
   }
   if (typeof obs.value === 'object' && obs.value !== null) {
     return obs.value.display ?? '--';
   }
-  return obs.value;
+  if (typeof obs.value === 'string' || typeof obs.value === 'number') {
+    return obs.value;
+  }
+  return '--';
 }
 
 export function mapObsValueToFormLabel(
   conceptUuid: string,
   answerConceptUuid: string | undefined,
-  formConceptMap: Record<string, { display?: string; answers?: Record<string, string> }>,
-  defaultValue: string | number | Record<string, any> | null,
+  formConceptMap: FormConceptMap,
+  defaultValue: string | number | NamedConcept | null,
 ): string {
   if (typeof defaultValue === 'number') {
     // check early if value is number and return
@@ -103,15 +130,16 @@ export function mapObsValueToFormLabel(
     }
   } else if (!conceptMapOverride || answerConceptUuid !== undefined) {
     if (typeof defaultValue === 'object' && defaultValue !== null) {
-      return (defaultValue as Record<string, any>)['name']?.['name'] ?? '--'; // extract the default name from the object
+      return defaultValue.name?.name ?? '--';
     }
+    return extractDefaultValueBasedOnType(defaultValue);
   } else {
     return extractDefaultValueBasedOnType(defaultValue);
   }
   return '--';
 }
 
-function extractDefaultValueBasedOnType(defaultValue: string | number | Record<string, any> | null): string {
+function extractDefaultValueBasedOnType(defaultValue: string | number | NamedConcept | null): string {
   if (defaultValue === null || defaultValue === undefined) {
     return '--';
   }
@@ -132,14 +160,14 @@ function extractDefaultValueBasedOnType(defaultValue: string | number | Record<s
       // check for date
       return formatDate(parseDate(strValue));
     }
-  } else if (typeOfVal === 'object') {
-    return (defaultValue as Record<string, any>)['name']?.['name'] ?? '--'; // extract the default name from the object
+  } else if (typeof defaultValue === 'object' && defaultValue !== null) {
+    return defaultValue?.name?.name ?? '--'; // extract the default name from the object
   }
   return '--';
 }
 export function mapConceptToFormLabel(
   conceptUuid: string,
-  formConceptMap: Record<string, { display?: string; answers?: Record<string, string> }>,
+  formConceptMap: FormConceptMap,
   defaultValue: string,
 ): string {
   if (formConceptMap === undefined) {
@@ -156,18 +184,31 @@ export function mapConceptToFormLabel(
  * It should be moved to an appropriate place if not here
  */
 export function generateFormLabelsFromJSON() {
-  const htsScreeningJson = { pages: [] };
-  const result = {};
+  const htsScreeningJson: {
+    pages: Array<{
+      sections: Array<{
+        questions: Array<{
+          label: string;
+          questionOptions: {
+            concept: string;
+            answers?: Array<{ concept: string; label: string }>;
+          };
+        }>;
+      }>;
+    }>;
+  } = { pages: [] };
+  const result: Record<string, { display: string; answers: Record<string, string> }> = {};
   htsScreeningJson.pages.forEach((page) => {
     page.sections.forEach((section) => {
       section.questions.forEach((question) => {
-        const answersMap = {};
-        const questionObject = {};
+        const answersMap: Record<string, string> = {};
+        const questionObject: { display: string; answers: Record<string, string> } = {
+          display: question.label,
+          answers: answersMap,
+        };
         question.questionOptions.answers?.forEach((ans) => {
           answersMap[ans.concept] = ans.label;
         });
-        questionObject['display'] = question.label;
-        questionObject['answers'] = answersMap;
         result[question.questionOptions.concept] = questionObject;
       });
     });

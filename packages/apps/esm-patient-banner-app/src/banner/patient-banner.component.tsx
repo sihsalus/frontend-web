@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
@@ -12,7 +11,7 @@ import {
 import styles from './patient-banner.scss';
 
 interface PatientBannerProps {
-  patient: fhir.Patient;
+  patient?: fhir.Patient | null;
   patientUuid: string;
   hideActionsOverflow?: boolean;
 }
@@ -24,16 +23,18 @@ const PatientBanner: React.FC<PatientBannerProps> = ({ patient, patientUuid, hid
 
   useEffect(() => {
     const currentRef = patientBannerRef.current;
+    if (!currentRef) {
+      return;
+    }
+
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setIsTabletViewport(entry.contentRect.width < 1023);
       }
     });
-    resizeObserver.observe(patientBannerRef.current);
+    resizeObserver.observe(currentRef);
     return () => {
-      if (currentRef) {
-        resizeObserver.unobserve(currentRef);
-      }
+      resizeObserver.unobserve(currentRef);
     };
   }, [patientBannerRef, setIsTabletViewport]);
 
@@ -46,6 +47,10 @@ const PatientBanner: React.FC<PatientBannerProps> = ({ patient, patientUuid, hid
   const isDeceased = Boolean(patient?.deceasedDateTime);
   const maxDesktopWorkspaceWidthInPx = 520;
   const showDetailsButtonBelowHeader = patientBannerRef.current?.scrollWidth <= maxDesktopWorkspaceWidthInPx;
+
+  if (!patient) {
+    return null;
+  }
 
   return (
     <header

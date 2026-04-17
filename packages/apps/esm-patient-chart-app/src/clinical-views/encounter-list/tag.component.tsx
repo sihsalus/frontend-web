@@ -4,6 +4,27 @@ import React from 'react';
 import { type ConfigConcepts, type Encounter } from '../types';
 import { getObsFromEncounter, findObs } from '../utils/helpers';
 
+const getTagText = (value: unknown) => {
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (typeof value === 'object' && value !== null) {
+    const namedValue = value as { display?: string; name?: string | { display?: string; name?: string } };
+    if (typeof namedValue.display === 'string') {
+      return namedValue.display;
+    }
+    if (typeof namedValue.name === 'string') {
+      return namedValue.name;
+    }
+    if (typeof namedValue.name === 'object' && namedValue.name !== null) {
+      return namedValue.name.display ?? namedValue.name.name ?? '--';
+    }
+  }
+
+  return '--';
+};
+
 export const renderTag = (
   encounter: Encounter,
   concept: string,
@@ -24,10 +45,10 @@ export const renderTag = (
           ? statusColorMappings[columnStatusObs.value.uuid]
           : undefined
       }
-      title={typeof columnStatus === 'string' ? columnStatus : columnStatus.name.name}
+      title={getTagText(columnStatus)}
       style={{ minWidth: '80px' }}
     >
-      {typeof columnStatus === 'object' ? columnStatus.name.name : columnStatus}
+      {getTagText(columnStatus)}
     </Tag>
   );
 };

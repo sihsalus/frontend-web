@@ -53,6 +53,23 @@ const isNamedColumn = (value: ColumnValue): value is NamedColumn =>
 const isFormColumn = (value: unknown): value is FormColumn =>
   typeof value === 'object' && value !== null && 'label' in value;
 
+const getNamedDisplay = (value: unknown) => {
+  if (typeof value === 'object' && value !== null) {
+    const namedValue = value as { display?: string; name?: string | { display?: string; name?: string } };
+    if (typeof namedValue.display === 'string') {
+      return namedValue.display;
+    }
+    if (typeof namedValue.name === 'string') {
+      return namedValue.name;
+    }
+    if (typeof namedValue.name === 'object' && namedValue.name !== null) {
+      return namedValue.name.display ?? namedValue.name.name ?? '--';
+    }
+  }
+
+  return '--';
+};
+
 export const EncounterList: React.FC<EncounterListProps> = ({
   patientUuid,
   encounterType,
@@ -103,12 +120,12 @@ export const EncounterList: React.FC<EncounterListProps> = ({
             return item;
           }
 
-          return isFormColumn(item) ? item.label : item.name.name;
+          return isFormColumn(item) ? item.label : getNamedDisplay(item);
         })
         .join(', ');
     }
 
-    return isNamedColumn(value) ? value.name.name : null;
+    return isNamedColumn(value) ? getNamedDisplay(value) : null;
   }, []);
 
   const defaultActions = useMemo(
@@ -235,7 +252,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     if (actionItem.mode === 'delete') {
-                      handleDeleteEncounter(encounter.uuid, encounter.encounterType.name);
+                      handleDeleteEncounter(encounter.uuid, encounter.encounterType?.name ?? '');
                     } else {
                       launchEncounterForm(
                         formsJson,
