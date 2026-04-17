@@ -639,7 +639,7 @@ const TEPSIForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspace, wor
       case 'normal':
         return 'green';
       case 'riesgo':
-        return 'yellow';
+        return 'warm-gray';
       case 'retraso':
         return 'red';
       default:
@@ -823,7 +823,7 @@ const TEPSIForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspace, wor
         )}
 
         <ButtonSet className={isTablet ? styles.tablet : styles.desktop}>
-          <Button kind="secondary" onClick={closeWorkspace} disabled={isSubmitting}>
+          <Button kind="secondary" onClick={() => closeWorkspace()} disabled={isSubmitting}>
             {t('cancel', 'Cancel')}
           </Button>
           <Button kind="primary" type="submit" disabled={isSubmitting || !childAgeMonths}>

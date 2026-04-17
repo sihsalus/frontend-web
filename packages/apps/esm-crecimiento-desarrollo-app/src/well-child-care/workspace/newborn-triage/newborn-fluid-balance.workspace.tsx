@@ -172,7 +172,7 @@ const NewbornFluidBalanceForm: React.FC<DefaultPatientWorkspaceProps> = ({ close
         </div>
         <ButtonSet className={isTablet ? styles.tablet : styles.desktop}>
           <ButtonSkeleton className={styles.button} />
-          <ButtonSkeleton className={styles.button} type="submit" />
+          <ButtonSkeleton className={styles.button} />
         </ButtonSet>
       </Form>
     );
@@ -239,7 +239,7 @@ const NewbornFluidBalanceForm: React.FC<DefaultPatientWorkspaceProps> = ({ close
         </Column>
       )}
       <ButtonSet className={isTablet ? styles.tablet : styles.desktop}>
-        <Button className={styles.button} kind="secondary" onClick={closeWorkspace}>
+        <Button className={styles.button} kind="secondary" onClick={() => closeWorkspace()}>
           {t('discard', 'Discard')}
         </Button>
         <Button

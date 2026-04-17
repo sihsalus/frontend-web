@@ -144,11 +144,6 @@ const CREDControlsWorkspace: React.FC<DefaultPatientWorkspaceProps> = ({
           firstEncounterDateTime={
             encounters[0]?.encounterDatetime ? new Date(encounters[0].encounterDatetime).getTime() : undefined
           }
-          lastEncounterDateTime={
-            encounters[encounters.length - 1]?.encounterDatetime
-              ? new Date(encounters[encounters.length - 1].encounterDatetime).getTime()
-              : undefined
-          }
         />
 
         <div>
@@ -227,7 +222,7 @@ const CREDControlsWorkspace: React.FC<DefaultPatientWorkspaceProps> = ({
       </div>
 
       <ButtonSet className={isTablet ? styles.tablet : styles.desktop}>
-        <Button className={styles.button} kind="secondary" onClick={closeWorkspace}>
+        <Button className={styles.button} kind="secondary" onClick={() => closeWorkspace()}>
           {t('discard', 'Discard')}
         </Button>
         <Button

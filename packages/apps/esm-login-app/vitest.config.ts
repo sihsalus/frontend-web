@@ -4,8 +4,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   resolve: {
     alias: {
-      '@openmrs/esm-framework': path.resolve(__dirname, './__mocks__/esm-framework.tsx'),
-      '@openmrs/esm-framework/src/internal': path.resolve(__dirname, './__mocks__/esm-framework-internal.tsx'),
+      '@openmrs/esm-framework/src/internal': path.resolve(__dirname, '../../__mocks__/esm-framework-internal.mock.tsx'),
+      '@openmrs/esm-framework': path.resolve(__dirname, '../../__mocks__/esm-framework.mock.tsx'),
     },
   },
   test: {

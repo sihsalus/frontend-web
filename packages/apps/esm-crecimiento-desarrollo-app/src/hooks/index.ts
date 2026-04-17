@@ -4,7 +4,7 @@ export { useLaunchCREDForm } from './useLaunchCREDForm';
 export { useCREDFormsForAgeGroup } from './useCREDFormsForAgeGroup';
 export { useAgeGroups } from './useAgeGroups';
 export { useAgeRanges } from './useAgeRanges';
-export { useEncountersCRED } from './useEncountersCRED';
+export { default as useEncountersCRED } from './useEncountersCRED';
 
 // Neonatal & child health
 export { useAlojamientoConjuntoSummary } from './useAlojamientoConjuntoSummary';
@@ -38,14 +38,13 @@ export { useSchemasConceptSet } from './useSchemasConceptSet';
 // Prenatal context (used by neonatal register)
 export { useCurrentPregnancy } from './useCurrentPregnancy';
 export { usePrenatalAntecedents } from './usePrenatalAntecedents';
-export { usePostpartumControl } from './usePostpartumControl';
+export { usePostpartumControlTable } from './usePostpartumControl';
 
 // Appointments & scheduling
-export { useAppointmentsCRED } from './useAppointmentsCRED';
-export { useCreateCarePlanAppointments } from './useCreateCarePlanAppointments';
+export { default as useAppointmentsCRED } from './useAppointmentsCRED';
 
 // Generic clinical
 export { useClinicalEncounter } from './useClinicalEncounter';
-export { useEncounters } from './useEncounters';
+export { default as useEncounters } from './useEncounters';
 export { useLatestValidEncounter } from './useLatestEncounter';
 export { useProviders } from './useProviders';

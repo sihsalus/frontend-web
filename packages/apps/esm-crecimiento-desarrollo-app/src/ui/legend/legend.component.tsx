@@ -1,4 +1,4 @@
-import { Tile, Tag, InlineLoading } from '@carbon/react';
+import { Tile, Tag, type TagProps, InlineLoading } from '@carbon/react';
 import { ErrorState, useConfig } from '@openmrs/esm-framework';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { useSchemasConceptSet } from '../../hooks/useSchemasConceptSet';
 import styles from './legend.scss';
 
 interface LegendItem {
-  type: string;
+  type: TagProps['type'];
   display: string;
   label: string;
 }
@@ -32,7 +32,7 @@ const LegendTile: React.FC<LegendTileProps> = ({ conceptSetUUID }) => {
     const status = concept.display?.toUpperCase() || 'UNKNOWN';
     return [
       {
-        type: concept.colour || 'gray',
+        type: (concept.colour || 'gray') as TagProps['type'],
         display: status,
         label: t(status, concept.display || 'Unknown'),
       },

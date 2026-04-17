@@ -147,8 +147,8 @@ const NewbornVitalsInput: React.FC<NewbornVitalsInputProps> = ({
                             min={fieldProperty.min ?? undefined}
                             name={fieldProperty.name}
                             onBlur={() => handleFocusChange(false)}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                              checkValidity(event.target.value, onChange)
+                            onChange={(_event, { value }) =>
+                              checkValidity(String(value ?? ''), onChange)
                             }
                             onFocus={() => handleFocusChange(true)}
                             placeholder={generatePlaceholder(fieldProperty.name)}
