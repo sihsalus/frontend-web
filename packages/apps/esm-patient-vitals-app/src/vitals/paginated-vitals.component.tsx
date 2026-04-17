@@ -115,7 +115,7 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
                 {rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.cells.map((cell) => {
-                      const vitalsObj = paginatedVitals.find((obj) => obj.id === row.id);
+                      const vitalsObj = rows.find((obj) => obj.id === row.id);
                       const vitalSignInterpretation = vitalsObj && vitalsObj[cell.id.substring(2) + 'Interpretation'];
 
                       return (

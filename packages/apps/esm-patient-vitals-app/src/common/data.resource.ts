@@ -207,7 +207,7 @@ export function useVitalsAndBiometrics(patientUuid: string, mode: VitalsAndBiome
       .filter(Boolean)
       .map(vitalsProperties(conceptMetadata))
       ?.reduce((vitalsHashTable, vitalSign) => {
-        const recordedDate = new Date(new Date(vitalSign.recordedDate)).toISOString();
+        const recordedDate = new Date(vitalSign.recordedDate).toISOString();
 
         if (vitalsHashTable.has(recordedDate) && vitalsHashTable.get(recordedDate)) {
           vitalsHashTable.set(recordedDate, {

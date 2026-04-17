@@ -77,9 +77,10 @@ const VitalsAndBiometricsInput: React.FC<VitalsAndBiometricsInputProps> = ({
   const hasAbnormalValue = !isFocused && interpretation && abnormalValues.includes(interpretation as AbnormalValue);
 
   function checkValidity(value, onChange) {
-    setInvalid(!(Number(value) || value === ''));
+    const isInvalid = !(Number(value) || value === '');
+    setInvalid(isInvalid);
 
-    if (!invalid) {
+    if (!isInvalid) {
       onChange(value === '' ? undefined : Number(value));
     }
   }
