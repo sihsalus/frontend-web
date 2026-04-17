@@ -9,7 +9,7 @@ import {
   useWorkspaces,
 } from '@openmrs/esm-framework';
 import { getPatientChartStore } from '@openmrs/esm-patient-common-lib';
-import { useWorkspace2Store, WorkspaceWindowsAndMenu } from '@openmrs/esm-styleguide';
+import * as Styleguide from '@openmrs/esm-styleguide';
 import classNames from 'classnames';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -23,6 +23,11 @@ import VisitHeader from '../visit-header/visit-header.component';
 import { type LayoutMode } from './chart-review/dashboard-view.component';
 import styles from './patient-chart.scss';
 
+const WorkspaceWindowsAndMenu =
+  'WorkspaceWindowsAndMenu' in Styleguide
+    ? (Styleguide.WorkspaceWindowsAndMenu as React.ComponentType<{ showActionMenu?: boolean }>)
+    : null;
+
 const PatientChart: React.FC = () => {
   const { patientUuid, view: encodedView } = useParams();
   const view = encodedView ? decodeURIComponent(encodedView) : undefined;
@@ -30,10 +35,7 @@ const PatientChart: React.FC = () => {
   const { currentVisit, mutate: mutateVisitContext } = useVisit(patientUuid);
   const state = useMemo(() => ({ patient, patientUuid }), [patient, patientUuid]);
   const { workspaceWindowState, active } = useWorkspaces();
-  const { openedGroup, openedWindows, isMostRecentlyOpenedWindowHidden } = useWorkspace2Store();
   const [layoutMode, setLayoutMode] = useState<LayoutMode>();
-  const hasVisibleWorkspace2Window =
-    openedGroup?.groupName === 'patient-chart' && openedWindows.length > 0 && !isMostRecentlyOpenedWindowHidden;
   const hasVisibleLegacyWorkspace = workspaceWindowState === 'normal' && active;
 
   // We are responsible for creating a new offline visit while in offline mode.
@@ -83,7 +85,7 @@ const PatientChart: React.FC = () => {
           <div
             className={classNames(
               styles.innerChartContainer,
-              hasVisibleLegacyWorkspace || hasVisibleWorkspace2Window ? styles.closeWorkspace : styles.activeWorkspace,
+              hasVisibleLegacyWorkspace ? styles.closeWorkspace : styles.activeWorkspace,
             )}
           >
             {isLoadingPatient ? (
@@ -108,7 +110,7 @@ const PatientChart: React.FC = () => {
         </>
       </main>
       <WorkspaceContainer showSiderailAndBottomNav contextKey={`patient/${patientUuid}`} />
-      <WorkspaceWindowsAndMenu showActionMenu={false} />
+      {WorkspaceWindowsAndMenu ? <WorkspaceWindowsAndMenu showActionMenu={false} /> : null}
     </>
   );
 };

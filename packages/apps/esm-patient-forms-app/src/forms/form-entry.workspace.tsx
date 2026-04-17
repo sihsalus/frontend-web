@@ -1,7 +1,8 @@
-import { ExtensionSlot, useConnectivity, usePatient } from '@openmrs/esm-framework';
+import { ExtensionSlot, type Visit, usePatient } from '@openmrs/esm-framework';
 import {
   clinicalFormsWorkspace,
   type DefaultPatientWorkspaceProps,
+  type FormRendererProps,
   type FormEntryProps,
   useVisitOrOfflineVisit,
 } from '@openmrs/esm-patient-common-lib';
@@ -38,55 +39,58 @@ const FormEntry: React.FC<FormEntryComponentProps> = (props) => {
   const { patient } = usePatient(patientUuid);
   const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
   const [showForm, setShowForm] = useState(true);
-  const isOnline = useConnectivity();
+  const visit = useMemo<Visit | undefined>(() => {
+    if (visitUuid && visitStartDatetime) {
+      return {
+        uuid: visitUuid,
+        startDatetime: visitStartDatetime,
+        stopDatetime: visitStopDatetime ?? null,
+        visitType: visitTypeUuid ? { uuid: visitTypeUuid, display: '' } : undefined,
+        encounters: currentVisit?.encounters ?? [],
+      };
+    }
+
+    return currentVisit;
+  }, [currentVisit, visitStartDatetime, visitStopDatetime, visitTypeUuid, visitUuid]);
   const state = useMemo(
-    () => ({
-      view: 'form',
-      formUuid: formUuid ?? null,
-      visitUuid: visitUuid ?? currentVisit?.uuid ?? null,
-      visitTypeUuid: visitTypeUuid ?? currentVisit?.visitType?.uuid ?? null,
-      visitStartDatetime: visitStartDatetime ?? currentVisit?.startDatetime ?? null,
-      visitStopDatetime: visitStopDatetime ?? currentVisit?.stopDatetime ?? null,
-      isOffline: !isOnline,
-      patientUuid: patientUuid ?? null,
-      patient,
-      encounterUuid: encounterUuid ?? null,
-      closeWorkspace: () => {
-        if (typeof mutateForm === 'function') {
-          mutateForm();
-        }
-        props.closeWorkspace();
+    () =>
+      ({
+        additionalProps,
+        closeWorkspace: () => {
+          if (typeof mutateForm === 'function') {
+            mutateForm();
+          }
+          props.closeWorkspace();
+        },
+        closeWorkspaceWithSavedChanges: () => {
+          if (typeof mutateForm === 'function') {
+            mutateForm();
+          }
+          props.closeWorkspaceWithSavedChanges();
+        },
+        encounterUuid: encounterUuid ?? undefined,
+        formUuid: formUuid ?? '',
+        patient,
+        patientUuid: patientUuid ?? '',
+        setHasUnsavedChanges: (hasUnsavedChanges: boolean) => {
+          props.promptBeforeClosing(() => hasUnsavedChanges);
+        },
+        visit,
+        visitUuid: visit?.uuid,
+        clinicalFormsWorkspaceName,
+      }) satisfies FormRendererProps & {
+        clinicalFormsWorkspaceName: string;
       },
-      closeWorkspaceWithSavedChanges: () => {
-        if (typeof mutateForm === 'function') {
-          mutateForm();
-        }
-        props.closeWorkspaceWithSavedChanges();
-      },
-      promptBeforeClosing: (testFcn: () => boolean) => {
-        props.promptBeforeClosing(testFcn);
-      },
-      additionalProps,
-      clinicalFormsWorkspaceName,
-    }),
     [
-      formUuid,
-      visitUuid,
-      visitTypeUuid,
-      encounterUuid,
-      visitStartDatetime,
-      visitStopDatetime,
-      currentVisit?.uuid,
-      currentVisit?.visitType?.uuid,
-      currentVisit?.startDatetime,
-      currentVisit?.stopDatetime,
-      patientUuid,
-      patient,
-      isOnline,
-      mutateForm,
-      props,
       additionalProps,
       clinicalFormsWorkspaceName,
+      encounterUuid,
+      mutateForm,
+      patient,
+      patientUuid,
+      props,
+      visit,
+      formUuid,
     ],
   );
 

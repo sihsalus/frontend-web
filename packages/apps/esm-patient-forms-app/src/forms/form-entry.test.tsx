@@ -1,8 +1,7 @@
-import { ExtensionSlot, useConnectivity, usePatient } from '@openmrs/esm-framework';
+import { ExtensionSlot, usePatient } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { BehaviorSubject } from 'rxjs';
 import { mockPatient } from 'test-utils';
 
 import FormEntry from './form-entry.workspace';
@@ -17,9 +16,7 @@ const testProps = {
   setTitle: jest.fn(),
 };
 
-const mockFormEntrySub = jest.fn();
 const mockExtensionSlot = jest.mocked(ExtensionSlot);
-const mockUseConnectivity = jest.mocked(useConnectivity);
 const mockUseVisitOrOfflineVisit = useVisitOrOfflineVisit as jest.Mock;
 const mockUsePatient = jest.mocked(usePatient);
 
@@ -48,7 +45,6 @@ jest.mock('@openmrs/esm-patient-common-lib', () => ({
 jest.mock('@openmrs/esm-framework', () => ({
   ExtensionSlot: jest.fn().mockImplementation(({ name }) => name),
   usePatient: jest.fn(),
-  useConnectivity: jest.fn(),
 }));
 
 describe('FormEntry', () => {
@@ -60,17 +56,26 @@ describe('FormEntry', () => {
       isLoading: false,
     });
     mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: mockCurrentVisit });
-    mockUseConnectivity.mockReturnValue(true);
-    mockFormEntrySub.mockReturnValue(
-      new BehaviorSubject({ encounterUuid: null, formUuid: 'some-form-uuid', patient: mockPatient }),
-    );
 
     render(<FormEntry {...testProps} />);
 
     await waitFor(() => expect(mockExtensionSlot).toHaveBeenCalled());
+    const slotState = mockExtensionSlot.mock.calls[0][0].state;
+
     expect(mockExtensionSlot).toHaveBeenCalledWith(
-      expect.objectContaining({ name: 'form-widget-slot' }),
+      expect.objectContaining({
+        name: 'form-widget-slot',
+        state: expect.objectContaining({
+          formUuid: 'some-form-uuid',
+          patientUuid: mockPatient.uuid,
+          visit: expect.objectContaining({
+            uuid: mockCurrentVisit.uuid,
+            startDatetime: mockCurrentVisit.startDatetime,
+          }),
+        }),
+      }),
       expect.anything(),
     );
+    expect(slotState.setHasUnsavedChanges).toEqual(expect.any(Function));
   });
 });

@@ -76,6 +76,22 @@ const defaultProps = {
   setTitle: jest.fn(),
 };
 
+const canonicalProps = {
+  formUuid: 'test-form-uuid',
+  patientUuid: 'test-patient-uuid',
+  patient: {} as fhir.Patient,
+  visit: {
+    uuid: 'test-visit-uuid',
+    startDatetime: '2024-01-01T08:00:00.000+0000',
+    stopDatetime: '2024-01-01T18:00:00.000+0000',
+    encounters: [],
+    visitType: { uuid: 'visit-type-123', display: 'Visit type' },
+  },
+  closeWorkspace: jest.fn(),
+  closeWorkspaceWithSavedChanges: jest.fn(),
+  setHasUnsavedChanges: jest.fn(),
+};
+
 describe('FormRenderer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -158,5 +174,56 @@ describe('FormRenderer', () => {
       }),
       expect.anything(),
     );
+  });
+
+  it('uses the canonical visit object when provided by a v12-style caller', () => {
+    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    mockUseFormSchema.mockReturnValue({
+      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      error: undefined,
+      isLoading: false,
+    });
+
+    render(<FormRenderer {...canonicalProps} />);
+
+    expect(FormEngine).toHaveBeenCalledWith(
+      expect.objectContaining({
+        visit: canonicalProps.visit,
+      }),
+      expect.anything(),
+    );
+  });
+
+  it('bridges dirty state through promptBeforeClosing for legacy callers', () => {
+    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    mockUseFormSchema.mockReturnValue({
+      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      error: undefined,
+      isLoading: false,
+    });
+
+    render(<FormRenderer {...defaultProps} />);
+    const formEngineProps = (FormEngine as jest.Mock).mock.calls[0][0];
+
+    formEngineProps.markFormAsDirty(true);
+
+    expect(defaultProps.promptBeforeClosing).toHaveBeenCalledWith(expect.any(Function));
+    expect(defaultProps.promptBeforeClosing.mock.calls[0][0]()).toBe(true);
+  });
+
+  it('uses setHasUnsavedChanges directly for canonical callers', () => {
+    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    mockUseFormSchema.mockReturnValue({
+      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      error: undefined,
+      isLoading: false,
+    });
+
+    render(<FormRenderer {...canonicalProps} />);
+    const formEngineProps = (FormEngine as jest.Mock).mock.calls[0][0];
+
+    formEngineProps.markFormAsDirty(true);
+
+    expect(canonicalProps.setHasUnsavedChanges).toHaveBeenCalledWith(true);
   });
 });
