@@ -869,6 +869,68 @@ export const configSchema = {
     },
   },
 
+  // 10G-2. TEST PERUANO DE DESARROLLO (TPD — MINSA)
+  testPeruano: {
+    _type: Type.Object,
+    _description: 'Configuración del Test Peruano de Desarrollo Infantil',
+    _default: {
+      encounterTypeUuid: 'a990eabc-3405-419f-bfb1-96ca2d8279b8', // Control de Niño Sano — NTS 102
+      scoreCognitivoUuid: '',      // TODO: concept UUID for cognitive score
+      scoreMotorUuid: '',          // TODO: concept UUID for motor score
+      scoreSocialUuid: '',         // TODO: concept UUID for social-emotional score
+      scoreLenguajeUuid: '',       // TODO: concept UUID for language score
+      clasificacionTotalUuid: '',  // TODO: concept UUID for overall classification (Coded)
+      observacionesUuid: '',       // TODO: concept UUID for observations text
+      contextoCulturalUuid: '',    // TODO: concept UUID for cultural context
+      idiomaUuid: '',              // TODO: concept UUID for primary language
+    },
+    encounterTypeUuid: {
+      _type: Type.UUID,
+      _description: 'Encounter type UUID para el Test Peruano de Desarrollo. Por defecto usa Control de Niño Sano (NTS 102).',
+      _default: 'a990eabc-3405-419f-bfb1-96ca2d8279b8',
+    },
+    scoreCognitivoUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del puntaje de desarrollo cognitivo — pendiente configurar en OCL',
+      _default: '',
+    },
+    scoreMotorUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del puntaje de desarrollo motor — pendiente configurar en OCL',
+      _default: '',
+    },
+    scoreSocialUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del puntaje de desarrollo social-emocional — pendiente configurar en OCL',
+      _default: '',
+    },
+    scoreLenguajeUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del puntaje de desarrollo del lenguaje — pendiente configurar en OCL',
+      _default: '',
+    },
+    clasificacionTotalUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID de la clasificación total del test (Coded: superior/normal/limite/retraso) — pendiente configurar en OCL',
+      _default: '',
+    },
+    observacionesUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID para observaciones generales del evaluador — pendiente configurar en OCL',
+      _default: '',
+    },
+    contextoCulturalUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del contexto cultural (urbano/rural/urbano_marginal) — pendiente configurar en OCL',
+      _default: '',
+    },
+    idiomaUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Concept UUID del idioma primario del niño — pendiente configurar en OCL',
+      _default: '',
+    },
+  },
+
   // 10H. ESTIMULACIÓN TEMPRANA (NTS 137)
   earlyStimulation: {
     _type: Type.Object,
@@ -1428,5 +1490,16 @@ export interface ConfigObject {
     tepsiMotorConceptUuid: string;
     stimulationLackConceptUuid: string;
     counselingConceptUuid: string;
+  };
+  testPeruano: {
+    encounterTypeUuid: string;
+    scoreCognitivoUuid: string;
+    scoreMotorUuid: string;
+    scoreSocialUuid: string;
+    scoreLenguajeUuid: string;
+    clasificacionTotalUuid: string;
+    observacionesUuid: string;
+    contextoCulturalUuid: string;
+    idiomaUuid: string;
   };
 }

@@ -17,12 +17,13 @@ import {
 } from '@carbon/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  openmrsFetch,
+  restBaseUrl,
   showSnackbar,
   useConfig,
   useLayoutType,
   useSession,
   usePatient,
-  useVisit,
   getPatientName,
 } from '@openmrs/esm-framework';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
@@ -348,14 +349,14 @@ const createTestPeruanoSchema = (t: (key: string, fallback: string) => string) =
   z.object({
     childAgeMonths: z
       .number()
-      .min(24, t('tpMinAge', 'Edad mínima 24 meses'))
-      .max(84, t('tpMaxAge', 'Edad máxima 84 meses')),
-    evaluationDate: z.string().min(1, t('tpDateRequired', 'Fecha requerida')),
+      .min(24, t('tpMinAge', 'Minimum age is 24 months'))
+      .max(84, t('tpMaxAge', 'Maximum age is 84 months')),
+    evaluationDate: z.string().min(1, t('tpDateRequired', 'Evaluation date is required')),
     culturalContext: z.enum(['urbano', 'rural', 'urbano_marginal'], {
-      required_error: t('tpCulturalContextRequired', 'Contexto cultural requerido'),
+      required_error: t('tpCulturalContextRequired', 'Cultural context is required'),
     }),
     primaryLanguage: z.enum(['español', 'quechua', 'bilingue'], {
-      required_error: t('tpLanguageRequired', 'Idioma primario requerido'),
+      required_error: t('tpLanguageRequired', 'Primary language is required'),
     }),
     items: z.record(z.boolean()).optional(),
     observations: z.string().optional(),
@@ -373,7 +374,6 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
   const config = useConfig<ConfigObject>();
   const session = useSession();
   const patient = usePatient(patientUuid);
-  const { currentVisit } = useVisit(patientUuid);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showErrorNotification, setShowErrorNotification] = useState(false);
@@ -384,7 +384,6 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
   } = useForm<TestPeruanoFormType>({
     mode: 'all',
     resolver: zodResolver(TestPeruanoSchema),
@@ -507,13 +506,14 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
 
     let recommendationKey = 'tpRecommendationNormal';
     let recommendationDefault =
-      'Desarrollo apropiado para la edad y contexto cultural. Continuar con actividades regulares.';
+      'Development is appropriate for age and cultural context. Continue with regular activities.';
     if (totalClassification === 'retraso' || totalClassification === 'limite') {
       recommendationKey = 'tpRecommendationDelay';
-      recommendationDefault = 'Se recomienda evaluación especializada y estimulación temprana culturalmente apropiada.';
+      recommendationDefault =
+        'Specialist evaluation and culturally appropriate early stimulation are recommended.';
     } else if (totalClassification === 'normal_bajo') {
       recommendationKey = 'tpRecommendationLowNormal';
-      recommendationDefault = 'Se sugiere actividades de estimulación usando elementos culturales familiares.';
+      recommendationDefault = 'Stimulation activities using familiar cultural elements are suggested.';
     }
 
     return {
@@ -544,40 +544,83 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
       setIsSubmitting(true);
       setShowErrorNotification(false);
 
-      try {
-        const testPeruanoData = {
-          ...data,
-          items: selectedItems,
-          results,
-          appropriateItems: appropriateItems.map((item) => item.id),
-          culturalAdjustments: {
-            context: culturalContext,
-            language: primaryLanguage,
-          },
-        };
-
+      const locationUuid = session?.sessionLocation?.uuid;
+      if (!locationUuid) {
         showSnackbar({
-          isLowContrast: true,
-          kind: 'success',
-          title: t('testPeruanoSaved', 'Test Peruano de Desarrollo Guardado'),
-          subtitle: t('testPeruanoDataAvailable', 'La evaluación está disponible en el registro del paciente'),
+          title: t('testPeruanoSaveError', 'Error saving Test Peruano'),
+          kind: 'error',
+          isLowContrast: false,
+          subtitle: t('noSessionLocation', 'Could not determine session location. Please log in again.'),
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const obs: Array<{ concept: string; value: string | number }> = [];
+      const tp = config.testPeruano;
+
+      if (tp.scoreCognitivoUuid) {
+        obs.push({ concept: tp.scoreCognitivoUuid, value: results.desarrollo_cognitivo.score });
+      }
+      if (tp.scoreMotorUuid) {
+        obs.push({ concept: tp.scoreMotorUuid, value: results.desarrollo_motor.score });
+      }
+      if (tp.scoreSocialUuid) {
+        obs.push({ concept: tp.scoreSocialUuid, value: results.desarrollo_social_emocional.score });
+      }
+      if (tp.scoreLenguajeUuid) {
+        obs.push({ concept: tp.scoreLenguajeUuid, value: results.desarrollo_lenguaje.score });
+      }
+      if (tp.clasificacionTotalUuid) {
+        obs.push({ concept: tp.clasificacionTotalUuid, value: results.total.classification });
+      }
+      if (tp.contextoCulturalUuid) {
+        obs.push({ concept: tp.contextoCulturalUuid, value: data.culturalContext });
+      }
+      if (tp.idiomaUuid) {
+        obs.push({ concept: tp.idiomaUuid, value: data.primaryLanguage });
+      }
+      if (tp.observacionesUuid && data.observations) {
+        obs.push({ concept: tp.observacionesUuid, value: data.observations });
+      }
+
+      const abortController = new AbortController();
+
+      try {
+        const response = await openmrsFetch(`${restBaseUrl}/encounter`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: abortController.signal,
+          body: {
+            patient: patientUuid,
+            location: locationUuid,
+            encounterType: tp.encounterTypeUuid,
+            obs,
+          },
         });
 
-        closeWorkspace({ discardUnsavedChanges: true });
+        if (response.status === 201 || response.status === 200) {
+          showSnackbar({
+            isLowContrast: true,
+            kind: 'success',
+            title: t('testPeruanoSaved', 'Test Peruano saved'),
+            subtitle: t('testPeruanoDataAvailable', 'The evaluation is now available in the patient record'),
+          });
+          closeWorkspace({ discardUnsavedChanges: true });
+        }
       } catch (error) {
-        console.error('Error saving Test Peruano:', error);
         setShowErrorNotification(true);
         showSnackbar({
           title: t('testPeruanoSaveError', 'Error saving Test Peruano'),
           kind: 'error',
           isLowContrast: false,
-          subtitle: t('checkForErrors', 'Por favor revise el formulario e intente nuevamente'),
+          subtitle: (error as Error)?.message ?? t('unexpectedError', 'An unexpected error occurred. Please try again.'),
         });
       } finally {
         setIsSubmitting(false);
       }
     },
-    [selectedItems, results, appropriateItems, culturalContext, primaryLanguage, closeWorkspace, t],
+    [config.testPeruano, closeWorkspace, patientUuid, results, session?.sessionLocation?.uuid, t],
   );
 
   const getClassificationColor = (classification: string) => {
@@ -622,9 +665,9 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
     <Form className={styles.form} onSubmit={handleSubmit(saveTestPeruanoData)}>
       <Stack gap={6}>
         <Column>
-          <h3 className={styles.title}>{t('testPeruanoTitle', 'Test Peruano de Desarrollo Infantil')}</h3>
+          <h3 className={styles.title}>{t('testPeruanoTitle', 'Peruvian Child Development Test')}</h3>
           <p className={styles.subtitle}>
-            {t('testPeruanoSubtitle', 'Evaluación del desarrollo infantil adaptada al contexto cultural peruano')}
+            {t('testPeruanoSubtitle', 'Child development assessment adapted to the Peruvian cultural context')}
           </p>
         </Column>
 
@@ -632,14 +675,16 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
         <Column>
           <Tile className={styles.patientInfo}>
             <Stack gap={4}>
-              <h4>{t('patientAndCulturalInfo', 'Información del Paciente y Contexto Cultural')}</h4>
+              <h4>{t('patientAndCulturalInfo', 'Patient Information and Cultural Context')}</h4>
               <div className={styles.infoGrid}>
                 <div>
                   <p>
-                    <strong>{t('name', 'Nombre')}:</strong> {getPatientName(patient.patient)}
+                    <strong>{t('name', 'Name')}:</strong>{' '}
+                    {patient.patient ? getPatientName(patient.patient) : t('loading', 'Loading...')}
                   </p>
                   <p>
-                    <strong>{t('age', 'Edad')}:</strong> {t('ageMonths', '{{count}} meses', { count: childAgeMonths })}
+                    <strong>{t('age', 'Age')}:</strong>{' '}
+                    {t('ageMonths', '{{count}} months', { count: childAgeMonths })}
                   </p>
                 </div>
                 <div>
@@ -680,7 +725,7 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
               >
                 <DatePickerInput
                   placeholder="yyyy-mm-dd"
-                  labelText={t('evaluationDate', 'Fecha de evaluación')}
+                  labelText={t('evaluationDate', 'Evaluation date')}
                   id="evaluation-date"
                 />
               </DatePicker>
@@ -693,7 +738,7 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
           <Column>
             <Tile className={styles.results}>
               <Stack gap={4}>
-                <h4>{t('resultsPreview', 'Results preview')}</h4>
+                <h4>{t('resultsPreview', 'Results preview — real time')}</h4>
 
                 <div className={styles.resultGrid}>
                   <div className={styles.resultCard}>
@@ -778,7 +823,7 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
           <Column>
             <Stack gap={4}>
               <h4>
-                {t('evaluationItems', 'Items de Evaluación')} ({appropriateItems.length} items)
+                {t('evaluationItems', 'Evaluation items')} ({appropriateItems.length})
               </h4>
 
               {/* Desarrollo Cognitivo */}
@@ -879,10 +924,10 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
         {/* Observaciones culturales */}
         <Column>
           <TextArea
-            labelText={t('culturalNotes', 'Notas Culturales y Contextuales')}
+            labelText={t('culturalNotes', 'Cultural and contextual notes')}
             placeholder={t(
               'culturalNotesPlaceholder',
-              'Observaciones sobre factores culturales, familiares o del entorno que puedan influir en el desarrollo...',
+              'Notes on cultural, family, or environmental factors that may influence development...',
             )}
             value={watch('culturalNotes')}
             onChange={(e) => setValue('culturalNotes', e.target.value)}
@@ -893,8 +938,8 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
         {/* Observaciones generales */}
         <Column>
           <TextArea
-            labelText={t('generalObservations', 'Observaciones Generales')}
-            placeholder={t('observationsPlaceholder', 'Observaciones adicionales sobre la evaluación...')}
+            labelText={t('generalObservations', 'General observations')}
+            placeholder={t('observationsPlaceholder', 'Additional observations about the evaluation...')}
             value={watch('observations')}
             onChange={(e) => setValue('observations', e.target.value)}
             rows={3}
@@ -906,7 +951,7 @@ const TestPeruanoForm: React.FC<DefaultPatientWorkspaceProps> = ({ closeWorkspac
             <InlineNotification
               kind="error"
               title={t('error', 'Error')}
-              subtitle={t('testPeruanoSaveError', 'Error saving Test Peruano')}
+              subtitle={t('testPeruanoSaveErrorRetry', 'Please check the form and try again.')}
               onClose={() => setShowErrorNotification(false)}
             />
           </Column>
