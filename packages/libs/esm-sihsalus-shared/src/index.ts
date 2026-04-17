@@ -60,7 +60,7 @@ export { default as GenericInput } from './ui/generic-input/generic-input.compon
 export { default as SummaryCard } from './ui/summary-card/summary-card.component';
 
 // UI: tabbed dashboard
-export { default as TabbedDashboard } from './ui/tabbed-dashboard/tabbed-dashboard.component';
+export { default as TabbedDashboard, type TabConfig } from './ui/tabbed-dashboard/tabbed-dashboard.component';
 
 // UI: patient summary table
 export { default as PatientSummaryTable } from './ui/patient-summary-table/patient-summary-table.component';

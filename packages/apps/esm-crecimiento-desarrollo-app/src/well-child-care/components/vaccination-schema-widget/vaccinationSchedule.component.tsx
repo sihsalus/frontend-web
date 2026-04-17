@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   Tag,
+  type TagProps,
   InlineLoading,
 } from '@carbon/react';
 import { Add } from '@carbon/react/icons';
@@ -214,7 +215,7 @@ const VaccinationSchedule: React.FC<VaccinationScheduleProps> = ({ patientUuid }
       </CardHeader>
 
       <DataTable
-        rows={tableRows}
+        rows={tableRows as any}
         headers={tableHeaders}
         size="sm"
         useZebraStyles
@@ -247,7 +248,7 @@ const VaccinationSchedule: React.FC<VaccinationScheduleProps> = ({ patientUuid }
   );
 };
 
-const getTagType = (status: VaccinationData['status']): string => {
+const getTagType = (status: VaccinationData['status']): TagProps<React.ElementType>['type'] => {
   switch (status) {
     case 'pending':
       return 'blue';

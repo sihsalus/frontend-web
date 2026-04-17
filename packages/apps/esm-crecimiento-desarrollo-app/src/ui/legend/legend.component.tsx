@@ -9,7 +9,7 @@ import { useSchemasConceptSet } from '../../hooks/useSchemasConceptSet';
 import styles from './legend.scss';
 
 interface LegendItem {
-  type: TagProps['type'];
+  type: TagProps<React.ElementType>['type'];
   display: string;
   label: string;
 }
@@ -32,7 +32,7 @@ const LegendTile: React.FC<LegendTileProps> = ({ conceptSetUUID }) => {
     const status = concept.display?.toUpperCase() || 'UNKNOWN';
     return [
       {
-        type: (concept.colour || 'gray') as TagProps['type'],
+        type: (concept.colour || 'gray') as TagProps<React.ElementType>['type'],
         display: status,
         label: t(status, concept.display || 'Unknown'),
       },
