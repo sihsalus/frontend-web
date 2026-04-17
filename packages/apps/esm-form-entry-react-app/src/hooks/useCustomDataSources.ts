@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { type DataSource, registerCustomDataSource } from '@sihsalus/esm-form-engine-lib';
+import { type DataSource, registerCustomDataSource } from '../form-engine-lib-runtime';
 
 import { MonthlyScheduleDataSource } from '../data-sources/monthly-schedule.datasource';
 import type { FormEntryReactConfig } from '../types';

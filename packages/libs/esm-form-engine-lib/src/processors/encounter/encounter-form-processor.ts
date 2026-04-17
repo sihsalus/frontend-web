@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type OpenmrsResource, showSnackbar, translateFrom } from '@openmrs/esm-framework';
 import {
   getMutableSessionProps,
@@ -45,21 +45,49 @@ function useCustomHooks(context: Partial<FormProcessorContextProps>): CustomHook
   const { encounter, isLoading: isLoadingEncounter } = useEncounter(context.formJson);
   const { encounterRole, isLoading: isLoadingEncounterRole } = useEncounterRole();
   const { isLoadingPatientPrograms, patientPrograms } = usePatientPrograms(context.patient?.id, context.formJson);
+  const encounterResource = useMemo(() => getEncounterResource(encounter), [encounter]);
+  const patientProgramUuids = useMemo(
+    () =>
+      (patientPrograms ?? [])
+        .map((program) => program.uuid)
+        .sort()
+        .join(','),
+    [patientPrograms],
+  );
 
   useEffect(() => {
     setIsLoading(isLoadingPatientPrograms || isLoadingEncounter || isLoadingEncounterRole);
   }, [isLoadingPatientPrograms, isLoadingEncounter, isLoadingEncounterRole]);
 
-  return {
-    data: { encounter, patientPrograms, encounterRole },
-    isLoading,
-    error: null,
-    updateContext: (setContext: React.Dispatch<React.SetStateAction<FormProcessorContextProps>>): void => {
+  const updateContext = useCallback(
+    (setContext: React.Dispatch<React.SetStateAction<FormProcessorContextProps>>): void => {
       setContext((context) => {
-        context.processor.domainObjectValue = getEncounterResource(encounter);
+        const previousEncounterUuid = isOpenmrsEncounter(context.domainObjectValue)
+          ? context.domainObjectValue.uuid
+          : null;
+        const nextEncounterUuid = encounterResource?.uuid ?? null;
+        const previousEncounterRoleUuid = isPlainObject(context.customDependencies?.defaultEncounterRole)
+          ? context.customDependencies?.defaultEncounterRole?.uuid
+          : undefined;
+        const nextEncounterRoleUuid = encounterRole?.uuid;
+        const previousPatientPrograms = asPatientPrograms(context.customDependencies?.patientPrograms);
+        const previousPatientProgramUuids = previousPatientPrograms
+          .map((program) => program.uuid)
+          .sort()
+          .join(',');
+
+        if (
+          previousEncounterUuid === nextEncounterUuid &&
+          previousEncounterRoleUuid === nextEncounterRoleUuid &&
+          previousPatientProgramUuids === patientProgramUuids
+        ) {
+          return context;
+        }
+
+        context.processor.domainObjectValue = encounterResource;
         return {
           ...context,
-          domainObjectValue: getEncounterResource(encounter),
+          domainObjectValue: encounterResource,
           customDependencies: {
             ...context.customDependencies,
             patientPrograms,
@@ -68,6 +96,14 @@ function useCustomHooks(context: Partial<FormProcessorContextProps>): CustomHook
         };
       });
     },
+    [encounterResource, encounterRole, patientProgramUuids, patientPrograms],
+  );
+
+  return {
+    data: { encounter, patientPrograms, encounterRole },
+    isLoading,
+    error: null,
+    updateContext,
   };
 }
 
@@ -349,7 +385,24 @@ export class EncounterFormProcessor extends FormProcessor {
     const patientId = context.patient?.id;
     const encounterType = context.formJson?.encounterType;
     const encounter = patientId && encounterType ? await getPreviousEncounter(patientId, encounterType) : null;
+    const previousEncounterUuid = isOpenmrsEncounter(context.previousDomainObjectValue)
+      ? context.previousDomainObjectValue.uuid
+      : null;
+    const nextEncounterUuid = encounter?.uuid ?? null;
+
+    if (previousEncounterUuid === nextEncounterUuid) {
+      return {};
+    }
+
     setContext((context) => {
+      const currentPreviousEncounterUuid = isOpenmrsEncounter(context.previousDomainObjectValue)
+        ? context.previousDomainObjectValue.uuid
+        : null;
+
+      if (currentPreviousEncounterUuid === nextEncounterUuid) {
+        return context;
+      }
+
       return {
         ...context,
         previousDomainObjectValue: encounter ? (encounter as unknown as OpenmrsResource) : undefined,

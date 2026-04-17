@@ -1,10 +1,10 @@
 import { InlineLoading } from '@carbon/react';
-import { FormEngine, type PreFilledQuestions, type SessionMode } from '@sihsalus/esm-form-engine-lib';
 import { showModal, useConfig, type Encounter, type OpenmrsResource } from '@openmrs/esm-framework';
 import { clinicalFormsWorkspace, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { FormEngine, type PreFilledQuestions, type SessionMode } from '../form-engine-lib-runtime';
 import { useCustomDataSources } from '../hooks/useCustomDataSources';
 import { useCustomEncounterDatetime } from '../hooks/useCustomEncounterDatetime';
 import useFormSchema from '../hooks/useFormSchema';
@@ -141,31 +141,27 @@ const FormRenderer: React.FC<FormWidgetProps> = (props) => {
     );
   }
 
-  return (
-    <>
-      {schema && (
-        <FormEngine
-          encounterUUID={encounterUuid}
-          formJson={schema}
-          handleClose={handleCloseForm}
-          handleConfirmQuestionDeletion={handleConfirmQuestionDeletion}
-          handleEncounterCreate={handleEncounterCreate}
-          handleOnValidate={handleValidate}
-          hideControls={effectiveHideControls}
-          hidePatientBanner={hidePatientBanner}
-          markFormAsDirty={handleMarkFormAsDirty}
-          mode={mode}
-          formSessionIntent={formSessionIntent}
-          onSubmit={(data) => {
-            void handleOnSubmit(data);
-          }}
-          patientUUID={patientUuid}
-          visit={visit}
-          preFilledQuestions={preFilledQuestions}
-        />
-      )}
-    </>
-  );
+  return schema ? (
+    <FormEngine
+      encounterUUID={encounterUuid}
+      formJson={schema}
+      handleClose={handleCloseForm}
+      handleConfirmQuestionDeletion={handleConfirmQuestionDeletion}
+      handleEncounterCreate={handleEncounterCreate}
+      handleOnValidate={handleValidate}
+      hideControls={effectiveHideControls}
+      hidePatientBanner={hidePatientBanner}
+      markFormAsDirty={handleMarkFormAsDirty}
+      mode={mode}
+      formSessionIntent={formSessionIntent}
+      onSubmit={(data) => {
+        void handleOnSubmit(data);
+      }}
+      patientUUID={patientUuid}
+      visit={visit}
+      preFilledQuestions={preFilledQuestions}
+    />
+  ) : null;
 };
 
 export default FormRenderer;

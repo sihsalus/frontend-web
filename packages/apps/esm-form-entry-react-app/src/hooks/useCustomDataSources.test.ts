@@ -6,7 +6,7 @@ import { useCustomDataSources } from './useCustomDataSources';
 
 const mockRegisterCustomDataSource = jest.fn();
 
-jest.mock('@sihsalus/esm-form-engine-lib', () => ({
+jest.mock('../form-engine-lib-runtime', () => ({
   registerCustomDataSource: (registration: unknown) => mockRegisterCustomDataSource(registration),
 }));
 

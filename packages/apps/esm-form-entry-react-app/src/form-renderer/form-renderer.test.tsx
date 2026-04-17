@@ -27,7 +27,7 @@ jest.mock('@openmrs/esm-framework', () => ({
   showSnackbar: jest.fn(),
 }));
 
-jest.mock('@sihsalus/esm-form-engine-lib', () => ({
+jest.mock('../form-engine-lib-runtime', () => ({
   FormEngine: jest.fn(() => <div data-testid="form-engine">FormEngine Mock</div>),
 }));
 
@@ -119,7 +119,7 @@ describe('FormRenderer', () => {
   });
 
   it('passes encounterUUID for edit mode', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -137,7 +137,7 @@ describe('FormRenderer', () => {
   });
 
   it('defaults to enter mode when no encounterUuid', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -154,7 +154,7 @@ describe('FormRenderer', () => {
   });
 
   it('constructs visit object from string props', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -176,7 +176,7 @@ describe('FormRenderer', () => {
   });
 
   it('uses the canonical visit object when provided by a v12-style caller', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -194,7 +194,7 @@ describe('FormRenderer', () => {
   });
 
   it('allows canonical callers to omit visit context', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -212,7 +212,7 @@ describe('FormRenderer', () => {
   });
 
   it('bridges dirty state through promptBeforeClosing for legacy callers', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -229,7 +229,7 @@ describe('FormRenderer', () => {
   });
 
   it('uses setHasUnsavedChanges directly for canonical callers', () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
       error: undefined,
@@ -245,7 +245,7 @@ describe('FormRenderer', () => {
   });
 
   it('shows lab order notifications and closes the workspace after a successful submit', async () => {
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     const handlePostResponse = jest.fn();
     mockUseFormSchema.mockReturnValue({
       schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
