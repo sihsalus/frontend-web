@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 // Global setup for authenticated tests
 async function login(page: Page) {
@@ -11,7 +12,7 @@ async function login(page: Page) {
   await page.waitForNavigation({ timeout: 10000 }).catch(() => null);
   
   // If location selector appears, select default
-  const locationSelector = await page.locator('[data-testid="location-select"], select[name*="location"]').first();
+  const locationSelector = page.locator('[data-testid="location-select"], select[name*="location"]').first();
   if (await locationSelector.isVisible().catch(() => false)) {
     await locationSelector.selectOption({ index: 1 });
     await page.click('button:has-text("Continue"), button:has-text("Confirmar"), button:contains("Continue")').catch(() => null);
@@ -189,7 +190,7 @@ test.describe('Critical User Journeys', () => {
     
     // Even if widgets don't load, app should be responsive
     const appShell = page.locator('[data-openmrs-spa], #root').first();
-    expect(await appShell.isVisible()).toBeTruthy();
+    await expect(appShell).toBeVisible();
   });
 
   test('Location Selector if Required', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { Encounter, EncounterType } from '@openmrs/esm-framework';
+import type { Encounter, EncounterType } from '@openmrs/esm-framework';
 import { mockPatientAlice } from './patient.mock';
 
 export const mockEncounterTypeAdmission: EncounterType = {

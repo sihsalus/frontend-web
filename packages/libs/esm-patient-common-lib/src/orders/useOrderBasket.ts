@@ -8,7 +8,7 @@ import { type OrderBasketStore, orderBasketStore } from './store';
 import type { OrderBasketItem, PostDataPrepFunction } from './types';
 
 const orderBasketStoreActions = {
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+   
   setOrderBasketItems(
     state: OrderBasketStore,
     grouping: string,
@@ -28,7 +28,7 @@ const orderBasketStoreActions = {
       },
     };
   },
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+   
   setPostDataPrepFunctionForGrouping(state: OrderBasketStore, grouping: string, value: PostDataPrepFunction) {
     return {
       postDataPrepFunctions: {

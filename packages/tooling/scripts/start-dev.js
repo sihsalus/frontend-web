@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-undef */
+ 
 'use strict';
 
 require('dotenv').config({ quiet: true });
