@@ -20,7 +20,7 @@ import {
 import { AddIcon, formatDate, parseDate, useLayoutType } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { ConditionsActionMenu } from './conditions-action-menu.component';
-import { type Condition, type ConditionTableHeader, useConditions, useConditionsSorting } from './conditions.resource';
+import { type ConditionTableHeader, useConditions, useConditionsSorting } from './conditions.resource';
 import styles from './conditions-detailed-summary.scss';
 
 function ConditionsDetailedSummary({ patient }) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
   getDefaultsFromConfigSchema,
   showSnackbar,
@@ -20,7 +20,6 @@ import { FHIR_NEXT_DOSE_DATE_EXTENSION_URL } from './immunization-mapper';
 import ImmunizationsForm from './immunizations-form.workspace';
 
 const mockCloseWorkspace = jest.fn();
-const mockCloseWorkspaceWithSavedChanges = jest.fn();
 const mockPromptBeforeClosing = jest.fn();
 const mockSavePatientImmunization = savePatientImmunization as jest.Mock;
 const mockSetTitle = jest.fn();

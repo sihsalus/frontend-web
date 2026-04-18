@@ -143,10 +143,8 @@ describe('AddDrugOrderWorkspace drug search', () => {
     renderAddDrugOrderWorkspace();
 
     await user.type(screen.getByRole('searchbox'), 'Aspirin');
-     
-    const { result: hookResult } = renderHook(() =>
-      useOrderBasket('medications', ((x) => x) as unknown as PostDataPrepFunction),
-    );
+
+    renderHook(() => useOrderBasket('medications', ((x) => x) as unknown as PostDataPrepFunction));
     const aspirin81Div = getByTextWithMarkup(/Aspirin 81mg/i).closest('div').parentElement;
     const aspirin81OpenFormButton = within(aspirin81Div).getByText(/Order form/i);
     await user.click(aspirin81OpenFormButton);
