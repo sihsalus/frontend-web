@@ -69,7 +69,7 @@ const ScreeningIndicators: React.FC<ScreeningIndicatorsProps> = ({ patientUuid }
   );
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={4} columnCount={3} />;
+    return <DataTableSkeleton compact rowCount={4} columnCount={3} />;
   }
 
   if (error) {

@@ -39,7 +39,7 @@ const NutritionFollowup: React.FC<NutritionFollowupProps> = ({ patientUuid }) =>
   }, [config.formsList.nutritionFollowupForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={4} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={4} columnCount={2} />;
   }
 
   if (error) {

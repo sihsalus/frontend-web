@@ -46,7 +46,7 @@ const GrowthChartOverview: React.FC<GrowthChartProps> = ({ patient, patientUuid 
   }, []);
 
   if (isLoading && !data) {
-    return <DataTableSkeleton role="progressbar" aria-label={t('loadingData', 'Loading data...')} />;
+    return <DataTableSkeleton aria-label={t('loadingData', 'Loading data...')} />;
   }
 
   if (error) {

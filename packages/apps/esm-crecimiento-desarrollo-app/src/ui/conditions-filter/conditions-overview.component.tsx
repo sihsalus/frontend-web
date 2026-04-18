@@ -151,7 +151,7 @@ const ConditionsOverview: React.FC<ConditionsOverviewProps> = ({ patientUuid }) 
 
   const handleConditionStatusChange = ({ selectedItem }) => setFilter(selectedItem?.key || 'All');
 
-  if (isLoading) return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;
+  if (isLoading) return <DataTableSkeleton compact={isDesktop} zebra />;
   if (error) return <ErrorState error={error} headerTitle={headerTitle} />;
   if (conditions?.length) {
     return (
@@ -207,7 +207,7 @@ const ConditionsOverview: React.FC<ConditionsOverviewProps> = ({ patientUuid }) 
                             isSortable: header.isSortable,
                           })}
                         >
-                          {header.header?.content ?? header.header}
+                          {(header.header as any)?.content ?? header.header}
                         </TableHeader>
                       ))}
                       <TableHeader aria-label={t('actions', 'Actions')} />
@@ -217,10 +217,10 @@ const ConditionsOverview: React.FC<ConditionsOverviewProps> = ({ patientUuid }) 
                     {rows.map((row) => (
                       <TableRow key={row.id}>
                         {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
+                          <TableCell key={cell.id}>{(cell.value as any)?.content ?? cell.value}</TableCell>
                         ))}
                         <TableCell className="cds--table-column-menu">
-                          <ConditionsActionMenu condition={row} patientUuid={patientUuid} />
+                          <ConditionsActionMenu condition={row as any} patientUuid={patientUuid} />
                         </TableCell>
                       </TableRow>
                     ))}

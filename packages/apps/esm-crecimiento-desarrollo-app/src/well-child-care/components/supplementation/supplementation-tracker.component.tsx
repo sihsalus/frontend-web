@@ -33,7 +33,7 @@ const SupplementationTracker: React.FC<SupplementationTrackerProps> = ({ patient
   }, [config.formsList.supplementationForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={2} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={2} columnCount={2} />;
   }
 
   if (error) {

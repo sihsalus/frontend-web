@@ -73,7 +73,7 @@ const PrenatalAntecedents: React.FC<NeonatalSummaryProps> = ({ patientUuid }) =>
     ];
   }, [formattedObs, t]);
 
-  if (isLoading) return <DataTableSkeleton role="progressbar" />;
+  if (isLoading) return <DataTableSkeleton />;
   if (error) return <ErrorState error={error} headerTitle={headerTitle} />;
   if (formattedObs?.length) {
     return (

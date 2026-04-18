@@ -41,7 +41,7 @@ const NutritionalAssessment: React.FC<NutritionalAssessmentProps> = ({ patientUu
   }, [config.formsList.nutritionalAssessmentForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={4} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={4} columnCount={2} />;
   }
 
   if (error) {

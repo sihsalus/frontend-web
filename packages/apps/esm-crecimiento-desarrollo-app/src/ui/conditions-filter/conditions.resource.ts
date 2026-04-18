@@ -356,8 +356,22 @@ export function useConditionsSorting(tableHeaders: Array<ConditionTableHeader>, 
     key: ConditionTableHeader['key'] | '';
     sortDirection: 'ASC' | 'DESC' | 'NONE';
   }>({ key: '', sortDirection: 'NONE' });
-  const sortRow = (cellA, cellB, { key, sortDirection }) => {
+  const sortRow = (
+    cellA: unknown,
+    cellB: unknown,
+    {
+      key,
+      sortDirection,
+    }: {
+      key: ConditionTableHeader['key'] | '';
+      sortDirection: 'NONE' | 'DESC' | 'ASC';
+      sortStates: Record<string, string>;
+      locale: string;
+      compare: (a: unknown, b: unknown) => number;
+    },
+  ): number => {
     setSortParams({ key, sortDirection });
+    return 0;
   };
   const sortedRows = useMemo(() => {
     if (sortParams.sortDirection === 'NONE') {

@@ -47,15 +47,16 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({ isPrinting, pageSize,
   });
 
   const handleSorting = (
-    cellA,
-    cellB,
-    { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
-  ) => {
+    _cellA: any,
+    _cellB: any,
+    { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE'; sortStates: any; locale: string; compare: (a: any, b: any) => number },
+  ): number => {
     if (sortDirection === 'NONE') {
       setSortParams({ key: '', sortDirection });
     } else {
       setSortParams({ key, sortDirection });
     }
+    return 0;
   };
 
   const sortedData: Array<LabourHistoryTableRow> = useMemo(() => {

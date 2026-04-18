@@ -100,7 +100,7 @@ function ConditionsDetailedSummary({ patient }) {
 
   const handleConditionStatusChange = ({ selectedItem }) => setFilter(selectedItem);
 
-  if (isLoading) return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;
+  if (isLoading) return <DataTableSkeleton compact={isDesktop} zebra />;
   if (error) return <ErrorState error={error} headerTitle={headerTitle} />;
   if (conditions?.length) {
     return (
@@ -154,7 +154,7 @@ function ConditionsDetailedSummary({ patient }) {
                             isSortable: header.isSortable,
                           })}
                         >
-                          {header.header?.content ?? header.header}
+                          {(header.header as any)?.content ?? header.header}
                         </TableHeader>
                       ))}
                       <TableHeader />
@@ -164,10 +164,10 @@ function ConditionsDetailedSummary({ patient }) {
                     {rows.map((row) => (
                       <TableRow key={row.id} {...getRowProps({ row })}>
                         {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
+                          <TableCell key={cell.id}>{(cell.value as any)?.content ?? cell.value}</TableCell>
                         ))}
                         <TableCell className="cds--table-column-menu">
-                          <ConditionsActionMenu patientUuid={patient.id} condition={row} />
+                          <ConditionsActionMenu patientUuid={patient.id} condition={row as any} />
                         </TableCell>
                       </TableRow>
                     ))}

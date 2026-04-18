@@ -37,7 +37,7 @@ const CredControlsMatrix: React.FC<CredControlsMatrixProps> = ({ patientUuid }) 
     return grouped;
   }, [controls, ageGroupsCRED]);
 
-  if (isLoading) return <DataTableSkeleton role="progressbar" compact zebra />;
+  if (isLoading) return <DataTableSkeleton compact zebra />;
   if (error) return <ErrorState error={error} headerTitle={headerTitle} />;
 
   return (

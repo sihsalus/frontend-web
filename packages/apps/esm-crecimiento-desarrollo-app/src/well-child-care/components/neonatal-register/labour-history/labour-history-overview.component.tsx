@@ -72,7 +72,7 @@ const LabourHistoryOverview: React.FC<LabourHistoryOverviewProps> = ({ patientUu
     return rows;
   }, [data]);
 
-  if (isLoading && !data) return <DataTableSkeleton role="progressbar" />;
+  if (isLoading && !data) return <DataTableSkeleton />;
   if (error) return <ErrorState error={error} headerTitle={headerTitle} />;
   if (tableRows.length) {
     return (

@@ -41,7 +41,7 @@ const StimulationSessions: React.FC<StimulationSessionsProps> = ({ patientUuid }
   }, [config.formsList.stimulationSessionForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={3} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={3} columnCount={2} />;
   }
 
   if (error) {

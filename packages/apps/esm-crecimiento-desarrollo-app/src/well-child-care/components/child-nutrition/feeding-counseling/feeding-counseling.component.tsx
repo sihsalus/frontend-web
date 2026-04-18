@@ -38,7 +38,7 @@ const FeedingCounseling: React.FC<FeedingCounselingProps> = ({ patientUuid }) =>
   }, [config.formsList.feedingCounselingForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={3} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={3} columnCount={2} />;
   }
 
   if (error) {

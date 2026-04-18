@@ -148,7 +148,7 @@ const PatientObservationGroupTable: React.FC<PatientObservationGroupTableProps> 
 
   // Estados de carga y error
   if (isLoading && (!data?.obs || data.obs.length === 0)) {
-    return <DataTableSkeleton role="progressbar" compact={desktopLayout} zebra />;
+    return <DataTableSkeleton compact={desktopLayout} zebra />;
   }
 
   if (error) {

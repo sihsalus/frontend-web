@@ -42,7 +42,7 @@ const StimulationFollowup: React.FC<StimulationFollowupProps> = ({ patientUuid }
   }, [config.formsList.stimulationFollowupForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={4} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={4} columnCount={2} />;
   }
 
   if (error) {

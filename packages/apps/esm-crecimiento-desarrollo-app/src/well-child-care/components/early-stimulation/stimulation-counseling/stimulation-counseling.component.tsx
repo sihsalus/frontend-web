@@ -42,7 +42,7 @@ const StimulationCounseling: React.FC<StimulationCounselingProps> = ({ patientUu
   }, [config.formsList.stimulationCounselingForm]);
 
   if (isLoading) {
-    return <DataTableSkeleton role="progressbar" compact rowCount={3} columnCount={2} />;
+    return <DataTableSkeleton compact rowCount={3} columnCount={2} />;
   }
 
   if (error) {
