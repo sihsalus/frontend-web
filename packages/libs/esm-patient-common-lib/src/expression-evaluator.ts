@@ -117,8 +117,8 @@ function evalNode(node: JsepNode, context: Record<string, unknown>): unknown {
       switch (be.operator) {
         case '===': return left === right;
         case '!==': return left !== right;
-        case '==':  return left == right;  // eslint-disable-line eqeqeq
-        case '!=':  return left != right;  // eslint-disable-line eqeqeq
+        case '==':  return left == right;   
+        case '!=':  return left != right;   
         case '>':   return (left as number) > (right as number);
         case '<':   return (left as number) < (right as number);
         case '>=':  return (left as number) >= (right as number);

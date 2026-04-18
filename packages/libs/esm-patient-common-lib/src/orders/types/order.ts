@@ -116,7 +116,7 @@ export interface DrugOrderPost extends OrderPost {
   dosingInstructions?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+ 
 export interface TestOrderPost extends OrderPost {}
 
 export interface PatientOrderFetchResponse {
