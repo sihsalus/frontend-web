@@ -15,7 +15,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { preload } from 'swr';
 
 import CompactPatientSearchComponent from '../compact-patient-search/compact-patient-search.component';
-import { PatientSearchContext } from '../patient-search-context';
 import PatientSearchOverlay from '../patient-search-overlay/patient-search-overlay.component';
 
 import styles from './patient-search-icon.scss';

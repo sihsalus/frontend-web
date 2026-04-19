@@ -135,7 +135,6 @@ describe('Question Component', () => {
   });
 
   it('should show only date and datetime rendering types for encounterDatetime question type', async () => {
-    const user = userEvent.setup();
     renderWithFormFieldProvider(<Question checkIfQuestionIdExists={checkIfQuestionIdExists} />, {
       formField: { ...initialFormField, type: 'encounterDatetime' },
     });

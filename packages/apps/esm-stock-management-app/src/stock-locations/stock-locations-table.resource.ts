@@ -73,7 +73,6 @@ export function useStockLocationPages(filter: StockOperationFilter) {
 export const useLocationTags = () => {
   const url = `${restBaseUrl}/locationtag/`;
 
-   
   const { data, isLoading, mutate } = useSWR<{ data }, Error>(url, openmrsFetch);
   const results = data?.data?.results ? data?.data?.results : [];
   return {

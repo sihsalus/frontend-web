@@ -227,15 +227,13 @@ const FormEditorContent: React.FC<TranslationFnProps> = ({ t }) => {
 
   const renderSchemaChanges = useCallback(() => {
     resetErrorMessage();
-    {
-      try {
-        const parsedJson = parseSchemaJson(stringifiedSchema);
-        updateSchema(parsedJson);
-        setStringifiedSchema(JSON.stringify(parsedJson, null, 2));
-      } catch (e) {
-        if (e instanceof Error) {
-          setInvalidJsonErrorMessage(e.message);
-        }
+    try {
+      const parsedJson = parseSchemaJson(stringifiedSchema);
+      updateSchema(parsedJson);
+      setStringifiedSchema(JSON.stringify(parsedJson, null, 2));
+    } catch (e) {
+      if (e instanceof Error) {
+        setInvalidJsonErrorMessage(e.message);
       }
     }
   }, [stringifiedSchema, updateSchema, resetErrorMessage]);

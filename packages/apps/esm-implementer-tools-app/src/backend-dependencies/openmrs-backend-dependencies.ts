@@ -126,10 +126,7 @@ async function fetchInstalledBackendModules(): Promise<Array<BackendModule>> {
 
       // Handle error responses (e.g., authentication failures)
       if (data?.error) {
-        console.error(
-          `Backend API error when fetching modules: ${data.error.message || 'Unknown error'}`,
-          data.error,
-        );
+        console.error(`Backend API error when fetching modules: ${data.error.message || 'Unknown error'}`, data.error);
         throw new Error(
           `Backend returned error: ${data.error.message || 'Unknown error when fetching backend modules'}`,
         );

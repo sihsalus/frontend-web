@@ -108,9 +108,8 @@ describe('GroupedTimeline', () => {
 
     renderGroupedTimeline(contextWithInterpretations as FilterContextProps);
 
-     
     const highCell = screen.getByText('100').closest('div');
-     
+
     const normalCell = screen.getByText('50').closest('div');
 
     // TODO: Add tests for low interpretation

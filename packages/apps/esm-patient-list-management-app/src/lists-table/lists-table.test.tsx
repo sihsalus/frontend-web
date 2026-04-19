@@ -174,7 +174,6 @@ describe('ListsTable', () => {
 
   it('clicking the "Star list" button toggles the starred status of a patient list', async () => {
     const user = userEvent.setup();
-    const pageSize = 5;
 
     render(<ListsTable patientLists={patientLists} listType={''} headers={tableHeaders} isLoading={false} />);
 

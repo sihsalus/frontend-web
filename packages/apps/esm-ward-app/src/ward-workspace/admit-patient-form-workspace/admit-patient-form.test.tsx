@@ -1,6 +1,4 @@
- 
 import {
-  CloseWorkspaceOptions,
   type DefaultWorkspaceProps,
   showSnackbar,
   useAppContext,
@@ -16,7 +14,7 @@ import { renderWithSwr } from 'test-utils';
 import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useWardLocation from '../../hooks/useWardLocation';
-import type { DispositionType, WardPatient, WardViewContext } from '../../types';
+import type { WardPatient, WardViewContext } from '../../types';
 import { assignPatientToBed, removePatientFromBed, useAdmitPatient } from '../../ward.resource';
 
 import AdmitPatientFormWorkspace from './admit-patient-form.workspace';
