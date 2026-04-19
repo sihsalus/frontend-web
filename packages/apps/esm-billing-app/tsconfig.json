@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "mocks/*": ["./__mocks__/*"],
+      "mocks/*": ["./test-utils/mocks/*"],
       "tools/*": ["./tools/*"]
     },
     "resolveJsonModule": true,

@@ -217,7 +217,7 @@ export const uploadStudies = async (
 ): Promise<void> => {
   const uploadUrl = `${imagingUrl}/instances`;
   for (const fileName of filesNames) {
-    const filePath = path.resolve(__dirname, '../../__mocks__', fileName);
+    const filePath = path.resolve(__dirname, '../../test-utils/mocks', fileName);
     const fileBuffer = fs.readFileSync(filePath);
 
     const multipart = {
