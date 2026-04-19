@@ -187,18 +187,18 @@ const OdontogramDashboard: React.FC<OdontogramDashboardProps> = ({ patientUuid }
 
   const handleGenerateBase = useCallback(() => {
     setWorkspaceMode('base');
-    launchWorkspace('odontogram-form-workspace', { patientUuid, workspaceMode: 'base' });
+    launchWorkspace('odontologia-odontogram-form-workspace', { patientUuid, workspaceMode: 'base' });
   }, [patientUuid, setWorkspaceMode]);
 
   const handleAddClick = useCallback(() => {
     if (!hasBase) {
       // No base yet → create one
       setWorkspaceMode('base');
-      launchWorkspace('odontogram-form-workspace', { patientUuid, workspaceMode: 'base' });
+      launchWorkspace('odontologia-odontogram-form-workspace', { patientUuid, workspaceMode: 'base' });
     } else {
       // Base exists → create an attention linked to the active base
       setWorkspaceMode('attention');
-      launchWorkspace('odontogram-form-workspace', {
+      launchWorkspace('odontologia-odontogram-form-workspace', {
         patientUuid,
         workspaceMode: 'attention',
         baseEncounterUuid: activeBaseEncounterUuid,

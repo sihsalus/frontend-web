@@ -1,9 +1,9 @@
 {
-  "name": "@sihsalus/esm-odontogram-app",
+  "name": "@sihsalus/esm-odontologia-app",
   "version": "1.0.0",
   "license": "MPL-2.0",
-  "description": "Microfrontend de odontograma para O3",
-  "browser": "dist/openmrs-esm-odontogram-app.js",
+  "description": "Microfrontend de odontologia para O3",
+  "browser": "dist/openmrs-esm-odontologia-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
@@ -23,7 +23,7 @@
   "keywords": [
     "openmrs",
     "microfrontends",
-    "odontogram"
+    "odontologia"
   ],
   "publishConfig": {
     "access": "public"

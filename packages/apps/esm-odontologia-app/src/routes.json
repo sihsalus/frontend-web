@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": ">=2.2.0"
+  },
+  "pages": [
+    {
+      "component": "root",
+      "route": "odontologia"
+    }
+  ],
+  "extensions": [
+    {
+      "name": "odontologia-attention-dashboard-link",
+      "component": "odontologiaAttentionDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "meta": {
+        "slot": "patient-chart-odontologia-attention-slot",
+        "columns": 1,
+        "title": "Atención odontológica",
+        "path": "odontologia-atencion",
+        "layoutMode": "anchored"
+      }
+    },
+    {
+      "name": "odontologia-attention-dashboard",
+      "component": "odontologiaAttentionDashboard",
+      "slot": "patient-chart-odontologia-attention-slot",
+      "order": 0,
+      "online": true,
+      "offline": false
+    },
+    {
+      "name": "odontologia-odontogram-dashboard-link",
+      "component": "odontologiaOdontogramDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "meta": {
+        "slot": "patient-chart-odontologia-odontogram-slot",
+        "columns": 1,
+        "title": "Odontograma",
+        "path": "odontologia-odontograma",
+        "layoutMode": "anchored"
+      }
+    },
+    {
+      "name": "odontologia-odontogram-widget",
+      "component": "odontologiaOdontogramWidget",
+      "slot": "patient-chart-odontologia-odontogram-slot",
+      "order": 0,
+      "online": true,
+      "offline": false
+    }
+  ],
+  "workspaces": [
+    {
+      "name": "odontologia-odontogram-form-workspace",
+      "component": "odontologiaOdontogramWorkspace",
+      "type": "form",
+      "title": "odontogramWorkspaceTitle",
+      "canHide": true
+    }
+  ]
+}
