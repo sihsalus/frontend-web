@@ -1,15 +1,12 @@
 const rootConfig = require('../../jest.config.js');
+const { createAppJestConfig } = require('../../tooling/configs/jest-aliases');
 
-module.exports = {
-  ...rootConfig,
-  moduleNameMapper: {
-    ...rootConfig.moduleNameMapper,
-    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@types$': '<rootDir>/src/types.ts',
-    '^@tools/(.*)$': '<rootDir>/tools/$1',
-    '^@constants$': '<rootDir>/src/constants.ts',
-    '^@resources/(.*)$': '<rootDir>/src/resources/$1',
-    '^test-utils$': '<rootDir>/../../test-utils/index.tsx',
-    '^test-utils/(.*)$': '<rootDir>/../../test-utils/$1',
-  },
-};
+module.exports = createAppJestConfig(rootConfig, '<rootDir>', {
+  '@hooks/*': 'src/hooks/*',
+  '@types': 'src/types.ts',
+  '@tools/*': 'tools/*',
+  '@constants': 'src/constants.ts',
+  '@resources/*': 'src/resources/*',
+  'test-utils': '../../test-utils/index.tsx',
+  'test-utils/*': '../../test-utils/*',
+});

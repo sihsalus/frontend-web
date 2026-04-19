@@ -1,9 +1,6 @@
 const rootConfig = require('../../jest.config.js');
+const { createAppJestConfig } = require('../../tooling/configs/jest-aliases');
 
-module.exports = {
-  ...rootConfig,
-  moduleNameMapper: {
-    ...rootConfig.moduleNameMapper,
-    '^mocks/(.*)$': '<rootDir>/test-utils/mocks/$1',
-  },
-};
+module.exports = createAppJestConfig(rootConfig, '<rootDir>', {
+  'mocks/*': 'test-utils/mocks/*',
+});

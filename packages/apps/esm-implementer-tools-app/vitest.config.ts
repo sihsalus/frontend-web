@@ -1,12 +1,15 @@
 import { defineConfig } from 'vitest/config';
+import { createVitestAliases } from '../../tooling/configs/vitest-aliases';
 
 export default defineConfig({
   resolve: {
     alias: [
       { find: /^lodash-es$/, replacement: 'lodash' },
       { find: /^lodash-es\/(.*)$/, replacement: 'lodash/$1' },
-      { find: '@openmrs/esm-framework/src/internal', replacement: '@openmrs/esm-framework/mock' },
-      { find: /^@openmrs\/esm-framework$/, replacement: '@openmrs/esm-framework/mock' },
+      ...createVitestAliases(__dirname, {
+        '@openmrs/esm-framework/src/internal': '../../../node_modules/@openmrs/esm-framework/mock/index.js',
+        '@openmrs/esm-framework': '../../../node_modules/@openmrs/esm-framework/mock/index.js',
+      }),
     ],
   },
   test: {
