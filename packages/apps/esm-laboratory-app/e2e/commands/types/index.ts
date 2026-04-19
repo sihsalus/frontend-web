@@ -48,7 +48,7 @@ export interface Observation {
       display: string;
     };
   }>;
-  value: any;
+  value: unknown;
   obsDatetime: string;
 }
 
@@ -122,8 +122,8 @@ export interface Patient {
     birthdate: string;
     birthdateEstimated: boolean;
     dead: boolean;
-    deathDate?: any;
-    causeOfDeath?: any;
+    deathDate?: string | null;
+    causeOfDeath?: OpenmrsResource | null;
     preferredAddress: {
       address1: string;
       cityVillage: string;
@@ -132,9 +132,9 @@ export interface Patient {
       stateProvince: string;
       countyDistrict: string;
     };
-    attributes: any[];
+    attributes: Array<Record<string, unknown>>;
     voided: boolean;
-    birthtime?: any;
+    birthtime?: string | null;
     deathdateEstimated: boolean;
     resourceVersion: string;
   };

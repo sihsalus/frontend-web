@@ -58,8 +58,9 @@ const createCohortFromSearchItem = async (
 
 const SearchHistoryOptions: React.FC<SearchHistoryOptionsProps> = ({ searchItem, updateSearchHistory }) => {
   const { t } = useTranslation();
-  const [cohortName, setCohortName] = useState('');
-  const [cohortDescription, setCohortDescription] = useState('');
+  // Pre-fill en progreso: modal de save-cohort tomará name/description desde estos estados.
+  const [_cohortName, _setCohortName] = useState('');
+  const [_cohortDescription, setCohortDescription] = useState('');
   const [queryName, setQueryName] = useState('');
   const [queryDescription, setQueryDescription] = useState('');
 

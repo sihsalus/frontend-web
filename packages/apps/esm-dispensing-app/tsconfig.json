@@ -3,21 +3,17 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
       "@openmrs/*": ["./node_modules/@openmrs/*"],
       "__mocks__": ["./__mocks__"],
-      "tools": ["./tools"],
+      "tools": ["./tools"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "esnext",
+    "target": "esnext"
   }
 }

@@ -23,7 +23,7 @@ export const ComponentContext = React.createContext(null);
 
 export const openmrsComponentDecorator = jest.fn().mockImplementation(() => (component) => component);
 
-export const Extension = jest.fn().mockImplementation((props: any) => {
+export const Extension = jest.fn().mockImplementation((_props: any) => {
   return <slot />;
 });
 

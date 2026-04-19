@@ -218,7 +218,10 @@ describe('ImmunizationsDetailedSummary', () => {
     });
 
     renderWithSwr(
-      <ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={mockLaunchStartVisitPrompt} />,
+      <ImmunizationsDetailedSummary
+        patientUuid={mockPatient.uuid}
+        launchStartVisitPrompt={mockLaunchStartVisitPrompt}
+      />,
     );
 
     await waitForLoadingToFinish();
@@ -250,7 +253,10 @@ describe('ImmunizationsDetailedSummary', () => {
     });
 
     renderWithSwr(
-      <ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={mockLaunchStartVisitPrompt} />,
+      <ImmunizationsDetailedSummary
+        patientUuid={mockPatient.uuid}
+        launchStartVisitPrompt={mockLaunchStartVisitPrompt}
+      />,
     );
 
     await waitForLoadingToFinish();

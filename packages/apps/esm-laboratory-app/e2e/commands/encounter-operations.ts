@@ -25,7 +25,7 @@ export interface Observation {
       display: string;
     };
   }>;
-  value: any;
+  value: unknown;
   obsDatetime: string;
 }
 

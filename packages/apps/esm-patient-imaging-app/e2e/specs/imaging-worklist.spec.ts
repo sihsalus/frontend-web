@@ -118,7 +118,7 @@ test.describe('ImagingWorklist - Manager worklist workflow', () => {
 
     // verify the steps
     const steps = await getProcedureSteps(api, createdRequest.id);
-    (expect(steps.length).toBeGreaterThan(1), expect(steps[0].requestProcedureId).toBe(createdRequest.id));
+    expect(steps.length).toBeGreaterThan(1), expect(steps[0].requestProcedureId).toBe(createdRequest.id);
     expect(steps[0].modality).toBe('CT');
     expect(steps[0].stationName).toBe('Station-1');
 
@@ -128,7 +128,7 @@ test.describe('ImagingWorklist - Manager worklist workflow', () => {
 
     await deleteProcedureStep(api, steps[0].id.toString());
     const stepsAfterDelete = await getProcedureSteps(api, createdRequest.id);
-    (expect(stepsAfterDelete).toHaveLength(1), expect(stepsAfterDelete[0]).toBeDefined());
+    expect(stepsAfterDelete).toHaveLength(1), expect(stepsAfterDelete[0]).toBeDefined();
     expect(stepsAfterDelete[0].modality).toBe('MRI');
 
     await deleteRequest(api, createdRequest.id);

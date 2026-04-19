@@ -3,24 +3,16 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "mocks/*": [
-        "./__mocks__/*"
-      ],
-      "tools/*": [
-        "./tools/*"
-      ]
+      "mocks/*": ["./__mocks__/*"],
+      "tools/*": ["./tools/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "target": "esnext"
-  },
+  }
 }

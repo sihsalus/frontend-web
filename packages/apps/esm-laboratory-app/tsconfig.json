@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@mocks": ["./__mocks__"],
-      "@tools": ["./tools"],
+      "@tools": ["./tools"]
     },
     "resolveJsonModule": true,
     "noEmit": true,

@@ -82,7 +82,7 @@ describe('Ward bed', () => {
         bed={mockBed}
         patientCards={[
           <DefaultWardPatientCard key={mockPatientAlice.uuid} wardPatient={mockWardPatientAliceProps} />,
-          <DefaultWardPatientCard key={mockPatientBrian.uuid} wardPatient={mockWardPatientAliceProps} />,
+          <DefaultWardPatientCard key={mockPatientBrian.uuid} wardPatient={mockWardPatientBrianProps} />,
         ]}
       />,
     );
