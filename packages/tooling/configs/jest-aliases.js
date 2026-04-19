@@ -1,3 +1,5 @@
+const aliasPresets = require('./alias-presets.json');
+
 function toPosix(filePath) {
   return filePath.replace(/\\/g, '/').replace(/\/\.\//g, '/');
 }
@@ -26,6 +28,7 @@ function createAppJestConfig(rootConfig, rootDir, aliases = {}) {
 }
 
 module.exports = {
+  aliasPresets,
   createAppJestConfig,
   createJestAliasMap,
 };

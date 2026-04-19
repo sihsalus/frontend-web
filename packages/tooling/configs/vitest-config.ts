@@ -1,5 +1,6 @@
 import { defineConfig, mergeConfig, type UserConfig } from 'vitest/config';
 
+import aliasPresets from './alias-presets.json';
 import { createVitestAliases } from './vitest-aliases';
 import sharedTestAliases from './shared-test-aliases.json';
 
@@ -19,6 +20,8 @@ export function defineWorkspaceVitestConfig(config: UserConfig = {}) {
     ),
   );
 }
+
+export { aliasPresets };
 
 export function defineAppVitestConfig(
   rootDir: string,
