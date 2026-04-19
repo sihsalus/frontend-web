@@ -27,7 +27,7 @@ const OdontologiaDashboard: React.FC<OdontologiaDashboardProps> = ({ patientUuid
           </p>
         </div>
         <div className={styles.sectionBody}>
-          <OdontologiaAttentionDashboard patientUuid={patientUuid} />
+          <OdontologiaAttentionDashboard patientUuid={patientUuid} embedded />
         </div>
       </section>
 
@@ -44,7 +44,7 @@ const OdontologiaDashboard: React.FC<OdontologiaDashboardProps> = ({ patientUuid
           </p>
         </div>
         <div className={styles.sectionBody}>
-          <OdontogramDashboard patientUuid={patientUuid} />
+          <OdontogramDashboard patientUuid={patientUuid} embedded />
         </div>
       </section>
     </div>

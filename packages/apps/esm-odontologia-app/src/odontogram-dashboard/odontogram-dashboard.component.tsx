@@ -22,6 +22,7 @@ import styles from './odontogram-dashboard.scss';
 
 interface OdontogramDashboardProps {
   patientUuid: string;
+  embedded?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -157,7 +158,7 @@ const RecordSelector: React.FC<RecordSelectorProps> = ({ groups, selectedEncount
 // Dashboard
 // ---------------------------------------------------------------------------
 
-const OdontogramDashboard: React.FC<OdontogramDashboardProps> = ({ patientUuid }) => {
+const OdontogramDashboard: React.FC<OdontogramDashboardProps> = ({ patientUuid, embedded = false }) => {
   const { t } = useTranslation();
   const data = useOdontogramDataStore((s) => s.data);
   const setData = useOdontogramDataStore((s) => s.setData);
@@ -230,14 +231,25 @@ const OdontogramDashboard: React.FC<OdontogramDashboardProps> = ({ patientUuid }
 
   return (
     <div className={styles.dashboardWrapper}>
-      <CardHeader title={t('odontogram', 'Odontogram')}>
-        <RecordSelector
-          groups={groups}
-          selectedEncounterUuid={selectedEncounterUuid}
-          onSelect={handleSelectRecord}
-          onAdd={handleAddClick}
-        />
-      </CardHeader>
+      {embedded ? (
+        <div className={styles.embeddedToolbar}>
+          <RecordSelector
+            groups={groups}
+            selectedEncounterUuid={selectedEncounterUuid}
+            onSelect={handleSelectRecord}
+            onAdd={handleAddClick}
+          />
+        </div>
+      ) : (
+        <CardHeader title={t('odontogram', 'Odontogram')}>
+          <RecordSelector
+            groups={groups}
+            selectedEncounterUuid={selectedEncounterUuid}
+            onSelect={handleSelectRecord}
+            onAdd={handleAddClick}
+          />
+        </CardHeader>
+      )}
       <div className={styles.canvasWrapper}>
         <OdontogramCanvas config={adultConfig} data={data} onChange={setData} readOnly />
       </div>

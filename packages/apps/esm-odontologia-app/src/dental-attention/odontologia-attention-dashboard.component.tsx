@@ -20,6 +20,7 @@ import { deleteEncounter, getDentalAttentionUrl, type EncountersResponse } from 
 
 type OdontologiaAttentionDashboardProps = {
   patientUuid: string;
+  embedded?: boolean;
 };
 
 function getProviderName(encounter: Encounter) {
@@ -30,7 +31,7 @@ function getVisitType(encounter: Encounter) {
   return encounter.visit?.visitType?.display ?? '--';
 }
 
-const OdontologiaAttentionDashboard: React.FC<OdontologiaAttentionDashboardProps> = ({ patientUuid }) => {
+const OdontologiaAttentionDashboard: React.FC<OdontologiaAttentionDashboardProps> = ({ patientUuid, embedded = false }) => {
   const { t } = useTranslation();
   const { dentalEncounterTypeUuid, dentalFormUuid } = useConfig<OdontogramConfig>();
 
@@ -117,11 +118,19 @@ const OdontologiaAttentionDashboard: React.FC<OdontologiaAttentionDashboardProps
 
   return (
     <div>
-      <CardHeader title={t('dentalAttention', 'Atención odontológica')}>
-        <Button kind="ghost" onClick={() => launchDentalForm()}>
-          {t('add', 'Add')}
-        </Button>
-      </CardHeader>
+      {embedded ? (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 1rem 0.5rem' }}>
+          <Button kind="ghost" onClick={() => launchDentalForm()}>
+            {t('add', 'Add')}
+          </Button>
+        </div>
+      ) : (
+        <CardHeader title={t('dentalAttention', 'Atención odontológica')}>
+          <Button kind="ghost" onClick={() => launchDentalForm()}>
+            {t('add', 'Add')}
+          </Button>
+        </CardHeader>
+      )}
       <TableContainer>
         <Table size="sm" useZebraStyles aria-label={t('dentalAttention', 'Atención odontológica')}>
           <TableHead>
