@@ -20,6 +20,7 @@ const workspaceArtifactFiles = ['.eslintcache', '.tsbuildinfo', 'tsconfig.tsbuil
 
 const rootOnlyTargets = ['dist/spa', 'playwright-report', 'test-results', 'test-screenshots', '.turbo', '.eslintcache', '.tsbuildinfo'];
 const rootOnlyFiles = ['e2e/storage-state.json'];
+const rootE2EArtifactDirs = ['playwright-report', 'test-results', 'test-screenshots'];
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -85,6 +86,23 @@ function cleanRoot(removedPaths) {
 
   for (const relativeFile of rootOnlyFiles) {
     removeTarget(path.join(repoRoot, relativeFile), removedPaths);
+  }
+
+  const e2eRoot = path.join(repoRoot, 'e2e');
+  if (!fs.existsSync(e2eRoot)) {
+    return;
+  }
+
+  for (const entry of fs.readdirSync(e2eRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory()) {
+      continue;
+    }
+
+    const suiteDir = path.join(e2eRoot, entry.name);
+    for (const artifactDir of rootE2EArtifactDirs) {
+      removeTarget(path.join(suiteDir, artifactDir), removedPaths);
+    }
+    removeTarget(path.join(suiteDir, 'storageState.json'), removedPaths);
   }
 }
 

@@ -1,7 +1,7 @@
-# E2E Tests
+# Dispensing E2E Tests
 
-This directory contains an E2E test suite using the [Playwright](https://playwright.dev)
-framework.
+This directory contains the Playwright E2E suite for `@sihsalus/esm-dispensing-app`.
+It is part of the root monorepo Playwright runner and lives under `e2e/dispensing/`.
 
 ## Getting Started
 
@@ -11,10 +11,12 @@ Please ensure that you have followed the basic installation guide in the [root R
 yarn start 
 ```
 
-Then, in a separate terminal, run:
+Then, in a separate terminal, run either the full root E2E suite or only the dispensing suite:
 
 ```sh
-yarn test-e2e --headed
+yarn test:e2e --headed
+# or only dispensing
+yarn workspace @sihsalus/esm-dispensing-app test-e2e --headed
 ```
 
 By default, the test suite will run against the http://localhost:8080. You can override this by exporting `E2E_BASE_URL` environment variables beforehand:
@@ -23,16 +25,16 @@ By default, the test suite will run against the http://localhost:8080. You can o
 # Ex: Set the server URL to dev3:
 export E2E_BASE_URL=https://dev3.openmrs.org/openmrs
 
-# Run all e2e tests:
+# Run all root e2e tests:
 
 ```sh
-yarn test-e2e --headed
+yarn test:e2e --headed
 ```
 
 To run a specific test by title:
 
 ```sh
-yarn test-e2e --headed -g "title of the test"
+yarn workspace @sihsalus/esm-dispensing-app test-e2e --headed -g "title of the test"
 ```
 
 Read the [e2e testing guide](https://o3-docs.openmrs.org/docs/frontend-modules/end-to-end-testing) to learn more about End-to-End tests in this project.
@@ -57,7 +59,7 @@ before writing new test cases. The project uses the official Playwright test run
 generally, follows a very simple project structure:
 
 ```
-e2e
+e2e/dispensing
 |__ commands
 |   ^ Contains "commands" (simple reusable functions) that can be used in test cases/specs,
 |     e.g. generate a random patient.
@@ -76,7 +78,7 @@ e2e
     ^ Contains support files that requires to run e2e tests, e.g. docker compose files.
 ```
 
-When you want to write a new test case, start by creating a new spec in `./specs`.
+When you want to write a new dispensing test case, start by creating a new spec in `./specs`.
 Depending on what you want to achieve, you might want to create new fixtures and/or
 page object models. To see examples, have a look at the existing code to see how these different concepts play together.
 
