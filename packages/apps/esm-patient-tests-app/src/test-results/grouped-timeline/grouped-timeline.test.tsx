@@ -1,7 +1,7 @@
 import { showModal } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockGroupedResults } from '__mocks__';
+import { mockGroupedResults } from 'test-utils';
 import React from 'react';
 
 import FilterContext from '../filter/filter-context';

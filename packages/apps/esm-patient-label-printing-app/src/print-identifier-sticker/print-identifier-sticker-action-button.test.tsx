@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showSnackbar, useConfig, UserHasAccess } from '@openmrs/esm-framework';
-import { mockFhirPatient } from '__mocks__';
+import { mockFhirPatient } from 'test-utils';
 import { renderWithSwr } from 'test-utils';
 import { useStickerPdfPrinter } from '../hooks/useStickerPdfPrinter';
 import { configSchema, type ConfigObject } from '../config-schema';

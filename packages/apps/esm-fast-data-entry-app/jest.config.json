@@ -15,7 +15,7 @@
     "\\.(s?css)$": "identity-obj-proxy",
     "^lodash-es/(.*)$": "lodash/$1",
     "^lodash-es$": "lodash",
-    "^react-i18next$": "<rootDir>/../../__mocks__/react-i18next.js"
+    "^react-i18next$": "<rootDir>/../../test-utils/stubs/react-i18next.js"
   },
   "setupFilesAfterEnv": ["<rootDir>/src/setup-tests.ts"],
   "testEnvironment": "jsdom",

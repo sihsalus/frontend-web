@@ -7,7 +7,7 @@ import {
 } from '@openmrs/esm-framework';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockedAddressTemplate } from '__mocks__';
+import { mockedAddressTemplate } from 'test-utils';
 import React from 'react';
 import { BrowserRouter as Router, useParams } from 'react-router-dom';
 import { mockPatient } from 'test-utils';

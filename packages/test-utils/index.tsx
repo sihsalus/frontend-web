@@ -10,7 +10,7 @@ import { render, screen, waitForElementToBeRemoved, waitFor, type RenderOptions 
 import { SWRConfig } from 'swr';
 
 // ─── Re-export all shared mocks ──────────────────────────────────────────────
-export * from '../__mocks__';
+export * from './mocks';
 
 // ─── Additional patient mock not in __mocks__ ─────────────────────────────────
 export const mockPatientWithLongName = {

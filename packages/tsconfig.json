@@ -26,5 +26,5 @@
     "typeRoots": ["../node_modules/@types"]
   },
   "files": ["declarations.d.ts"],
-  "include": ["__mocks__/**/*.ts", "__mocks__/**/*.tsx"]
+  "include": ["test-utils/**/*.ts", "test-utils/**/*.tsx", "test-utils/**/*.js"]
 }

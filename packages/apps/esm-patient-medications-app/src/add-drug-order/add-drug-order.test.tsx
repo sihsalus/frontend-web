@@ -8,7 +8,7 @@ import {
   mockDrugOrderTemplateApiData,
   mockPatientDrugOrdersApiData,
   mockSessionDataResponse,
-} from '__mocks__';
+} from 'test-utils';
 import React from 'react';
 import { getByTextWithMarkup } from 'test-utils';
 

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { type FetchResponse, openmrsFetch, showSnackbar } from '@openmrs/esm-framework';
-import { mockFhirConditionsResponse, searchedCondition } from '__mocks__';
+import { mockFhirConditionsResponse, searchedCondition } from 'test-utils';
 import { getByTextWithMarkup, mockPatient } from 'test-utils';
 import { createCondition, useConditionsSearch } from './conditions.resource';
 import ConditionsForm, { type ConditionFormProps } from './conditions-form.workspace';

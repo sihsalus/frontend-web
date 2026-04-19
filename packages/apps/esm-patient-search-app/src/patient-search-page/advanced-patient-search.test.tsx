@@ -1,7 +1,7 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockAdvancedSearchResults } from '../../../../__mocks__';
+import { mockAdvancedSearchResults } from 'test-utils';
 import React from 'react';
 
 import { configSchema, type PatientSearchConfig } from '../config-schema';

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { screen, render } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, launchWorkspace2, navigate, useConfig } from '@openmrs/esm-framework';
 import { mockPatient } from 'test-utils';
-import { mockPatientFlags } from '__mocks__';
+import { mockPatientFlags } from 'test-utils';
 import { type ConfigObject, configSchema } from '../config-schema';
 import { usePatientFlags } from './hooks/usePatientFlags';
 import FlagsList from './flags-list.component';

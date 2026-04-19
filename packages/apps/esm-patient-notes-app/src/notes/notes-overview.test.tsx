@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, within } from '@testing-library/react';
 import { useConfig } from '@openmrs/esm-framework';
-import { mockVisitNotes, ConfigMock } from '__mocks__';
+import { mockVisitNotes, ConfigMock } from 'test-utils';
 import { mockPatient, patientChartBasePath, renderWithSwr } from 'test-utils';
 import { useVisitNotes } from './visit-notes.resource';
 import NotesOverview from './notes-overview.extension';

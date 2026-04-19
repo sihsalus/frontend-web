@@ -7,7 +7,7 @@ import {
   mockLocationInpatientWard,
   mockLocationMosoriot,
   mockPatientAlice,
-} from '__mocks__';
+} from 'test-utils';
 import React from 'react';
 
 import { renderWithSwr } from 'test-utils';

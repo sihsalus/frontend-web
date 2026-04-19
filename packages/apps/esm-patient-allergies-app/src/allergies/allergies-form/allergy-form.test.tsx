@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { screen, render } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
-import { mockAllergens, mockAllergicReactions, mockAllergy } from '__mocks__';
+import { mockAllergens, mockAllergicReactions, mockAllergy } from 'test-utils';
 import { mockPatient } from 'test-utils';
 import {
   type NewAllergy,
