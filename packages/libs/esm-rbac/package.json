@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "typescript": "tsc",
-    "lint": "eslint .",
+    "lint": "node ../../tooling/scripts/run-biome.js lint .",
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {

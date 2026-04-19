@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "source": true,
   "scripts": {
-    "lint": "eslint .",
+    "lint": "node ../../tooling/scripts/run-biome.js lint .",
     "test": "jest --config jest.config.js --verbose false --passWithNoTests",
     "typescript": "tsc"
   },

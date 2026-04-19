@@ -15,7 +15,7 @@
     "start": "node ./dist/cli.js",
     "test": "cross-env TZ=UTC vitest run --passWithNoTests",
     "build": "tsc",
-    "lint": "eslint ."
+    "lint": "node ../scripts/run-biome.js lint ."
   },
   "repository": {
     "type": "git",

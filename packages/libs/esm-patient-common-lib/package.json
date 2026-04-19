@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "source": true,
   "scripts": {
-    "lint": "eslint src --ext tsx,ts --fix",
+    "lint": "node ../../tooling/scripts/run-biome.js lint src",
     "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
     "typescript": "tsc"
   },

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.d.ts",
+      "**/.rspack/**",
+      "**/.cache/**",
+      "**/.turbo/**",
+      "**/coverage/**",
+      "**/form-engine-lib-runtime.js"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120,
+    "lineEnding": "lf"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noForEach": "off",
+        "useLiteralKeys": "off",
+        "useOptionalChain": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "style": {
+        "noInferrableTypes": "off",
+        "noParameterAssign": "off",
+        "noUnusedTemplateLiteral": "off",
+        "noUselessElse": "off",
+        "useDefaultParameterLast": "off",
+        "useImportType": "off",
+        "useNodejsImportProtocol": "off",
+        "useSelfClosingElements": "off",
+        "useTemplate": "off"
+      },
+      "suspicious": {
+        "noDoubleEquals": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": [
+      "CustomEvent",
+      "URL",
+      "afterAll",
+      "afterEach",
+      "atob",
+      "beforeAll",
+      "beforeEach",
+      "btoa",
+      "console",
+      "crypto",
+      "describe",
+      "document",
+      "expect",
+      "indexedDB",
+      "it",
+      "jest",
+      "module",
+      "navigator",
+      "process",
+      "require",
+      "test",
+      "TextDecoder",
+      "TextEncoder",
+      "vi",
+      "window",
+      "__dirname"
+    ],
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  }
+}

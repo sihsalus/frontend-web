@@ -11,7 +11,7 @@
     "serve": "rspack serve --mode=development",
     "build": "rspack --mode=production",
     "analyze": "rspack --mode=production --env analyze=true",
-    "lint": "eslint .",
+    "lint": "node ../../tooling/scripts/run-biome.js lint .",
     "typescript": "tsc",
     "test": "jest --config jest.config.js --color",
     "test:watch": "jest --config jest.config.js --watch --color",
@@ -86,13 +86,6 @@
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@types/webpack-env": "^1.18.5",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jest-dom": "^5.4.0",
-    "eslint-plugin-playwright": "^0.16.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-testing-library": "^6.2.2",
     "i18next": "^25.0.0",
     "i18next-parser": "^9.3.0",
     "identity-obj-proxy": "^3.0.0",
@@ -100,7 +93,6 @@
     "jest-cli": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "openmrs": "*",
-    "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-error-boundary": "^4.0.13",
@@ -110,8 +102,7 @@
     "typescript": "^5.8.3"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache --fix --max-warnings 0 --no-warn-ignored --ignore-pattern '**/*.test.ts' --ignore-pattern '**/*.test.tsx' --ignore-pattern '**/*.spec.ts' --ignore-pattern '**/*.spec.tsx'",
-    "*.{css,scss,ts,tsx}": "prettier --write --list-different"
+    "*.{css,js,json,scss,ts,tsx}": "node ../../tooling/scripts/run-biome.js check --write"
   },
   "packageManager": "yarn@4.10.3"
 }
