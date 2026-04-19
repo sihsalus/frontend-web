@@ -26,10 +26,19 @@ export const getSessionStore = vi.fn(() => ({
 export const navigate = vi.fn();
 export const clearHistory = vi.fn();
 export const showSnackbar = vi.fn();
+export const showToast = vi.fn();
 export const showModal = vi.fn();
 export const showNotification = vi.fn();
 export const getCoreTranslation = vi.fn((key: string) => key);
 export const interpolateUrl = vi.fn((url: string) => url);
+export const getSyncLifecycle = vi.fn();
+export const getExtensionInternalStore = vi.fn(() => ({
+  getState: vi.fn(() => ({ slots: {} })),
+  setState: vi.fn(),
+  subscribe: vi.fn(() => vi.fn()),
+}));
+export const isVersionSatisfied = vi.fn(() => true);
+export const translateFrom = vi.fn((value: unknown) => value);
 
 export const useConfig = vi.fn(() => ({
   provider: { type: 'basic' },
@@ -40,10 +49,50 @@ export const useConfig = vi.fn(() => ({
 
 export const useConnectivity = vi.fn(() => true);
 export const useSession = vi.fn(() => ({ authenticated: false, user: null, sessionLocation: null }));
+export const useStore = vi.fn((store) => (typeof store?.getState === 'function' ? store.getState() : {}));
+export const useAssignedExtensions = vi.fn(() => []);
+
+export const createGlobalStore = vi.fn(<T,>(initialState: T) => {
+  let state = initialState;
+  const listeners = new Set<() => void>();
+
+  return {
+    getState: () => state,
+    setState: (update: Partial<T> | ((prev: T) => T)) => {
+      state = typeof update === 'function' ? update(state) : ({ ...state, ...update } as T);
+      listeners.forEach((listener) => listener());
+    },
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+  };
+});
+
+export const Type = {
+  String: 'string',
+  Number: 'number',
+  Boolean: 'boolean',
+  Object: 'object',
+  Array: 'array',
+  UUID: 'uuid',
+  ConceptUuid: 'concept-uuid',
+};
 
 export const ArrowRightIcon = () => <span />;
+export const AddIcon = () => <span />;
+export const ChevronDownIcon = () => <span />;
+export const ChevronUpIcon = () => <span />;
+export const CloseIcon = () => <span />;
+export const EditIcon = () => <span />;
 export const LocationIcon = () => <span />;
 export const PasswordIcon = () => <span />;
+export const ResetIcon = () => <span />;
+export const SaveIcon = () => <span />;
+export const ToolsIcon = () => <span />;
+export const TrashCanIcon = () => <span />;
+
+export const UserHasAccess = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
 
 export const LocationPicker = ({ onChange }: { onChange?: (uuid: string) => void }) => (
   <div>
