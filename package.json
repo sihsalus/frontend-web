@@ -13,7 +13,7 @@
     "start": "node packages/tooling/scripts/start-dev.js",
     "serve": "turbo run build --filter=openmrs --filter='./packages/apps/*' && openmrs start",
     "serve:prod": "turbo run build && node packages/tooling/scripts/assemble-importmap.js && openmrs start",
-    "test": "cross-env TZ=UTC turbo run test",
+    "test": "cross-env TZ=UTC turbo run test --concurrency=1",
     "test:coverage": "turbo run test -- --coverage",
     "test:watch": "turbo run test:watch",
     "test:e2e": "playwright test",

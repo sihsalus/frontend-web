@@ -1,4 +1,3 @@
-import type { UserConfig as ViteUserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 import aliasPresets from './alias-presets.json';
@@ -6,8 +5,15 @@ import { createVitestAliases } from './vitest-aliases';
 import sharedTestAliases from './shared-test-aliases.json';
 
 type AliasMap = Record<string, string>;
+type VitestConfigLike = {
+  resolve?: {
+    alias?: Array<{ find: RegExp; replacement: string }>;
+  };
+  test?: Record<string, unknown>;
+  [key: string]: unknown;
+};
 
-export function defineWorkspaceVitestConfig(config: ViteUserConfig = {}) {
+export function defineWorkspaceVitestConfig(config: VitestConfigLike = {}) {
   return defineConfig(
     mergeConfig(
       {
@@ -29,7 +35,7 @@ export function defineAppVitestConfig(
   options: {
     aliases?: AliasMap;
     extraAliases?: Array<{ find: RegExp; replacement: string }>;
-    test?: ViteUserConfig['test'];
+    test?: VitestConfigLike['test'];
   } = {},
 ) {
   const { aliases = {}, extraAliases = [], test = {} } = options;

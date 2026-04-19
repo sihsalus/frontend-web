@@ -59,8 +59,8 @@ describe('QueueFields', () => {
 
   it('renders the form fields and returns the set values', async () => {
     const user = userEvent.setup();
-    let onSubmit: (visit: Visit) => Promise<any> = null;
-    const setOnSubmit = (callback) => {
+    let onSubmit: ((visit: Visit) => Promise<any>) | undefined;
+    const setOnSubmit = (callback: (visit: Visit) => Promise<any>) => {
       onSubmit = callback;
     };
     render(<QueueFields setOnSubmit={setOnSubmit} />);
@@ -70,12 +70,14 @@ describe('QueueFields', () => {
 
     const queueUuid = 'e2ec9cf0-ec38-4d2b-af6c-59c82fa30b90';
     const serviceSelect = screen.getByLabelText('Select a service').closest('select');
+    expect(serviceSelect).not.toBeNull();
     await user.selectOptions(serviceSelect, queueUuid);
 
     expect(screen.getByText('Priority')).toBeInTheDocument();
     expect(screen.getByText('High')).toBeInTheDocument();
 
-    await onSubmit(mockVisitAlice);
+    expect(onSubmit).toBeDefined();
+    await onSubmit!(mockVisitAlice);
     expect(mockPostQueueEntry).toHaveBeenCalledWith(
       mockVisitAlice.uuid,
       queueUuid, // queueUuid
