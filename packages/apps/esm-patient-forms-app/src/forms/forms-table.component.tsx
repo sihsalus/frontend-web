@@ -15,6 +15,8 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { Form } from '../types';
+
 import styles from './forms-table.scss';
 
 interface FormsTableProps {
@@ -28,10 +30,11 @@ interface FormsTableProps {
     formName: string;
     formUuid: string;
     encounterUuid: string;
+    form: Form;
   }>;
   isTablet: boolean;
   handleSearch: (search: string) => void;
-  handleFormOpen: (formUuid: string, encounterUuid: string, formName: string) => void;
+  handleFormOpen: (form: Form, encounterUuid?: string) => void;
 }
 
 const FormsTable = ({ tableHeaders, tableRows, isTablet, handleSearch, handleFormOpen }: FormsTableProps) => {
@@ -69,9 +72,7 @@ const FormsTable = ({ tableHeaders, tableRows, isTablet, handleSearch, handleFor
                       <TableCell key={row.cells[0].id}>
                         <Link
                           style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            handleFormOpen(row.id, '', tableRows[i].formName);
-                          }}
+                          onClick={() => handleFormOpen(tableRows[i].form, null)}
                           role="presentation"
                           className={styles.formName}
                         >
@@ -79,7 +80,7 @@ const FormsTable = ({ tableHeaders, tableRows, isTablet, handleSearch, handleFor
                         </Link>
                       </TableCell>
                       <TableCell className={styles.editCell}>
-                        <label>{row.cells[1].value ?? t('never', 'Never')}</label>
+                        <span>{row.cells[1].value ?? t('never', 'Never')}</span>
                       </TableCell>
                     </TableRow>
                   ))}

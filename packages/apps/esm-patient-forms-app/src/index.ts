@@ -6,12 +6,9 @@ import {
   syncAllDynamicOfflineData,
 } from '@openmrs/esm-framework';
 
-import clinicalFormActionMenuComponent from './clinical-form-action-button.component';
+import clinicalFormActionMenuComponent from './clinical-form-action-menu.component';
 import { configSchema } from './config-schema';
 import { setupDynamicFormDataHandler, setupPatientFormSync } from './offline';
-import offlineFormOverviewCardComponent from './offline-forms/offline-forms-overview-card.component';
-import offlineFormsComponent from './offline-forms/offline-forms.component';
-import OfflineToolsNavLink from './offline-forms/offline-tools-nav-link.component';
 
 const moduleName = '@sihsalus/esm-patient-forms-app';
 
@@ -38,7 +35,6 @@ export const patientHtmlFormEntryWorkspace = getAsyncLifecycle(
   options,
 );
 
-// t('clinicalForms', 'Clinical forms')
 export const clinicalFormsWorkspace = getAsyncLifecycle(() => import('./forms/forms-dashboard.workspace'), options);
 export const clinicalFormsWorkspaceExtension = getAsyncLifecycle(
   () => import('./forms/forms-dashboard.workspace'),
@@ -47,11 +43,22 @@ export const clinicalFormsWorkspaceExtension = getAsyncLifecycle(
 
 export const clinicalFormActionMenu = getSyncLifecycle(clinicalFormActionMenuComponent, options);
 
-export const offlineFormOverviewCard = getSyncLifecycle(offlineFormOverviewCardComponent, options);
-
-export const offlineFormsNavLink = getSyncLifecycle(
-  () => OfflineToolsNavLink({ page: 'forms', title: 'Offline forms' }),
+export const clinicalFormActionButton = getAsyncLifecycle(
+  () => import('./clinical-form-action-button.component'),
   options,
 );
 
-export const offlineForms = getSyncLifecycle(offlineFormsComponent, options);
+export const offlineFormOverviewCard = getAsyncLifecycle(
+  () => import('./offline-forms/offline-forms-overview-card.component'),
+  options,
+);
+
+export const offlineFormsNavLink = getAsyncLifecycle(
+  () =>
+    import('./offline-forms/offline-tools-nav-link.component').then(
+      (mod) => mod.default({ page: 'forms', title: 'Offline forms' }) as never,
+    ),
+  options,
+);
+
+export const offlineForms = getAsyncLifecycle(() => import('./offline-forms/offline-forms.component'), options);

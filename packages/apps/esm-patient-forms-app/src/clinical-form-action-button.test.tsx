@@ -1,61 +1,39 @@
-import { ActionMenuButton, useLayoutType, useWorkspaces } from '@openmrs/esm-framework';
-import { useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
+import { ActionMenuButton2 } from '@openmrs/esm-framework';
+import { useStartVisitIfNeeded } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import ClinicalFormActionButton from './clinical-form-action-button.component';
 
-const mockUseLayoutType = jest.mocked(useLayoutType);
-const mockUseWorkspaces = useWorkspaces as jest.Mock;
-const mockActionMenuButton = jest.mocked(ActionMenuButton);
-const mockUseLaunchWorkspaceRequiringVisit = useLaunchWorkspaceRequiringVisit as jest.Mock;
+const mockActionMenuButton2 = jest.mocked(ActionMenuButton2);
+const mockUseStartVisitIfNeeded = useStartVisitIfNeeded as jest.Mock;
 
-mockActionMenuButton.mockImplementation(({ handler, label, tagContent }) => (
-  <button onClick={handler}>
-    {tagContent} {label}
-  </button>
-));
-
-mockUseWorkspaces.mockImplementation(() => ({
-  active: true,
-  windowState: 'normal',
-  workspaces: [
-    {
-      canHide: false,
-      name: 'clinical-forms-workspace',
-      title: 'Clinical forms',
-      preferredWindowSize: 'normal',
-      type: 'form',
-    },
-  ],
-  workspaceWindowState: 'normal',
-  prompt: null,
-}));
+mockActionMenuButton2.mockImplementation(({ label }) => <button>{label}</button>);
 
 jest.mock('@openmrs/esm-patient-common-lib', () => {
   const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
 
   return {
     ...originalModule,
-    useLaunchWorkspaceRequiringVisit: jest.fn(),
+    useStartVisitIfNeeded: jest.fn(),
   };
 });
 
 beforeEach(() => {
-  mockUseLaunchWorkspaceRequiringVisit.mockReturnValue(jest.fn());
+  mockUseStartVisitIfNeeded.mockReturnValue(jest.fn().mockResolvedValue(true));
 });
 
-test('should display clinical form action button on tablet view', () => {
-  mockUseLayoutType.mockReturnValue('tablet');
+test('should display clinical form action button', () => {
+  render(
+    <ClinicalFormActionButton
+      groupProps={{
+        patientUuid: 'patient-uuid',
+        patient: null,
+        visitContext: null,
+        mutateVisitContext: null,
+      }}
+    />,
+  );
 
-  render(<ClinicalFormActionButton />);
-  expect(screen.getByRole('button', { name: /Clinical forms/i })).toBeInTheDocument();
-});
-
-test('should display clinical form action button on desktop view', () => {
-  mockUseLayoutType.mockReturnValue('small-desktop');
-
-  render(<ClinicalFormActionButton />);
-  const clinicalActionButton = screen.getByRole('button', { name: /Form/i });
-  expect(clinicalActionButton).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /clinical forms/i })).toBeInTheDocument();
 });

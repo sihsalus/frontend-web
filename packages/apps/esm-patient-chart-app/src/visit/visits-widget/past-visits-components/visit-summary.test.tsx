@@ -1,4 +1,4 @@
-import { ExtensionSlot, getConfig, getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { ExtensionSlot, getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { visitOverviewDetailMockData, visitOverviewDetailMockDataNotEmpty } from '__mocks__';
@@ -10,7 +10,6 @@ import { type ChartConfig, esmPatientChartSchema } from '../../../config-schema'
 import VisitSummary from './visit-summary.component';
 
 const mockExtensionSlot = ExtensionSlot as jest.Mock;
-const mockGetConfig = jest.mocked(getConfig);
 const mockUseConfig = jest.mocked(useConfig<ChartConfig>);
 const mockVisit = visitOverviewDetailMockData.data.results[0];
 
@@ -26,12 +25,10 @@ describe('VisitSummary', () => {
 
   it('should display empty state for notes, test and medication summary', async () => {
     const user = userEvent.setup();
-    mockGetConfig.mockResolvedValue({ htmlFormEntryForms: [] });
 
     render(<VisitSummary patientUuid={mockPatient.id} visit={mockVisit} />);
-    await waitFor(() => expect(mockGetConfig).toHaveBeenCalled());
+    await waitFor(() => expect(screen.getByText(/^Diagnoses$/i)).toBeInTheDocument());
 
-    expect(screen.getByText(/^Diagnoses$/i)).toBeInTheDocument();
     expect(screen.getByText(/^No diagnoses found$/)).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Medication/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Tests/i })).toBeInTheDocument();
@@ -63,7 +60,7 @@ describe('VisitSummary', () => {
     const mockVisit = visitOverviewDetailMockDataNotEmpty.data.results[0];
 
     render(<VisitSummary patientUuid={mockPatient.id} visit={mockVisit} />);
-    await waitFor(() => expect(mockGetConfig).toHaveBeenCalled());
+    await waitFor(() => expect(screen.getByText(/^diagnoses$/i)).toBeInTheDocument());
 
     const malariaTag = screen.getByText(/^malaria, confirmed$/i);
     const hivTag = screen.getByText(/human immunodeficiency virus \(hiv\)/i);
@@ -83,9 +80,8 @@ describe('VisitSummary', () => {
     const mockVisit = visitOverviewDetailMockDataNotEmpty.data.results[0];
 
     render(<VisitSummary patientUuid={mockPatient.id} visit={mockVisit} />);
-    await waitFor(() => expect(mockGetConfig).toHaveBeenCalled());
+    await waitFor(() => expect(screen.getByText(/^Diagnoses$/i)).toBeInTheDocument());
 
-    expect(screen.getByText(/^Diagnoses$/i)).toBeInTheDocument();
     expect(screen.getByText(/^Malaria, confirmed$/)).toBeInTheDocument();
     expect(screen.getByText(/HUMAN IMMUNODEFICIENCY VIRUS/i)).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Medication/i })).toBeInTheDocument();

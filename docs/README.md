@@ -4,7 +4,8 @@ This directory contains architecture documentation and decision records for the 
 
 ## Contents
 
-- ADRs — Architecture Decision Records (pending, not yet created)
+- `adrs/` — Architecture Decision Records
+- `forms/` — Form stack migration and ownership docs
 
 ## Architecture Overview
 

@@ -1,4 +1,5 @@
 import {
+  launchWorkspace2,
   makeUrl,
   messageOmrsServiceWorker,
   omrsOfflineCachingStrategyHttpHeaderName,
@@ -7,9 +8,9 @@ import {
   setupDynamicOfflineDataHandler,
   setupOfflineSync,
   type SyncProcessOptions,
+  type SyncItem,
   type Visit,
 } from '@openmrs/esm-framework';
-import { launchFormEntry } from '@openmrs/esm-patient-common-lib';
 import escapeRegExp from 'lodash-es/escapeRegExp';
 
 /** Types inlined from the former esm-form-entry-app (Angular) to remove the cross-package dependency. */
@@ -34,7 +35,8 @@ interface PersonUpdate {
 
 interface PatientFormSyncItemContent {
   _id: string;
-  formSchemaUuid: string;
+  form?: Pick<Form, 'uuid'> & Partial<Form>;
+  formSchemaUuid?: string;
   encounter: Partial<{ uuid: string; encounterDatetime: string }>;
   _payloads: {
     encounterCreate?: EncounterCreate;
@@ -50,14 +52,48 @@ const patientFormSyncItem = 'patient-form';
 export async function setupPatientFormSync() {
   setupOfflineSync<PatientFormSyncItemContent>(patientFormSyncItem, ['visit'], syncPatientForm, {
     onBeginEditSyncItem(syncItem) {
-      launchFormEntry(
-        syncItem.content.formSchemaUuid,
-        syncItem.descriptor.patientUuid,
-        syncItem.content._id,
-        'Form Entry',
-      );
+      launchEditPatientFormSyncItem(syncItem);
     },
   });
+}
+
+function launchEditPatientFormSyncItem(syncItem: SyncItem<PatientFormSyncItemContent>) {
+  const groupProps = {
+    patient: null,
+    patientUuid: syncItem.descriptor.patientUuid,
+    visitContext: null,
+    mutateVisitContext: null,
+  };
+  const form =
+    syncItem.content.form ??
+    (syncItem.content.formSchemaUuid ? ({ uuid: syncItem.content.formSchemaUuid } satisfies Pick<Form, 'uuid'>) : null);
+
+  if (form?.uuid) {
+    void launchWorkspace2(
+      'patient-form-entry-workspace',
+      {
+        form: normalizeSyncItemForm(form),
+        encounterUuid: syncItem.content._id,
+      },
+      null,
+      groupProps,
+    );
+    return;
+  }
+}
+
+function normalizeSyncItemForm(form: Pick<Form, 'uuid'> & Partial<Form>): Form {
+  return {
+    uuid: form.uuid,
+    name: form.name ?? form.display ?? 'Clinical form',
+    display: form.display ?? form.name ?? 'Clinical form',
+    version: form.version ?? '1',
+    published: form.published ?? true,
+    retired: form.retired ?? false,
+    resources: form.resources ?? [],
+    encounterType: form.encounterType,
+    formCategory: form.formCategory,
+  };
 }
 
 async function syncPatientForm(

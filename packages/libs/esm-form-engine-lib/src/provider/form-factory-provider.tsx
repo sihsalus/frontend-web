@@ -92,6 +92,21 @@ export const FormFactoryProvider: React.FC<FormFactoryProviderProps> = ({
   const postSubmissionHandlers = usePostSubmissionActions(formJson.postSubmissionActions);
 
   const abortControllerRef = useRef<AbortController>(new AbortController());
+  const submitHandlersRef = useRef({
+    handleClose,
+    hideFormCollapseToggle,
+    onSubmit,
+    onError,
+    patient,
+    postSubmissionHandlers,
+    sessionMode,
+    setIsSubmitting,
+    t,
+    validateAllForms: () => ({
+      forms: [] as Array<FormContextProps>,
+      isValid: false,
+    }),
+  });
 
   const registerForm = useCallback((formId: string, isSubForm: boolean, context: FormContextProps) => {
     if (isSubForm) {
@@ -131,67 +146,21 @@ export const FormFactoryProvider: React.FC<FormFactoryProviderProps> = ({
   }, [isValidating, validateAllForms]);
 
   useEffect(() => {
-    const abortController = abortControllerRef.current;
-    if (isSubmitting) {
-      // TODO: find a dynamic way of managing the form processing order
-      // validate all forms
-      const { forms, isValid } = validateAllForms();
-      if (isValid) {
-        Promise.all(forms.map((formContext) => formContext.processor.processSubmission(formContext, abortController)))
-          .then(async (results) => {
-            setIsSubmitting(false);
-            if (sessionMode === 'edit') {
-              showSnackbar({
-                title: t('updatedRecord', 'Record updated'),
-                subtitle: t('updatedRecordDescription', 'The patient encounter was updated'),
-                kind: 'success',
-                isLowContrast: true,
-              });
-            } else {
-              showSnackbar({
-                title: t('submittedForm', 'Form submitted'),
-                subtitle: t('submittedFormDescription', 'Form submitted successfully'),
-                kind: 'success',
-                isLowContrast: true,
-              });
-            }
-            if (postSubmissionHandlers) {
-              await processPostSubmissionActions(postSubmissionHandlers, results, patient, sessionMode, t);
-            }
-            hideFormCollapseToggle();
-            if (onSubmit) {
-              onSubmit(results);
-            } else {
-              handleClose();
-            }
-          })
-          .catch((errorObject: Error | SnackbarDescriptor) => {
-            setIsSubmitting(false);
-            onError?.(errorObject);
-            if (errorObject instanceof FormSubmissionError) {
-              showSnackbar(errorObject.descriptor);
-            } else if (errorObject instanceof Error) {
-              showSnackbar({
-                title: t('errorProcessingFormSubmission', 'Error processing form submission'),
-                kind: 'error',
-                subtitle: errorObject.message,
-                isLowContrast: false,
-              });
-            } else {
-              showSnackbar(errorObject);
-            }
-          });
-      } else {
-        setIsSubmitting(false);
-      }
-    }
-    return (): void => {
-      abortController.abort();
+    submitHandlersRef.current = {
+      handleClose,
+      hideFormCollapseToggle,
+      onSubmit,
+      onError,
+      patient,
+      postSubmissionHandlers,
+      sessionMode,
+      setIsSubmitting,
+      t,
+      validateAllForms,
     };
   }, [
     handleClose,
     hideFormCollapseToggle,
-    isSubmitting,
     onError,
     onSubmit,
     patient,
@@ -201,6 +170,95 @@ export const FormFactoryProvider: React.FC<FormFactoryProviderProps> = ({
     t,
     validateAllForms,
   ]);
+
+  useEffect(() => {
+    return (): void => {
+      abortControllerRef.current.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isSubmitting) {
+      return;
+    }
+
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
+    // TODO: find a dynamic way of managing the form processing order
+    // validate all forms
+    const { forms, isValid } = submitHandlersRef.current.validateAllForms();
+    if (!isValid) {
+      submitHandlersRef.current.setIsSubmitting(false);
+      return;
+    }
+
+    Promise.all(forms.map((formContext) => formContext.processor.processSubmission(formContext, abortController)))
+      .then(async (results) => {
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        const {
+          handleClose,
+          hideFormCollapseToggle,
+          onSubmit,
+          patient,
+          postSubmissionHandlers,
+          sessionMode,
+          setIsSubmitting,
+          t,
+        } = submitHandlersRef.current;
+
+        setIsSubmitting(false);
+        if (sessionMode === 'edit') {
+          showSnackbar({
+            title: t('updatedRecord', 'Record updated'),
+            subtitle: t('updatedRecordDescription', 'The patient encounter was updated'),
+            kind: 'success',
+            isLowContrast: true,
+          });
+        } else {
+          showSnackbar({
+            title: t('submittedForm', 'Form submitted'),
+            subtitle: t('submittedFormDescription', 'Form submitted successfully'),
+            kind: 'success',
+            isLowContrast: true,
+          });
+        }
+        if (postSubmissionHandlers) {
+          await processPostSubmissionActions(postSubmissionHandlers, results, patient, sessionMode, t);
+        }
+        hideFormCollapseToggle();
+        if (onSubmit) {
+          onSubmit(results);
+        } else {
+          handleClose();
+        }
+      })
+      .catch((errorObject: Error | SnackbarDescriptor) => {
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        const { onError, setIsSubmitting, t } = submitHandlersRef.current;
+
+        setIsSubmitting(false);
+        onError?.(errorObject);
+        if (errorObject instanceof FormSubmissionError) {
+          showSnackbar(errorObject.descriptor);
+        } else if (errorObject instanceof Error) {
+          showSnackbar({
+            title: t('errorProcessingFormSubmission', 'Error processing form submission'),
+            kind: 'error',
+            subtitle: errorObject.message,
+            isLowContrast: false,
+          });
+        } else {
+          showSnackbar(errorObject);
+        }
+      });
+  }, [isSubmitting]);
 
   return (
     <FormFactoryProviderContext.Provider

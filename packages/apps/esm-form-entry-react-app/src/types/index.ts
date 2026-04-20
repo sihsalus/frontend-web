@@ -164,16 +164,3 @@ export interface PersonUpdate {
   uuid?: string;
   attributes: Array<{ attributeType: string; value: string }>;
 }
-
-/**
- * Content stored in the sync queue for offline form submissions.
- */
-export interface PatientFormSyncItemContent {
-  _id: string;
-  formSchemaUuid: string;
-  encounter: Partial<Encounter>;
-  _payloads: {
-    encounterCreate?: EncounterCreate;
-    personUpdate?: PersonUpdate;
-  };
-}

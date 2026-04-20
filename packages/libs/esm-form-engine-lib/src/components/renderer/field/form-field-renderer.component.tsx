@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { ToastNotification } from '@carbon/react';
 import { Controller, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useConfig } from '@openmrs/esm-framework';
+import { getConfigStore } from '@openmrs/esm-config';
 import {
   type FormField,
   type FormFieldInputComponent,
@@ -51,19 +51,16 @@ export const FormFieldRenderer = ({
   const [warnings, setWarnings] = useState<ValidationResult[]>([]);
   const [historicalValue, setHistoricalValue] = useState<ValueAndDisplay | null>(null);
   const context = useFormProviderContext();
-
-  let hideUnansweredQuestionsInReadonlyForms = false;
-  try {
-    const config = useConfig<ExternalFormEngineConfig>({
-      externalModuleName: '@openmrs/esm-form-engine-app',
-    });
-    hideUnansweredQuestionsInReadonlyForms = config?.hideUnansweredQuestionsInReadonlyForms ?? false;
-  } catch (error: unknown) {
-    console.warn(
-      'Failed to load @openmrs/esm-form engine-app config - using hideUnansweredQuestionsInReadonlyForms=false (empty fields will be visible in readonly mode): ',
-      toError(error),
-    );
-  }
+  const formEngineConfigStore = useMemo(() => getConfigStore('@openmrs/esm-form-engine-app'), []);
+  const formEngineConfigState = useSyncExternalStore(
+    formEngineConfigStore.subscribe,
+    formEngineConfigStore.getState,
+    formEngineConfigStore.getInitialState,
+  );
+  const hideUnansweredQuestionsInReadonlyForms =
+    (formEngineConfigState.loaded &&
+      (formEngineConfigState.config as ExternalFormEngineConfig | null)?.hideUnansweredQuestionsInReadonlyForms) ??
+    false;
 
   const {
     methods: { control, getValues, getFieldState },

@@ -1,6 +1,6 @@
 import { getFullSynchronizationItems, queueSynchronizationItem, type SyncItem } from '@openmrs/esm-framework';
 
-import type { PatientFormSyncItemContent } from '../types';
+import type { PatientFormSyncItemContent } from './types';
 
 // The synchronization handler which actually synchronizes the queued items lives in `esm-patient-forms-app`.
 // See that module's offline code for the synchronization logic.

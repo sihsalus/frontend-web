@@ -13,11 +13,12 @@ import {
   Tile,
   Button,
 } from '@carbon/react';
-import { EditIcon, formatDatetime, useConfig, useLayoutType, usePagination } from '@openmrs/esm-framework';
+import { EditIcon, formatDatetime, useLayoutType, usePagination } from '@openmrs/esm-framework';
 import {
   EmptyDataIllustration,
   PatientChartPagination,
-  launchFormEntryOrHtmlForms,
+  launchPatientWorkspace,
+  launchStartVisitPrompt,
   useVisitOrOfflineVisit,
 } from '@openmrs/esm-patient-common-lib';
 import classNames from 'classnames';
@@ -26,7 +27,6 @@ import first from 'lodash-es/first';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type ConfigObject } from '../config-schema';
 import { type CompletedFormInfo } from '../types';
 
 import styles from './form-view.scss';
@@ -55,12 +55,9 @@ const FormView: React.FC<FormViewProps> = ({
   mutateForms,
 }) => {
   const { t } = useTranslation();
-  const config = useConfig() as ConfigObject;
   const isTablet = useLayoutType() === 'tablet';
-  const htmlFormEntryForms = config.htmlFormEntryForms;
   const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
   const [searchTerm, setSearchTerm] = useState('');
-  const currentVisitTypeUuid = currentVisit?.visitType?.uuid;
 
   const filteredForms = useMemo(() => {
     if (!searchTerm) {
@@ -102,6 +99,23 @@ const FormView: React.FC<FormViewProps> = ({
         };
       }),
     [results],
+  );
+
+  const launchFormWorkspace = React.useCallback(
+    (formInfo: CompletedFormInfo, encounterUuid?: string) => {
+      if (!encounterUuid && !currentVisit) {
+        launchStartVisitPrompt();
+        return;
+      }
+
+      launchPatientWorkspace('patient-form-entry-workspace', {
+        workspaceTitle: formInfo.form.display ?? formInfo.form.name,
+        form: formInfo.form,
+        encounterUuid,
+        handlePostResponse: () => mutateForms?.(),
+      });
+    },
+    [currentVisit, mutateForms],
   );
 
   if (!forms?.length) {
@@ -168,20 +182,7 @@ const FormView: React.FC<FormViewProps> = ({
                         <TableRow key={row.id}>
                           <TableCell>
                             <label
-                              onClick={() =>
-                                launchFormEntryOrHtmlForms(
-                                  htmlFormEntryForms,
-                                  patientUuid,
-                                  row.id,
-                                  currentVisit?.uuid,
-                                  undefined,
-                                  results[index].form.display ?? results[index].form.name,
-                                  currentVisitTypeUuid,
-                                  currentVisit?.startDatetime,
-                                  currentVisit?.stopDatetime,
-                                  mutateForms,
-                                )
-                              }
+                              onClick={() => launchFormWorkspace(results[index])}
                               role="presentation"
                               className={styles.formName}
                             >
@@ -191,18 +192,7 @@ const FormView: React.FC<FormViewProps> = ({
                           <TableCell>
                             <label
                               onClick={() =>
-                                launchFormEntryOrHtmlForms(
-                                  htmlFormEntryForms,
-                                  patientUuid,
-                                  row.id,
-                                  currentVisit?.uuid,
-                                  first(results[index].associatedEncounters)?.uuid,
-                                  results[index].form.display ?? results[index].form.name,
-                                  currentVisitTypeUuid,
-                                  currentVisit?.startDatetime,
-                                  currentVisit?.stopDatetime,
-                                  mutateForms,
-                                )
+                                launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)
                               }
                               role="presentation"
                               className={styles.formName}
@@ -217,18 +207,7 @@ const FormView: React.FC<FormViewProps> = ({
                                 renderIcon={EditIcon}
                                 iconDescription={t('editForm', 'Edit form')}
                                 onClick={() =>
-                                  launchFormEntryOrHtmlForms(
-                                    htmlFormEntryForms,
-                                    patientUuid,
-                                    row.id,
-                                    currentVisit?.uuid,
-                                    first(results[index].associatedEncounters)?.uuid,
-                                    results[index].form.display ?? results[index].form.name,
-                                    currentVisitTypeUuid,
-                                    currentVisit?.startDatetime,
-                                    currentVisit?.stopDatetime,
-                                    mutateForms,
-                                  )
+                                  launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)
                                 }
                                 size={isTablet ? 'lg' : 'sm'}
                                 kind="ghost"

@@ -5,16 +5,16 @@ import { debounce } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { CompletedFormInfo } from '../types';
+import type { CompletedFormInfo, Form } from '../types';
 
 import styles from './forms-list.scss';
 import FormsTable from './forms-table.component';
 
 export type FormsListProps = {
-  completedForms?: Array<CompletedFormInfo>;
+  forms?: Array<CompletedFormInfo>;
   error?: unknown;
   sectionName?: string;
-  handleFormOpen: (formUuid: string, encounterUuid: string, formName: string) => void;
+  handleFormOpen: (form: Form, encounterUuid?: string) => void;
 };
 
 /*
@@ -22,7 +22,7 @@ export type FormsListProps = {
  * t('forms', 'Forms')
  */
 
-const FormsList: React.FC<FormsListProps> = ({ completedForms, error, sectionName = 'forms', handleFormOpen }) => {
+const FormsList: React.FC<FormsListProps> = ({ forms, error, sectionName, handleFormOpen }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const isTablet = useLayoutType() === 'tablet';
@@ -40,14 +40,14 @@ const FormsList: React.FC<FormsListProps> = ({ completedForms, error, sectionNam
 
   const filteredForms = useMemo(() => {
     if (!searchTerm) {
-      return completedForms;
+      return forms;
     }
 
     return fuzzy
-      .filter(searchTerm, completedForms, { extract: (formInfo) => formInfo.form.display ?? formInfo.form.name })
+      .filter(searchTerm, forms, { extract: (formInfo) => formInfo.form.display ?? formInfo.form.name })
       .sort((r1, r2) => r1.score - r2.score)
       .map((result) => result.original);
-  }, [completedForms, searchTerm]);
+  }, [forms, searchTerm]);
 
   const tableHeaders = useMemo(() => {
     return [
@@ -71,47 +71,36 @@ const FormsList: React.FC<FormsListProps> = ({ completedForms, error, sectionNam
           formName: formData.form.display ?? formData.form.name,
           formUuid: formData.form.uuid,
           encounterUuid: formData?.associatedEncounters[0]?.uuid,
+          form: formData.form,
         };
       }) ?? [],
     [filteredForms],
   );
 
-  if (!completedForms && !error) {
+  if (!forms && !error) {
     return <DataTableSkeleton role="progressbar" />;
   }
 
-  if (completedForms?.length === 0) {
+  if (forms?.length === 0) {
     return <></>;
   }
 
-  if (sectionName === 'forms') {
-    return (
-      <ResponsiveWrapper>
-        <FormsTable
-          tableHeaders={tableHeaders}
-          tableRows={tableRows}
-          isTablet={isTablet}
-          handleSearch={handleSearch}
-          handleFormOpen={handleFormOpen}
-        />
-      </ResponsiveWrapper>
-    );
-  } else {
-    return (
-      <ResponsiveWrapper>
+  return (
+    <ResponsiveWrapper>
+      {sectionName && (
         <div className={isTablet ? styles.tabletHeading : styles.desktopHeading}>
           <h4>{t(sectionName)}</h4>
         </div>
-        <FormsTable
-          tableHeaders={tableHeaders}
-          tableRows={tableRows}
-          isTablet={isTablet}
-          handleSearch={handleSearch}
-          handleFormOpen={handleFormOpen}
-        />
-      </ResponsiveWrapper>
-    );
-  }
+      )}
+      <FormsTable
+        tableHeaders={tableHeaders}
+        tableRows={tableRows}
+        isTablet={isTablet}
+        handleSearch={handleSearch}
+        handleFormOpen={handleFormOpen}
+      />
+    </ResponsiveWrapper>
+  );
 };
 
 export default FormsList;

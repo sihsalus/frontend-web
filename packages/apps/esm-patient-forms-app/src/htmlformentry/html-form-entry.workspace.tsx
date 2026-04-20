@@ -1,15 +1,13 @@
 import { usePatient } from '@openmrs/esm-framework';
-import {
-  type DefaultPatientWorkspaceProps,
-  type FormEntryProps,
-  useVisitOrOfflineVisit,
-} from '@openmrs/esm-patient-common-lib';
+import { type DefaultPatientWorkspaceProps, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import React from 'react';
+
+import { type LegacyFormEntryInfo } from '../forms/legacy-form-entry';
 
 import HtmlFormEntryWrapper from './html-form-entry-wrapper.component';
 
 interface HtmlFormEntryComponentProps extends DefaultPatientWorkspaceProps {
-  formInfo: FormEntryProps;
+  formInfo: LegacyFormEntryInfo;
 }
 
 const HtmlFormEntry: React.FC<HtmlFormEntryComponentProps> = ({

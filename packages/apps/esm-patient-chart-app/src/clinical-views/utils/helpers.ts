@@ -1,5 +1,5 @@
 import { age, formatDate, parseDate, type Visit } from '@openmrs/esm-framework';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { launchPatientWorkspace, launchStartVisitPrompt } from '@openmrs/esm-patient-common-lib';
 
 import type {
   ConfigConcepts,
@@ -39,27 +39,29 @@ function getDisplayName(value: unknown): string {
 
 export function launchEncounterForm(
   form: Form,
-  visit: Visit,
+  visit: Visit | undefined,
   action: LaunchAction = 'add',
   onFormSave: () => void,
   encounterUuid?: string,
   intent: string = '*',
   patientUuid?: string,
 ) {
+  if (action === 'add' && !visit) {
+    launchStartVisitPrompt();
+    return;
+  }
+
   launchPatientWorkspace('patient-form-entry-workspace', {
-    workspaceTitle: form?.name,
-    mutateForm: onFormSave,
-    formInfo: {
-      encounterUuid,
-      formUuid: form?.uuid,
-      patientUuid: patientUuid,
-      visit: visit,
-      additionalProps: {
-        mode: action === 'add' ? 'enter' : action,
-        formSessionIntent: intent,
-        openClinicalFormsWorkspaceOnFormClose: false,
-      },
+    workspaceTitle: form?.display ?? form?.name,
+    form,
+    encounterUuid,
+    handlePostResponse: () => onFormSave(),
+    additionalProps: {
+      mode: action === 'add' ? 'enter' : action,
+      formSessionIntent: intent,
+      openClinicalFormsWorkspaceOnFormClose: false,
     },
+    patientUuid,
   });
 }
 

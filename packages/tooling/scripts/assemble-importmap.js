@@ -86,6 +86,12 @@ for (const distDir of appDirs) {
   importmap.imports[pkg.name] = `./${entryFileName}`;
   localBaseNames.add(pkg.name.replace(/^@[^/]+\//, ''));
 
+  const buildManifestName = `${entryFileName}.buildmanifest.json`;
+  const buildManifestPath = path.join(distDir, buildManifestName);
+  if (fs.existsSync(buildManifestPath)) {
+    copyFileReplacingIfNeeded(buildManifestPath, path.join(outDir, buildManifestName));
+  }
+
   // Copy chunk files (skip directories and manifests)
   let chunkCount = 0;
   for (const entry of fs.readdirSync(distDir, { withFileTypes: true })) {
