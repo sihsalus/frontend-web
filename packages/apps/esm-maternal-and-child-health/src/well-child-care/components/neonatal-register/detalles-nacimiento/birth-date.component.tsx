@@ -44,7 +44,7 @@ const BirthDataTable: React.FC<BirthDataProps> = ({ patientUuid }) => {
   }, [encounter]);
 
   const handleLaunchForm = () => {
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: config.formsList.birthDetails },
       encounterUuid: encounter?.uuid || '',
     });

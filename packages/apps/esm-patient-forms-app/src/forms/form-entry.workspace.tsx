@@ -1,6 +1,7 @@
 import { ExtensionSlot, type Encounter, type Visit, usePatient } from '@openmrs/esm-framework';
 import {
   clinicalFormsWorkspace,
+  type DefaultPatientWorkspaceProps,
   type FormRendererProps,
   type PatientWorkspace2DefinitionProps,
   useVisitOrOfflineVisit,
@@ -30,6 +31,14 @@ interface FormEntryComponentProps extends LegacyWorkspaceAdapterProps {
   hideControls?: boolean;
   hidePatientBanner?: boolean;
   preFilledQuestions?: Record<string, string>;
+}
+
+type LegacyWorkspaceProps = DefaultPatientWorkspaceProps & FormEntryComponentProps;
+type Workspace2FormEntryProps = PatientWorkspace2DefinitionProps<FormEntryWorkspaceProps, object>;
+type PatientFormEntryWorkspaceProps = Workspace2FormEntryProps | LegacyWorkspaceProps;
+
+function isWorkspace2Props(props: PatientFormEntryWorkspaceProps): props is Workspace2FormEntryProps {
+  return 'groupProps' in props && 'workspaceProps' in props;
 }
 
 function LegacyFormEntryWorkspace(props: FormEntryComponentProps) {
@@ -143,13 +152,9 @@ function LegacyFormEntryWorkspace(props: FormEntryComponentProps) {
 
 type FormEntryWorkspaceProps = FormEntryComponentProps;
 
-const FormEntryWorkspace: React.FC<PatientWorkspace2DefinitionProps<FormEntryWorkspaceProps, object>> = ({
-  closeWorkspace,
-  groupProps,
-  workspaceProps,
-}) => {
-  const { patientUuid, patient, visitContext, mutateVisitContext } = groupProps;
+const NonWorkspace2FormEntryWorkspace: React.FC<LegacyWorkspaceProps> = (props) => {
   const {
+    patientUuid,
     form,
     encounterUuid,
     additionalProps,
@@ -157,24 +162,15 @@ const FormEntryWorkspace: React.FC<PatientWorkspace2DefinitionProps<FormEntryWor
     hideControls,
     hidePatientBanner,
     preFilledQuestions,
-  } = workspaceProps;
+    closeWorkspace,
+    closeWorkspaceWithSavedChanges,
+    promptBeforeClosing,
+  } = props;
+  const { patient } = usePatient(patientUuid);
+  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
 
   if (!form) {
-    return (
-      <LegacyFormEntryWorkspace
-        {...workspaceProps}
-        patientUuid={patientUuid}
-        closeWorkspace={() => {
-          void closeWorkspace();
-        }}
-        closeWorkspaceWithSavedChanges={() => {
-          void closeWorkspace({ discardUnsavedChanges: true });
-        }}
-        promptBeforeClosing={(fn) => {
-          void fn();
-        }}
-      />
-    );
+    return <LegacyFormEntryWorkspace {...props} />;
   }
 
   return (
@@ -188,11 +184,70 @@ const FormEntryWorkspace: React.FC<PatientWorkspace2DefinitionProps<FormEntryWor
       preFilledQuestions={preFilledQuestions}
       patient={patient}
       patientUuid={patientUuid}
-      visitContext={visitContext}
-      mutateVisitContext={mutateVisitContext}
-      closeWorkspace={closeWorkspace}
+      visitContext={currentVisit}
+      mutateVisitContext={null}
+      closeWorkspace={async () => {
+        closeWorkspace();
+        return true;
+      }}
+      closeWorkspaceWithSavedChanges={closeWorkspaceWithSavedChanges}
+      promptBeforeClosing={promptBeforeClosing}
+      renderAsWorkspace2={false}
     />
   );
+};
+
+const FormEntryWorkspace: React.FC<PatientFormEntryWorkspaceProps> = (props) => {
+  if (isWorkspace2Props(props)) {
+    const { closeWorkspace, groupProps, workspaceProps } = props;
+    const { patientUuid, patient, visitContext, mutateVisitContext } = groupProps;
+    const {
+      form,
+      encounterUuid,
+      additionalProps,
+      handlePostResponse,
+      hideControls,
+      hidePatientBanner,
+      preFilledQuestions,
+    } = workspaceProps;
+
+    if (!form) {
+      return (
+        <LegacyFormEntryWorkspace
+          {...workspaceProps}
+          patientUuid={patientUuid}
+          closeWorkspace={() => {
+            void closeWorkspace();
+          }}
+          closeWorkspaceWithSavedChanges={() => {
+            void closeWorkspace({ discardUnsavedChanges: true });
+          }}
+          promptBeforeClosing={(fn) => {
+            void fn();
+          }}
+        />
+      );
+    }
+
+    return (
+      <FormEntry
+        form={form}
+        encounterUuid={encounterUuid}
+        additionalProps={additionalProps}
+        handlePostResponse={handlePostResponse}
+        hideControls={hideControls}
+        hidePatientBanner={hidePatientBanner}
+        preFilledQuestions={preFilledQuestions}
+        patient={patient}
+        patientUuid={patientUuid}
+        visitContext={visitContext}
+        mutateVisitContext={mutateVisitContext}
+        closeWorkspace={closeWorkspace}
+      />
+    );
+  }
+
+  return <NonWorkspace2FormEntryWorkspace {...props} />;
 };
 
 export default FormEntryWorkspace;

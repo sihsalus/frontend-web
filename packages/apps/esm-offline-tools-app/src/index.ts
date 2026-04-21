@@ -26,6 +26,8 @@ const options = {
   moduleName,
 };
 
+const startupKey = Symbol.for('sihsalus.esm-offline-tools-app.startup-complete');
+
 export const offlineTools = getSyncLifecycle(offlineToolsComponent, options);
 
 export const offlineToolsLink = getSyncLifecycle(offlineToolsLinkComponent, options);
@@ -85,6 +87,13 @@ export const offlineToolsPatientChartActionsDashboardLink = getSyncLifecycle(
 export const offlineToolsOptInButton = getSyncLifecycle(offlineToolsOptInButtonComponent, options);
 
 export function startupApp() {
+  const globalScope = globalThis as typeof globalThis & { [startupKey]?: boolean };
+  if (globalScope[startupKey]) {
+    return;
+  }
+
+  globalScope[startupKey] = true;
+
   defineConfigSchema(moduleName, {});
   setupOffline();
   setupSynchronizingOfflineActionsNotifications();

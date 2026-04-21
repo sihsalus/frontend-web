@@ -1,4 +1,4 @@
-import { type UploadedFile, type OpenmrsResource } from '@openmrs/esm-framework';
+import { type UploadedFile, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 
 export interface OpenmrsEncounter {
   uuid?: string;

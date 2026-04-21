@@ -11,7 +11,7 @@ import { type FormNode, type ExpressionPatient } from './expression-runner';
 import { isEmpty as isValueEmpty } from '../validators/form-validator';
 import * as apiFunctions from '../api';
 import { getZRefByGenderAndAge } from './zscore-service';
-import { formatDate, parseDate } from '@openmrs/esm-framework';
+import { formatDate, parseDate } from '@openmrs/esm-framework/src/internal';
 
 type ZScoreReference = Record<string, string | number>;
 

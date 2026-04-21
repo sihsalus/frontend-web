@@ -1,4 +1,4 @@
-import { showSnackbar, type SnackbarDescriptor } from '@openmrs/esm-framework';
+import { showSnackbar, type SnackbarDescriptor } from '@openmrs/esm-framework/src/internal';
 
 interface ErrorResponseDetail {
   message?: string;

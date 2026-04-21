@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Layer, Tile } from '@carbon/react';
-import { useLayoutType } from '@openmrs/esm-react-utils';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { useLayoutType } from '@openmrs/esm-framework/src/internal';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import { CardHeader } from '../cards';
 import styles from './empty-card.module.scss';
 

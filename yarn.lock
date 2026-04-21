@@ -5611,6 +5611,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openmrs/esm-app-shell@patch:@openmrs/esm-app-shell@npm%3A9.0.2#./.yarn/patches/openmrs-esm-app-shell-npm-9.0.2-form-stack-sharing.patch::locator=%40sihsalus%2Fsihsalus-esm%40workspace%3A.":
+  version: 9.0.2
+  resolution: "@openmrs/esm-app-shell@patch:@openmrs/esm-app-shell@npm%3A9.0.2#./.yarn/patches/openmrs-esm-app-shell-npm-9.0.2-form-stack-sharing.patch::version=9.0.2&hash=2104cd&locator=%40sihsalus%2Fsihsalus-esm%40workspace%3A."
+  dependencies:
+    "@carbon/react": "npm:^1.92.1"
+    "@internationalized/date": "npm:^3.8.0"
+    "@openmrs/esm-framework": "npm:9.0.2"
+    "@openmrs/esm-styleguide": "npm:9.0.2"
+    dayjs: "npm:^1.11.13"
+    dexie: "npm:^3.0.3"
+    html-webpack-plugin: "npm:^5.5.0"
+    i18next: "npm:^25.5.3"
+    i18next-browser-languagedetector: "npm:^8.2.0"
+    import-map-overrides: "npm:^3.0.0"
+    lodash-es: "npm:^4.17.21"
+    mini-css-extract-plugin: "npm:^2.9.1"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    react-i18next: "npm:^16.0.0"
+    react-router-dom: "npm:^6.3.0"
+    rxjs: "npm:^6.5.3"
+    semver: "npm:^7.7.3"
+    single-spa: "npm:^6.0.3"
+    swc-loader: "npm:^0.2.6"
+    swr: "npm:2.2.5"
+    webpack: "npm:^5.99.9"
+    webpack-pwa-manifest: "npm:^4.3.0"
+    workbox-core: "npm:^6.1.5"
+    workbox-routing: "npm:^6.1.5"
+    workbox-strategies: "npm:^6.1.5"
+    workbox-webpack-plugin: "npm:^6.1.5"
+    workbox-window: "npm:^6.1.5"
+  checksum: 10c0/4667a8e9a198721769428c17e9e9beece4d2a8eb935c39f27863bb714707cbdbcf0cbcf141551e48d40be3999100ae8f0fe5738fa79cc4baf82c1d5d55e391b6
+  languageName: node
+  linkType: hard
+
 "@openmrs/esm-config@npm:9.0.2":
   version: 9.0.2
   resolution: "@openmrs/esm-config@npm:9.0.2"
@@ -5986,6 +6022,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openmrs/esm-offline@patch:@openmrs/esm-offline@npm%3A9.0.2#./.yarn/patches/openmrs-esm-offline-npm-9.0.2-dynamic-offline-query.patch::locator=%40sihsalus%2Fsihsalus-esm%40workspace%3A.":
+  version: 9.0.2
+  resolution: "@openmrs/esm-offline@patch:@openmrs/esm-offline@npm%3A9.0.2#./.yarn/patches/openmrs-esm-offline-npm-9.0.2-dynamic-offline-query.patch::version=9.0.2&hash=31ea6b&locator=%40sihsalus%2Fsihsalus-esm%40workspace%3A."
+  dependencies:
+    dexie: "npm:^3.0.3"
+    lodash-es: "npm:^4.17.21"
+    uuid: "npm:^9.0.1"
+    workbox-window: "npm:^6.1.5"
+  peerDependencies:
+    "@openmrs/esm-api": 9.x
+    "@openmrs/esm-globals": 9.x
+    "@openmrs/esm-state": 9.x
+    rxjs: 6.x
+  checksum: 10c0/aaf6f73f097ec054e9ba3ac041c48fc47fc10feac059f12ce65e48431de25b29858e2513a45d0e3be501fe73f1af62cf49123245bdc75f1d911e3d63a9539d6b
+  languageName: node
+  linkType: hard
+
 "@openmrs/esm-patient-common-lib@npm:*, @openmrs/esm-patient-common-lib@workspace:*, @openmrs/esm-patient-common-lib@workspace:packages/libs/esm-patient-common-lib":
   version: 0.0.0-use.local
   resolution: "@openmrs/esm-patient-common-lib@workspace:packages/libs/esm-patient-common-lib"
@@ -6153,6 +6206,8 @@ __metadata:
     react-dom: 18.x
     react-i18next: 16.x
     rxjs: 6.x
+    single-spa: 6.x
+    single-spa-react: 6.x
     swr: 2.x
   languageName: unknown
   linkType: soft

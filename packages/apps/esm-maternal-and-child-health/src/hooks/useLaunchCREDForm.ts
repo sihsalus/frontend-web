@@ -12,7 +12,7 @@ export function useLaunchCREDForm(patientUuid: string) {
   const config = useConfig<ConfigObject>();
 
   const launchCREDForm = useCallback((form: Form, encounterUuid: string = '') => {
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form,
       encounterUuid,
     });

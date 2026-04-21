@@ -5,7 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type LoggedInUser, type Session } from '@openmrs/esm-api';
 import { type FHIRLocationResource } from '@openmrs/esm-emr-api';
-import { useConfig, useSession } from '@openmrs/esm-react-utils';
+import { useConfig, useSession } from '@openmrs/esm-framework/src/internal';
 import {
   inpatientWardResponse,
   locationResponseForNonExistingSearch,

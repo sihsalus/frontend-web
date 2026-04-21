@@ -31,7 +31,7 @@ const FeedingCounseling: React.FC<FeedingCounselingProps> = ({ patientUuid }) =>
   const handleAdd = useCallback(() => {
     const formUuid = config.formsList.feedingCounselingForm;
     if (!formUuid) return;
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

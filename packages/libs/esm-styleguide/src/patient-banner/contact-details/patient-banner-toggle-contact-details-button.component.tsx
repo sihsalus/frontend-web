@@ -1,7 +1,7 @@
 /** @module @category UI */
 import React, { type MouseEvent } from 'react';
 import { Button } from '@carbon/react';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import { ChevronDownIcon, ChevronUpIcon } from '../../public';
 
 export interface PatientBannerToggleContactDetailsButtonProps {

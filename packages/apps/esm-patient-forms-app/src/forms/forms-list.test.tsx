@@ -55,6 +55,30 @@ it('renders a list of forms fetched from the server', async () => {
   expect(screen.getByRole('row', { name: /laboratory tests never/i })).toBeInTheDocument();
 });
 
+it('opens the filtered form without relying on the pre-filter row index', async () => {
+  const user = userEvent.setup();
+  const handleFormOpen = jest.fn();
+
+  renderFormsList({
+    forms: forms.map((form, index) => ({
+      form,
+      associatedEncounters: index === 2 ? [{ uuid: 'encounter-uuid' }] : [],
+    })),
+    handleFormOpen,
+  });
+
+  const searchbox = screen.getByRole('searchbox');
+  await user.clear(searchbox);
+  await user.type(searchbox, 'lab');
+
+  await user.click(screen.getByRole('button', { name: /laboratory tests/i }));
+
+  expect(handleFormOpen).toHaveBeenCalledWith(
+    expect.objectContaining({ uuid: '336e13c6-0042-356e-9773-252382a3c7be' }),
+    undefined,
+  );
+});
+
 const forms = [
   {
     uuid: '4077b82a-6d5b-4fc6-abb9-8bc6846600f0',

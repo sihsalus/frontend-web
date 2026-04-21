@@ -30,7 +30,7 @@ import { ConceptTrue } from '../../constants';
 import { DefaultValueValidator } from '../../validators/default-value-validator';
 import { cloneRepeatField } from '../../components/repeat/helpers';
 import { assignedOrderIds } from '../../adapters/orders-adapter';
-import { type OpenmrsResource } from '@openmrs/esm-framework';
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { assignedDiagnosesIds } from '../../adapters/encounter-diagnosis-adapter';
 
 export async function prepareEncounter(

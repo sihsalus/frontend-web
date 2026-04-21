@@ -1,8 +1,8 @@
 import { createContext, type CSSProperties, type ReactNode, useContext, useMemo } from 'react';
 import { createCalendar, getLocalTimeZone, toCalendar, today, type Calendar } from '@internationalized/date';
 import { type AriaLabelingProps, type DOMProps } from '@react-types/shared';
-import { useConfig } from '@openmrs/esm-react-utils';
-import { getLocale, getDefaultCalendar } from '@openmrs/esm-utils';
+import { useConfig } from '@openmrs/esm-framework/src/internal';
+import { getLocale, getDefaultCalendar } from '@openmrs/esm-framework/src/internal';
 import { type StyleguideConfigObject } from '../config-schema';
 
 export const OpenmrsIntlLocaleContext = createContext<Intl.Locale | null>(null);

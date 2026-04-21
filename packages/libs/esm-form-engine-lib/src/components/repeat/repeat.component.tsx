@@ -6,7 +6,7 @@ import styles from './repeat.scss';
 import { cloneRepeatField } from './helpers';
 import { clearSubmission, isViewMode } from '../../utils/common-utils';
 import RepeatControls from './repeat-controls.component';
-import { createErrorHandler } from '@openmrs/esm-framework';
+import { createErrorHandler } from '@openmrs/esm-framework/src/internal';
 import { useFormProviderContext } from '../../provider/form-provider';
 import { FormFieldRenderer } from '../renderer/field/form-field-renderer.component';
 import { useFormFactory } from '../../provider/form-factory-provider';

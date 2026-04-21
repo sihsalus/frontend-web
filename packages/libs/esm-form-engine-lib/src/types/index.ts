@@ -1,4 +1,4 @@
-import { type Visit, type LayoutType, type OpenmrsResource } from '@openmrs/esm-framework';
+import { type Visit, type LayoutType, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { type FormProcessor } from '../processors/form-processor';
 import { type FormContextProps } from '../provider/form-provider';
 import { type FormField, type FormFieldValue, type FormSchema } from './schema';

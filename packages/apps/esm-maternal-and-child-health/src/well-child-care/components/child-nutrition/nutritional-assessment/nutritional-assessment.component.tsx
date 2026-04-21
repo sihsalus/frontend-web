@@ -34,7 +34,7 @@ const NutritionalAssessment: React.FC<NutritionalAssessmentProps> = ({ patientUu
   const handleAdd = useCallback(() => {
     const formUuid = config.formsList.nutritionalAssessmentForm;
     if (!formUuid) return;
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

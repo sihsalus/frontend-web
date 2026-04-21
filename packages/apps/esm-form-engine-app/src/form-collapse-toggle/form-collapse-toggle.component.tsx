@@ -4,15 +4,22 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './form-collapse-toggle.scss';
 
+const formViewEmbeddedStateKey = '__openmrsFormViewEmbedded';
+
+function getFormViewEmbeddedState() {
+  return Boolean((globalThis as typeof globalThis & { [formViewEmbeddedStateKey]?: boolean })[formViewEmbeddedStateKey]);
+}
+
 const FormCollapseToggle = () => {
   const { t } = useTranslation();
-  const [isFormEmbedded, setIsFormEmbedded] = useState<boolean>(false);
+  const [isFormEmbedded, setIsFormEmbedded] = useState<boolean>(() => getFormViewEmbeddedState());
 
   const handleFormEmbedded = useCallback((event) => {
     setIsFormEmbedded(event?.detail?.value || false);
   }, []);
 
   useEffect(() => {
+    setIsFormEmbedded(getFormViewEmbeddedState());
     globalThis.addEventListener('openmrs:form-view-embedded', handleFormEmbedded);
 
     return () => {

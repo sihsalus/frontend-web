@@ -1,7 +1,7 @@
 /** @category Icons */
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import classNames, { type Argument } from 'classnames';
-import { RenderIfValueIsTruthy } from '@openmrs/esm-react-utils';
+import { RenderIfValueIsTruthy } from '@openmrs/esm-framework/src/internal';
 import style from './icons.module.scss';
 
 /** Array of all available OpenMRS icon IDs that can be used with the Icon component. */

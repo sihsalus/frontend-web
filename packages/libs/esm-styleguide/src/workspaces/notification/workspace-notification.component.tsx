@@ -2,9 +2,9 @@
 import React, { useEffect } from 'react';
 import { Button, ComposedModal, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
 import { escapeRegExp } from 'lodash-es';
-import { navigate } from '@openmrs/esm-navigation';
+import { navigate } from '@openmrs/esm-framework/src/internal';
 import { reportError } from '@openmrs/esm-error-handling';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import { type SingleSpaCustomEventDetail } from 'single-spa';
 import {
   cancelPrompt,

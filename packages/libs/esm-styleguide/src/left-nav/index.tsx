@@ -7,8 +7,8 @@ import {
   RenderIfValueIsTruthy,
   useAssignedExtensions,
   useLeftNavStore,
-} from '@openmrs/esm-react-utils';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+} from '@openmrs/esm-framework/src/internal';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import styles from './left-nav.module.scss';
 
 /**

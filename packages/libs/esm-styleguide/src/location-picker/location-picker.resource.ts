@@ -3,7 +3,7 @@ import useSwrImmutable from 'swr/immutable';
 import useSwrInfinite from 'swr/infinite';
 import { type FetchResponse, fhirBaseUrl, openmrsFetch } from '@openmrs/esm-api';
 import { type FHIRLocationResource } from '@openmrs/esm-emr-api';
-import { useDebounce } from '@openmrs/esm-react-utils';
+import { useDebounce } from '@openmrs/esm-framework/src/internal';
 
 export interface LocationResponse {
   type: string;

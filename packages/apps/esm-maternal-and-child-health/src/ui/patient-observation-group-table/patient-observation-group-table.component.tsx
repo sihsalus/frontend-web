@@ -81,7 +81,7 @@ const PatientObservationGroupTable: React.FC<PatientObservationGroupTableProps> 
   const launchForm = useCallback(() => {
     try {
       if (formWorkspace) {
-        launchWorkspace2('patient-form-entry-workspace', {
+        launchWorkspace2('patient-form-entry-workspace-v2', {
           form: { uuid: formWorkspace },
           encounterUuid: '',
         });

@@ -14,8 +14,6 @@ import {
 } from '@carbon/react';
 import {
   isDesktop,
-  putDynamicOfflineData,
-  removeDynamicOfflineData,
   syncDynamicOfflineData,
   useConnectivity,
   useLayoutType,
@@ -28,7 +26,11 @@ import { useTranslation } from 'react-i18next';
 
 import { type Form } from '../types';
 
-import { useDynamicFormDataEntries } from './offline-form-helpers';
+import {
+  putDynamicFormDataEntryFor,
+  removeDynamicFormDataEntryFor,
+  useDynamicFormDataEntries,
+} from './offline-form-helpers';
 import styles from './offline-forms.scss';
 import { useValidOfflineFormEncounters } from './use-offline-form-encounters';
 
@@ -61,6 +63,21 @@ const OfflineForms: React.FC<OfflineFormsProps> = () => {
 
     return sortedForms ?? [];
   }, [forms.data, session.user, canMarkFormsAsOffline]);
+
+  if (!forms.data && !forms.error) {
+    return (
+      <>
+        <header className={styles.pageHeaderContainer}>
+          <h1 className={styles.pageHeader}>{t('offlineFormsTitle', 'Offline forms')}</h1>
+        </header>
+        <main className={styles.contentContainer}>
+          <SkeletonPlaceholder className={styles.availableOfflineToggleSkeleton} />
+          <SkeletonPlaceholder className={styles.availableOfflineToggleSkeleton} />
+          <SkeletonPlaceholder className={styles.availableOfflineToggleSkeleton} />
+        </main>
+      </>
+    );
+  }
 
   if (rows.length === 0) {
     return (
@@ -123,19 +140,25 @@ const OfflineForms: React.FC<OfflineFormsProps> = () => {
 
 function OfflineFormToggle({ form, disabled }: { form: Form; disabled: boolean }) {
   const { t } = useTranslation();
+  const session = useSession();
   const [isUpdating, setIsUpdating] = useState(false);
-  const dynamicFormEntriesSwr = useDynamicFormDataEntries();
+  const dynamicFormEntriesSwr = useDynamicFormDataEntries(session?.user?.uuid);
   const isMarkedAsOffline = dynamicFormEntriesSwr.data?.some((entry) => entry.identifier === form.uuid);
 
   const handleToggled = async (checked: boolean) => {
+    const userId = session?.user?.uuid;
+    if (!userId) {
+      return;
+    }
+
     setIsUpdating(true);
 
     try {
       if (checked) {
-        await putDynamicOfflineData('form', form.uuid);
+        await putDynamicFormDataEntryFor(userId, form.uuid);
         await syncDynamicOfflineData('form', form.uuid);
       } else {
-        await removeDynamicOfflineData('form', form.uuid);
+        await removeDynamicFormDataEntryFor(userId, form.uuid);
       }
     } finally {
       setIsUpdating(false);

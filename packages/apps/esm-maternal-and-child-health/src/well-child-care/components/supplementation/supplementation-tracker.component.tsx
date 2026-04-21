@@ -26,7 +26,7 @@ const SupplementationTracker: React.FC<SupplementationTrackerProps> = ({ patient
       console.warn('Form UUID not configured for supplementationForm');
       return;
     }
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

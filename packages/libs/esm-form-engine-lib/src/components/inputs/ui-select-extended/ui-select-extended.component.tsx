@@ -3,7 +3,7 @@ import { debounce } from 'lodash-es';
 import { ComboBox, DropdownSkeleton, Layer, InlineLoading } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { useWatch } from 'react-hook-form';
-import { type OpenmrsResource } from '@openmrs/esm-framework';
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { getControlTemplate } from '../../../registry/inbuilt-components/control-templates';
 import { getRegisteredDataSource } from '../../../registry/registry';
 import { isEmpty } from '../../../validators/form-validator';

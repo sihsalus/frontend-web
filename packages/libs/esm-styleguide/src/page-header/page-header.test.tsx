@@ -1,12 +1,10 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { getConfig } from '@openmrs/esm-config';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getConfig } from '@openmrs/esm-framework/src/internal';
 import { PageHeaderContent } from './page-header.component';
 
 const mockGetConfig = vi.mocked(getConfig);
-const mockGetCoreTranslation = vi.mocked(getCoreTranslation);
 
 vi.mock('@openmrs/esm-config', () => ({
   getConfig: vi.fn(),
@@ -25,7 +23,6 @@ describe('PageHeaderContent', () => {
   });
 
   it('renders implementation name when provided in config', async () => {
-    mockGetCoreTranslation.mockReturnValueOnce('Test Clinic');
     mockGetConfig.mockResolvedValue({ implementationName: 'Test Clinic' });
 
     render(<PageHeaderContent title="Test Title" illustration={mockIllustration} />);

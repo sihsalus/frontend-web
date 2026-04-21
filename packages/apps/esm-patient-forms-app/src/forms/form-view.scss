@@ -60,6 +60,20 @@
   cursor: pointer;
 }
 
+.formNameButton {
+  background: none;
+  border: none;
+  color: $interactive-01;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.formNameButton:hover {
+  text-decoration: underline;
+}
+
 .tile {
   text-align: center;
   margin-top: layout.$spacing-02;

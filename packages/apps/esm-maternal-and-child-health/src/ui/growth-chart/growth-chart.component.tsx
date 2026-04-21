@@ -132,6 +132,8 @@ const GrowthChart: React.FC<GrowthChartProps> = ({
     return measurementDataValues.map((point) => ({ group: patientName, date: point.x, value: point.y }));
   }, [measurementData, measurementCode, selectedCategory.value, selectedDataset, patientName, dateOfBirth]);
 
+  const hasPatientMeasurements = measurementPlotData.length > 0;
+
   const data = useMemo(() => [...chartLineData, ...measurementPlotData], [chartLineData, measurementPlotData]);
   const { min, max } = useMemo(() => calculateMinMaxValues(dataSetValues), [dataSetValues]);
 
@@ -161,15 +163,15 @@ const GrowthChart: React.FC<GrowthChartProps> = ({
           P15: '#e67300',
           P85: '#e67300',
           P50: '#009933',
-          [patientName]: '#2b6693',
+          ...(hasPatientMeasurements ? { [patientName]: '#2b6693' } : {}),
         },
       },
       style: {
-        [patientName]: { point: { radius: 3 } },
+        ...(hasPatientMeasurements ? { [patientName]: { point: { radius: 3 } } } : {}),
         '*': { point: { radius: 0 } },
       },
     }),
-    [datasetMetadata, min, max, patientName],
+    [datasetMetadata, min, max, patientName, hasPatientMeasurements],
   );
 
   return (

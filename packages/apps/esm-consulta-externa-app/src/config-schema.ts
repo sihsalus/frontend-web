@@ -264,15 +264,15 @@ export const configSchema = {
     // Chief Complaint (CE-3)
     chiefComplaintUuid: {
       _type: Type.ConceptUuid,
-      _description: 'Chief complaint / reason for visit (CIEL 5219)',
-      _default: '5219AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _description: 'Chief complaint / reason for visit',
+      _default: '71b58cff-879b-4358-98d5-2165434d4324',
     },
 
     // SOAP Notes (CE-5)
     soapSubjectiveUuid: {
       _type: Type.ConceptUuid,
-      _description: 'SOAP Subjective concept (CIEL 160531)',
-      _default: '160531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _description: 'SOAP Subjective concept',
+      _default: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
     soapObjectiveUuid: {
       _type: Type.ConceptUuid,
@@ -286,8 +286,8 @@ export const configSchema = {
     },
     soapPlanUuid: {
       _type: Type.ConceptUuid,
-      _description: 'SOAP Plan concept (CIEL 159615)',
-      _default: '159615AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _description: 'SOAP Plan concept',
+      _default: 'c4010006-0000-4000-8000-000000000006',
     },
 
     // Insurance Provider (CE-6)
@@ -308,17 +308,17 @@ export const configSchema = {
     labOrdersUuid: {
       _type: Type.ConceptUuid,
       _description: 'Lab orders / auxiliary exams concept',
-      _default: '1271AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
     proceduresUuid: {
       _type: Type.ConceptUuid,
       _description: 'Procedures performed concept (CPMS)',
-      _default: '1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
     prescriptionsUuid: {
       _type: Type.ConceptUuid,
       _description: 'Prescriptions / medication orders concept',
-      _default: '1282AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
     therapeuticIndicationsUuid: {
       _type: Type.ConceptUuid,
@@ -328,7 +328,7 @@ export const configSchema = {
     referralUuid: {
       _type: Type.ConceptUuid,
       _description: 'Referral / interconsultation concept',
-      _default: '1272AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
     nextAppointmentUuid: {
       _type: Type.ConceptUuid,

@@ -51,7 +51,7 @@ const NeonatalCounseling: React.FC<NeonatalCounselingProps> = ({ patientUuid }) 
   }, [encounter]);
 
   const handleLaunchForm = () => {
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: config.formsList.breastfeedingObservation },
       encounterUuid: encounter?.uuid || '',
     });

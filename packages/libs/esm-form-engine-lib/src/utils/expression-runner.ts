@@ -11,7 +11,7 @@ import {
   extractVariableNames,
   type VariablesMap,
   type Visit,
-} from '@openmrs/esm-framework';
+} from '@openmrs/esm-framework/src/internal';
 
 export interface FormNode {
   value: FormPage | FormSection | FormField;

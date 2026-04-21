@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import { useLayoutType } from '@openmrs/esm-react-utils';
+import { useLayoutType } from '@openmrs/esm-framework/src/internal';
 import { CustomOverflowMenu, CustomOverflowMenuItem, useCustomOverflowMenu } from './custom-overflow-menu.component';
 
 const mockUseLayoutType = vi.mocked(useLayoutType);

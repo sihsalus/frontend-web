@@ -1,4 +1,4 @@
-import { usePatient } from '@openmrs/esm-framework';
+import { usePatient } from '@openmrs/esm-framework/src/internal';
 
 function calculateAge(birthDate: Date): number {
   const today = new Date();

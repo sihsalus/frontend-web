@@ -8,7 +8,7 @@ import { useFormProviderContext } from '../../../provider/form-provider';
 import { isViewMode } from '../../../utils/common-utils';
 import FieldValueView from '../../value/view/field-value-view.component';
 import FieldLabel from '../../field-label/field-label.component';
-import { showModal, type UploadedFile, useLayoutType } from '@openmrs/esm-framework';
+import { showModal, type UploadedFile, useLayoutType } from '@openmrs/esm-framework/src/internal';
 import { FileThumbnail } from './file-thumbnail.component';
 import classNames from 'classnames';
 

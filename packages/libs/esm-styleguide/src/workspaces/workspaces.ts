@@ -5,12 +5,12 @@ import {
   getWorkspaceGroupRegistration,
   getWorkspaceRegistration,
   type WorkspaceRegistration,
-} from '@openmrs/esm-extensions';
+} from '@openmrs/esm-framework/src/internal';
 import { type WorkspaceWindowState } from '@openmrs/esm-globals';
-import { navigate } from '@openmrs/esm-navigation';
-import { getGlobalStore, createGlobalStore } from '@openmrs/esm-state';
-import { getCoreTranslation } from '@openmrs/esm-translations';
-import { useStore } from '@openmrs/esm-react-utils';
+import { navigate } from '@openmrs/esm-framework/src/internal';
+import { getGlobalStore, createGlobalStore } from '@openmrs/esm-framework/src/internal';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
+import { useStore } from '@openmrs/esm-framework/src/internal';
 
 export interface CloseWorkspaceOptions {
   /**

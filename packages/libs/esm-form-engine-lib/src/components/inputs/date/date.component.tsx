@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Layer, TimePicker } from '@carbon/react';
-import { OpenmrsDatePicker } from '@openmrs/esm-framework';
+import { OpenmrsDatePicker } from '@openmrs/esm-framework/src/internal';
 import { formatDateAsDisplayString } from '../../../utils/common-utils';
 import { isEmpty } from '../../../validators/form-validator';
 import { isTrue } from '../../../utils/boolean-utils';

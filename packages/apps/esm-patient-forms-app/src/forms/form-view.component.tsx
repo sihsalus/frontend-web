@@ -181,30 +181,31 @@ const FormView: React.FC<FormViewProps> = ({
                       return (
                         <TableRow key={row.id}>
                           <TableCell>
-                            <label
+                            <button
+                              type="button"
                               onClick={() => launchFormWorkspace(results[index])}
-                              role="presentation"
-                              className={styles.formName}
+                              className={styles.formNameButton}
                             >
                               {row.cells[0].value}
-                            </label>
+                            </button>
                           </TableCell>
                           <TableCell>
-                            <label
+                            <button
+                              type="button"
                               onClick={() =>
                                 launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)
                               }
-                              role="presentation"
-                              className={styles.formName}
+                              className={styles.formNameButton}
                             >
                               {row.cells[1].value}
-                            </label>
+                            </button>
                           </TableCell>
                           <TableCell className="cds--table-column-menu">
                             {row.cells[0].value && (
                               <Button
                                 hasIconOnly
                                 renderIcon={EditIcon}
+                                aria-label={t('editForm', 'Edit form')}
                                 iconDescription={t('editForm', 'Edit form')}
                                 onClick={() =>
                                   launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)

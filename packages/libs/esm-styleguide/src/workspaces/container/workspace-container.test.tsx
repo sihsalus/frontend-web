@@ -3,8 +3,8 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import { act, screen, renderHook, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { registerWorkspace } from '@openmrs/esm-extensions';
-import { ComponentContext, isDesktop, useLayoutType } from '@openmrs/esm-react-utils';
+import { registerWorkspace } from '@openmrs/esm-framework/src/internal';
+import { ComponentContext, isDesktop, useLayoutType } from '@openmrs/esm-framework/src/internal';
 import { type DefaultWorkspaceProps, WorkspaceContainer, launchWorkspace, useWorkspaces } from '..';
 
 vi.mock('./workspace-renderer.component.tsx', () => {

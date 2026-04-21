@@ -81,7 +81,8 @@ type SharedDependencyConfig = {
   requiredVersion: string | false;
   strictVersion: boolean;
   singleton: boolean;
-  import: string;
+  import: string | false;
+  packageName?: string;
   shareKey: string;
   shareScope: 'default';
   version?: string;
@@ -91,9 +92,22 @@ type VersionedPackageJson = {
   version?: string;
 };
 
+const alwaysHostSharedDependencies = new Set([
+  '@openmrs/esm-config',
+  '@openmrs/esm-extensions',
+  '@openmrs/esm-framework',
+  '@openmrs/esm-framework/src/internal',
+  '@openmrs/esm-navigation',
+  '@openmrs/esm-offline',
+  '@openmrs/esm-react-utils',
+  '@openmrs/esm-state',
+  'single-spa',
+  'single-spa-react',
+  'single-spa-react/parcel',
+]);
+
 const production = 'production';
 const { ModuleFederationPluginV1: ModuleFederationPlugin } = container;
-
 function getFrameworkVersion() {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -109,6 +123,46 @@ function getFrameworkVersion() {
   } catch {
     return '5.x';
   }
+}
+
+function getInstalledVersion(depName: string): string | undefined {
+  const packageName = getPackageNameForDependency(depName);
+
+  try {
+    const resolvedEntry = require.resolve(depName);
+    let currentDir = dirname(resolvedEntry);
+
+    while (currentDir !== dirname(currentDir)) {
+      const candidate = resolve(currentDir, 'package.json');
+
+      if (existsSync(candidate)) {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const pkgUnknown: unknown = require(candidate);
+        const pkg = pkgUnknown as VersionedPackageJson & { name?: string };
+
+        if (pkg.name === packageName && typeof pkg.version === 'string') {
+          return pkg.version;
+        }
+      }
+
+      currentDir = dirname(currentDir);
+    }
+  } catch {
+    // Fall back to package root probing below.
+  }
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const pkgUnknown: unknown = require(resolve(process.cwd(), 'node_modules', packageName, 'package.json'));
+    const pkg = pkgUnknown as VersionedPackageJson;
+    return typeof pkg.version === 'string' ? pkg.version : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function getPackageNameForDependency(depName: string): string {
+  return depName.startsWith('@') ? depName.split('/').slice(0, 2).join('/') : depName.split('/')[0];
 }
 
 function makeIdent(name: string): string {
@@ -376,7 +430,7 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
         exposes: {
           './start': srcFile,
         },
-          shared: [...Object.keys(peerDependencies), '@openmrs/esm-framework/src/internal'].reduce<Record<string, SharedDependencyConfig>>((obj, depName) => {
+        shared: [...new Set([...Object.keys(peerDependencies), ...alwaysHostSharedDependencies, '@openmrs/esm-framework/src/internal'])].reduce<Record<string, SharedDependencyConfig>>((obj, depName) => {
           const versionSpec = peerDependencies[depName] ?? false;
 
           if (typeof versionSpec === 'string' && versionSpec.startsWith('workspace:')) {
@@ -401,21 +455,25 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
               shareKey: 'swr/_internal',
               shareScope: 'default',
               // eslint-disable-next-line @typescript-eslint/no-require-imports
-                version: (require('swr/package.json') as VersionedPackageJson).version,
+              version: (require('swr/package.json') as VersionedPackageJson).version,
             };
           } else {
+            const installedVersion = getInstalledVersion(depName);
+            const packageName = getPackageNameForDependency(depName);
             obj[depName] = {
               requiredVersion: versionSpec,
               strictVersion: false,
               singleton: true,
-              import: depName,
+              import: alwaysHostSharedDependencies.has(depName) ? false : depName,
+              ...(depName !== packageName ? { packageName } : {}),
               shareKey: depName,
               shareScope: 'default',
+              version: installedVersion,
             };
           }
 
           return obj;
-          }, {}),
+        }, {}),
       }),
       hasRoutesDefined &&
         new CopyRspackPlugin({
@@ -448,7 +506,6 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
         '.jsx': ['.tsx', '.jsx'],
       },
       alias: {
-        '@openmrs/esm-framework': '@openmrs/esm-framework/src/internal',
         'lodash.debounce': 'lodash-es/debounce',
         'lodash.findlast': 'lodash-es/findLast',
         'lodash.omit': 'lodash-es/omit',

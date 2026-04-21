@@ -8,7 +8,7 @@ import {
   RangeCalendarStateContext,
 } from 'react-aria-components';
 import { getLocalTimeZone } from '@internationalized/date';
-import { formatDate } from '@openmrs/esm-utils';
+import { formatDate } from '@openmrs/esm-framework/src/internal';
 import { useIntlLocale } from './hooks';
 import { CaretDownIcon, CaretUpIcon } from '../icons';
 

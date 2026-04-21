@@ -34,7 +34,7 @@ const StimulationSessions: React.FC<StimulationSessionsProps> = ({ patientUuid }
       console.warn('Form UUID not configured for stimulationSessionForm');
       return;
     }
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

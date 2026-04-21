@@ -53,6 +53,22 @@ function startCli(args) {
   return child;
 }
 
+function withSharedDependencies(args) {
+  const sharedDependencies = [
+    '@openmrs/esm-styleguide',
+    'single-spa',
+    'single-spa-react',
+    '@openmrs/esm-config',
+    '@openmrs/esm-extensions',
+    '@openmrs/esm-navigation',
+    '@openmrs/esm-offline',
+    '@openmrs/esm-react-utils',
+    '@openmrs/esm-state',
+  ];
+
+  return [...args, ...sharedDependencies.flatMap((dependency) => ['--shared-dependencies', dependency])];
+}
+
 function ensureOpenmrsCli() {
   const workspaceRoot = resolve(__dirname, '..', '..', '..');
   const rspackConfigEntry = resolve(
@@ -166,11 +182,31 @@ if (devAppsEnv) {
     }
 
     // Use reverse proxy: dist/spa bundles + chunks served from same origin
-    startWithProxy(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--config-file', frontendConfig, ...sourcesArgs]);
+    startWithProxy(
+      withSharedDependencies([
+        '--importmap',
+        assembledImportmap,
+        '--routes',
+        assembledRoutes,
+        '--config-file',
+        frontendConfig,
+        ...sourcesArgs,
+      ]),
+    );
   } else {
     logWarn('No assembled importmap found. Only apps in SIHSALUS_DEV_APPS will be available.');
     logWarn('For all apps: yarn assemble');
-    startCli(['--importmap', '{"imports":{}}', '--routes', '{}', '--config-file', frontendConfig, ...sourcesArgs]);
+    startCli(
+      withSharedDependencies([
+        '--importmap',
+        '{"imports":{}}',
+        '--routes',
+        '{}',
+        '--config-file',
+        frontendConfig,
+        ...sourcesArgs,
+      ]),
+    );
   }
 } else {
   // No apps to hot-reload: serve the pre-assembled SPA purely via proxy + static files
@@ -181,7 +217,20 @@ if (devAppsEnv) {
     process.exit(1);
   }
   logInfo('Serving pre-assembled SPA (no hot-reload). Set SIHSALUS_DEV_APPS for development.');
-
-  const shimSource = resolve(__dirname, '..', '..', 'apps', 'esm-login-app');
-  startWithProxy(['--importmap', assembledImportmap, '--routes', assembledRoutes, '--config-file', frontendConfig, '--sources', shimSource]);
+  // The OpenMRS CLI still requires at least one source project in develop mode.
+  // Use a neutral app that is not part of the form-entry flows so assembled mode
+  // can start without forcing the login app to be served from a source dev server.
+  const shimSource = resolve(__dirname, '..', '..', 'apps', 'esm-home-app');
+  startWithProxy(
+    withSharedDependencies([
+      '--importmap',
+      assembledImportmap,
+      '--routes',
+      assembledRoutes,
+      '--config-file',
+      frontendConfig,
+      '--sources',
+      shimSource,
+    ]),
+  );
 }

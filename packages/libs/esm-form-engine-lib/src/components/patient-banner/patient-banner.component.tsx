@@ -1,5 +1,5 @@
-import React from 'react';
-import { ExtensionSlot } from '@openmrs/esm-framework';
+import React, { useContext } from 'react';
+import { ComponentContext, Extension, useAssignedExtensions } from '@openmrs/esm-framework/src/internal';
 import styles from './patient-banner.scss';
 
 interface PatientBannerProps {
@@ -8,16 +8,35 @@ interface PatientBannerProps {
 }
 
 const PatientBanner: React.FC<PatientBannerProps> = ({ patient, hideActionsOverflow }) => {
+  const { moduleName } = useContext(ComponentContext);
+  const extensions = useAssignedExtensions('patient-header-slot');
+
   return (
     <div className={styles.patientBannerContainer}>
-      <ExtensionSlot
-        name="patient-header-slot"
-        state={{
-          patient,
-          patientUuid: patient?.id,
-          hideActionsOverflow,
-        }}
-      />
+      {moduleName
+        ? extensions.map((extension) => (
+            <ComponentContext.Provider
+              key={extension.id}
+              value={{
+                moduleName,
+                featureName: '',
+                extension: {
+                  extensionId: extension.id,
+                  extensionSlotName: 'patient-header-slot',
+                  extensionSlotModuleName: moduleName,
+                },
+              }}
+            >
+              <Extension
+                state={{
+                  patient,
+                  patientUuid: patient?.id,
+                  hideActionsOverflow,
+                }}
+              />
+            </ComponentContext.Provider>
+          ))
+        : null}
     </div>
   );
 };

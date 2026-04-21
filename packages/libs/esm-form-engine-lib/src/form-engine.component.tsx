@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames';
 import { Button, ButtonSet, InlineLoading } from '@carbon/react';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { useSession, type OpenmrsResource, type Visit } from '@openmrs/esm-framework';
+import { useSession, type OpenmrsResource, type Visit } from '@openmrs/esm-framework/src/internal';
 import { FormFactoryProvider } from './provider/form-factory-provider';
 import { init, teardown } from './lifecycle';
 import { isEmpty, useFormJson } from '.';

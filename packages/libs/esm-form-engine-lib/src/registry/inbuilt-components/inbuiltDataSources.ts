@@ -1,4 +1,4 @@
-import { type OpenmrsResource } from '@openmrs/esm-framework';
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { type DataSource } from '../../types';
 import { type RegistryItem } from '../registry';
 import { ConceptDataSource } from '../../datasources/concept-data-source';

@@ -1,4 +1,4 @@
-import { type OpenmrsResource } from '@openmrs/esm-framework';
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import {
   type Diagnosis,
   type DiagnosisPayload,

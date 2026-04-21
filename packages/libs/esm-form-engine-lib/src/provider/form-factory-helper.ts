@@ -1,4 +1,4 @@
-import { type OpenmrsResource, showSnackbar } from '@openmrs/esm-framework';
+import { type OpenmrsResource, showSnackbar } from '@openmrs/esm-framework/src/internal';
 import { type FormContextProps } from './form-provider';
 import { extractErrorMessagesFromResponse } from '../utils/error-utils';
 import { evaluatePostSubmissionExpression } from '../utils/post-submission-action-helper';

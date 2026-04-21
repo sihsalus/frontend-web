@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash-es';
 import { type Diagnosis, type DiagnosisPayload, type FormField, type Order } from '../../types';
-import { type OpenmrsResource } from '@openmrs/esm-framework';
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { isEmpty } from '../../validators/form-validator';
 import { clearSubmission, isStringValue } from '../../utils/common-utils';
 

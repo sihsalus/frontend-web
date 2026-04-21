@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag } from '@carbon/react';
-import { useConfig } from '@openmrs/esm-react-utils';
+import { useConfig } from '@openmrs/esm-framework/src/internal';
 import { type Diagnosis } from '@openmrs/esm-emr-api';
 import { type StyleguideConfigObject } from '../config-schema';
 import styles from './diagnosis-tags.module.scss';

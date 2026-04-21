@@ -14,7 +14,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { OverflowMenuItem } from '@carbon/react';
-import { useLayoutType, useOnClickOutside } from '@openmrs/esm-react-utils';
+import { useLayoutType, useOnClickOutside } from '@openmrs/esm-framework/src/internal';
 import styles from './custom-overflow-menu.module.scss';
 
 interface CustomOverflowMenuContextValue {

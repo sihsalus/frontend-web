@@ -1,4 +1,4 @@
-import { openmrsFetch, restBaseUrl, type OpenmrsResource } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { BaseOpenMRSDataSource } from './data-source';
 import { isEmpty } from '../validators/form-validator';
 

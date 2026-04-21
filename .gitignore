@@ -38,6 +38,7 @@ test-results/
 playwright-report/
 test-screenshots/
 .playwright-mcp/
+artifacts/
 
 # Large binary test fixtures (use Git LFS or download at test time)
 **/__mocks__/*.zip

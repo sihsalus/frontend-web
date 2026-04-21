@@ -9,9 +9,6 @@ export const queueTableVisitAttributeQueueNumberColumn: QueueTableColumnFunction
   { visitQueueNumberAttributeUuid }: VisitAttributeQueueNumberColumnConfig,
 ) => {
   if (!visitQueueNumberAttributeUuid) {
-    console.error(
-      'No visit queue number attribute is configured, but the queue is configured to display the queue number.',
-    );
     return null;
   }
 

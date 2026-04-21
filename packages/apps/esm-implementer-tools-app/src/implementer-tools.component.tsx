@@ -1,12 +1,10 @@
-import { showToast, UserHasAccess, useStore } from '@openmrs/esm-framework';
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { UserHasAccess, useStore } from '@openmrs/esm-framework';
+import React from 'react';
 
-import { hasInvalidDependencies } from './backend-dependencies/openmrs-backend-dependencies';
 import { useBackendDependencies } from './backend-dependencies/useBackendDependencies';
 import { useFrontendModules } from './hooks';
 import styles from './implementer-tools.styles.scss';
-import { implementerToolsStore, showModuleDiagnostics, togglePopup } from './store';
+import { implementerToolsStore, togglePopup } from './store';
 
 const Popup = React.lazy(() => import('./popup/popup.component'));
 const UiEditor = React.lazy(() => import('./ui-editor/ui-editor'));
@@ -14,40 +12,6 @@ const UiEditor = React.lazy(() => import('./ui-editor/ui-editor'));
 function PopupHandler() {
   const frontendModules = useFrontendModules();
   const { modules: backendDependencies, error: backendError } = useBackendDependencies();
-  const [shouldShowNotification, setShouldShowNotification] = useState(false);
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    // displaying actionable notification if backend modules have missing dependencies
-    setShouldShowNotification(
-      (alreadyShowing) =>
-        alreadyShowing || (backendError ? true : hasInvalidDependencies(backendDependencies)),
-    );
-  }, [backendDependencies, backendError]);
-
-  useEffect(() => {
-    // only show notification max. 1 time
-    if (shouldShowNotification) {
-      showToast({
-        critical: false,
-        kind: 'error',
-        description: backendError
-          ? t(
-              'backendConnectionError',
-              'Could not connect to backend to fetch module list. Check the Implementer Tools for details.',
-            )
-          : t(
-              'checkImplementerToolsMessage',
-              'Check the Backend Modules tab in the Implementer Tools for more details',
-            ),
-        title: backendError
-          ? t('backendConnectionProblem', 'Backend Connection Problem')
-          : t('modulesWithMissingDependenciesWarning', 'Some modules have unresolved backend dependencies'),
-        actionButtonLabel: t('viewModules', 'View modules'),
-        onActionButtonClick: showModuleDiagnostics,
-      });
-    }
-  }, [t, shouldShowNotification, backendError]);
 
   const { isOpen, isUIEditorEnabled, openTabIndex } = useStore(implementerToolsStore);
 

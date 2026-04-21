@@ -31,7 +31,7 @@ const BirthPlan: React.FC<BirthPlanProps> = ({ patientUuid }) => {
       return;
     }
 
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: encounterUuid ?? '',
     });

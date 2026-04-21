@@ -32,7 +32,7 @@ const NutritionFollowup: React.FC<NutritionFollowupProps> = ({ patientUuid }) =>
   const handleAdd = useCallback(() => {
     const formUuid = config.formsList.nutritionFollowupForm;
     if (!formUuid) return;
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

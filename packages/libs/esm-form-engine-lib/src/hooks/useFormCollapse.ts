@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { FormExpanded, SessionMode } from '../types';
 
 type FormCollapseToggleEvent = CustomEvent<{ value: FormExpanded }>;
+const formViewEmbeddedStateKey = '__openmrsFormViewEmbedded';
 
 export function useFormCollapse(sessionMode: SessionMode): {
   isFormExpanded: FormExpanded;
@@ -10,6 +11,7 @@ export function useFormCollapse(sessionMode: SessionMode): {
   const [isFormExpanded, setIsFormExpanded] = useState<FormExpanded>(undefined);
 
   const hideFormCollapseToggle = useCallback(() => {
+    (window as typeof window & { [formViewEmbeddedStateKey]?: boolean })[formViewEmbeddedStateKey] = false;
     const HideFormCollapseToggle = new CustomEvent('openmrs:form-view-embedded', { detail: { value: false } });
     window.dispatchEvent(HideFormCollapseToggle);
   }, []);
@@ -23,8 +25,10 @@ export function useFormCollapse(sessionMode: SessionMode): {
   }, []);
 
   useEffect(() => {
+    const isToggleVisible = sessionMode != 'embedded-view';
+    (window as typeof window & { [formViewEmbeddedStateKey]?: boolean })[formViewEmbeddedStateKey] = isToggleVisible;
     const FormCollapseToggleVisibleEvent = new CustomEvent('openmrs:form-view-embedded', {
-      detail: { value: sessionMode != 'embedded-view' },
+      detail: { value: isToggleVisible },
     });
 
     window.dispatchEvent(FormCollapseToggleVisibleEvent);

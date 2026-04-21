@@ -70,7 +70,7 @@ function launchEditPatientFormSyncItem(syncItem: SyncItem<PatientFormSyncItemCon
 
   if (form?.uuid) {
     void launchWorkspace2(
-      'patient-form-entry-workspace',
+      'patient-form-entry-workspace-v2',
       {
         form: normalizeSyncItemForm(form),
         encounterUuid: syncItem.content._id,

@@ -18,7 +18,16 @@ const options = {
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
+const startupKey = Symbol.for('sihsalus.esm-form-entry-react-app.startup-complete');
+
 export function startupApp() {
+  const globalScope = globalThis as typeof globalThis & { [startupKey]?: boolean };
+  if (globalScope[startupKey]) {
+    return;
+  }
+
+  globalScope[startupKey] = true;
+
   defineConfigSchema(moduleName, configSchema);
   setupStaticDataOfflinePrecaching();
   setupDynamicOfflineFormDataHandler();

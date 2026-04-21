@@ -39,6 +39,8 @@
   align-items: center;
   position: relative;
   min-height: calc(100vh - var(--omrs-navbar-height));
+  padding-bottom: layout.$spacing-13;
+  box-sizing: border-box;
 }
 
 .center {

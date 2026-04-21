@@ -6,7 +6,7 @@ import { SectionRenderer } from '../section/section-renderer.component';
 import { Waypoint } from 'react-waypoint';
 import styles from './page.renderer.scss';
 import { Accordion, AccordionItem } from '@carbon/react';
-import { ChevronDownIcon, ChevronUpIcon } from '@openmrs/esm-framework';
+import { ChevronDownIcon, ChevronUpIcon } from '@openmrs/esm-framework/src/internal';
 import classNames from 'classnames';
 import { pageObserver } from '../../sidebar/page-observer';
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { type Concept, type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import { type Concept, type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework/src/internal';
 
 const conceptRepresentation =
   'custom:(uuid,display,conceptClass:(uuid,display),answers:(uuid,display),conceptMappings:(conceptReferenceTerm:(conceptSource:(name),code)))';

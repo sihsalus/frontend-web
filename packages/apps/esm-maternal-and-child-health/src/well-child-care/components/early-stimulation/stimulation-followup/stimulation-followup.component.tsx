@@ -35,7 +35,7 @@ const StimulationFollowup: React.FC<StimulationFollowupProps> = ({ patientUuid }
       console.warn('Form UUID not configured for stimulationFollowupForm');
       return;
     }
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

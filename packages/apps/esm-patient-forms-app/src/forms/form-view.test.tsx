@@ -117,7 +117,7 @@ describe('FormView', () => {
       />,
     );
 
-    const lastCompletedLink = container.querySelectorAll('tbody label')[1];
+    const lastCompletedLink = container.querySelectorAll('tbody button')[1] as HTMLButtonElement | undefined;
 
     expect(lastCompletedLink).toBeInTheDocument();
 

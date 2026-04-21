@@ -136,6 +136,8 @@ const AlturaCuelloChart: React.FC<AlturaCuelloChartProps> = ({ measurementData, 
       }));
   }, [measurementData, patientName]);
 
+  const hasPatientMeasurements = measurementPlotData.length > 0;
+
   // Combinar todos los datos
   const chartData = useMemo(() => [...chartLineData, ...measurementPlotData], [chartLineData, measurementPlotData]);
 
@@ -171,13 +173,13 @@ const AlturaCuelloChart: React.FC<AlturaCuelloChartProps> = ({ measurementData, 
           P10: '#e67300',
           P50: '#009933',
           P90: '#cc0000',
-          [patientName]: '#2b6693',
+          ...(hasPatientMeasurements ? { [patientName]: '#2b6693' } : {}),
         }
       : {
           '-2 SD': '#cc0000',
           Media: '#009933',
           '+2 SD': '#cc0000',
-          [patientName]: '#2b6693',
+          ...(hasPatientMeasurements ? { [patientName]: '#2b6693' } : {}),
         };
 
     return {
@@ -208,11 +210,11 @@ const AlturaCuelloChart: React.FC<AlturaCuelloChartProps> = ({ measurementData, 
       points: { enabled: false },
       color: { scale: colorScale },
       style: {
-        [patientName]: { point: { radius: 4 } },
+        ...(hasPatientMeasurements ? { [patientName]: { point: { radius: 4 } } } : {}),
         '*': { point: { radius: 0 } },
       },
     };
-  }, [selectedCategory, t, min, max, patientName, isPercentiles]);
+  }, [selectedCategory, t, min, max, patientName, isPercentiles, hasPatientMeasurements]);
 
   return (
     <div className={styles.chartContainer}>

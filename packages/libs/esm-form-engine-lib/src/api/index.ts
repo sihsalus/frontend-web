@@ -5,7 +5,7 @@ import {
   restBaseUrl,
   type FetchResponse,
   type OpenmrsResource,
-} from '@openmrs/esm-framework';
+} from '@openmrs/esm-framework/src/internal';
 import { encounterRepresentation } from '../constants';
 import type {
   AttachmentFieldValue,

@@ -1,9 +1,6 @@
 import {
-  getSynchronizationItems,
   type NewVisitPayload,
   type QueueItemDescriptor,
-  queueSynchronizationItem,
-  useConnectivity,
   useSession,
   useVisit,
   type Visit,
@@ -28,8 +25,8 @@ export interface OfflineVisit extends NewVisitPayload {
  * offline visits created by the patient chart while offline.
  * @param patientUuid The UUID of the patient.
  */
-export function useVisitOrOfflineVisit(patientUuid: string) {
-  const isOnline = useConnectivity();
+export function useVisitOrOfflineVisit(patientUuid: string): ReturnType<typeof useVisit> {
+  const isOnline = useOnlineStatus();
 
   const onlineVisit = useVisit(patientUuid);
   const offlineVisit = useOfflineVisit(patientUuid);
@@ -70,7 +67,8 @@ export function useOfflineVisit(patientUuid: string): ReturnType<typeof useVisit
         });
       })
       .catch((err) => {
-        setOfflineVisitState({ error: err, data: null, isLoading: false });
+        const error = err instanceof Error ? err : new Error(String(err));
+        setOfflineVisitState({ error, data: null, isLoading: false });
       });
   }, [patientUuid]);
 
@@ -81,7 +79,7 @@ export function useOfflineVisit(patientUuid: string): ReturnType<typeof useVisit
     isValidating: false,
     currentVisitIsRetrospective: false,
     error: offlineVisitState.error,
-    mutate: () => {},
+    mutate: (): void => {},
   };
 }
 
@@ -92,19 +90,22 @@ export function useOfflineVisit(patientUuid: string): ReturnType<typeof useVisit
  * @param patientUuid The UUID of the patient for which an offline visit should be created.
  * @param offlineVisitTypeUuid The UUID of the offline visit type.
  */
-export function useAutoCreatedOfflineVisit(patientUuid: string, offlineVisitTypeUuid: string) {
-  const isOnline = useConnectivity();
+export function useAutoCreatedOfflineVisit(patientUuid: string, offlineVisitTypeUuid: string): void {
+  const isOnline = useOnlineStatus();
   const location = useSession()?.sessionLocation?.uuid;
   const { currentVisit, isValidating, error, mutate } = useOfflineVisit(patientUuid);
 
   useEffect(() => {
     if (!isOnline && !isValidating && !currentVisit && !error) {
-      createOfflineVisitForPatient(patientUuid, location, offlineVisitTypeUuid, new Date()).finally(() => mutate());
+      void createOfflineVisitForPatient(patientUuid, location, offlineVisitTypeUuid, new Date()).finally(() => {
+        void mutate();
+      });
     }
   }, [isOnline, currentVisit, isValidating, error, mutate, location, offlineVisitTypeUuid, patientUuid]);
 }
 
-export async function getOfflineVisitForPatient(patientUuid: string) {
+export async function getOfflineVisitForPatient(patientUuid: string): Promise<OfflineVisit | undefined> {
+  const { getSynchronizationItems } = await import('@openmrs/esm-framework');
   const offlineVisits = await getSynchronizationItems<OfflineVisit>(visitSyncType);
   return offlineVisits.find((visit) => visit.patient === patientUuid);
 }
@@ -114,7 +115,8 @@ export async function createOfflineVisitForPatient(
   location: string,
   offlineVisitTypeUuid: string,
   startDatetime: Date,
-) {
+): Promise<OfflineVisit> {
+  const { getSynchronizationItems, queueSynchronizationItem } = await import('@openmrs/esm-framework');
   const patientRegistrationSyncItems = await getSynchronizationItems<{ fhirPatient: fhir.Patient }>(
     'patient-registration',
   );
@@ -162,4 +164,23 @@ function offlineVisitToVisit(offlineVisit: OfflineVisit): Visit {
       uuid: offlineVisit.patient,
     },
   } as Visit;
+}
+
+function useOnlineStatus(): boolean {
+  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = (): void => setIsOnline(true);
+    const handleOffline = (): void => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return (): void => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  return isOnline;
 }

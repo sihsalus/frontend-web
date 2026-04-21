@@ -1,10 +1,9 @@
 /** @module @category UI */
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { getConfig } from '@openmrs/esm-config';
+import { getConfig } from '@openmrs/esm-framework/src/internal';
 import { type StyleguideConfigObject } from '../config-schema';
 import styles from './page-header.module.scss';
-import { type CoreTranslationKey, getCoreTranslation } from '@openmrs/esm-translations';
 
 export interface PageHeaderContentProps {
   title: string | JSX.Element;
@@ -100,7 +99,7 @@ export const PageHeaderContent: React.FC<PageHeaderContentProps> = ({ title, ill
     <div className={classNames(styles.pageHeaderContent, className)}>
       {illustration}
       <div className={styles.pageLabels}>
-        {config?.implementationName && <p>{getCoreTranslation(config.implementationName as CoreTranslationKey)}</p>}
+        {config?.implementationName && <p>{config.implementationName}</p>}
         <p className={styles.pageName}>{title}</p>
       </div>
     </div>

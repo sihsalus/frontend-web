@@ -5,9 +5,11 @@ import {
   subscribePrecacheStaticDependencies,
   syncAllDynamicOfflineData,
 } from '@openmrs/esm-framework';
+import { registerWorkspace } from '@openmrs/esm-framework/src/internal';
 
 import clinicalFormActionMenuComponent from './clinical-form-action-menu.component';
 import { configSchema } from './config-schema';
+import OfflineForms from './offline-forms/offline-forms.component';
 import { setupDynamicFormDataHandler, setupPatientFormSync } from './offline';
 
 const moduleName = '@sihsalus/esm-patient-forms-app';
@@ -19,8 +21,43 @@ const options = {
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
+const startupKey = Symbol.for('sihsalus.esm-patient-forms-app.startup-complete');
+
 export function startupApp() {
+  const globalScope = globalThis as typeof globalThis & { [startupKey]?: boolean };
+  if (globalScope[startupKey]) {
+    return;
+  }
+
+  globalScope[startupKey] = true;
+
   defineConfigSchema(moduleName, configSchema);
+
+  if (typeof registerWorkspace === 'function') {
+    registerWorkspace({
+      name: 'patient-form-entry-workspace',
+      title: 'Clinical form',
+      type: 'clinical-form',
+      canHide: false,
+      canMaximize: true,
+      width: 'extra-wide',
+      component: 'patientFormEntryWorkspace',
+      moduleName,
+      load: () => Promise.resolve(patientFormEntryWorkspace),
+    });
+
+    registerWorkspace({
+      name: 'clinical-forms-workspace',
+      title: 'Clinical forms',
+      type: 'clinical-form',
+      canHide: true,
+      canMaximize: true,
+      width: 'extra-wide',
+      component: 'clinicalFormsWorkspace',
+      moduleName,
+      load: () => Promise.resolve(clinicalFormsWorkspace),
+    });
+  }
 
   setupPatientFormSync();
   setupDynamicFormDataHandler();
@@ -61,4 +98,4 @@ export const offlineFormsNavLink = getAsyncLifecycle(
   options,
 );
 
-export const offlineForms = getAsyncLifecycle(() => import('./offline-forms/offline-forms.component'), options);
+export const offlineForms = getSyncLifecycle(OfflineForms, options);

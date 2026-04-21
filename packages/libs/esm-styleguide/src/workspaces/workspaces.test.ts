@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { clearMockExtensionRegistry } from '@openmrs/esm-framework/mock';
-import { registerExtension, registerWorkspace, registerWorkspaceGroup } from '@openmrs/esm-extensions';
+import { registerExtension, registerWorkspace, registerWorkspaceGroup } from '@openmrs/esm-framework/src/internal';
 import {
   type Prompt,
   cancelPrompt,

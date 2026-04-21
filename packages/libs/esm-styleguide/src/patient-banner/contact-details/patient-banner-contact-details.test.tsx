@@ -3,7 +3,7 @@ import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import { screen } from '@testing-library/react';
-import { usePatient } from '@openmrs/esm-react-utils';
+import { usePatient } from '@openmrs/esm-framework/src/internal';
 import { usePatientAttributes, usePatientContactAttributes } from './usePatientAttributes';
 import { usePatientListsForPatient } from './usePatientListsForPatient';
 import { useRelationships } from './useRelationships';

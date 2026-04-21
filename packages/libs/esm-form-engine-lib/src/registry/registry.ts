@@ -8,7 +8,7 @@ import {
   type FormSchemaTransformer,
   type PostSubmissionAction,
 } from '../types';
-import { getGlobalStore, type OpenmrsResource } from '@openmrs/esm-framework';
+import { getGlobalStore, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { FormsStore } from '../constants';
 import { inbuiltControls } from './inbuilt-components/inbuiltControls';
 import { inbuiltValidators } from './inbuilt-components/inbuiltValidators';

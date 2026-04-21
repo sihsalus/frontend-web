@@ -3,7 +3,7 @@ import { ToastNotification } from '@carbon/react';
 import { Controller, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from 'react-error-boundary';
-import { getConfigStore } from '@openmrs/esm-config';
+import { getConfigStore } from '@openmrs/esm-framework/src/internal';
 import {
   type FormField,
   type FormFieldInputComponent,

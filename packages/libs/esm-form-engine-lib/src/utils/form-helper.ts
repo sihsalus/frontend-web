@@ -1,4 +1,4 @@
-import { type LayoutType } from '@openmrs/esm-framework';
+import { type LayoutType } from '@openmrs/esm-framework/src/internal';
 import type {
   FormField,
   FormPage,

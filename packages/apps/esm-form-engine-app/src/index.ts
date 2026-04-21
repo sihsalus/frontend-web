@@ -12,7 +12,16 @@ const options = {
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
+const startupKey = Symbol.for('sihsalus.esm-form-engine-app.startup-complete');
+
 export async function startupApp() {
+  const globalScope = globalThis as typeof globalThis & { [startupKey]?: boolean };
+  if (globalScope[startupKey]) {
+    return;
+  }
+
+  globalScope[startupKey] = true;
+
   defineConfigSchema(moduleName, configSchema);
 
   try {

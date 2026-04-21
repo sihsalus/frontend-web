@@ -1,7 +1,7 @@
 /** @module @category UI */
 import React, { useMemo, useId } from 'react';
 import classNames from 'classnames';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import {
   calculateInterpretation,
   normalizeInterpretation,

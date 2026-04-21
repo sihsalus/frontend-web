@@ -64,7 +64,7 @@ const NeonatalAttention: React.FC<ImmediateNewbornAttentionProps> = ({ patientUu
   }, [encounter]);
 
   const handleLaunchForm = () => {
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: config.formsList.atencionImmediataNewborn },
       encounterUuid: encounter?.uuid || '',
     });

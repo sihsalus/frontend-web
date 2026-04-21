@@ -71,7 +71,7 @@ const CareSummaryTable: React.FC<CareSummaryTableProps> = ({
   const launchForm = useCallback(() => {
     try {
       if (formUuid) {
-        launchWorkspace2('patient-form-entry-workspace', {
+        launchWorkspace2('patient-form-entry-workspace-v2', {
           form: { uuid: formUuid },
           encounterUuid: '',
         });

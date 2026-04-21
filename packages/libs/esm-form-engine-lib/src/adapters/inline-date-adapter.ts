@@ -1,4 +1,4 @@
-import { formatDate, parseDate, toOmrsIsoString, type OpenmrsResource } from '@openmrs/esm-framework';
+import { formatDate, parseDate, toOmrsIsoString, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import { type FormContextProps } from '../provider/form-provider';
 import { isNewSubmissionEffective } from './obs-comment-adapter';
 import { isEmpty } from '../validators/form-validator';

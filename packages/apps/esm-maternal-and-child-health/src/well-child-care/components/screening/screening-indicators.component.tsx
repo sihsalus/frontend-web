@@ -38,7 +38,7 @@ const ScreeningIndicators: React.FC<ScreeningIndicatorsProps> = ({ patientUuid }
       console.warn('Form UUID not configured for screeningIndicatorsForm');
       return;
     }
-    launchWorkspace2('patient-form-entry-workspace', {
+    launchWorkspace2('patient-form-entry-workspace-v2', {
       form: { uuid: formUuid },
       encounterUuid: '',
     });

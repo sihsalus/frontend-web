@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-api';
-import { useConfig } from '@openmrs/esm-react-utils';
+import { useConfig } from '@openmrs/esm-framework/src/internal';
 import { type Patient } from './types';
 
 const customRepresentation =

@@ -9,6 +9,12 @@ export interface OfflineToolsPageParams {
   page: string;
 }
 
+const fallbackPageSlots: Record<string, string> = {
+  actions: 'offline-tools-page-offline-actions-slot',
+  forms: 'offline-tools-page-forms-slot',
+  patients: 'offline-tools-page-offline-patients-slot',
+};
+
 const OfflineToolsPage: React.FC = () => {
   const location = useLocation();
   const { page } = useParams();
@@ -16,15 +22,16 @@ const OfflineToolsPage: React.FC = () => {
   const meta = useExtensionSlotMeta<OfflineToolsPageConfig>('offline-tools-page-slot');
 
   const pageConfig = Object.values(meta).find((pageConfig) => pageConfig.name === page);
+  const pageSlot = pageConfig?.slot ?? (page ? fallbackPageSlots[page] : undefined);
 
-  if (!pageConfig) {
+  if (!pageSlot) {
     return null;
   }
 
   return (
     <>
       <ExtensionSlot name="breadcrumbs-slot" />
-      <ExtensionSlot key={pageConfig.slot} name={pageConfig.slot} state={{ basePath }} />
+      <ExtensionSlot key={pageSlot} name={pageSlot} state={{ basePath }} />
     </>
   );
 };

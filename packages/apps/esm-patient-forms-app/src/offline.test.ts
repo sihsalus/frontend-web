@@ -39,7 +39,7 @@ describe('setupPatientFormSync', () => {
     });
 
     expect(mockLaunchWorkspace2).toHaveBeenCalledWith(
-      'patient-form-entry-workspace',
+      'patient-form-entry-workspace-v2',
       {
         form: expect.objectContaining({
           uuid: 'form-uuid',
@@ -76,7 +76,7 @@ describe('setupPatientFormSync', () => {
     });
 
     expect(mockLaunchWorkspace2).toHaveBeenCalledWith(
-      'patient-form-entry-workspace',
+      'patient-form-entry-workspace-v2',
       {
         form: expect.objectContaining({
           uuid: 'legacy-form-uuid',

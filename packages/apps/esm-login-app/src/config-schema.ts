@@ -68,7 +68,7 @@ export const configSchema = {
     },
     alt: {
       _type: Type.String,
-      _default: 'SIHSALUS',
+      _default: '',
       _description: 'The alternative text for the logo image, displayed when the image cannot be loaded or on hover.',
     },
   },

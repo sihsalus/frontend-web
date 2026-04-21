@@ -40,10 +40,13 @@ export interface FormEntryProps {
   mutateVisitContext: (() => void) | null;
   additionalProps?: Record<string, unknown>;
   closeWorkspace: Workspace2DefinitionProps['closeWorkspace'];
+  closeWorkspaceWithSavedChanges?: () => void;
+  promptBeforeClosing?: (fn: () => boolean) => void;
   handlePostResponse?: (encounter: Encounter) => void;
   hideControls?: boolean;
   hidePatientBanner?: boolean;
   preFilledQuestions?: Record<string, string>;
+  renderAsWorkspace2?: boolean;
 }
 
 const FormEntry: React.FC<FormEntryProps> = ({
@@ -55,10 +58,13 @@ const FormEntry: React.FC<FormEntryProps> = ({
   mutateVisitContext,
   additionalProps,
   closeWorkspace,
+  closeWorkspaceWithSavedChanges,
+  promptBeforeClosing,
   handlePostResponse,
   hideControls,
   hidePatientBanner,
   preFilledQuestions,
+  renderAsWorkspace2 = true,
 }) => {
   const formUuid = form.uuid;
   const { htmlFormEntryForms } = useConfig<ConfigObject>();
@@ -102,12 +108,21 @@ const FormEntry: React.FC<FormEntryProps> = ({
   const handleCloseWorkspaceWithSavedChanges = useCallback(() => {
     mutateVisitContextRef.current?.();
     invalidateVisitAndEncounterData(globalMutate, patientUuid);
+    if (closeWorkspaceWithSavedChanges) {
+      closeWorkspaceWithSavedChanges();
+      return Promise.resolve(true);
+    }
     return closeWorkspaceRef.current({ discardUnsavedChanges: true });
-  }, [globalMutate, patientUuid]);
+  }, [closeWorkspaceWithSavedChanges, globalMutate, patientUuid]);
 
   const handlePromptBeforeClosing = useCallback((fn: () => boolean) => {
+    if (promptBeforeClosing) {
+      promptBeforeClosing(fn);
+      return;
+    }
+
     setHasUnsavedChanges(fn());
-  }, []);
+  }, [promptBeforeClosing]);
 
   const handleSetHasUnsavedChanges = useCallback((value: boolean) => {
     setHasUnsavedChanges(value);
@@ -191,20 +206,25 @@ const FormEntry: React.FC<FormEntryProps> = ({
 
   const showFormAndLoadedData = Boolean(form && patientUuid && !isLoadingEncounterVisit);
 
+  const content = (
+    <div>
+      <ExtensionSlot name="visit-context-header-slot" state={{ patientUuid }} />
+      {showFormAndLoadedData &&
+        (isHtmlForm ? (
+          <HtmlFormEntryWrapper src={htmlFormEntryUrl} closeWorkspaceWithSavedChanges={state.closeWorkspaceWithSavedChanges} />
+        ) : (
+          <ExtensionSlot key={state.formUuid} name="form-widget-slot" state={state} />
+        ))}
+    </div>
+  );
+
+  if (!renderAsWorkspace2) {
+    return content;
+  }
+
   return (
     <Workspace2 title={form.display ?? t('clinicalForm', 'Clinical form')} hasUnsavedChanges={hasUnsavedChanges}>
-      <div>
-        <ExtensionSlot name="visit-context-header-slot" state={{ patientUuid }} />
-        {showFormAndLoadedData &&
-          (isHtmlForm ? (
-            <HtmlFormEntryWrapper
-              src={htmlFormEntryUrl}
-              closeWorkspaceWithSavedChanges={state.closeWorkspaceWithSavedChanges}
-            />
-          ) : (
-            <ExtensionSlot key={state.formUuid} name="form-widget-slot" state={state} />
-          ))}
-      </div>
+      {content}
     </Workspace2>
   );
 };

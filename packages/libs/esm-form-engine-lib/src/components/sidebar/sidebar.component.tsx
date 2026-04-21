@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, InlineLoading } from '@carbon/react';
-import { useLayoutType } from '@openmrs/esm-framework';
+import { useLayoutType } from '@openmrs/esm-framework/src/internal';
 import { isPageContentVisible } from '../../utils/form-helper';
 import { useCurrentActivePage } from './useCurrentActivePage';
 import { usePageObserver } from './usePageObserver';

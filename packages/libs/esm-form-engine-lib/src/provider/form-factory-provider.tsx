@@ -7,7 +7,7 @@ import {
   type SnackbarDescriptor,
   type Visit,
   useLayoutType,
-} from '@openmrs/esm-framework';
+} from '@openmrs/esm-framework/src/internal';
 
 import { EncounterFormProcessor } from '../processors/encounter/encounter-form-processor';
 import { processPostSubmissionActions, validateForm } from './form-factory-helper';

@@ -9,9 +9,9 @@ import {
   type OpenedWorkspace,
   workspace2Store,
   type WorkspaceStoreState2,
-} from '@openmrs/esm-extensions';
-import { useStoreWithActions, type Actions } from '@openmrs/esm-react-utils';
-import { shallowEqual } from '@openmrs/esm-utils';
+} from '@openmrs/esm-framework/src/internal';
+import { useStoreWithActions, type Actions } from '@openmrs/esm-framework/src/internal';
+import { shallowEqual } from '@openmrs/esm-framework/src/internal';
 import { showModal } from '../modals';
 import { type Workspace2DefinitionProps } from './workspace2.component';
 

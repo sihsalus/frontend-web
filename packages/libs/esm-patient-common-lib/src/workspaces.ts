@@ -1,4 +1,7 @@
 import {
+  closeWorkspace,
+  closeWorkspaceGroup2,
+  getGlobalStore,
   getRegisteredWorkspace2Names,
   launchWorkspace,
   launchWorkspace2,
@@ -37,6 +40,22 @@ export type PatientWorkspace2DefinitionProps<
   WindowProps extends object,
 > = Workspace2DefinitionProps<WorkspaceProps, WindowProps, PatientWorkspaceGroupProps>;
 
+const legacyFirstPatientChartWorkspaces = new Set(['clinical-forms-workspace', 'patient-form-entry-workspace']);
+
+const patientChartLegacyWorkspaceGroups = new Map<string, string>([
+  ['clinical-forms-workspace', 'clinical-forms'],
+  ['patient-form-entry-workspace', 'clinical-forms'],
+  ['patient-html-form-entry-workspace', 'clinical-forms'],
+  ['order-basket', 'orders'],
+  ['orderable-concept-workspace', 'orders'],
+  ['patient-orders-form-workspace', 'orders'],
+  ['test-results-form-workspace', 'orders'],
+  ['fua-encounter-workspace', 'fua'],
+  ['fua-viewer-workspace', 'fua'],
+]);
+
+const exclusivePatientChartLegacyWorkspaceGroups = new Set(['clinical-forms', 'orders', 'fua']);
+
 function isWorkspace2Registered(workspaceName: string): boolean {
   return getRegisteredWorkspace2Names().includes(workspaceName);
 }
@@ -56,17 +75,72 @@ function getPatientWorkspaceGroupProps(): PatientWorkspaceGroupProps | null {
   };
 }
 
+interface LegacyWorkspaceStoreState {
+  openWorkspaces?: Array<{ name: string }>;
+}
+
+function closeOpenLegacyWorkspaces(): boolean {
+  const workspaceStore = getGlobalStore<LegacyWorkspaceStoreState>('workspace');
+  const openWorkspaces = workspaceStore.getState().openWorkspaces ?? [];
+
+  if (!openWorkspaces.length) {
+    return true;
+  }
+
+  return openWorkspaces.every((workspace, index) =>
+    closeWorkspace(workspace.name, {
+      closeWorkspaceGroup: index === openWorkspaces.length - 1,
+    }),
+  );
+}
+
+function closeLegacyPatientChartWorkspaceGroup(workspaceName: string): boolean {
+  const targetGroup = patientChartLegacyWorkspaceGroups.get(workspaceName);
+
+  if (!targetGroup || !exclusivePatientChartLegacyWorkspaceGroups.has(targetGroup)) {
+    return true;
+  }
+
+  const workspaceStore = getGlobalStore<LegacyWorkspaceStoreState>('workspace');
+  const openWorkspaces = workspaceStore
+    .getState()
+    .openWorkspaces?.filter(
+      (workspace) =>
+        patientChartLegacyWorkspaceGroups.get(workspace.name) != null &&
+        patientChartLegacyWorkspaceGroups.get(workspace.name) !== targetGroup,
+    );
+
+  if (!openWorkspaces?.length) {
+    return true;
+  }
+
+  return openWorkspaces.every((workspace, index) =>
+    closeWorkspace(workspace.name, {
+      closeWorkspaceGroup: index === openWorkspaces.length - 1,
+    }),
+  );
+}
+
 export function launchPatientWorkspace(workspaceName: string, additionalProps?: object): void {
   const patientUuid = getPatientUuidFromStore();
+  const shouldPreferLegacyWorkspace = legacyFirstPatientChartWorkspaces.has(workspaceName);
 
-  if (isWorkspace2Registered(workspaceName)) {
-    void launchWorkspace2(workspaceName, additionalProps ?? null, null, getPatientWorkspaceGroupProps());
+  if (!shouldPreferLegacyWorkspace && isWorkspace2Registered(workspaceName)) {
+    if (closeOpenLegacyWorkspaces()) {
+      void launchWorkspace2(workspaceName, additionalProps ?? null, null, getPatientWorkspaceGroupProps());
+    }
     return;
   }
 
-  launchWorkspace(workspaceName, {
-    patientUuid,
-    ...additionalProps,
+  void closeWorkspaceGroup2().then((isClosed) => {
+    if (!isClosed || !closeLegacyPatientChartWorkspaceGroup(workspaceName)) {
+      return;
+    }
+
+    launchWorkspace(workspaceName, {
+      patientUuid,
+      ...additionalProps,
+    });
   });
 }
 

@@ -1,5 +1,4 @@
 import {
-  getDynamicOfflineDataEntries,
   interpolateUrl,
   openmrsFetch,
   restBaseUrl,
@@ -17,7 +16,7 @@ import {
   formEncounterUrl,
   formEncounterUrlPoc,
 } from '../constants';
-import { isValidOfflineFormEncounter } from '../offline-forms/offline-form-helpers';
+import { getDynamicFormDataEntriesFor, isValidOfflineFormEncounter } from '../offline-forms/offline-form-helpers';
 import type { ListResponse, Form, EncounterWithFormRef, CompletedFormInfo } from '../types';
 
 function useCustomFormsUrl(patientUuid: string, visitUuid: string) {
@@ -35,8 +34,10 @@ function useCustomFormsUrl(patientUuid: string, visitUuid: string) {
 
 export function useFormEncounters(cachedOfflineFormsOnly = false, patientUuid: string = '', visitUuid: string = '') {
   const { url, hasCustomFormsUrl } = useCustomFormsUrl(patientUuid, visitUuid);
+  const session = useSession();
+  const shouldFetch = Boolean(session?.authenticated && session.user);
 
-  return useSWR([url, cachedOfflineFormsOnly], async () => {
+  return useSWR(shouldFetch ? [url, cachedOfflineFormsOnly, session.user.uuid] : null, async () => {
     const res = await openmrsFetch<ListResponse<Form>>(url);
     // show published forms and hide component forms
     const forms = hasCustomFormsUrl
@@ -47,7 +48,7 @@ export function useFormEncounters(cachedOfflineFormsOnly = false, patientUuid: s
       return forms;
     }
 
-    const dynamicFormData = await getDynamicOfflineDataEntries('form');
+    const dynamicFormData = await getDynamicFormDataEntriesFor(session.user.uuid);
     return forms.filter((form) => dynamicFormData.some((entry) => entry.identifier === form.uuid));
   });
 }

@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { ActionableNotification } from '@carbon/react';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import styles from './snackbar.module.scss';
 
 // Design documentation for Snackbars https://zeroheight.com/23a080e38/p/683580-notifications/t/468baf

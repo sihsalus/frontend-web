@@ -2,8 +2,8 @@ import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { type i18n } from 'i18next';
 import { screen, render } from '@testing-library/react';
-import { usePrimaryIdentifierCode } from '@openmrs/esm-react-utils';
-import { age } from '@openmrs/esm-utils';
+import { usePrimaryIdentifierCode } from '@openmrs/esm-framework/src/internal';
+import { age } from '@openmrs/esm-framework/src/internal';
 import { PatientBannerPatientInfo } from './patient-banner-patient-info.component';
 
 window.i18next = { language: 'en' } as i18n;

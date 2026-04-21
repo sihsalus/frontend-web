@@ -1,4 +1,4 @@
-import { getDynamicOfflineDataEntries } from '@openmrs/esm-framework';
+import { getOfflineDb, type DynamicOfflineData } from '@openmrs/esm-framework';
 import { type HtmlFormEntryForm } from '@openmrs/esm-patient-common-lib';
 import useSWR from 'swr';
 
@@ -23,6 +23,50 @@ export function isFormJsonSchema(formResource: FormEncounterResource) {
   return formResource.dataType === 'AmpathJsonSchema' || formResource.name === 'JSON schema';
 }
 
-export function useDynamicFormDataEntries() {
-  return useSWR('dynamicFormEntries', () => getDynamicOfflineDataEntries('form'));
+export async function getDynamicFormDataEntriesFor(userId: string): Promise<Array<DynamicOfflineData>> {
+  return await getOfflineDb().dynamicOfflineData.where('users').equals(userId).and((entry) => entry.type === 'form').toArray();
+}
+
+export async function putDynamicFormDataEntryFor(userId: string, formUuid: string): Promise<void> {
+  const db = getOfflineDb();
+  const existingEntry = await db.dynamicOfflineData.get({
+    type: 'form',
+    identifier: formUuid,
+  });
+
+  if (!existingEntry) {
+    await db.dynamicOfflineData.add({
+      users: [userId],
+      type: 'form',
+      identifier: formUuid,
+    });
+  } else if (!existingEntry.users.includes(userId)) {
+    await db.dynamicOfflineData.update(existingEntry.id!, {
+      users: [...existingEntry.users, userId],
+    });
+  }
+}
+
+export async function removeDynamicFormDataEntryFor(userId: string, formUuid: string): Promise<void> {
+  const db = getOfflineDb();
+  const existingEntry = await db.dynamicOfflineData.get({
+    type: 'form',
+    identifier: formUuid,
+  });
+
+  if (!existingEntry?.users.includes(userId)) {
+    return;
+  }
+
+  if (existingEntry.users.length > 1) {
+    await db.dynamicOfflineData.update(existingEntry.id!, {
+      users: existingEntry.users.filter((entryUserId) => entryUserId !== userId),
+    });
+  } else {
+    await db.dynamicOfflineData.delete(existingEntry.id!);
+  }
+}
+
+export function useDynamicFormDataEntries(userId?: string) {
+  return useSWR(userId ? ['dynamicFormEntries', userId] : null, () => getDynamicFormDataEntriesFor(userId!));
 }

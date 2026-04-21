@@ -37,7 +37,7 @@ export const esmPatientChartSchema = {
   logo: {
     alt: {
       _type: Type.String,
-      _default: 'SIHSALUS',
+      _default: '',
       _description: 'Alt text, shown on hover',
     },
     name: {

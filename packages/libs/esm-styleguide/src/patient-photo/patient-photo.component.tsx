@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Avatar from 'react-avatar';
 import GeoPattern from 'geopattern';
 import { SkeletonIcon } from '@carbon/react';
-import { getCoreTranslation } from '@openmrs/esm-translations';
+import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import { usePatientPhoto } from './usePatientPhoto';
 import PlaceholderIcon from './placeholder-icon.component';
 import styles from './patient-photo.module.scss';

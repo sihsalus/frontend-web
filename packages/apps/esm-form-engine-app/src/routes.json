@@ -8,6 +8,11 @@
       "name": "rfe-form-collapse-toggle",
       "component": "formCollapseToggle",
       "slot": "workspace-header-patient-chart-slot"
+    },
+    {
+      "name": "rfe-form-collapse-toggle-patient-forms",
+      "component": "formCollapseToggle",
+      "slot": "workspace-header-patient-forms-slot"
     }
   ],
   "modals": [
