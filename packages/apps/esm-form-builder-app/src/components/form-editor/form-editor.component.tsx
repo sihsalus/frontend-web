@@ -1,5 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
 import {
   Button,
   Column,
@@ -16,28 +14,30 @@ import {
   TabPanels,
   Tabs,
 } from '@carbon/react';
-import { ArrowLeft, Maximize, Minimize, Download } from '@carbon/react/icons';
-import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { type TFunction } from 'i18next';
+import { ArrowLeft, Download, Maximize, Minimize } from '@carbon/react/icons';
+import { useLanguageOptions } from '@hooks/getLanguageOptionsFromSession';
+import { useClobdata } from '@hooks/useClobdata';
+import { useForm } from '@hooks/useForm';
 import { ConfigurableLink, showModal, useConfig } from '@openmrs/esm-framework';
+import { handleFormValidation } from '@resources/form-validator.resource';
+import type { FormSchema } from '@sihsalus/esm-form-engine-lib';
+import type { Schema } from '@types';
+import classNames from 'classnames';
+import { type TFunction } from 'i18next';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type { IMarker } from 'react-ace';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import type { ConfigObject } from '../../config-schema';
+import { mergeTranslatedSchema } from '../../utils/translationSchemaUtils';
 import ActionButtons from '../action-buttons/action-buttons.component';
 import AuditDetails from '../audit-details/audit-details.component';
 import FormRenderer from '../form-renderer/form-renderer.component';
 import Header from '../header/header.component';
 import InteractiveBuilder from '../interactive-builder/interactive-builder.component';
-import TranslationBuilder from '../translation-builder/translation-builder.component';
 import SchemaEditor from '../schema-editor/schema-editor.component';
+import TranslationBuilder from '../translation-builder/translation-builder.component';
 import ValidationMessage from '../validation-info/validation-info.component';
-import { handleFormValidation } from '@resources/form-validator.resource';
-import { mergeTranslatedSchema } from '../../utils/translationSchemaUtils';
-import { useClobdata } from '@hooks/useClobdata';
-import { useForm } from '@hooks/useForm';
-import { useLanguageOptions } from '@hooks/getLanguageOptionsFromSession';
-import type { IMarker } from 'react-ace';
-import type { FormSchema } from '@sihsalus/esm-form-engine-lib';
-import type { Schema } from '@types';
-import type { ConfigObject } from '../../config-schema';
 import styles from './form-editor.scss';
 
 interface ErrorProps {
@@ -250,10 +250,7 @@ const FormEditorContent: React.FC<TranslationFnProps> = ({ t }) => {
     }
 
     const translations = translatedSchema.translations;
-    if (
-      !translations ||
-      Object.values(translations).every((value) => typeof value === 'string')
-    ) {
+    if (!translations || Object.values(translations).every((value) => typeof value === 'string')) {
       return translatedSchema as FormSchema;
     }
 
