@@ -18,7 +18,15 @@ const workspaceArtifactDirs = [
 
 const workspaceArtifactFiles = ['.eslintcache', '.tsbuildinfo', 'tsconfig.tsbuildinfo'];
 
-const rootOnlyTargets = ['dist/spa', 'playwright-report', 'test-results', 'test-screenshots', '.turbo', '.eslintcache', '.tsbuildinfo'];
+const rootOnlyTargets = [
+  'dist/spa',
+  'playwright-report',
+  'test-results',
+  'test-screenshots',
+  '.turbo',
+  '.eslintcache',
+  '.tsbuildinfo',
+];
 const rootOnlyFiles = ['e2e/storage-state.json'];
 const rootE2EArtifactDirs = ['playwright-report', 'test-results', 'test-screenshots'];
 

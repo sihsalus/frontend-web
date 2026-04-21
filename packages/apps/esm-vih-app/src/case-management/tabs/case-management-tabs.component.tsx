@@ -45,7 +45,7 @@ const CaseManagementTabs: React.FC<CaseManagementTabsProps> = ({ setActiveTabInd
             </TabPanel>
           </TabPanels>
         </Tabs>
-        </div>
+      </div>
     </div>
   );
 };

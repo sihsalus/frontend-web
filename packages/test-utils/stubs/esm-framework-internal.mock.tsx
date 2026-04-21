@@ -1,6 +1,13 @@
 import { vi } from 'vitest';
 
-import { DownloadIcon, TrashCanIcon, Type, clearHistory, getExtensionInternalStore, useStore } from './esm-framework.mock';
+import {
+  DownloadIcon,
+  TrashCanIcon,
+  Type,
+  clearHistory,
+  getExtensionInternalStore,
+  useStore,
+} from './esm-framework.mock';
 
 type MockStore<T> = {
   getState: () => T;
@@ -38,22 +45,24 @@ export const implementerToolsConfigStore = createMockStore({ config: {} as Recor
 export const temporaryConfigStore = createMockStore({ config: {} as Record<string, unknown> });
 export const clearConfigErrors = vi.fn();
 
-export const useStoreWithActions = vi.fn(<T extends Record<string, unknown>, A extends MockActions<T>>(store: MockStore<T>, actions: A) => {
-  const state = useStore(store) as T;
-  const boundActions = Object.fromEntries(
-    Object.entries(actions).map(([key, action]) => [
-      key,
-      (...args: unknown[]) => {
-        const typedAction = action as MockAction<T>;
-        store.setState((prevState: T) => ({ ...prevState, ...typedAction(prevState, ...args) }));
-      },
-    ]),
-  ) as {
-    [K in keyof A]: (...args: A[K] extends (state: T, ...args: infer Args) => any ? Args : never) => void;
-  };
+export const useStoreWithActions = vi.fn(
+  <T extends Record<string, unknown>, A extends MockActions<T>>(store: MockStore<T>, actions: A) => {
+    const state = useStore(store) as T;
+    const boundActions = Object.fromEntries(
+      Object.entries(actions).map(([key, action]) => [
+        key,
+        (...args: unknown[]) => {
+          const typedAction = action as MockAction<T>;
+          store.setState((prevState: T) => ({ ...prevState, ...typedAction(prevState, ...args) }));
+        },
+      ]),
+    ) as {
+      [K in keyof A]: (...args: A[K] extends (state: T, ...args: infer Args) => any ? Args : never) => void;
+    };
 
-  return {
-    ...state,
-    ...boundActions,
-  };
-});
+    return {
+      ...state,
+      ...boundActions,
+    };
+  },
+);

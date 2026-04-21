@@ -178,7 +178,9 @@ describe('ImmunizationsDetailedSummary', () => {
     expect(screen.getByText(/recent vaccination/i)).toBeInTheDocument();
     expect(screen.getByText(/polio/i)).toBeInTheDocument();
     expect(
-      screen.getByText(formatRecentVaccination(mockImmunizationData[0].existingDoses[0].occurrenceDateTime, 'Primary Series')),
+      screen.getByText(
+        formatRecentVaccination(mockImmunizationData[0].existingDoses[0].occurrenceDateTime, 'Primary Series'),
+      ),
     ).toBeInTheDocument();
   });
 
@@ -416,7 +418,9 @@ describe('ImmunizationsDetailedSummary', () => {
     await waitForLoadingToFinish();
 
     expect(
-      screen.getByText(formatRecentVaccination(immunizationWithSpecificDate[0].existingDoses[0].occurrenceDateTime, 'Primary Series')),
+      screen.getByText(
+        formatRecentVaccination(immunizationWithSpecificDate[0].existingDoses[0].occurrenceDateTime, 'Primary Series'),
+      ),
     ).toBeInTheDocument();
   });
 

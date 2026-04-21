@@ -79,7 +79,8 @@ const mapEncounterProperties = (encounter: Encounter): MappedEncounter => ({
   encounterDatetime: encounter.encounterDatetime ?? '',
   encounterType: encounter.encounterType?.display ?? '',
   obs: encounter.obs ?? [],
-  provider: encounter.encounterProviders[0]?.provider?.person?.display ?? encounter.encounterProviders[0]?.provider?.display,
+  provider:
+    encounter.encounterProviders[0]?.provider?.person?.display ?? encounter.encounterProviders[0]?.provider?.display,
   uuid: encounter.uuid ?? '',
   voided: Boolean(encounter.voided),
 });

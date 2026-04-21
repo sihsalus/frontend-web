@@ -264,20 +264,18 @@ const ChangeStatusModal: React.FC<ChangeStatusModalProps> = ({ queueEntry, close
                           onChange(event.name as any);
                         }}
                       >
-                        {allowedPriorities?.length > 0 ? (
-                          allowedPriorities.map(({ uuid, display }) => {
-                            return <Switch name={uuid} text={display} key={uuid} value={uuid} />;
-                          })
-                        ) : (
-                          [
-                            <Switch
-                              key="no-priority-found"
-                              name={t('noPriorityFound', 'No priority found')}
-                              text={t('noPriorityFound', 'No priority found')}
-                              value={null}
-                            />,
-                          ]
-                        )}
+                        {allowedPriorities?.length > 0
+                          ? allowedPriorities.map(({ uuid, display }) => {
+                              return <Switch name={uuid} text={display} key={uuid} value={uuid} />;
+                            })
+                          : [
+                              <Switch
+                                key="no-priority-found"
+                                name={t('noPriorityFound', 'No priority found')}
+                                text={t('noPriorityFound', 'No priority found')}
+                                value={null}
+                              />,
+                            ]}
                       </ContentSwitcher>
                       {errors.priority && <div className={styles.error}>{errors.priority.message}</div>}
                     </>

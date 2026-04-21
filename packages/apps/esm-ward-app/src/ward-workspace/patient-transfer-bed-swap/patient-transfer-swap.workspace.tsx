@@ -33,7 +33,9 @@ export default function PatientTransferAndSwapWorkspace(props: WardPatientWorksp
           <div className={styles.contentSwitcher}>
             <ContentSwitcher
               onChange={({ name }) =>
-                setSelectedSection(name === TransferSection.BED_SWAP ? TransferSection.BED_SWAP : TransferSection.TRANSFER)
+                setSelectedSection(
+                  name === TransferSection.BED_SWAP ? TransferSection.BED_SWAP : TransferSection.TRANSFER,
+                )
               }
             >
               <Switch name={TransferSection.TRANSFER} text={t('transfer', 'Transfer')} />

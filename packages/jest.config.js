@@ -6,7 +6,10 @@ const path = require('path');
 const sharedTestAliases = require('./tooling/configs/shared-test-aliases.json');
 
 const resolvedSharedTestAliases = Object.fromEntries(
-  Object.entries(sharedTestAliases).map(([pattern, relativeTarget]) => [pattern, path.resolve(__dirname, relativeTarget)]),
+  Object.entries(sharedTestAliases).map(([pattern, relativeTarget]) => [
+    pattern,
+    path.resolve(__dirname, relativeTarget),
+  ]),
 );
 
 module.exports = {

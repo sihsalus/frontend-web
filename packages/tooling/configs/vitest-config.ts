@@ -45,9 +45,7 @@ export function defineAppVitestConfig(
       alias: [
         ...extraAliases,
         ...createVitestAliases(rootDir, {
-          ...Object.fromEntries(
-            Object.entries(sharedTestAliases).map(([key, value]) => [key, `../../${value}`]),
-          ),
+          ...Object.fromEntries(Object.entries(sharedTestAliases).map(([key, value]) => [key, `../../${value}`])),
           ...aliases,
         }),
       ],

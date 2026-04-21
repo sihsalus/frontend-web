@@ -58,7 +58,10 @@ const GenericTable: React.FC<GenericTableProps> = ({ encounters, onEdit, onDelet
       provider:
         encounter.encounterProviders?.length > 0
           ? formatProviderName(
-              capitalize(encounter.encounterProviders[0].provider.display ?? encounter.encounterProviders[0].provider.person?.display),
+              capitalize(
+                encounter.encounterProviders[0].provider.display ??
+                  encounter.encounterProviders[0].provider.person?.display,
+              ),
             )
           : '--',
     }));

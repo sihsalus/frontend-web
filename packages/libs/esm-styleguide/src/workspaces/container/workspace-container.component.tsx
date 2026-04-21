@@ -3,7 +3,13 @@ import { I18nextProvider, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { Header, HeaderGlobalAction, HeaderGlobalBar, HeaderMenuButton, HeaderName } from '@carbon/react';
 import { DownToBottom, Maximize, Minimize } from '@carbon/react/icons';
-import { ComponentContext, ExtensionSlot, isDesktop, useBodyScrollLock, useLayoutType } from '@openmrs/esm-framework/src/internal';
+import {
+  ComponentContext,
+  ExtensionSlot,
+  isDesktop,
+  useBodyScrollLock,
+  useLayoutType,
+} from '@openmrs/esm-framework/src/internal';
 import { getCoreTranslation } from '@openmrs/esm-framework/src/internal';
 import { ArrowLeftIcon, ArrowRightIcon, CloseIcon } from '../../icons';
 import { WorkspaceNotification } from '../notification/workspace-notification.component';

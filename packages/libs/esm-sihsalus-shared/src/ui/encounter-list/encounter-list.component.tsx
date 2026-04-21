@@ -18,10 +18,7 @@ function navigateToColumnLink(column: EncounterListColumn, encounter: OpenmrsEnc
   }
 }
 
-function renderCellValue(
-  column: EncounterListColumn,
-  encounter: OpenmrsEncounter,
-): React.ReactNode {
+function renderCellValue(column: EncounterListColumn, encounter: OpenmrsEncounter): React.ReactNode {
   const val = column.getValue(encounter);
   if (Array.isArray(val)) {
     return null;

@@ -428,7 +428,13 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
         exposes: {
           './start': srcFile,
         },
-        shared: [...new Set([...Object.keys(peerDependencies), ...alwaysHostSharedDependencies, '@openmrs/esm-framework/src/internal'])].reduce<Record<string, SharedDependencyConfig>>((obj, depName) => {
+        shared: [
+          ...new Set([
+            ...Object.keys(peerDependencies),
+            ...alwaysHostSharedDependencies,
+            '@openmrs/esm-framework/src/internal',
+          ]),
+        ].reduce<Record<string, SharedDependencyConfig>>((obj, depName) => {
           const versionSpec = peerDependencies[depName] ?? false;
 
           if (typeof versionSpec === 'string' && versionSpec.startsWith('workspace:')) {

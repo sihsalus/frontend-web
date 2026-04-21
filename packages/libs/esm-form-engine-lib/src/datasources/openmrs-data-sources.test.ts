@@ -23,9 +23,7 @@ describe('OpenMRS data sources', () => {
     const result = await dataSource.fetchSingleItem('provider-uuid');
 
     expect(result).toEqual({ uuid: 'provider-uuid', display: 'Dr. Example' });
-    expect(mockOpenmrsFetch).toHaveBeenCalledWith(
-      '/openmrs/ws/rest/v1/provider/provider-uuid?v=custom:(uuid,display)',
-    );
+    expect(mockOpenmrsFetch).toHaveBeenCalledWith('/openmrs/ws/rest/v1/provider/provider-uuid?v=custom:(uuid,display)');
   });
 
   it('fetches a single encounter role item without crashing on edit mode resolution', async () => {
