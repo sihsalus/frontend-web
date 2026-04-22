@@ -8,6 +8,7 @@ import {
 import { configSchema } from './config-schema';
 import notesOverviewExtension from './notes/notes-overview.extension';
 import visitNotesActionButtonExtension from './visit-note-action-button.extension';
+import visitNoteNavButtonExtension from './visit-note-nav-button.extension';
 
 const moduleName = '@sihsalus/esm-patient-notes-app';
 
@@ -28,6 +29,7 @@ export function startupApp() {
 }
 
 export const notesOverview = getSyncLifecycle(notesOverviewExtension, options);
+export const visitNoteNavButton = getSyncLifecycle(visitNoteNavButtonExtension, options);
 export const visitNotesActionButton = getSyncLifecycle(visitNotesActionButtonExtension, options);
 
 // t('visitNoteWorkspaceTitle', 'Visit Note')

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Button, InlineLoading, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
-import { getPatientName, showSnackbar, useConfig, getCoreTranslation } from '@openmrs/esm-framework';
+import { getCoreTranslation, getPatientName, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Barcode from 'react-barcode';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +35,7 @@ const PrintIdentifierSticker: React.FC<PrintIdentifierStickerProps> = ({ closeMo
     }
   }, [isPrinting]);
 
-  const handleBeforeGetContent = useCallback(
+  const handleBeforePrint = useCallback(
     () =>
       new Promise<void>((resolve) => {
         if (patient && headerTitle) {
@@ -84,13 +84,12 @@ const PrintIdentifierSticker: React.FC<PrintIdentifierStickerProps> = ({ closeMo
   );
 
   const handlePrint = useReactToPrint({
-    content: () => contentToPrintRef.current,
+    contentRef: contentToPrintRef,
     documentTitle: `${getPatientName(patient)} - ${headerTitle}`,
     onAfterPrint: handleAfterPrint,
-    onBeforeGetContent: handleBeforeGetContent,
+    onBeforePrint: handleBeforePrint,
     onPrintError: handlePrintError,
     print: handleInitiatePrint,
-    copyStyles: true,
   });
 
   return (

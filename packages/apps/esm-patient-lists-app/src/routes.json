@@ -3,6 +3,13 @@
   "backendDependencies": {
     "webservices.rest": ">=2.2.0"
   },
+  "extensions": [
+    {
+      "name": "patient-lists-action-menu",
+      "component": "patientListsNavButton",
+      "slot": "action-menu-patient-chart-items-slot"
+    }
+  ],
   "workspaces2": [
     {
       "name": "patient-lists",
