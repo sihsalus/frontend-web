@@ -34,7 +34,12 @@ const Ward = ({ wardBeds, wardUnassignedPatients }: { wardBeds: ReactNode; wardU
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              if (hasMoreInpatientAdmissions && !errorLoadingInpatientAdmissions && !isLoadingInpatientAdmissions) {
+              if (
+                hasMoreInpatientAdmissions &&
+                !errorLoadingInpatientAdmissions &&
+                !isLoadingInpatientAdmissions &&
+                loadMoreInpatientAdmissions
+              ) {
                 loadMoreInpatientAdmissions();
               }
             }
