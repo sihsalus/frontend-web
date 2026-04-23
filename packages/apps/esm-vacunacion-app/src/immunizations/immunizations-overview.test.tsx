@@ -1,15 +1,14 @@
-import { useFhirFetchAll } from '@openmrs/esm-framework';
-import { screen } from '@testing-library/react';
-import { mockImmunizationData } from 'test-utils';
 import React from 'react';
+import { screen } from '@testing-library/react';
+import { useFhirFetchAll } from '@openmrs/esm-framework';
+import { mockImmunizationData } from 'test-utils';
 import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
-
 import ImmunizationsOverview from './immunizations-overview.component';
 
 const testProps = {
   basePath: patientChartBasePath,
   patient: mockPatient as unknown as fhir.Patient,
-  patientUuid: mockPatient.uuid,
+  patientUuid: mockPatient.id,
 };
 
 const mockUseFhirFetchAll = useFhirFetchAll as jest.Mock;

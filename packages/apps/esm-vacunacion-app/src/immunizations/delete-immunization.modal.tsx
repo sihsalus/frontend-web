@@ -1,12 +1,10 @@
-import { Button, InlineLoading, ModalHeader, ModalBody, ModalFooter } from '@carbon/react';
-import { getCoreTranslation, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { type ImmunizationConfigObject } from '../config-schema';
+import { Button, InlineLoading, ModalHeader, ModalBody, ModalFooter } from '@carbon/react';
+import { getCoreTranslation, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import { deletePatientImmunization, useImmunizations } from '../hooks/useImmunizations';
 import { useImmunizationsConceptSet } from '../hooks/useImmunizationsConceptSet';
-
+import { type ImmunizationConfigObject } from '../config-schema';
 import styles from './delete-immunization.scss';
 
 interface DeleteConfirmModelProps {

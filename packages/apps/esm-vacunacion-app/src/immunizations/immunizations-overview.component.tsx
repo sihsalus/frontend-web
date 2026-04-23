@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useMemo, type ComponentProps } from 'react';
+import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -13,12 +17,7 @@ import {
 } from '@carbon/react';
 import { AddIcon, formatDate, launchWorkspace2, parseDate, usePagination } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import classNames from 'classnames';
-import React, { useMemo, type ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
-
 import { useImmunizations } from '../hooks/useImmunizations';
-
 import styles from './immunizations-overview.scss';
 
 export interface ImmunizationsOverviewProps {

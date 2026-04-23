@@ -1,3 +1,7 @@
+import React from 'react';
+import dayjs from 'dayjs';
+import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import {
   getDefaultsFromConfigSchema,
   showSnackbar,
@@ -7,19 +11,13 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { mockCurrentVisit, mockSessionDataResponse } from 'test-utils';
-import dayjs from 'dayjs';
-import React from 'react';
-import { mockPatient } from 'test-utils';
-
 import { configSchema, type ImmunizationConfigObject } from '../config-schema';
-
+import { immunizationFormSub } from './utils';
+import { mockCurrentVisit, mockSessionDataResponse } from 'test-utils';
+import { mockPatient } from 'test-utils';
+import { savePatientImmunization } from './immunizations.resource';
 import { FHIR_NEXT_DOSE_DATE_EXTENSION_URL } from './immunization-mapper';
 import ImmunizationsForm from './immunizations-form.workspace';
-import { savePatientImmunization } from './immunizations.resource';
-import { immunizationFormSub } from './utils';
 
 const mockCloseWorkspace = jest.fn();
 const mockSavePatientImmunization = savePatientImmunization as jest.Mock;
@@ -213,7 +211,7 @@ describe('Immunizations Form', () => {
         vaccineCode: { coding: [{ code: '782AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', display: 'Hepatitis B vaccination' }] },
       }),
       undefined,
-      new AbortController(),
+      expect.anything(),
     );
     expect(showSnackbar).toHaveBeenCalledTimes(1);
     expect(showSnackbar).toHaveBeenCalledWith({
@@ -353,7 +351,7 @@ describe('Immunizations Form', () => {
     // Verify that expirationDate is formatted as YYYY-MM-DD without timezone
     expect(mockSavePatientImmunization).toHaveBeenCalledWith(
       expect.objectContaining({
-        expirationDate: '2025-12-31',
+        expirationDate: '2025-12-31', // Date-only format, not ISO string with time/timezone
         lotNumber: 'LOT123',
         manufacturer: { display: 'Pfizer' },
       }),
@@ -405,7 +403,7 @@ describe('Immunizations Form', () => {
     // Verify that expirationDate is formatted as YYYY-MM-DD without timezone (not ISO string)
     expect(mockSavePatientImmunization).toHaveBeenCalledWith(
       expect.objectContaining({
-        expirationDate: '2025-12-31',
+        expirationDate: '2025-12-31', // Date-only format, not ISO string with time/timezone
       }),
       immunizationWithExpiration.immunizationId,
       expect.anything(),
@@ -451,7 +449,7 @@ describe('Immunizations Form', () => {
     // Verify the date is sent in correct format (YYYY-MM-DD, not ISO string)
     expect(mockSavePatientImmunization).toHaveBeenCalledWith(
       expect.objectContaining({
-        expirationDate: '2026-06-15',
+        expirationDate: '2026-06-15', // Date-only format, not ISO string with time/timezone
       }),
       immunizationToEdit.immunizationId,
       expect.anything(),

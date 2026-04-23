@@ -1,20 +1,19 @@
+import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import {
   formatDate,
   getDefaultsFromConfigSchema,
   launchWorkspace2,
   parseDate,
+  type VisitReturnType,
   useConfig,
 } from '@openmrs/esm-framework';
-import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { mockCurrentVisit } from 'test-utils';
-import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
-
 import { configSchema, type ImmunizationConfigObject } from '../config-schema';
+import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import { mockCurrentVisit } from 'test-utils';
+import { usePatientChartStore, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import { useImmunizations } from '../hooks/useImmunizations';
-
 import ImmunizationsDetailedSummary from './immunizations-detailed-summary.component';
 
 jest.mock('../hooks/useImmunizations', () => ({
@@ -23,16 +22,18 @@ jest.mock('../hooks/useImmunizations', () => ({
 
 jest.mock('@openmrs/esm-patient-common-lib', () => ({
   ...jest.requireActual('@openmrs/esm-patient-common-lib'),
+  usePatientChartStore: jest.fn(),
   useVisitOrOfflineVisit: jest.fn(),
 }));
 
 const mockUseImmunizations = jest.mocked(useImmunizations);
 const mockLaunchWorkspace = launchWorkspace2 as jest.Mock;
 const mockUseConfig = jest.mocked(useConfig<ImmunizationConfigObject>);
+const mockUsePatientChartStore = jest.mocked(usePatientChartStore);
 const mockUseVisitOrOfflineVisit = jest.mocked(useVisitOrOfflineVisit);
 
 mockUseConfig.mockReturnValue({
-  immunizationsConfig: getDefaultsFromConfigSchema(configSchema) as ImmunizationConfigObject,
+  immunizationsConfig: getDefaultsFromConfigSchema(configSchema),
 } as any);
 
 mockLaunchWorkspace.mockImplementation(jest.fn());
@@ -74,20 +75,6 @@ const mockImmunizationData = [
   },
 ];
 
-const buildVisitContext = (currentVisit: { uuid: string } | null = null) =>
-  ({
-    activeVisit: currentVisit,
-    currentVisit,
-    isLoading: false,
-    isValidating: false,
-    currentVisitIsRetrospective: false,
-    error: null,
-    mutate: jest.fn(),
-  }) as unknown as ReturnType<typeof useVisitOrOfflineVisit>;
-
-const formatRecentVaccination = (occurrenceDateTime: string, label: string) =>
-  `Last dose on ${formatDate(parseDate(occurrenceDateTime), { mode: 'standard', noToday: true, time: false })}, ${label}`;
-
 describe('ImmunizationsDetailedSummary', () => {
   beforeEach(() => {
     mockUseConfig.mockReturnValue({
@@ -106,7 +93,15 @@ describe('ImmunizationsDetailedSummary', () => {
         ],
       },
     } as any);
-    mockUseVisitOrOfflineVisit.mockReturnValue(buildVisitContext());
+    mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: null } as VisitReturnType);
+    mockUsePatientChartStore.mockReturnValue({
+      patientUuid: 'patient-123',
+      patient: null,
+      visitContext: null,
+      mutateVisitContext: jest.fn(),
+      setPatient: jest.fn(),
+      setVisitContext: jest.fn(),
+    });
   });
 
   it('shows empty state when no immunizations are recorded', async () => {
@@ -118,7 +113,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
@@ -146,7 +141,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
@@ -169,19 +164,20 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
+    const formattedDate = formatDate(parseDate('2018-11-20T00:00:00.000Z'), {
+      mode: 'standard',
+      noToday: true,
+      time: false,
+    });
     expect(screen.getByRole('heading', { name: /immunizations/i })).toBeInTheDocument();
     expect(screen.getByTestId('add-immunizations-button')).toBeInTheDocument();
     expect(screen.getByText(/vaccine/i)).toBeInTheDocument();
     expect(screen.getByText(/recent vaccination/i)).toBeInTheDocument();
     expect(screen.getByText(/polio/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        formatRecentVaccination(mockImmunizationData[0].existingDoses[0].occurrenceDateTime, 'Primary Series'),
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(`last dose on ${formattedDate}, Primary Series`, 'i'))).toBeInTheDocument();
   });
 
   it('shows loading indicator when data is loading', async () => {
@@ -193,7 +189,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
@@ -201,9 +197,18 @@ describe('ImmunizationsDetailedSummary', () => {
   });
 
   it('opens immunization form when add button is clicked during an active visit', async () => {
+    mockUsePatientChartStore.mockReturnValue({
+      patientUuid: 'patient-123',
+      patient: null,
+      visitContext: mockCurrentVisit,
+      mutateVisitContext: jest.fn(),
+      setPatient: jest.fn(),
+      setVisitContext: jest.fn(),
+    });
+
     const user = userEvent.setup();
     const mockLaunchStartVisitPrompt = jest.fn();
-    mockUseVisitOrOfflineVisit.mockReturnValue(buildVisitContext(mockCurrentVisit));
+    mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: { uuid: 'visit-uuid' } } as VisitReturnType);
     mockUseImmunizations.mockReturnValue({
       data: mockImmunizationData,
       isLoading: false,
@@ -213,10 +218,7 @@ describe('ImmunizationsDetailedSummary', () => {
     });
 
     renderWithSwr(
-      <ImmunizationsDetailedSummary
-        patientUuid={mockPatient.uuid}
-        launchStartVisitPrompt={mockLaunchStartVisitPrompt}
-      />,
+      <ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={mockLaunchStartVisitPrompt} />,
     );
 
     await waitForLoadingToFinish();
@@ -231,6 +233,14 @@ describe('ImmunizationsDetailedSummary', () => {
   it('prompts to start visit when add button is clicked without an active visit', async () => {
     const user = userEvent.setup();
     const mockLaunchStartVisitPrompt = jest.fn();
+    mockUsePatientChartStore.mockReturnValue({
+      patientUuid: mockPatient.id,
+      patient: mockPatient as unknown as fhir.Patient,
+      visitContext: null,
+      mutateVisitContext: null,
+      setPatient: jest.fn(),
+      setVisitContext: jest.fn(),
+    });
     mockUseImmunizations.mockReturnValueOnce({
       data: mockImmunizationData,
       isLoading: false,
@@ -240,10 +250,7 @@ describe('ImmunizationsDetailedSummary', () => {
     });
 
     renderWithSwr(
-      <ImmunizationsDetailedSummary
-        patientUuid={mockPatient.uuid}
-        launchStartVisitPrompt={mockLaunchStartVisitPrompt}
-      />,
+      <ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={mockLaunchStartVisitPrompt} />,
     );
 
     await waitForLoadingToFinish();
@@ -301,7 +308,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
@@ -329,7 +336,7 @@ describe('ImmunizationsDetailedSummary', () => {
       ],
     }));
 
-    mockUseImmunizations.mockReturnValue({
+    mockUseImmunizations.mockReturnValueOnce({
       data: largeImmunizationDataset,
       isLoading: false,
       error: null,
@@ -337,7 +344,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
@@ -376,7 +383,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
@@ -413,15 +420,16 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 
-    expect(
-      screen.getByText(
-        formatRecentVaccination(immunizationWithSpecificDate[0].existingDoses[0].occurrenceDateTime, 'Primary Series'),
-      ),
-    ).toBeInTheDocument();
+    const formattedDate = formatDate(parseDate('2023-12-25T14:30:00.000Z'), {
+      mode: 'standard',
+      noToday: true,
+      time: false,
+    });
+    expect(screen.getByText(new RegExp(`Last dose on ${formattedDate}`, 'i'))).toBeInTheDocument();
   });
 
   it('handles immunizations without doses gracefully', async () => {
@@ -433,7 +441,7 @@ describe('ImmunizationsDetailedSummary', () => {
       },
     ];
 
-    mockUseImmunizations.mockReturnValue({
+    mockUseImmunizations.mockReturnValueOnce({
       data: immunizationWithoutDoses,
       isLoading: false,
       error: null,
@@ -441,7 +449,7 @@ describe('ImmunizationsDetailedSummary', () => {
       mutate: jest.fn(),
     });
 
-    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.uuid} launchStartVisitPrompt={jest.fn()} />);
+    renderWithSwr(<ImmunizationsDetailedSummary patientUuid={mockPatient.id} launchStartVisitPrompt={jest.fn()} />);
 
     await waitForLoadingToFinish();
 

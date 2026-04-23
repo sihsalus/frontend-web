@@ -1,6 +1,6 @@
 {
   "name": "@sihsalus/esm-vacunacion-app",
-  "version": "1.8.0",
+  "version": "12.1.0",
   "license": "MPL-2.0",
   "description": "Patient immunizations microfrontend for the SIHSALUS SPA",
   "browser": "dist/sihsalus-esm-vacunacion-app.js",
@@ -12,12 +12,12 @@
     "debug": "npm run serve",
     "build": "rspack --mode=production",
     "analyze": "rspack --mode=production --env analyze=true",
-    "lint": "node ../../tooling/scripts/run-biome.js lint .",
-    "test": "jest --config jest.config.js --verbose false --passWithNoTests --color",
+    "lint": "eslint .",
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
     "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
     "coverage": "yarn test --coverage",
     "typescript": "tsc",
-    "extract-translations": "i18next \"src/**/*.component.tsx\" \"src/**/*.modal.tsx\" \"src/**/*.extension.tsx\" \"src/**/*.workspace.tsx\" \"src/**/*.hook.tsx\" \"src/index.ts\" --config ../../tooling/scripts/i18next-parser.config.js"
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.modal.tsx' 'src/**/*.extension.tsx' 'src/**/*.workspace.tsx' 'src/**/*.hook.tsx' 'src/index.ts' --config ../../tooling/scripts/i18next-parser.config.js"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
@@ -38,13 +38,13 @@
     "url": "https://github.com/sihsalus/sihsalus-esm-modules/issues"
   },
   "dependencies": {
+    "@carbon/react": "^1.83.0",
     "@hookform/resolvers": "^3.3.1",
-    "lodash-es": "^4.17.21",
-    "react-hook-form": "^7.56.1",
-    "zod": "^3.24.1"
+    "lodash-es": "^4.17.23",
+    "react-hook-form": "^7.46.2",
+    "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@carbon/react": "1.x",
     "@openmrs/esm-framework": "9.0.2",
     "@openmrs/esm-patient-common-lib": "*",
     "dayjs": "1.x",

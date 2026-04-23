@@ -41,6 +41,10 @@
     {
       "name": "vacunacion-delete-confirmation-modal",
       "component": "deleteImmunizationConfirmationModal"
+    },
+    {
+      "name": "immunization-delete-confirmation-modal",
+      "component": "deleteImmunizationConfirmationModal"
     }
   ],
   "workspaces2": [
@@ -48,11 +52,20 @@
       "name": "vacunacion-form-workspace",
       "component": "immunizationFormWorkspace",
       "window": "vacunacion-form-window"
+    },
+    {
+      "name": "immunization-form-workspace",
+      "component": "immunizationFormWorkspace",
+      "window": "vacunacion-form-window"
     }
   ],
   "workspaceWindows2": [
     {
       "name": "vacunacion-form-window",
+      "group": "patient-chart"
+    },
+    {
+      "name": "immunization-form-window",
       "group": "patient-chart"
     }
   ]

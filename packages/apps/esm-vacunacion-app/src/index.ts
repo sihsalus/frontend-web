@@ -1,11 +1,10 @@
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle } from '@openmrs/esm-framework';
 import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
-
 import { configSchema } from './config-schema';
 import { dashboardMeta } from './dashboard.meta';
-import immunizationHistorySummaryComponent from './immunizations/immunization-history-dashboard.component';
-import immunizationsDetailedSummaryComponent from './immunizations/immunizations-detailed-summary.component';
 import immunizationsOverviewComponent from './immunizations/immunizations-overview.component';
+import immunizationsDetailedSummaryComponent from './immunizations/immunizations-detailed-summary.component';
+import immunizationHistorySummaryComponent from './immunizations/immunization-history-dashboard.component';
 
 const moduleName = '@sihsalus/esm-vacunacion-app';
 
@@ -30,6 +29,7 @@ export const immunizationsDashboardLink =
   getSyncLifecycle(
     createDashboardLink({
       ...dashboardMeta,
+      moduleName,
     }),
     options,
   );

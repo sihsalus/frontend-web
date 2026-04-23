@@ -1,7 +1,6 @@
 import { fhirBaseUrl, openmrsFetch, useFhirFetchAll } from '@openmrs/esm-framework';
-
-import { mapFromFHIRImmunizationBundle } from '../immunizations/immunization-mapper';
 import { type FHIRImmunizationResource } from '../types/fhir-immunization-domain';
+import { mapFromFHIRImmunizationBundle } from '../immunizations/immunization-mapper';
 
 export function useImmunizations(patientUuid: string) {
   const immunizationsUrl = `${fhirBaseUrl}/Immunization?patient=${patientUuid}`;

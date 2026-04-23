@@ -50,7 +50,6 @@ export type FHIRImmunizationBundle = {
 export type ImmunizationSequence = {
   sequenceLabel: string;
   sequenceNumber: number;
-  /** Days after the previous dose when this dose should be administered. Used to auto-suggest nextDoseDate. */
   intervalInDaysAfterPreviousDose?: number;
 };
 

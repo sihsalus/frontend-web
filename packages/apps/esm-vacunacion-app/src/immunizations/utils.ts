@@ -1,6 +1,5 @@
 import { find, map } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
-
 import { type ExistingDoses, type ImmunizationFormState, type ImmunizationGrouped } from '../types';
 import { type ImmunizationSequenceDefinition } from '../types/fhir-immunization-domain';
 

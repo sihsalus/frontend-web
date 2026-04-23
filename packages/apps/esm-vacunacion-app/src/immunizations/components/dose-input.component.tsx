@@ -1,10 +1,8 @@
-import { Dropdown, NumberInput } from '@carbon/react';
 import React, { useCallback, useMemo } from 'react';
+import { Dropdown, NumberInput } from '@carbon/react';
 import { useController, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-
 import { type ImmunizationSequenceDefinition } from '../../types/fhir-immunization-domain';
-
 import styles from './../immunizations-form.scss';
 
 export const DoseInput: React.FC<{
@@ -22,8 +20,8 @@ export const DoseInput: React.FC<{
   );
 
   const availableSequences = useMemo(
-    () => vaccineSequences.filter((s) => !existingDoseNumbers.includes(s.sequenceNumber)),
-    [vaccineSequences, existingDoseNumbers],
+    () => vaccineSequences.filter((sequence) => !existingDoseNumbers.includes(sequence.sequenceNumber)),
+    [existingDoseNumbers, vaccineSequences],
   );
 
   const handleChange = useCallback(
@@ -44,7 +42,7 @@ export const DoseInput: React.FC<{
           <Dropdown
             id="sequence"
             items={availableSequences.map((sequence) => sequence.sequenceNumber)}
-            itemToString={(item) => availableSequences.find((s) => s.sequenceNumber === item)?.sequenceLabel}
+            itemToString={(item) => availableSequences.find((sequence) => sequence.sequenceNumber === item)?.sequenceLabel}
             label={t('pleaseSelect', 'Please select')}
             onChange={(val) => field.onChange(parseInt(val.selectedItem || 0))}
             selectedItem={field.value}

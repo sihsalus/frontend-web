@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { find, groupBy, isUndefined, orderBy } from 'lodash-es';
-
-import { type ExistingDoses, type ImmunizationFormData, type ImmunizationGrouped } from '../types';
 import {
   type Code,
   type FHIRImmunizationBundle,
   type FHIRImmunizationResource,
   type Reference,
 } from '../types/fhir-immunization-domain';
+import { type ExistingDoses, type ImmunizationFormData, type ImmunizationGrouped } from '../types';
 
 export const FHIR_NEXT_DOSE_DATE_EXTENSION_URL = 'http://hl7.eu/fhir/StructureDefinition/immunization-nextDoseDate';
 
@@ -81,7 +81,7 @@ export const mapFromFHIRImmunizationBundle = (
 
   const validGroups = Object.entries(groupByImmunization).filter(([key]) => key);
 
-  const groups = validGroups.map(([, immunizationsForOneVaccine]) => {
+  const groups = validGroups.map(([key, immunizationsForOneVaccine]) => {
     const existingDoses: Array<ExistingDoses> = immunizationsForOneVaccine
       .map(mapToImmunizationDoseFromResource)
       .filter((dose) => dose !== null);
@@ -107,7 +107,7 @@ function toReferenceOfType(type: string, referenceValue: string): Reference | nu
   return { type, reference };
 }
 
-function fromReference(reference: Reference): string | null {
+function fromReference(reference: Reference | null): string | null {
   if (!reference || !reference.reference) {
     return null;
   }
