@@ -23,6 +23,7 @@
   "currentStatus": "Estado Actual",
   "dateRange": "Rango de fechas",
   "declinedFuas": "Rechazadas",
+  "envioFuas": "Envio FUAs",
   "endpoint": "Endpoint",
   "enterCancellationReason": "Ingrese el motivo por el cual desea cancelar este FUA...",
   "error": "Error",

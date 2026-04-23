@@ -22,7 +22,7 @@ const FuaOrdersTabs: React.FC = () => {
             <Tab className={styles.tab}>{t('allFuas', 'FUAs solicitados')}</Tab>
             <Tab className={styles.tab}>{t('inProgressFuas', 'En progreso')}</Tab>
             <Tab className={styles.tab}>{t('completedFuas', 'Completadas')}</Tab>
-            <Tab className={styles.tab}>{t('declinedFuas', 'Rechazadas')}</Tab>
+            <Tab className={styles.tab}>{t('envioFuas', 'Envio FUAs')}</Tab>
           </TabList>
           <TabPanels>
             <TabPanel className={styles.tabPanel}>

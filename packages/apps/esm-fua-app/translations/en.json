@@ -23,6 +23,7 @@
   "currentStatus": "Current Status",
   "dateRange": "Date range",
   "declinedFuas": "Declined",
+  "envioFuas": "FUAs shipment",
   "endpoint": "Endpoint",
   "enterCancellationReason": "Enter the reason for cancelling this FUA...",
   "error": "Error",

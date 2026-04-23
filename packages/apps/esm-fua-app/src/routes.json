@@ -109,13 +109,13 @@
       }
     },
     {
-      "name": "declined-fua-requests-panel",
-      "component": "declinedFuaRequestsTable",
+      "name": "envio-fuas-panel",
+      "component": "envioFuasTable",
       "slot": "fua-panels-slot",
       "order": 3,
       "meta": {
-        "name": "declinedPanel",
-        "title": "Rechazadas"
+        "name": "envioFuasPanel",
+        "title": "Envio FUAs"
       }
     }
   ],
