@@ -6,6 +6,8 @@ This directory contains architecture documentation and decision records for the 
 
 - `adrs/` — Architecture Decision Records
 - `forms/` — Form stack migration and ownership docs
+- `operations/` — Repository operations and maintainer runbooks
+- `operations/dependency-bots.md` — Renovate and Dependabot setup, ownership, and verification guide
 
 ## Architecture Overview
 
