@@ -1,17 +1,18 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
   "files": {
     "ignoreUnknown": true,
-    "ignore": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.d.ts",
-      "**/.rspack/**",
-      "**/.cache/**",
-      "**/.turbo/**",
-      "**/coverage/**",
-      "**/form-engine-lib-runtime.js"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/*.d.ts",
+      "!**/.rspack",
+      "!**/.cache",
+      "!**/.turbo",
+      "!**/coverage",
+      "!**/form-engine-lib-runtime.js"
     ]
   },
   "formatter": {
@@ -53,7 +54,8 @@
         "useRegexLiterals": "off",
         "useFlatMap": "off",
         "useLiteralKeys": "off",
-        "useOptionalChain": "off"
+        "useOptionalChain": "off",
+        "noCommaOperator": "off"
       },
       "correctness": {
         "noChildrenProp": "off",
@@ -68,7 +70,6 @@
         "noGlobalEval": "off"
       },
       "style": {
-        "noCommaOperator": "off",
         "noInferrableTypes": "off",
         "noNonNullAssertion": "off",
         "noParameterAssign": "off",
