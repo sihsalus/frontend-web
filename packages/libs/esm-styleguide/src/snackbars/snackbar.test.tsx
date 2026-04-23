@@ -37,28 +37,26 @@ describe('Snackbar component', () => {
     expect(screen.getByText(/error contacting lab system. please try again later/i)).toBeInTheDocument();
   });
 
-  it(
-    'automatically dismisses the snackbar after a timeout if autoClose is set to true',
-    { timeout: 2000 },
-    async () => {
-      renderSnackbar({
-        snackbar: {
-          autoClose: true,
-          timeoutInMs: 500,
-          title: 'Order submitted',
-        },
-      });
+  it('automatically dismisses the snackbar after a timeout if autoClose is set to true', {
+    timeout: 2000,
+  }, async () => {
+    renderSnackbar({
+      snackbar: {
+        autoClose: true,
+        timeoutInMs: 500,
+        title: 'Order submitted',
+      },
+    });
 
-      const snackbar = screen.getByRole('alertdialog', { name: /order submitted/i });
-      expect(snackbar).toBeInTheDocument();
+    const snackbar = screen.getByRole('alertdialog', { name: /order submitted/i });
+    expect(snackbar).toBeInTheDocument();
 
-      act(() => {
-        vi.advanceTimersByTime(750);
-      });
+    act(() => {
+      vi.advanceTimersByTime(750);
+    });
 
-      await waitFor(() => expect(mockCloseSnackbar).toHaveBeenCalledTimes(1), { timeout: 200 });
-    },
-  );
+    await waitFor(() => expect(mockCloseSnackbar).toHaveBeenCalledTimes(1), { timeout: 200 });
+  });
 
   it('renders an actionable variant of the snackbar if actionButtonLabel is provided', () => {
     renderSnackbar({

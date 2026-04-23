@@ -192,7 +192,9 @@
   font-size: 13px;
   text-align: left;
   color: #1e293b;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
   min-height: 34px;
 }
 
@@ -350,7 +352,9 @@
   border-radius: 6px;
   cursor: pointer;
   text-align: left;
-  transition: background 0.1s, border-color 0.1s;
+  transition:
+    background 0.1s,
+    border-color 0.1s;
   min-width: 0;
   width: 100%;
 }
@@ -467,7 +471,9 @@
   font-size: 13px;
   color: #1e293b;
   min-height: 34px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .odon-color-swatch:hover {
@@ -515,7 +521,9 @@
   border-radius: 7px;
   cursor: pointer;
   min-height: 34px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .odon-subchoice:hover {
@@ -594,7 +602,9 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
 }
 
 .odon-action-btn:disabled {
@@ -663,7 +673,9 @@
   background: #fff;
   line-height: 1.5;
   font-family: inherit;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
   min-height: 72px;
 }
 
@@ -750,7 +762,9 @@
   border: 1.5px solid #c7d2fe;
   border-radius: 7px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
   min-height: 34px;
   margin-left: 20px;
@@ -840,7 +854,9 @@
   color: #94a3b8;
   cursor: pointer;
   border-radius: 6px;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 
 .odon-siglas-close:hover {

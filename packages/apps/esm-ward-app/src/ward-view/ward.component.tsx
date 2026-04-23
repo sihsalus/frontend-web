@@ -10,13 +10,7 @@ import { type WardViewContext } from '../types';
 
 import styles from './ward-view.scss';
 
-const Ward = ({
-  wardBeds,
-  wardUnassignedPatients,
-}: {
-  wardBeds: ReactNode;
-  wardUnassignedPatients: ReactNode;
-}) => {
+const Ward = ({ wardBeds, wardUnassignedPatients }: { wardBeds: ReactNode; wardUnassignedPatients: ReactNode }) => {
   const { location } = useWardLocation();
   const { t } = useTranslation();
 

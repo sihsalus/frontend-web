@@ -379,7 +379,10 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.15s, background 0.12s, color 0.12s;
+  transition:
+    opacity 0.15s,
+    background 0.12s,
+    color 0.12s;
   line-height: 1;
   padding: 0;
   font-family: system-ui, sans-serif;
@@ -432,7 +435,9 @@
   gap: 4px;
   color: #94a3b8;
   border-radius: 0 0 6px 6px;
-  transition: color 0.12s, background 0.12s;
+  transition:
+    color 0.12s,
+    background 0.12s;
 }
 .tim-eye-btn svg {
   width: 14px;
