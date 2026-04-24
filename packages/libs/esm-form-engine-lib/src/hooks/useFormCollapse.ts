@@ -25,7 +25,7 @@ export function useFormCollapse(sessionMode: SessionMode): {
   }, []);
 
   useEffect(() => {
-    const isToggleVisible = sessionMode != 'embedded-view';
+    const isToggleVisible = sessionMode !== 'embedded-view';
     (window as typeof window & { [formViewEmbeddedStateKey]?: boolean })[formViewEmbeddedStateKey] = isToggleVisible;
     const FormCollapseToggleVisibleEvent = new CustomEvent('openmrs:form-view-embedded', {
       detail: { value: isToggleVisible },

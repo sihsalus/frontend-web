@@ -58,7 +58,7 @@ export const InlineDateAdapter: FormFieldValueAdapter = {
   ): null {
     return null;
   },
-  getDisplayValue: function (field: FormField, value: Date) {
+  getDisplayValue: function (_field: FormField, value: Date) {
     if (value) {
       return formatDate(value);
     }

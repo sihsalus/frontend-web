@@ -34,7 +34,7 @@ const TextArea: React.FC<FormFieldInputProps<string | number | null | undefined>
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <FieldValueView
       label={t(field.label)}
       value={value}

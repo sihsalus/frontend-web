@@ -302,6 +302,6 @@ function getFormsStore(): FormsRegistryStoreState {
 
 function hasMissingConcept(question: FormField): boolean {
   return (
-    question.type == 'obs' && !question.questionOptions.concept && question.questionOptions.rendering !== 'fixed-value'
+    question.type === 'obs' && !question.questionOptions.concept && question.questionOptions.rendering !== 'fixed-value'
   );
 }

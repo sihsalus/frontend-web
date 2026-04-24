@@ -80,7 +80,7 @@ export const useEvaluateFormFieldExpressions = (
           );
         });
       // evaluate readonly
-      if (typeof field.readonly == 'string' && isNotBooleanString(field.readonly)) {
+      if (typeof field.readonly === 'string' && isNotBooleanString(field.readonly)) {
         field.meta.readonlyExpression = field.readonly;
         field.readonly = Boolean(evaluateExpression(field.readonly, fieldNode, formFields, formValues, runnerContext));
       }

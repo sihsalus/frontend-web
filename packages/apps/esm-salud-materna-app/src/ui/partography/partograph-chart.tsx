@@ -97,7 +97,7 @@ const PartographChart: React.FC<PartographChartProps> = ({ partograpyComponents 
           }
         }
       });
-  }, [partograpyComponents, selectedPartographSign]);
+  }, [partograpyComponents, selectedPartographSign, parseTodayTime]);
   const chartOptions = {
     axes: {
       bottom: {

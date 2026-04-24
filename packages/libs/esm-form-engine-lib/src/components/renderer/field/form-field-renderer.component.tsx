@@ -342,12 +342,12 @@ export function isUnspecifiedSupported(question: FormField): boolean {
   const { rendering } = question.questionOptions;
   return (
     isTrue(question.unspecified) &&
-    rendering != 'toggle' &&
-    rendering != 'group' &&
-    rendering != 'repeating' &&
-    rendering != 'markdown' &&
-    rendering != 'extension-widget' &&
-    rendering != 'workspace-launcher'
+    rendering !== 'toggle' &&
+    rendering !== 'group' &&
+    rendering !== 'repeating' &&
+    rendering !== 'markdown' &&
+    rendering !== 'extension-widget' &&
+    rendering !== 'workspace-launcher'
   );
 }
 

@@ -29,7 +29,7 @@ const Toggle: React.FC<FormFieldInputProps<boolean | null | undefined>> = ({
   useEffect((): void => {
     const { sessionMode, formFieldAdapters } = context;
 
-    if (!field.meta?.initialValue?.omrsObject && sessionMode == 'enter') {
+    if (!field.meta?.initialValue?.omrsObject && sessionMode === 'enter') {
       formFieldAdapters[field.type]?.transformFieldValue(field, value ?? false, context);
     }
   }, [context, field, value]);
@@ -46,7 +46,7 @@ const Toggle: React.FC<FormFieldInputProps<boolean | null | undefined>> = ({
     return false;
   }, [context.layoutType, context.sessionMode, context.workspaceLayout, field.inlineRendering, field.readonly]);
 
-  return context.sessionMode == 'view' || context.sessionMode == 'embedded-view' ? (
+  return context.sessionMode === 'view' || context.sessionMode === 'embedded-view' ? (
     <FieldValueView
       label={t(field.label)}
       value={

@@ -18,7 +18,7 @@ export const DefaultValueValidator: FormFieldValidator = {
         ];
       }
     }
-    if (!isEmpty(value) && field.questionOptions.rendering == 'date') {
+    if (!isEmpty(value) && field.questionOptions.rendering === 'date') {
       // Check if value is a valid date value
       if (
         !(value instanceof Date || typeof value === 'string' || typeof value === 'number') ||
@@ -33,7 +33,7 @@ export const DefaultValueValidator: FormFieldValidator = {
         ];
       }
     }
-    if (!isEmpty(value) && field.questionOptions.rendering == 'number') {
+    if (!isEmpty(value) && field.questionOptions.rendering === 'number') {
       if (typeof value !== 'number' || isNaN(value)) {
         return [
           {

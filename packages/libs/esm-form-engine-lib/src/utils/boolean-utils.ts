@@ -6,11 +6,11 @@
  * ```
  */
 export function isTrue(value: string | boolean): boolean {
-  if (typeof value == 'boolean') {
+  if (typeof value === 'boolean') {
     return value;
   }
-  if (typeof value == 'string') {
-    return value == 'true';
+  if (typeof value === 'string') {
+    return value === 'true';
   }
   // TODO: throw an exception?
   return !!value;

@@ -31,7 +31,7 @@ export function useFormWorkspaceSize(rootRef: React.RefObject<HTMLElement | null
   useLayoutEffect(() => {
     const handleResize = (): void => {
       const nextContainerWidth = rootRef.current?.parentElement?.offsetWidth;
-      const rootFontSize = parseInt(getComputedStyle(document.documentElement).fontSize);
+      const rootFontSize = parseInt(getComputedStyle(document.documentElement).fontSize, 10);
       if (nextContainerWidth) {
         setContainerWidth(pxToRem(nextContainerWidth, rootFontSize));
       }

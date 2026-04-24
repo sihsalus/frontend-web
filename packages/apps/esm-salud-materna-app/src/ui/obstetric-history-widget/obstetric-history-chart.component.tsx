@@ -78,7 +78,7 @@ const ObstetricHistoryChart: React.FC<ObstetricHistoryChartProps> = ({
       .map((data) => ({
         group: selectedMetric.title,
         key: formatDate(parseDate(data.date), { year: true }),
-        value: parseInt(data[selectedMetric.value]) || 0,
+        value: parseInt(data[selectedMetric.value], 10) || 0,
         date: data.date,
       }));
   }, [historicalData, selectedMetric]);

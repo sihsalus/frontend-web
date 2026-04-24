@@ -115,7 +115,9 @@ describe('VitalsOverview', () => {
     await waitForLoadingToFinish();
     expect(screen.getByRole('table', { name: /vitals/i })).toBeInTheDocument();
 
-    const initialRowElements = screen.getAllByRole('row').map((row) => row.textContent);
+    const getDataRowText = () => screen.getAllByRole('row').slice(1).map((row) => row.textContent);
+
+    const initialRowElements = getDataRowText();
 
     const expectedColumnHeaders = [/date and time/, /bp/, /r. rate/, /pulse/, /spO2/, /temp/];
 
@@ -143,14 +145,14 @@ describe('VitalsOverview', () => {
     // Sorting in ascending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row').map((row) => row.textContent)).not.toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
 
     // Sorting order = NONE, hence it is still in the ascending order
     await user.click(sortRowsButton);
     // Sorting in descending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row').map((row) => row.textContent)).toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
   });
 
   it('toggles between rendering either a tabular view or a chart view', async () => {

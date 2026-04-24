@@ -1,7 +1,7 @@
 const { spawnSync } = require('node:child_process');
 
 const args = process.argv.slice(2);
-const baseArgs = ['--config', 'jest.config.js', '--verbose', 'false', '--passWithNoTests', '--color'];
+const baseArgs = ['--config', 'jest.config.js', '--verbose', 'false', '--passWithNoTests', '--color', '--forceExit'];
 
 function runJest(extraArgs, options = {}) {
   return spawnSync('jest', [...baseArgs, ...extraArgs], {

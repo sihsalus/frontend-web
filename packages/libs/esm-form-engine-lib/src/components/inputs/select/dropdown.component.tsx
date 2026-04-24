@@ -31,7 +31,7 @@ const Dropdown: React.FC<FormFieldInputProps<string | number | null | undefined>
   const itemToString = useCallback(
     (item: string | number | null) => {
       const answer = field.questionOptions.answers?.find((opt) => {
-        return opt.value ? opt.value == item : opt.concept == item;
+        return opt.value ? opt.value === item : opt.concept === item;
       });
       return answer ? t(answer.label) : '';
     },
@@ -59,7 +59,7 @@ const Dropdown: React.FC<FormFieldInputProps<string | number | null | undefined>
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <FieldValueView
       label={t(field.label)}
       value={

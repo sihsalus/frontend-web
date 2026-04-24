@@ -124,7 +124,7 @@ async function fetchPrenatalMeasurements(
 }
 
 // Función para invalidar caché
-export async function invalidatePrenatalMeasurements(patientUuid: string, mutate: () => Promise<void>) {
+export async function invalidatePrenatalMeasurements(_patientUuid: string, mutate: () => Promise<void>) {
   if (mutate) {
     await mutate();
   }

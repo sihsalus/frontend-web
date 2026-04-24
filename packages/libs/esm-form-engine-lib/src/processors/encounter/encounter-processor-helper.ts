@@ -54,7 +54,7 @@ export async function prepareEncounter(
     // update encounter providers
     const hasCurrentProvider =
       (encounterForSubmission.encounterProviders ?? []).findIndex(
-        (encProvider) => getResourceUuid(encProvider.provider) == encounterProvider,
+        (encProvider) => getResourceUuid(encProvider.provider) === encounterProvider,
       ) !== -1;
     if (!hasCurrentProvider) {
       encounterForSubmission.encounterProviders = [
@@ -361,8 +361,8 @@ function hasSubmittableObs(field: FormField): boolean {
 }
 
 export function inferInitialValueFromDefaultFieldValue(field: FormField): FormField['questionOptions']['defaultValue'] {
-  if (field.questionOptions.rendering == 'toggle' && typeof field.questionOptions.defaultValue != 'boolean') {
-    return field.questionOptions.defaultValue == ConceptTrue;
+  if (field.questionOptions.rendering === 'toggle' && typeof field.questionOptions.defaultValue !== 'boolean') {
+    return field.questionOptions.defaultValue === ConceptTrue;
   }
 
   // validate default value
@@ -387,7 +387,7 @@ export async function hydrateRepeatField(
   const unMappedGroups = encounter.obs.filter(
     (obs) =>
       getResourceUuid(obs.concept) === field.questionOptions.concept &&
-      obs.uuid != (field.meta.initialValue?.omrsObject as OpenmrsResource)?.uuid &&
+      obs.uuid !== (field.meta.initialValue?.omrsObject as OpenmrsResource)?.uuid &&
       !assignedObsIds.includes(obs.uuid),
   );
   const unMappedOrders = encounter.orders.filter((order) => {
@@ -429,7 +429,7 @@ export async function hydrateRepeatField(
   if (field.type === 'diagnosis') {
     return Promise.all(
       unMappedDiagnoses.map(async (diagnosis) => {
-        const idSuffix = parseInt(diagnosis.formFieldPath.split('_')[1]);
+        const idSuffix = parseInt(diagnosis.formFieldPath.split('_')[1], 10);
         const clone = cloneRepeatField(field, diagnosis, idSuffix);
         initialValues[clone.id] = await formFieldAdapters[field.type].getInitialValue(
           clone,

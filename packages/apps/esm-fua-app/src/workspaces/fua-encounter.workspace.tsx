@@ -45,7 +45,7 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [fuaId, setFuaId] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [retrySeed, setRetrySeed] = useState(0);
+  const [_retrySeed, setRetrySeed] = useState(0);
 
   useEffect(() => {
     if (isLoadingVisit) {
@@ -101,15 +101,14 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
 
     void loadExistingFua();
   }, [
-    config.fuaApiBasePath,
-    encounterUuid,
-    activeVisit?.uuid,
-    currentVisit?.uuid,
-    isLoadingVisit,
-    patientUuid,
-    retrySeed,
-    t,
-    visitUuid,
+    config.fuaApiBasePath, 
+    encounterUuid, 
+    activeVisit?.uuid, 
+    currentVisit?.uuid, 
+    isLoadingVisit, 
+    patientUuid, 
+    t, 
+    visitUuid
   ]);
 
   const content = isInitializing ? (

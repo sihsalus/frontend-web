@@ -56,7 +56,7 @@ const LegendTile: React.FC<LegendTileProps> = ({ conceptSetUUID }) => {
         label: t(status, concept.display || 'Unknown'),
       },
     ];
-  }, [schemasConceptSet, t]);
+  }, [schemasConceptSet, t, resolveTagType]);
 
   if (error) {
     return (

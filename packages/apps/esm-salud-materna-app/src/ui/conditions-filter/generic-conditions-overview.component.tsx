@@ -93,7 +93,7 @@ const GenericConditionsOverview: React.FC<GenericConditionsOverviewProps> = ({
   );
 
   const filteredConditions = useMemo(() => {
-    if (!filter || filter == 'All') {
+    if (!filter || filter === 'All') {
       return conditions;
     }
 

@@ -40,7 +40,7 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
     if (isDesktop(layout) && !isSearchPage) {
       setShowSearchInput(false);
     }
-  }, [setShowSearchInput, isSearchPage, layout]);
+  }, [isSearchPage, layout]);
 
   const ref = useOnClickOutside<HTMLDivElement>(handleCloseSearchInput, canClickOutside);
 
@@ -52,16 +52,16 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
       globalThis.sessionStorage.removeItem('searchReturnUrl');
     }
     setShowSearchInput(false);
-  }, [isSearchPage, setShowSearchInput]);
+  }, [isSearchPage]);
 
   const handleShowSearchInput = useCallback(() => {
     setShowSearchInput(true);
-  }, [setShowSearchInput]);
+  }, []);
 
   const resetToInitialState = useCallback(() => {
     setShowSearchInput(false);
     setCanClickOutside(false);
-  }, [setShowSearchInput, setCanClickOutside]);
+  }, []);
 
   useEffect(() => {
     // Search input should always be open when we direct to the search page.

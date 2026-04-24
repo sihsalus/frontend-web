@@ -1,5 +1,5 @@
 import { usePatient } from '@openmrs/esm-framework';
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { evaluateExpression } from '../utils/expression-helper';
 

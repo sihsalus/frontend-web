@@ -30,7 +30,7 @@ const Radio: React.FC<FormFieldInputProps<string | number | null | undefined>> =
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' || isTrue(field.readonly) ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' || isTrue(field.readonly) ? (
     <FieldValueView
       label={t(field.label)}
       value={

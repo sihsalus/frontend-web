@@ -230,7 +230,7 @@ const ConditionsWidget: React.FC<ConditionsWidgetProps> = ({
       }
       isEditing ? handleUpdate() : handleCreate();
     }
-  }, [handleUpdate, isEditing, handleCreate, isSubmittingForm, errors, setIsSubmittingForm]);
+  }, [handleUpdate, isEditing, handleCreate, isSubmittingForm, errors, setIsSubmittingForm, focusOnSearchInput]);
 
   return (
     <div className={styles.formContainer}>

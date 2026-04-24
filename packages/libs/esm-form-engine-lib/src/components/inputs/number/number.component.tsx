@@ -50,7 +50,7 @@ const NumberField: React.FC<FormFieldInputProps<number | string | null | undefin
   const max = getNumericValue(field.questionOptions.max);
   const min = getNumericValue(field.questionOptions.min);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <div className={styles.formField}>
       <FieldValueView
         label={t(field.label)}

@@ -67,7 +67,7 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
   const handleCloseSearchResults = useCallback(() => {
     setSearchTerm('');
     onPatientSelect?.();
-  }, [onPatientSelect, setSearchTerm]);
+  }, [onPatientSelect]);
 
   const addViewedPatientAndCloseSearchResults = useCallback(
     async (patientUuid: string) => {
@@ -118,7 +118,7 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
     } else if (bannerContainerRef.current && searchInputRef.current && focusedResult === -1) {
       handleFocusToInput();
     }
-  }, [focusedResult, bannerContainerRef, handleFocusToInput]);
+  }, [focusedResult, handleFocusToInput]);
 
   useEffect(() => {
     if (fetchError) {
@@ -154,7 +154,7 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
 
   const handleClear = useCallback(() => {
     setSearchTerm('');
-  }, [setSearchTerm]);
+  }, []);
 
   const handleSearchTermChange = (searchTerm: string) => setSearchTerm(searchTerm ?? '');
 

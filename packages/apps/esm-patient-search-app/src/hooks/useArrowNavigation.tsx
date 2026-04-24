@@ -31,7 +31,7 @@ const useArrowNavigation = (
         setFocusedResult(initalFocusedResult);
       }
     },
-    [setFocusedResult, totalResults, focusedResult, enterCallback, initalFocusedResult, resetFocusCallback],
+    [totalResults, focusedResult, enterCallback, initalFocusedResult, resetFocusCallback],
   );
 
   useEffect(() => {

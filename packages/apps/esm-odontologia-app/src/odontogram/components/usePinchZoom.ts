@@ -58,7 +58,7 @@ export function usePinchZoom({ minScale = 0.2, maxScale = 3, baseScale }: PinchZ
   // Reset when baseScale changes (orientation change, resize)
   useEffect(() => {
     reset();
-  }, [baseScale, reset]);
+  }, [reset]);
 
   useEffect(() => {
     const el = containerRef.current;

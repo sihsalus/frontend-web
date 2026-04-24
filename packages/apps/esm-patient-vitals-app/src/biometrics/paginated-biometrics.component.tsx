@@ -10,12 +10,13 @@ import {
 } from '@carbon/react';
 import { useLayoutType, usePagination } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './paginated-biometrics.scss';
 import type { BiometricsTableHeader, BiometricsTableRow } from './types';
 
 type DataTableCellValue = React.ReactNode | { content?: React.ReactNode };
+type SortParams = { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' };
 
 interface PaginatedBiometricsProps {
   tableRows: Array<BiometricsTableRow>;
@@ -41,21 +42,31 @@ const PaginatedBiometrics: React.FC<PaginatedBiometricsProps> = ({
     return header as React.ReactNode;
   };
 
-  const [sortParams, setSortParams] = useState<{ key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' }>({
+  const [sortParams, setSortParams] = useState<SortParams>({
     key: '',
     sortDirection: 'NONE',
+  });
+  const pendingSortParamsRef = useRef<SortParams | null>(null);
+
+  useEffect(() => {
+    const pendingSortParams = pendingSortParamsRef.current;
+
+    if (
+      pendingSortParams &&
+      (pendingSortParams.key !== sortParams.key || pendingSortParams.sortDirection !== sortParams.sortDirection)
+    ) {
+      setSortParams(pendingSortParams);
+    }
+
+    pendingSortParamsRef.current = null;
   });
 
   const handleSorting = (
     _cellA: DataTableCellValue,
     _cellB: DataTableCellValue,
-    { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
+    { key, sortDirection }: SortParams,
   ) => {
-    if (sortDirection === 'NONE') {
-      setSortParams({ key: '', sortDirection });
-    } else {
-      setSortParams({ key, sortDirection });
-    }
+    pendingSortParamsRef.current = sortDirection === 'NONE' ? { key: '', sortDirection } : { key, sortDirection };
     return 0;
   };
 
@@ -95,16 +106,18 @@ const PaginatedBiometrics: React.FC<PaginatedBiometricsProps> = ({
             <Table aria-label="biometrics" className={styles.table} {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader
-                      {...getHeaderProps({
-                        header,
-                        isSortable: header.isSortable,
-                      })}
-                    >
-                      {renderHeader(header.header)}
-                    </TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({
+                      header,
+                      isSortable: header.isSortable,
+                    });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {renderHeader(header.header)}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>

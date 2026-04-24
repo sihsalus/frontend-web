@@ -61,7 +61,7 @@ export function isEmpty(value: unknown): boolean {
   if (value === undefined || value === null || value === '') {
     return true;
   }
-  if (typeof value == 'string' && !value?.trim()) {
+  if (typeof value === 'string' && !value?.trim()) {
     return true;
   }
   if (Array.isArray(value) && !value.length) {

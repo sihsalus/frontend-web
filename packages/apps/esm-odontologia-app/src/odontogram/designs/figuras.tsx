@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 /** Common props for all design SVG components */
 interface DesignProps {

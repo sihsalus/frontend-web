@@ -40,7 +40,7 @@ const UnspecifiedField: React.FC<UnspecifiedFieldProps> = ({ field, fieldValue, 
   }, [field, fieldValue, updateFormField]);
 
   const handleOnChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>, data: { checked: boolean; id: string }): void => {
+    (_event: React.ChangeEvent<HTMLInputElement>, data: { checked: boolean; id: string }): void => {
       const rendering = field.questionOptions.rendering;
       if (data.checked) {
         setIsUnspecified(true);

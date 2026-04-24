@@ -306,19 +306,19 @@ function handleAttachments(field: FormField, attachments: Attachment[] = []): Fo
 
 export function findObsByFormField(obsList: OpenmrsObs[], claimedObsIds: string[], field: FormField): OpenmrsObs[] {
   const obs = obsList.filter((candidate) => {
-    if (hasRendering(field, 'file') && candidate.formFieldPath == `rfe-forms-${field.id}`) {
+    if (hasRendering(field, 'file') && candidate.formFieldPath === `rfe-forms-${field.id}`) {
       return true;
     }
 
     return (
-      candidate.formFieldPath == `rfe-forms-${field.id}` &&
-      getResourceUuid(candidate.concept) == field.questionOptions.concept
+      candidate.formFieldPath === `rfe-forms-${field.id}` &&
+      getResourceUuid(candidate.concept) === field.questionOptions.concept
     );
   });
 
   if (!obs.length) {
     const obsByConcept = obsList.filter(
-      (candidate) => getResourceUuid(candidate.concept) == field.questionOptions.concept,
+      (candidate) => getResourceUuid(candidate.concept) === field.questionOptions.concept,
     );
     return claimedObsIds.length
       ? obsByConcept.filter((candidate) => !claimedObsIds.includes(candidate.uuid))
@@ -379,14 +379,14 @@ function getObsDisplayValue(field: FormField, value: unknown): unknown {
   }
   if (rendering === 'checkbox' && Array.isArray(value)) {
     return value
-      .map((selected) => field.questionOptions.answers?.find((option) => option.concept == selected)?.label)
+      .map((selected) => field.questionOptions.answers?.find((option) => option.concept === selected)?.label)
       .filter((label): label is string => isStringValue(label));
   }
   if (rendering === 'toggle') {
     return value ? field.questionOptions.toggleOptions.labelTrue : field.questionOptions.toggleOptions.labelFalse;
   }
   if (codedTypes.includes(rendering)) {
-    return field.questionOptions.answers?.find((option) => option.concept == value)?.label;
+    return field.questionOptions.answers?.find((option) => option.concept === value)?.label;
   }
   return value;
 }

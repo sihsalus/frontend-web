@@ -23,7 +23,6 @@ import { useFilteredEncounter } from '../../hooks/useFilteredEncounter';
 
 import ObservationGroupDetails, {
   type ObservationGroup,
-  type ObservationRow,
 } from './observation-group-details.component';
 import styles from './patient-observation-group-table.scss';
 
@@ -135,7 +134,7 @@ const PatientObservationGroupTable: React.FC<PatientObservationGroupTableProps> 
           encounterUuid: data.uuid,
         };
       });
-  }, [data]);
+  }, [data, parseDisplay]);
 
   // Configuración de columnas para la tabla principal
   const columns = [

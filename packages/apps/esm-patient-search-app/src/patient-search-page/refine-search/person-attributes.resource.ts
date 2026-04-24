@@ -73,7 +73,7 @@ export function useLocations(
       urlSearchParameters.append('_tag', locationTag);
     }
 
-    if (typeof debouncedQuery === 'string' && debouncedQuery != '') {
+    if (typeof debouncedQuery === 'string' && debouncedQuery !== '') {
       urlSearchParameters.append('name:contains', debouncedQuery);
     }
 

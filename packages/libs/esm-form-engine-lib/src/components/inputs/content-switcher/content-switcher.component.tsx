@@ -33,7 +33,7 @@ const ContentSwitcher: React.FC<FormFieldInputProps<string | number | null | und
   );
 
   const selectedIndex = useMemo(
-    () => visibleAnswers.findIndex((option) => option.concept == value),
+    () => visibleAnswers.findIndex((option) => option.concept === value),
     [value, visibleAnswers],
   );
 
@@ -44,7 +44,7 @@ const ContentSwitcher: React.FC<FormFieldInputProps<string | number | null | und
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' || isTrue(field.readonly) ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' || isTrue(field.readonly) ? (
     <div className={styles.formField}>
       <FieldValueView
         label={t(field.label)}

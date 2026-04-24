@@ -59,7 +59,7 @@ const MultiSelect: React.FC<FormFieldInputProps<string[]>> = ({ field, value, er
       setInitiallyCheckedQuestionItems(initiallySelectedQuestionItems.map((item): string => item.concept));
       isFirstRender.current = false;
     }
-  }, [counter, initiallySelectedQuestionItems, isFirstRender]);
+  }, [counter, initiallySelectedQuestionItems]);
 
   const handleSelectCheckbox = (option: SelectOption): void => {
     const selectedValue = option.concept;
@@ -83,7 +83,7 @@ const MultiSelect: React.FC<FormFieldInputProps<string[]>> = ({ field, value, er
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <div className={styles.formField}>
       <FieldValueView
         label={t(field.label)}

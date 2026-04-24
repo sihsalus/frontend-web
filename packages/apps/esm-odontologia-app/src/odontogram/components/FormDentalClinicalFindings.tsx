@@ -194,7 +194,7 @@ const FormDentalClinicalFindings = () => {
   // Close docs modal when finding selection changes
   useEffect(() => {
     setShowInfo(false);
-  }, [selectedOption]);
+  }, []);
 
   const norm = (s: string) =>
     s
@@ -206,7 +206,7 @@ const FormDentalClinicalFindings = () => {
     const q = norm(query.trim());
     if (!q) return opciones;
     return opciones.filter((op) => norm(op.nombre).includes(q) || String(op.id).includes(q));
-  }, [opciones, query]);
+  }, [opciones, query, norm]);
 
   const handleSelectFinding = useCallback(
     (id: number) => {

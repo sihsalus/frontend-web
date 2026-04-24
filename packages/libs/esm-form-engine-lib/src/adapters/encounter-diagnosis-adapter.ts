@@ -72,7 +72,7 @@ export const EncounterDiagnosisAdapter: FormFieldValueAdapter = {
     return null;
   },
   getDisplayValue: (field: FormField, value: unknown): unknown => {
-    return field.questionOptions.answers?.find((option) => option.concept == value)?.label || value;
+    return field.questionOptions.answers?.find((option) => option.concept === value)?.label || value;
   },
   tearDown: function (): void {
     assignedDiagnosesIds = [];

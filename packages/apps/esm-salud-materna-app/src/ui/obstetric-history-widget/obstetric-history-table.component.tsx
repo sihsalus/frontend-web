@@ -12,7 +12,6 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ObstetricTableRowType } from './obstetric-history.schema';
-import styles from './obstetric-history-table.scss';
 
 interface ObstetricHistoryTableProps {
   tableRows: ObstetricTableRowType[];

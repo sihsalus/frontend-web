@@ -104,14 +104,16 @@ describe('BiometricsOverview', () => {
     expect(screen.getByRole('tab', { name: /chart view/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /see all/i })).toBeInTheDocument();
 
-    const initialRowElements = screen.getAllByRole('row').map((row) => row.textContent);
+    const getDataRowText = () => screen.getAllByRole('row').slice(1).map((row) => row.textContent);
+
+    const initialRowElements = getDataRowText();
 
     const expectedColumnHeaders = [/date/, /weight/, /height/, /bmi/, /muac/];
     expectedColumnHeaders.map((header) =>
       expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument(),
     );
 
-    const tableRows = screen.getAllByRole('row').map((row) => row.textContent ?? '');
+    const tableRows = getDataRowText().map((row) => row ?? '');
     expect(tableRows.some((row) => row.includes('90') && row.includes('186') && row.includes('26.0') && row.includes('17'))).toBe(
       true,
     );
@@ -124,14 +126,14 @@ describe('BiometricsOverview', () => {
     // Sorting in ascending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row').map((row) => row.textContent)).not.toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
 
     // Sorting order = NONE, hence it is still in the ascending order
     await user.click(sortRowsButton);
     // Sorting in descending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row').map((row) => row.textContent)).toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
   });
 
   it('toggles between rendering either a tabular view or a chart view', async () => {

@@ -134,7 +134,7 @@ const UiSelectExtended: React.FC<FormFieldInputProps<string | null | undefined>>
     return (): void => {
       ignore = true;
     };
-  }, [config, dataSource, dataSourceDependentValue, field.questionOptions.isSearchable, isSearchable]);
+  }, [config, dataSource, dataSourceDependentValue, isSearchable]);
 
   useEffect(() => {
     if (dataSource && isSearchable && !isEmpty(searchTerm) && !searchTermHasMatchingItem(searchTerm)) {

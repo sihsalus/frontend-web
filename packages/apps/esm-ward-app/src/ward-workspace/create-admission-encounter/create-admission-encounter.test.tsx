@@ -9,7 +9,7 @@ import {
   mockPatientAlice,
   renderWithSwr,
 } from 'test-utils';
-import { mockWardViewContext } from '../../../mock';
+import { mockWardViewContext } from '../../../test-utils/mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useEmrConfiguration from '../../hooks/useEmrConfiguration';
 import { useInpatientAdmissionByPatients } from '../../hooks/useInpatientAdmissionByPatients';

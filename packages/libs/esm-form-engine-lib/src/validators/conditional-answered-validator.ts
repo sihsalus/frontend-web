@@ -10,7 +10,7 @@ interface ConditionalAnsweredConfig {
 }
 
 export const conditionalAnsweredValidator: FormFieldValidator = {
-  validate: function (field: FormField, value: unknown, config?: unknown) {
+  validate: function (_field: FormField, value: unknown, config?: unknown) {
     const {
       referenceQuestionId,
       referenceQuestionAnswers = [],

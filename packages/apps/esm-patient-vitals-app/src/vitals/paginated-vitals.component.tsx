@@ -10,10 +10,13 @@ import {
 } from '@carbon/react';
 import { useLayoutType, usePagination } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './paginated-vitals.scss';
 import type { VitalsTableHeader, VitalsTableRow } from './types';
+
+type DataTableCellValue = React.ReactNode | { content?: React.ReactNode };
+type SortParams = { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' };
 
 interface PaginatedVitalsProps {
   isPrinting?: boolean;
@@ -56,21 +59,31 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
     }
   };
 
-  const [sortParams, setSortParams] = useState<{ key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' }>({
+  const [sortParams, setSortParams] = useState<SortParams>({
     key: '',
     sortDirection: 'NONE',
   });
+  const pendingSortParamsRef = useRef<SortParams | null>(null);
+
+  useEffect(() => {
+    const pendingSortParams = pendingSortParamsRef.current;
+
+    if (
+      pendingSortParams &&
+      (pendingSortParams.key !== sortParams.key || pendingSortParams.sortDirection !== sortParams.sortDirection)
+    ) {
+      setSortParams(pendingSortParams);
+    }
+
+    pendingSortParamsRef.current = null;
+  });
 
   const handleSorting = (
-    _cellA,
-    _cellB,
-    { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
+    _cellA: DataTableCellValue,
+    _cellB: DataTableCellValue,
+    { key, sortDirection }: SortParams,
   ) => {
-    if (sortDirection === 'NONE') {
-      setSortParams({ key: '', sortDirection });
-    } else {
-      setSortParams({ key, sortDirection });
-    }
+    pendingSortParamsRef.current = sortDirection === 'NONE' ? { key: '', sortDirection } : { key, sortDirection };
     return 0;
   };
 
@@ -112,11 +125,15 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
             <Table className={styles.table} aria-label="vitals" {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header, isSortable: header.isSortable })} key={header.key}>
-                      {renderHeader(header.header)}
-                    </TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header, isSortable: header.isSortable });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {renderHeader(header.header)}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>

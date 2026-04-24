@@ -144,11 +144,11 @@ export class EncounterFormProcessor extends FormProcessor {
       field.inlineRendering =
         field.inlineRendering ?? section.inlineRendering ?? page.inlineRendering ?? schema.inlineRendering;
       field.readonly = field.readonly ?? section.readonly ?? page.readonly ?? schema.readonly;
-      if (field.questionOptions?.rendering == 'fixed-value' && !field.meta.fixedValue) {
+      if (field.questionOptions?.rendering === 'fixed-value' && !field.meta.fixedValue) {
         field.meta.fixedValue = field.value;
         delete field.value;
       }
-      if (field.questionOptions?.rendering == 'group' || field.type === 'obsGroup') {
+      if (field.questionOptions?.rendering === 'group' || field.type === 'obsGroup') {
         field.questions?.forEach((child) => {
           child.readonly = child.readonly ?? field.readonly;
           return prepareFormField(child, section, page, schema);

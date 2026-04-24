@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice, renderWithSwr } from 'test-utils';
-import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../mock';
+import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../test-utils/mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useWardLocation from '../../hooks/useWardLocation';
 import type { WardPatient, WardViewContext } from '../../types';

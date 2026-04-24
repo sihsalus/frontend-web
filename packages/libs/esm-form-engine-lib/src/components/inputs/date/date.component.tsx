@@ -85,7 +85,7 @@ const DateField: React.FC<FormFieldInputProps<DateFieldValue>> = ({
     [field, t],
   );
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' || isTrue(field.readonly) ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' || isTrue(field.readonly) ? (
     <FieldValueView
       label={t(field.label)}
       value={dateValue instanceof Date ? formatDateAsDisplayString(field, dateValue) : dateValue}
