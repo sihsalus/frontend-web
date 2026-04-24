@@ -125,8 +125,8 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
   }, [findings, getFindingName]);
 
   return (
-    <div className="tim-backdrop" onClick={onClose}>
-      <div className="tim-modal" onClick={(e) => e.stopPropagation()}>
+    <div className="tim-backdrop" onClick={onClose} role="presentation">
+      <div className="tim-modal" onClick={(e) => e.stopPropagation()} role="presentation">
         {/* Header */}
         <div className="tim-header">
           <div className="tim-header-left">
@@ -135,7 +135,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
               {findings.length} hallazgo{findings.length !== 1 ? 's' : ''}
             </span>
           </div>
-          <button className="tim-close" onClick={onClose} aria-label="Cerrar">
+          <button type="button" className="tim-close" onClick={onClose} aria-label="Cerrar">
             ×
           </button>
         </div>
@@ -213,6 +213,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           {!readOnly && (
                             <div className="tim-finding-actions">
                               <button
+                                type="button"
                                 className="tim-btn tim-btn--remove"
                                 onClick={() => handleDelete(f)}
                                 title="Eliminar hallazgo"
@@ -245,7 +246,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           </div>
                           <div className="tim-finding-actions">
                             <span className="tim-ghost-label">Eliminado</span>
-                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
+                            <button type="button" className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
                               Deshacer
                             </button>
                           </div>

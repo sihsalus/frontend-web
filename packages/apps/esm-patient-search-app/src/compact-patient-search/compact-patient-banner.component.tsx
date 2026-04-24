@@ -123,6 +123,7 @@ const ClickablePatientContainer = ({ patient, children }: ClickablePatientContai
   if (nonNavigationSelectPatientAction) {
     return (
       <button
+        type="button"
         className={classNames(styles.patientSearchResult, styles.patientSearchResultButton, {
           [styles.deceased]: isDeceased,
         })}

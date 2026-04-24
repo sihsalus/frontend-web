@@ -74,7 +74,7 @@ const ResponsiveOdontogramWrapper: React.FC<ResponsiveOdontogramWrapperProps> = 
       {isZoomed && (
         <div className="responsive-odontogram-zoom-badge">
           {Math.round(effectiveScale * 100)}%
-          <button onClick={reset} className="responsive-odontogram-zoom-reset">
+          <button type="button" onClick={reset} className="responsive-odontogram-zoom-reset">
             Reset
           </button>
         </div>

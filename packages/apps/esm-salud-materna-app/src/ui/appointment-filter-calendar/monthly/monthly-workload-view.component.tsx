@@ -29,7 +29,8 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
   const handleAppoiment = (_serviceUuid: string) => {};
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => handleAppoiment('')}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
@@ -58,7 +59,7 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
           )}
         </div>
       )}
-    </div>
+    </button>
   );
 };
 

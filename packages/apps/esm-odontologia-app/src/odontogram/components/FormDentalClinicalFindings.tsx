@@ -410,8 +410,8 @@ const FormDentalClinicalFindings = () => {
         (() => {
           const group = SIGLAS_MAP[selectedOption];
           return (
-            <div className="odon-siglas-overlay" onClick={() => setShowInfo(false)}>
-              <div className="odon-siglas-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="odon-siglas-overlay" onClick={() => setShowInfo(false)} role="presentation">
+              <div className="odon-siglas-modal" onClick={(e) => e.stopPropagation()} role="presentation">
                 <div className="odon-siglas-header">
                   <h3 className="odon-siglas-title">{group.hallazgo}</h3>
                   <button

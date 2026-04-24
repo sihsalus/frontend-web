@@ -187,6 +187,7 @@ const ClickablePatientContainer = ({ patientUuid, children }: ClickablePatientCo
   if (nonNavigationSelectPatientAction) {
     return (
       <button
+        type="button"
         className={classNames(styles.patientBannerButton, styles.patientBanner, {
           [styles.patientAvatarButton]: nonNavigationSelectPatientAction,
         })}

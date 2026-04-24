@@ -291,7 +291,7 @@ const FuaRequestTable: React.FC<FuaRequestTableProps> = ({ statusFilter = 'all' 
                               {fuaRequest?.observacionesSetiSis && (
                                 <Tooltip align="bottom" label={fuaRequest.observacionesSetiSis}>
                                   <span
-                                    aria-label={t('setiSisObservation', 'Observación SETI-SIS')}
+                                    title={t('setiSisObservation', 'Observación SETI-SIS')}
                                     style={{
                                       marginLeft: '4px',
                                       fontSize: '0.75rem',

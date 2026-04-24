@@ -100,7 +100,9 @@ const RecordSelector: React.FC<RecordSelectorProps> = ({ groups, selectedEncount
     const map = new Map<string, { record: OdontogramRecord; parentBase: OdontogramRecord }>();
     for (const g of groups) {
       map.set(g.base.encounterUuid, { record: g.base, parentBase: g.base });
-      g.attentions.forEach((a) => map.set(a.encounterUuid, { record: a, parentBase: g.base }));
+      g.attentions.forEach((a) => {
+        map.set(a.encounterUuid, { record: a, parentBase: g.base });
+      });
     }
     return map;
   }, [groups]);

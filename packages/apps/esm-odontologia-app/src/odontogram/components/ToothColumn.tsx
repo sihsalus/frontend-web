@@ -56,6 +56,7 @@ const ToothColumn: React.FC<ToothColumnProps> = ({ toothId, children }) => {
     <div className="tim-tooth-col">
       {/* Info button — visible on hover */}
       <button
+        type="button"
         className="tim-info-btn"
         onClick={handleOpen}
         title={`Ver detalle del diente ${toothId}`}
@@ -70,7 +71,13 @@ const ToothColumn: React.FC<ToothColumnProps> = ({ toothId, children }) => {
       {children}
 
       {/* Touch-friendly eye button — rendered below the tooth, only visible on touch devices */}
-      <button className="tim-eye-btn" onClick={handleOpen} aria-label={`Detalle diente ${toothId}`} tabIndex={-1}>
+      <button
+        type="button"
+        className="tim-eye-btn"
+        onClick={handleOpen}
+        aria-label={`Detalle diente ${toothId}`}
+        tabIndex={-1}
+      >
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path d="M1 8C2 5.5 4.5 3 8 3C11.5 3 14 5.5 15 8C14 10.5 11.5 13 8 13C4.5 13 2 10.5 1 8Z" />
           <circle cx="8" cy="8" r="2.2" />

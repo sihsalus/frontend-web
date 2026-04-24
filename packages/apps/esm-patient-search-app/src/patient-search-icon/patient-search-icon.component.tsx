@@ -111,21 +111,19 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
           </div>
         </>
       ) : (
-        <div
-          data-testid="searchPatientIcon"
-          onMouseEnter={() => {
-            // Preload the user object on hover. This object may contain a 'patientsVisited'
-            // property with UUIDs of recently viewed patients. This data can be used to display
-            // recently viewed patients if the 'showRecentlySearchedPatients' config property
-            // is enabled.
-            if (userUuid) {
-              void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
-            }
-          }}
-        >
+        <div data-testid="searchPatientIcon">
           <HeaderGlobalAction
             aria-label={t('searchPatient', 'Search patient')}
             className={styles.searchIconButton}
+            onMouseEnter={() => {
+              // Preload the user object on hover. This object may contain a 'patientsVisited'
+              // property with UUIDs of recently viewed patients. This data can be used to display
+              // recently viewed patients if the 'showRecentlySearchedPatients' config property
+              // is enabled.
+              if (userUuid) {
+                void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
+              }
+            }}
             onClick={handleShowSearchInput}
           >
             <Search size={20} />

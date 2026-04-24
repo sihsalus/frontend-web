@@ -239,7 +239,15 @@ const DesignSelector: React.FC<DesignSelectorProps> = ({
             return (
               <div
                 key={design.number}
+                role="button"
+                tabIndex={0}
                 onClick={() => handleDesignClick(design)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    handleDesignClick(design);
+                  }
+                }}
                 style={{
                   cursor: 'pointer',
                   padding: '15px',

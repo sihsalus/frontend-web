@@ -106,7 +106,7 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({ idTooth, legend = 'Leyenda'
     <div className="tooth-details-container">
       {/* Annotations box — auto-generated abbreviations with color */}
       <div className="tooth-details-box">
-        <div className="tooth-details-annotations" aria-label="Tooth annotations">
+        <div className="tooth-details-annotations">
           {groupedAnnotations.map((group) => (
             <div key={group.findingId} className="tooth-annotation-group">
               {group.items.map((ann, i) => (
