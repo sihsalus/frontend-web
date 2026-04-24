@@ -6,7 +6,6 @@ import {
   useFeatureFlag,
 } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { renderWithSwr } from 'test-utils';
 

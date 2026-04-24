@@ -1,6 +1,5 @@
 import { formatDatetime, getLocale } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React from 'react';
 
 import { type WardPatientCardType } from '../../types';
 import WardPatientAge from '../../ward-patient-card/row-elements/ward-patient-age.component';

@@ -32,7 +32,7 @@ export const WardPatientPendingOrder: React.FC<WardPatientPendingOrderProps> = (
     }
   }, [count, isLoading, onOrderCount]);
 
-  if (isLoading || !count || count == 0) {
+  if (isLoading || !count || count === 0) {
     return null;
   }
 

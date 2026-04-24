@@ -81,7 +81,7 @@ const AdmitPatientButton: React.FC<AdmitPatientButtonProps> = ({
   const disabledButton = isLoadingEmrConfiguration || errorFetchingEmrConfiguration || disabled;
   return (
     <Button kind="ghost" renderIcon={ArrowRightIcon} size={responsiveSize} disabled={disabledButton} onClick={onAdmit}>
-      {dispositionType == 'ADMIT' || disabledButton
+      {dispositionType === 'ADMIT' || disabledButton
         ? t('admitPatient', 'Admit patient')
         : t('transferPatient', 'Transfer patient')}
     </Button>

@@ -59,7 +59,7 @@ export default function LocationSelector({ paginationSize = 15, ...props }: Loca
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(event.target.value);
     },
-    [setSearchTerm],
+    [],
   );
   return (
     <div className={styles.locationSelector}>

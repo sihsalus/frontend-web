@@ -1,7 +1,6 @@
 import { type DefaultWorkspaceProps, useAppContext } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice, renderWithSwr } from 'test-utils';
 
 import { mockWardViewContext } from '../../../mock';

@@ -53,12 +53,12 @@ export function getWardMetrics(bedLayouts: BedLayout[], wardPatientGroup: WardPa
     freeBeds: '--',
     capacity: '--',
   };
-  if (bedLayouts == null || bedLayouts.length == 0) return bedMetrics;
+  if (bedLayouts == null || bedLayouts.length === 0) return bedMetrics;
   const total = bedLayouts.length;
   const occupiedBeds = bedLayouts.filter((bed) => bed.patients.length > 0);
   const patients = occupiedBeds.length;
   const freeBeds = total - patients;
-  const capacity = total != 0 ? Math.trunc((wardPatientGroup.totalPatientsCount / total) * 100) : 0;
+  const capacity = total !== 0 ? Math.trunc((wardPatientGroup.totalPatientsCount / total) * 100) : 0;
   return {
     patients: wardPatientGroup?.totalPatientsCount.toString() ?? '--',
     freeBeds: freeBeds.toString(),
@@ -98,11 +98,11 @@ export function createAndGetWardPatientGrouping(
     patients.forEach((patient) => {
       const admission = inpatientAdmissionsByPatientUuid.get(patient.uuid);
       allWardPatientUuids.add(patient.uuid);
-      if (admission?.currentInpatientLocation?.uuid == currentWardLocation.uuid) {
+      if (admission?.currentInpatientLocation?.uuid === currentWardLocation.uuid) {
         wardAdmittedPatientsWithBed.set(patient.uuid, admission);
         //count the pending metric
         const dispositionType = admission.currentInpatientRequest?.dispositionType;
-        if (dispositionType == 'TRANSFER' || dispositionType == 'DISCHARGE') wardPatientPendingCount++;
+        if (dispositionType === 'TRANSFER' || dispositionType === 'DISCHARGE') wardPatientPendingCount++;
       } else {
         wardUnadmittedPatientsWithBed.set(patient.uuid, patient);
       }
@@ -177,7 +177,7 @@ export function useElementConfig(elementType, id: string): object {
   const { t } = useTranslation();
 
   try {
-    return config?.patientCardElements?.[elementType]?.find((elementConfig) => elementConfig?.id == id);
+    return config?.patientCardElements?.[elementType]?.find((elementConfig) => elementConfig?.id === id);
   } catch {
     showNotification({
       title: t('errorConfiguringPatientCard', 'Error configuring patient card'),
@@ -203,8 +203,8 @@ export function useWardConfig(locationUuid: string): WardDefinition {
     const cardDefinition = wards?.find((wardDef) => {
       return (
         wardDef.appliedTo == null ||
-        wardDef.appliedTo?.length == 0 ||
-        wardDef.appliedTo.some((criteria) => criteria.location == locationUuid)
+        wardDef.appliedTo?.length === 0 ||
+        wardDef.appliedTo.some((criteria) => criteria.location === locationUuid)
       );
     });
 

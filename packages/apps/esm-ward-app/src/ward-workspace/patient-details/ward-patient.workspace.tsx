@@ -1,6 +1,5 @@
 import { attach, ExtensionSlot, useConfig } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React from 'react';
 
 import { type WardConfigObject } from '../../config-schema';
 import { type WardPatientWorkspaceProps } from '../../types';

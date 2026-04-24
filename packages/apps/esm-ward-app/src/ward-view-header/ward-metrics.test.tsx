@@ -1,6 +1,5 @@
 import { useAppContext } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
-import React from 'react';
 
 import { renderWithSwr } from 'test-utils';
 import { mockWardViewContext } from '../../mock';
@@ -24,7 +23,7 @@ describe('Ward Metrics', () => {
     const bedMetrics = getWardMetrics(bedLayouts, mockWardPatientGroupDetails);
     renderWithSwr(<WardMetrics />);
     for (const [key] of Object.entries(bedMetrics)) {
-      const fieldName = wardMetrics.find((metric) => metric.name == key)?.defaultTranslation;
+      const fieldName = wardMetrics.find((metric) => metric.name === key)?.defaultTranslation;
       expect(fieldName).toBeTruthy();
       if (fieldName) {
         expect(screen.getByText(fieldName)).toBeInTheDocument();

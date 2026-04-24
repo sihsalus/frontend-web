@@ -1,7 +1,7 @@
 import { InlineNotification } from '@carbon/react';
 import { useAppContext, useFeatureFlag } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import EmptyBedSkeleton from '../beds/empty-bed-skeleton.component';
@@ -59,11 +59,10 @@ const Ward = ({ wardBeds, wardUnassignedPatients }: { wardBeds: ReactNode; wardU
       };
     },
     [
-      errorLoadingInpatientAdmissions,
-      hasMoreInpatientAdmissions,
-      isLoadingInpatientAdmissions,
-      loadMoreInpatientAdmissions,
-      scrollToLoadMoreTrigger,
+      errorLoadingInpatientAdmissions, 
+      hasMoreInpatientAdmissions, 
+      isLoadingInpatientAdmissions, 
+      loadMoreInpatientAdmissions
     ],
   );
 
@@ -72,7 +71,7 @@ const Ward = ({ wardBeds, wardUnassignedPatients }: { wardBeds: ReactNode; wardU
   return (
     <div className={classNames(styles.wardViewMain, styles.verticalTiling)}>
       {wardBeds}
-      {bedLayouts?.length == 0 && isBedManagementModuleInstalled && (
+      {bedLayouts?.length === 0 && isBedManagementModuleInstalled && (
         <InlineNotification
           kind="warning"
           lowContrast={true}

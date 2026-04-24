@@ -7,7 +7,6 @@ import {
 } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice, renderWithSwr } from 'test-utils';
 import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../mock';

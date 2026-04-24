@@ -1,5 +1,4 @@
 import { showNotification, useAppContext, useFeatureFlag } from '@openmrs/esm-framework';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { WardViewContext } from '../types';
