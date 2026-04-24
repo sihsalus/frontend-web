@@ -20,6 +20,7 @@ const mockUserObservable = of(mockUser);
 const mockSessionObservable = of({ data: mockSession });
 
 jest.mock('@openmrs/esm-framework', () => ({
+  ...jest.requireActual('@openmrs/esm-framework'),
   useConfig: jest.fn(),
   useAssignedExtensions: jest.fn(),
   useSession: jest.fn(),
@@ -48,6 +49,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('./components/navbar/navbar.component', () => ({
+  __esModule: true,
   default: () => <div data-testid="navbar">Mock EMR</div>,
 }));
 

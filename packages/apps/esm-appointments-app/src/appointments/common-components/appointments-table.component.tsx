@@ -206,9 +206,15 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({
                 <TableHead>
                   <TableRow>
                     <TableExpandHeader enableToggle {...getExpandHeaderProps()} />
-                    {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({ header });
+
+                      return (
+                        <TableHeader key={key} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                     <TableHeader />
                   </TableRow>
                 </TableHead>
@@ -225,34 +231,40 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({
 
                     return (
                       <React.Fragment key={row.id}>
-                        <TableExpandRow {...getRowProps({ row })}>
-                          {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
-                          ))}
-                          <TableCell className="cds--table-column-menu">
-                            {isFutureAppointment || (isTodayAppointment && !hasActiveVisitToday) ? (
-                              <OverflowMenu
-                                align="left"
-                                aria-label={t('actions', 'Actions')}
-                                flipped
-                                size={responsiveSize}
-                              >
-                                <OverflowMenuItem
-                                  className={styles.menuItem}
-                                  itemText={t('editAppointment', 'Edit appointment')}
-                                  onClick={() =>
-                                    launchWorkspace('appointments-form-workspace', {
-                                      patientUuid: matchingAppointment.patient.uuid,
-                                      appointment: matchingAppointment,
-                                      context: 'editing',
-                                      workspaceTitle: t('editAppointment', 'Edit appointment'),
-                                    })
-                                  }
-                                />
-                              </OverflowMenu>
-                            ) : null}
-                          </TableCell>
-                        </TableExpandRow>
+                        {(() => {
+                          const { key, ...rowProps } = getRowProps({ row });
+
+                          return (
+                            <TableExpandRow key={key} {...rowProps}>
+                              {row.cells.map((cell) => (
+                                <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
+                              ))}
+                              <TableCell className="cds--table-column-menu">
+                                {isFutureAppointment || (isTodayAppointment && !hasActiveVisitToday) ? (
+                                  <OverflowMenu
+                                    align="left"
+                                    aria-label={t('actions', 'Actions')}
+                                    flipped
+                                    size={responsiveSize}
+                                  >
+                                    <OverflowMenuItem
+                                      className={styles.menuItem}
+                                      itemText={t('editAppointment', 'Edit appointment')}
+                                      onClick={() =>
+                                        launchWorkspace('appointments-form-workspace', {
+                                          patientUuid: matchingAppointment.patient.uuid,
+                                          appointment: matchingAppointment,
+                                          context: 'editing',
+                                          workspaceTitle: t('editAppointment', 'Edit appointment'),
+                                        })
+                                      }
+                                    />
+                                  </OverflowMenu>
+                                ) : null}
+                              </TableCell>
+                            </TableExpandRow>
+                          );
+                        })()}
                         {row.isExpanded ? (
                           <TableExpandedRow className={styles.expandedRow} colSpan={headers.length + 2}>
                             <AppointmentDetails appointment={matchingAppointment} />

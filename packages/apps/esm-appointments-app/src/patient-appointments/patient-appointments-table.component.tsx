@@ -90,17 +90,18 @@ const PatientAppointmentsTable: React.FC<AppointmentTableProps> = ({
             <Table {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader
-                      className={classNames(styles.productiveHeading01, styles.text02)}
-                      {...getHeaderProps({
-                        header,
-                        isSortable: header.isSortable,
-                      })}
-                    >
-                      {renderHeaderLabel(header.header)}
-                    </TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({
+                      header,
+                      isSortable: header.isSortable,
+                    });
+
+                    return (
+                      <TableHeader key={key} className={classNames(styles.productiveHeading01, styles.text02)} {...headerProps}>
+                        {renderHeaderLabel(header.header)}
+                      </TableHeader>
+                    );
+                  })}
                   <TableHeader />
                 </TableRow>
               </TableHead>
