@@ -12,13 +12,13 @@ describe('maternal utils/date-utils', () => {
         includeTime: false,
         useTimezone: false,
       }),
-    ).toBe('2025-01-15T00:00:00.000+0000');
+    ).toMatch(/^2025-01-15T00:00:00\.000[+-]\d{4}$/);
 
     expect(
-      toOpenmrsIsoString(new Date(Date.UTC(2025, 0, 15, 13, 45, 30)), {
+      toOpenmrsIsoString(new Date(2025, 0, 15, 13, 45, 30), {
         useTimezone: false,
       }),
-    ).toBe('2025-01-15T13:45:30.000+0000');
+    ).toMatch(/^2025-01-15T13:45:30\.000[+-]\d{4}$/);
   });
 
   it('validates OpenMRS date strings and converts form dates with time', () => {

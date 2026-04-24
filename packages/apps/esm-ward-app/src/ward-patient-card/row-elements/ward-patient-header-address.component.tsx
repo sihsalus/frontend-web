@@ -14,7 +14,7 @@ const WardPatientAddress: React.FC<WardPatientAddressProps> = ({ patient, id }) 
 
   return (
     <>
-      {config.fields?.map((field) =>
+      {config?.fields?.map((field) =>
         preferredAddress?.[field] ? (
           <div key={String(field)}>{preferredAddress?.[field] as string}</div>
         ) : (
