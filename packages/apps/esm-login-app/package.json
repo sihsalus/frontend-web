@@ -10,7 +10,7 @@
     "start": "openmrs develop",
     "serve": "rspack serve --mode=development",
     "debug": "npm run serve",
-    "test": "jest --config jest.config.js --passWithNoTests --color",
+    "test": "jest --config jest.config.js --passWithNoTests --color --runInBand",
     "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
     "coverage": "cross-env TZ=UTC jest --config jest.config.js --coverage --passWithNoTests --color",
     "build": "rspack --mode=production",

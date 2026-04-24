@@ -27,7 +27,7 @@ export default function CostStructureForm() {
   const { t } = useTranslation();
 
   const form = useForm<CostStructureFormValues>({
-    resolver: zodResolver(costStructureSchema),
+    resolver: zodResolver(costStructureSchema as never),
     defaultValues: {
       procedure: { conceptId: 0, nameFull: '', code: '' },
       infrastructures: [],

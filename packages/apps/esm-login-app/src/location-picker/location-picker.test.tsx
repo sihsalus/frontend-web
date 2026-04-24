@@ -84,14 +84,25 @@ describe('LocationPickerView', () => {
       locationCount: mockLoginLocations.data.total,
       firstLocation: mockLoginLocations.data.entry[0],
       error: null,
-    });
-    mockUseDefaultLocation.mockImplementation(() => {
+    } as ReturnType<typeof useLocationCount>);
+    mockUseDefaultLocation.mockImplementation(((/* isUpdateFlow */) => {
       const React = require('react') as typeof import('react');
       const [savePreference, setSavePreference] = React.useState(Boolean(mockedStoredDefaultLocation));
 
       return {
         defaultLocation: mockedValidatedDefaultLocation,
-        defaultLocationFhir: mockedValidatedDefaultLocation ? [{ resource: { id: mockedValidatedDefaultLocation } }] : [],
+        defaultLocationFhir: mockedValidatedDefaultLocation
+          ? [
+              {
+                resource: {
+                  id: mockedValidatedDefaultLocation,
+                  name: 'Mock location',
+                  resourceType: 'Location',
+                  status: 'active',
+                },
+              },
+            ]
+          : [],
         updateDefaultLocation: async (locationUuid?: string, saveDefaultLocation?: boolean) => {
           if (savePreference && locationUuid === mockedValidatedDefaultLocation) {
             return;
@@ -125,7 +136,7 @@ describe('LocationPickerView', () => {
         savePreference,
         setSavePreference,
       };
-    });
+    }) as typeof useDefaultLocation);
   });
 
   it('renders the welcome message and location selection form', () => {
