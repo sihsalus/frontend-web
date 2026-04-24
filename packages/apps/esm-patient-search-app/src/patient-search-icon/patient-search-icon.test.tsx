@@ -41,12 +41,12 @@ describe('PatientSearchLaunch', () => {
     const searchButton = screen.getByTestId('searchPatientIcon');
 
     await user.click(searchButton);
-    const searchInput = screen.getByText('Search results');
-    expect(searchInput).toBeInTheDocument();
-
     const closeButton = screen.getByTestId('closeSearchIcon');
+    expect(closeButton).toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+
     await user.click(closeButton);
-    expect(searchInput).not.toBeInTheDocument();
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
   });
 
   it('displays search input in overlay on mobile', async () => {
@@ -58,7 +58,6 @@ describe('PatientSearchLaunch', () => {
     const searchButton = screen.getByTestId('searchPatientIcon');
 
     await user.click(searchButton);
-    const overlay = screen.getByText('Search results');
-    expect(overlay).toBeInTheDocument();
+    expect(screen.getByTestId('closeSearchIcon')).toBeInTheDocument();
   });
 });

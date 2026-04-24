@@ -50,11 +50,11 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
     encounterProviders: expect.arrayContaining([
       {
         encounterRole: emrConfigurationMock.clinicianEncounterRole.uuid,
-        provider: undefined,
+        provider: mockSession.data.currentProvider.uuid,
       },
     ]),
     encounterType: emrConfigurationMock.inpatientNoteEncounterType.uuid,
-    location: undefined,
+    location: mockSession.data.sessionLocation.uuid,
     obs: expect.arrayContaining([
       {
         concept: { display: '', uuid: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' },
@@ -77,7 +77,7 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
   await userEvent.click(submitButton);
 
   expect(mockSavePatientNote).toHaveBeenCalledTimes(1);
-  expect(mockSavePatientNote).toHaveBeenCalledWith(expect.objectContaining(successPayload), new AbortController());
+  expect(mockSavePatientNote).toHaveBeenCalledWith(expect.objectContaining(successPayload), expect.any(AbortController));
 });
 
 test('renders an error snackbar if there was a problem recording a visit note', async () => {

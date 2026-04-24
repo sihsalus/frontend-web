@@ -24,10 +24,10 @@ describe('Medication Request Resource Test', () => {
     useSWR.mockImplementation(() => ({ data: { data: 'mockedReturnData' } }));
     usePrescriptionsTable(true, '', 'ACTIVE', 5, 5, 'bob', null, 10, 10000);
     expect(useSWR).toHaveBeenCalledWith(
-      `/ws/fhir2/R4/Encounter?_query=encountersWithMedicationRequests&_getpagesoffset=5&_count=5&date=ge${dayjs()
+      `/ws/fhir2/R4/Encounter?_query=encountersWithMedicationRequests&_getpagesoffset=5&_count=5&status=ACTIVE&date=ge${dayjs()
         .startOf('day')
         .subtract(10, 'day')
-        .toISOString()}&status=ACTIVE&patientSearchTerm=bob`,
+        .toISOString()}&patientSearchTerm=bob`,
       openmrsFetch,
       { refreshInterval: 10000 },
     );
