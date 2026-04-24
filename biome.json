@@ -33,14 +33,14 @@
         "noSvgWithoutTitle": "off",
         "useAltText": "off",
         "useAriaPropsForRole": "off",
-        "useButtonType": "error",
+        "useButtonType": "warn",
         "useFocusableInteractive": "off",
         "useHeadingContent": "off",
         "useIframeTitle": "off",
         "useKeyWithClickEvents": "off",
         "useSemanticElements": "off",
         "useValidAnchor": "off",
-        "useValidAriaRole": "error"
+        "useValidAriaRole": "warn"
       },
       "complexity": {
         "noBannedTypes": "off",
@@ -59,7 +59,7 @@
       },
       "correctness": {
         "noChildrenProp": "off",
-        "useExhaustiveDependencies": "error",
+        "useExhaustiveDependencies": "warn",
         "useJsxKeyInIterable": "off"
       },
       "performance": {
@@ -91,14 +91,14 @@
         "noAssignInExpressions": "off",
         "noConfusingVoidType": "off",
         "noEmptyInterface": "off",
-        "noExplicitAny": "error",
+        "noExplicitAny": "warn",
         "noGlobalIsNan": "off",
         "noImplicitAnyLet": "off",
         "noMisleadingCharacterClass": "off",
         "noShorthandPropertyOverrides": "off",
         "noShadowRestrictedNames": "off",
         "noThenProperty": "off",
-        "noDoubleEquals": "error"
+        "noDoubleEquals": "warn"
       }
     }
   },

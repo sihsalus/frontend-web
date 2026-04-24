@@ -6,6 +6,7 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "noUncheckedIndexedAccess": false,
+    "types": ["node", "fhir"],
     "baseUrl": ".",
     "paths": {
       "@openmrs/esm-api": ["../../../node_modules/@openmrs/esm-api/dist/index"],
