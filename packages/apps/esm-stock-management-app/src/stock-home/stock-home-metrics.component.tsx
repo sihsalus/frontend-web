@@ -10,7 +10,7 @@ import { useStockInventoryItems } from './stock-home-inventory-items.resource';
 import { useDisposalList } from './useDisposalList';
 import useStockList from './useStockList';
 
-const StockManagementMetrics: React.FC = (filter: StockOperationFilter) => {
+const StockManagementMetrics: React.FC = (_filter: StockOperationFilter) => {
   const { t } = useTranslation();
   const { stockList: allStocks, error } = useStockList();
   const { items: expiryItems } = useStockInventory();

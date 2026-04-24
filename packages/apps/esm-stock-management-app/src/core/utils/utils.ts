@@ -70,8 +70,13 @@ export const pick = <T extends object>(obj: T, fields: string[]): Partial<T> => 
     throw new TypeError('Second argument must be an array');
   }
 
-  const getNestedValue = (obj: any, path: string): any => {
-    return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+  const getNestedValue = (value: unknown, path: string): unknown => {
+    return path.split('.').reduce<unknown>((acc, key) => {
+      if (typeof acc === 'object' && acc !== null && key in acc) {
+        return (acc as Record<string, unknown>)[key];
+      }
+      return undefined;
+    }, value);
   };
 
   return fields.reduce(
@@ -82,10 +87,14 @@ export const pick = <T extends object>(obj: T, fields: string[]): Partial<T> => 
         const lastKey = keys.pop()!;
 
         // Create nested structure in result
-        keys.reduce((nested, key) => {
-          if (!nested[key]) nested[key] = {};
-          return nested[key];
-        }, result as any)[lastKey] = value;
+        const nestedTarget = keys.reduce<Record<string, unknown>>((nested, key) => {
+          const currentValue = nested[key];
+          if (typeof currentValue !== 'object' || currentValue === null) {
+            nested[key] = {};
+          }
+          return nested[key] as Record<string, unknown>;
+        }, result as Partial<T> as Record<string, unknown>);
+        nestedTarget[lastKey] = value;
       }
       return result;
     },

@@ -1,5 +1,5 @@
 import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { type Party } from '../../../core/api/types/Party';
 import { LocationTypeLocation, LocationTypeOther } from '../../../core/api/types/stockOperation/LocationType';

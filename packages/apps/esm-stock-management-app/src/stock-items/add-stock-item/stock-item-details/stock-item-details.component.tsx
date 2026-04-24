@@ -3,7 +3,7 @@ import { Save } from '@carbon/react/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getCoreTranslation, restBaseUrl, showSnackbar, useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { forwardRef, useMemo } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type StockItemDTO } from '../../../core/api/types/stockItem/StockItem';

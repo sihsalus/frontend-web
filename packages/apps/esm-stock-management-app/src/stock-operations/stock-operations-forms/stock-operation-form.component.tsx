@@ -148,7 +148,7 @@ const StockOperationForm: React.FC<StockOperationFormProps> = ({
       });
       setRenderItemForm(true);
     },
-    [stockOperationType, form, setItemFormProps, setRenderItemForm],
+    [stockOperationType, form],
   );
   const steps: TabItem[] = useMemo(() => {
     return [
@@ -265,7 +265,7 @@ const StockOperationForm: React.FC<StockOperationFormProps> = ({
         <StockItemForm {...itemsFormProps} />
       ) : (
         <StockOperationStepper
-          steps={steps.map((tab, index) => ({
+          steps={steps.map((tab, _index) => ({
             title: tab.name,
             component: tab.component,
             disabled: tab.disabled,

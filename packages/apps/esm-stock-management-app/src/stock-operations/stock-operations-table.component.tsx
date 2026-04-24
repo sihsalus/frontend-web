@@ -235,7 +235,7 @@ const StockOperations: React.FC<StockOperationsTableProps> = () => {
               <TableBody>
                 {rows?.map((row: any, index) => {
                   const props = getRowProps({ row });
-                  const expandedRowProps = getExpandedRowProps({ row });
+                  const _expandedRowProps = getExpandedRowProps({ row });
                   return (
                     <React.Fragment key={row.id}>
                       <TableExpandRow className={isDesktop ? styles.desktopRow : styles.tabletRow} {...props}>

@@ -54,10 +54,6 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
     setShowSearchInput(false);
   }, [isSearchPage]);
 
-  const handleShowSearchInput = useCallback(() => {
-    setShowSearchInput(true);
-  }, []);
-
   const preloadRecentPatients = useCallback(() => {
     // Preload the user object on hover. This object may contain a 'patientsVisited'
     // property with UUIDs of recently viewed patients. This data can be used to display
@@ -67,6 +63,11 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
       void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
     }
   }, [userUuid]);
+
+  const handleShowSearchInput = useCallback(() => {
+    preloadRecentPatients();
+    setShowSearchInput(true);
+  }, [preloadRecentPatients]);
 
   const resetToInitialState = useCallback(() => {
     setShowSearchInput(false);
@@ -126,7 +127,6 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
             aria-label={t('searchPatient', 'Search patient')}
             className={styles.searchIconButton}
             onClick={handleShowSearchInput}
-            onMouseEnter={preloadRecentPatients}
           >
             <Search size={20} />
           </HeaderGlobalAction>

@@ -32,7 +32,7 @@ jest.mock('./steps/stock-operation-items-form-step.component', () => ({
 
     const form = useFormContext();
     const { stockItemsList, setSearchString } = useFilterableStockItems();
-    const [selectedItemName, setSelectedItemName] = React.useState<string | null>(null);
+    const [selectedItemName, setSelectedItemName] = React.useState(null as string | null);
     const items = form.watch('stockOperationItems') ?? [];
 
     return (
@@ -40,7 +40,6 @@ jest.mock('./steps/stock-operation-items-form-step.component', () => ({
         <input
           id="search-stock-operation-item"
           type="search"
-          role="searchbox"
           aria-label="Search"
           onChange={(event) => setSearchString(event.target.value)}
         />
@@ -59,7 +58,9 @@ jest.mock('./steps/stock-operation-items-form-step.component', () => ({
         {items.map((item: { uuid?: string; quantity?: number; expiration?: Date | string }, index: number) => (
           <div key={item.uuid ?? `item-${index}`}>
             {typeof item.quantity === 'number' ? <span>{item.quantity.toLocaleString()}</span> : null}
-            {item.expiration ? <span>{formatForDatePicker(item.expiration)}</span> : null}
+            {item.expiration ? (
+              <span>{formatForDatePicker(item.expiration instanceof Date ? item.expiration : new Date(item.expiration))}</span>
+            ) : null}
           </div>
         ))}
         <button type="button" onClick={onNext}>
@@ -297,7 +298,7 @@ describe('Stock Operation step 2 (stock operation items details)', () => {
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(
       screen.getByRole('searchbox', {
-        name(accessibleName, element) {
+        name(_accessibleName, element) {
           return element.getAttribute('id') === 'search-stock-operation-item';
         },
       }),

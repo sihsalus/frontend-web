@@ -1,6 +1,6 @@
 import { InlineLoading } from '@carbon/react';
 import { showSnackbar } from '@openmrs/esm-framework';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStockOperationTypes } from '../stock-lookups/stock-lookups.resource';
 import { launchStockoperationAddOrEditWorkSpace } from './stock-operation.utils';

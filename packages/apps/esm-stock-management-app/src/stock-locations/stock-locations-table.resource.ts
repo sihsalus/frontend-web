@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { useStockTagLocations } from '../stock-lookups/stock-lookups.resource';
 import { type StockOperationFilter } from '../stock-operations/stock-operations.resource';
 
-export function useStockLocationPages(filter: StockOperationFilter) {
+export function useStockLocationPages(_filter: StockOperationFilter) {
   const { stockLocations, error, isLoading } = useStockTagLocations();
 
   const pageSizes = [10, 20, 30, 40, 50];

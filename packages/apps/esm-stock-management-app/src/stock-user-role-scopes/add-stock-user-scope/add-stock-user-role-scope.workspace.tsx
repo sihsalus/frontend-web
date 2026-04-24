@@ -218,7 +218,7 @@ const AddStockUserRoleScope: React.FC<AddStockUserRoleScopeProps> = ({ model, ed
     return formModel?.operationTypes?.filter((x) => x.operationTypeUuid === operationType.uuid)?.length > 0;
   };
 
-  const addStockUserRole = async (e) => {
+  const _addStockUserRole = async (e) => {
     e.preventDefault();
 
     createOrUpdateUserRoleScope(formModel).then(

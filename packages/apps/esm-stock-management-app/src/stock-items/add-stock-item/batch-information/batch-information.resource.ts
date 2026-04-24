@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ResourceRepresentation } from '../../../core/api/api';
 import { type StockItemInventoryFilter, useStockItemInventory } from '../../stock-items.resource';
 

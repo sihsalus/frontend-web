@@ -23,27 +23,36 @@ import { useTranslation } from 'react-i18next';
 import styles from './table.scss';
 import { type DataTableRenderProps } from './types';
 
+type TableRowData = Record<string, unknown>;
+
 type FilterProps = {
   rowIds: Array<string>;
-  headers: any;
-  cellsById: any;
+  headers: Array<{ key: string }>;
+  cellsById: Record<string, { value: unknown }>;
   inputValue: string;
-  getCellId: (row, key) => string;
+  getCellId: (row: string, key: string) => string;
 };
 
-interface ListProps {
-  columns: any;
-  data: any;
+interface ListProps<T extends TableRowData = TableRowData> {
+  columns: Array<{ key: string; header: string }>;
+  data: Array<T>;
   children?: (renderProps: DataTableRenderProps) => React.ReactElement;
   totalItems?: number;
   goToPage?: (page: number) => void;
   hasToolbar?: boolean;
 }
 
-const DataList: React.FC<ListProps> = ({ columns, data, children, totalItems, goToPage, hasToolbar = true }) => {
+const DataList = <T extends TableRowData>({
+  columns,
+  data,
+  children,
+  totalItems,
+  goToPage,
+  hasToolbar = true,
+}: ListProps<T>) => {
   const { t } = useTranslation();
   const layout = useLayoutType();
-  const [allRows, setAllRows] = useState([]);
+  const [allRows, setAllRows] = useState<Array<T & { id: string }>>([]);
   const isTablet = useLayoutType() === 'tablet';
   const [list] = useState(data);
   const pageSizes = [10, 20, 30, 40, 50];
@@ -51,13 +60,13 @@ const DataList: React.FC<ListProps> = ({ columns, data, children, totalItems, go
   const { goTo, results: paginatedList, currentPage } = usePagination(list, currentPageSize);
 
   useEffect(() => {
-    const rows: Array<Record<string, string>> = [];
+    const rows: Array<T & { id: string }> = [];
 
-    paginatedList.map((item: any, index) => {
-      return rows.push({ ...item, id: index });
+    paginatedList.forEach((item, index) => {
+      rows.push({ ...item, id: String(index) });
     });
     setAllRows(rows);
-  }, [paginatedList, allRows]);
+  }, [paginatedList]);
 
   const handleFilter = ({ rowIds, headers, cellsById, inputValue, getCellId }: FilterProps): Array<string> => {
     return rowIds.filter((rowId) =>
@@ -86,9 +95,11 @@ const DataList: React.FC<ListProps> = ({ columns, data, children, totalItems, go
     saveAs(jsonBlob, 'data.json');
   };
 
-  const convertToCSV = (data, columns) => {
-    const header = columns.map((col) => col.header).join(',');
-    const rows = data.map((row) => columns.map((col) => JSON.stringify(row[col.key])).join(','));
+  const convertToCSV = (csvData: Array<T>, csvColumns: Array<{ key: string; header: string }>) => {
+    const header = csvColumns.map((col) => col.header).join(',');
+    const rows = csvData.map((row) =>
+      csvColumns.map((col) => JSON.stringify(row[col.key as keyof T] ?? '')).join(','),
+    );
     return [header, ...rows].join('\n');
   };
 

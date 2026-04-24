@@ -43,7 +43,7 @@ jest.mock('./steps/stock-operation-submission-form-step.component', () => {
       onPrevious?: () => void;
       stockOperationType: { operationType?: string };
     }) => {
-      const [approvalRequired, setApprovalRequired] = React.useState<boolean | null>(null);
+      const [approvalRequired, setApprovalRequired] = React.useState(null as boolean | null);
       const requiresDispatchAcknowledgement = stockOperationType?.operationType !== 'receipt';
 
       return (

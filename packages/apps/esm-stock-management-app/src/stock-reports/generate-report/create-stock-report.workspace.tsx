@@ -179,7 +179,7 @@ const CreateReport: React.FC<CreateReportProps> = ({ model, closeWorkspace }) =>
     return <InlineLoading status="active" iconDescription="Loading" description="Loading data..." />;
   }
 
-  const handleSave = async (report: StockReportSchema) => {
+  const _handleSave = async (report: StockReportSchema) => {
     const reportSystemName = Array.isArray(reportTypes)
       ? reportTypes.find((reportType) => reportType.name === report.reportName)?.systemName
       : undefined;

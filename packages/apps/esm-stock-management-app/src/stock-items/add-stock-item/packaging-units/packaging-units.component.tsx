@@ -309,7 +309,7 @@ const PackagingUnitRow: React.FC<{
             id={id}
             invalid={!!errors.factor}
             hideSteppers={true}
-            onChange={(e, state) => onChange(state.value)}
+            onChange={(_e, state) => onChange(state.value)}
           />
         </TableCell>
         <TableCell>

@@ -1,7 +1,7 @@
 import { ButtonSkeleton, OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import { OverflowMenuVertical } from '@carbon/react/icons';
 import { showSnackbar } from '@openmrs/esm-framework';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OperationType, type StockOperationType } from '../../core/api/types/stockOperation/StockOperationType';
 import { launchStockoperationAddOrEditWorkSpace } from '../stock-operation.utils';
@@ -13,7 +13,7 @@ const StockOperationTypesSelector = () => {
 
   const handleSelect = useCallback(
     (stockOperationType: StockOperationType) => {
-      const isStockIssueOperation = stockOperationType.operationType === OperationType.STOCK_ISSUE_OPERATION_TYPE;
+      const _isStockIssueOperation = stockOperationType.operationType === OperationType.STOCK_ISSUE_OPERATION_TYPE;
 
       launchStockoperationAddOrEditWorkSpace(t, stockOperationType, undefined);
     },

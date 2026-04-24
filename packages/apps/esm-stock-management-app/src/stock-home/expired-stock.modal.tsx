@@ -9,12 +9,17 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ExpiredStockModalProps {
   closeModal: () => void;
-  expiredStock: any[];
+  expiredStock: Array<{
+    drugName?: string;
+    batchNo?: string;
+    quantity?: number | string;
+    dispensingUnitName?: string;
+    expiration?: string | Date;
+  }>;
 }
 
 const ExpiredStockModal = ({ closeModal, expiredStock }: ExpiredStockModalProps) => {
@@ -28,7 +33,7 @@ const ExpiredStockModal = ({ closeModal, expiredStock }: ExpiredStockModalProps)
     { key: 'expiration', header: 'Expiration Date' },
   ];
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString?: string | Date) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-GB', {
