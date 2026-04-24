@@ -94,16 +94,17 @@ const ImmunizationsOverview: React.FC<ImmunizationsOverviewProps> = ({ patient: 
               <Table aria-label="immunizations overview" {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader
-                        className={classNames(styles.productiveHeading01, styles.text02)}
-                        {...getHeaderProps({
-                          header,
-                        })}
-                      >
-                        {header.header}
-                      </TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({
+                        header,
+                      });
+
+                      return (
+                        <TableHeader key={key} className={classNames(styles.productiveHeading01, styles.text02)} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>

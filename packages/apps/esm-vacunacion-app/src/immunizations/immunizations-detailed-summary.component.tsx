@@ -197,9 +197,15 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
                 <TableHead>
                   <TableRow>
                     <TableExpandHeader enableToggle {...getExpandHeaderProps()} />
-                    {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({ header });
+
+                      return (
+                        <TableHeader key={key} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -208,11 +214,17 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
 
                     return (
                       <React.Fragment key={row.id}>
-                        <TableExpandRow {...getRowProps({ row })}>
-                          {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>{cell.value}</TableCell>
-                          ))}
-                        </TableExpandRow>
+                        {(() => {
+                          const { key, ...rowProps } = getRowProps({ row });
+
+                          return (
+                            <TableExpandRow key={key} {...rowProps}>
+                              {row.cells.map((cell) => (
+                                <TableCell key={cell.id}>{cell.value}</TableCell>
+                              ))}
+                            </TableExpandRow>
+                          );
+                        })()}
                         {row.isExpanded ? (
                           <TableExpandedRow {...getExpandedRowProps({ row })} colSpan={headers.length + 2}>
                             {immunization && (

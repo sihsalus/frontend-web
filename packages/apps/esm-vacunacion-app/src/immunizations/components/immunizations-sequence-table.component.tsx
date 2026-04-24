@@ -146,15 +146,23 @@ const SequenceTable: React.FC<SequenceTableProps> = ({
             <Table aria-label="immunization dose sequence" {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {header.header}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => {
+                  const { key, ...rowProps } = getRowProps({ row });
+
                   return (
-                    <TableRow key={row.id} {...getRowProps({ row })}>
+                    <TableRow key={key} {...rowProps}>
                       {row.cells.map((cell) => (
                         <TableCell key={cell?.id} className={styles.tableCell}>
                           {cell?.value}

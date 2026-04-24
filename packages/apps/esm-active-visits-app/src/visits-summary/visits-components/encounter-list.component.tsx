@@ -76,29 +76,37 @@ const EncounterListDataTable: React.FC<EncounterListProps> = ({ encounters, visi
               <TableHead>
                 <TableRow>
                   <TableExpandHeader />
-                  {headers.map((header, i) =>
-                    i === 0 ? (
-                      <TableHeader id={`header_${visitUuid}_${i}`} ref={headerRef} {...getHeaderProps({ header })}>
+                  {headers.map((header, i) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+
+                    return i === 0 ? (
+                      <TableHeader key={key} id={`header_${visitUuid}_${i}`} ref={headerRef} {...headerProps}>
                         {header.header}
                       </TableHeader>
                     ) : (
-                      <TableHeader id={`header_${visitUuid}_${i}`} {...getHeaderProps({ header })}>
+                      <TableHeader key={key} id={`header_${visitUuid}_${i}`} {...headerProps}>
                         {header.header}
                       </TableHeader>
-                    ),
-                  )}
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row, i) => (
                   <React.Fragment key={row.id}>
-                    <TableExpandRow {...getRowProps({ row })}>
-                      {row.cells.map((cell) => (
-                        <TableCell key={cell.id} data-testid={cell.id}>
-                          {cell.value}
-                        </TableCell>
-                      ))}
-                    </TableExpandRow>
+                    {(() => {
+                      const { key, ...rowProps } = getRowProps({ row });
+
+                      return (
+                        <TableExpandRow key={key} {...rowProps}>
+                          {row.cells.map((cell) => (
+                            <TableCell key={cell.id} data-testid={cell.id}>
+                              {cell.value}
+                            </TableCell>
+                          ))}
+                        </TableExpandRow>
+                      );
+                    })()}
                     {row.isExpanded && (
                       <TableExpandedRow
                         className={styles.expandedRow}

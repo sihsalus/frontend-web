@@ -189,9 +189,15 @@ const ActiveVisitsTable = () => {
               <TableHead>
                 <TableRow>
                   <TableExpandHeader enableToggle {...getExpandHeaderProps()} />
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {header.header}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -204,22 +210,29 @@ const ActiveVisitsTable = () => {
 
                   return (
                     <React.Fragment key={`active-visit-row-${index}`}>
-                      <TableExpandRow
-                        {...getRowProps({ row })}
-                        data-testid={`activeVisitRow${currentVisit.patientUuid || 'unknown'}`}
-                      >
-                        {row.cells.map((cell) => (
-                          <TableCell key={`active-visit-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
-                            {cell.info.header === 'name' && currentVisit.patientUuid ? (
-                              <ConfigurableLink to={`${globalThis.spaBase}/patient/${currentVisit.patientUuid}/chart`}>
-                                {cell.value}
-                              </ConfigurableLink>
-                            ) : (
-                              cell.value
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableExpandRow>
+                      {(() => {
+                        const { key, ...rowProps } = getRowProps({ row });
+
+                        return (
+                          <TableExpandRow
+                            key={key}
+                            {...rowProps}
+                            data-testid={`activeVisitRow${currentVisit.patientUuid || 'unknown'}`}
+                          >
+                            {row.cells.map((cell) => (
+                              <TableCell key={`active-visit-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
+                                {cell.info.header === 'name' && currentVisit.patientUuid ? (
+                                  <ConfigurableLink to={`${globalThis.spaBase}/patient/${currentVisit.patientUuid}/chart`}>
+                                    {cell.value}
+                                  </ConfigurableLink>
+                                ) : (
+                                  cell.value
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableExpandRow>
+                        );
+                      })()}
                       {row.isExpanded ? (
                         <TableRow className={styles.expandedActiveVisitRow}>
                           <th colSpan={headers.length + 2}>
