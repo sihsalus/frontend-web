@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { useConfig, useSession } from '@openmrs/esm-framework';
 import { type MedicationDispense, MedicationDispenseStatus } from '../types';

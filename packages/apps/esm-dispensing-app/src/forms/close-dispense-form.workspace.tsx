@@ -51,12 +51,12 @@ const CloseDispenseForm: React.FC<Workspace2DefinitionProps<CloseDispenseFormPro
     if (reasonForCloseValueSet?.compose?.include) {
       const uuidValueSet = reasonForCloseValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           reasonForCloseOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
         reasonForCloseOptions.sort((a, b) => a.text.localeCompare(b.text));
       }
     }

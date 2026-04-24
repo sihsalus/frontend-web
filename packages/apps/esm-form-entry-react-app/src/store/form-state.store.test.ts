@@ -1,18 +1,30 @@
+import type { FormState } from '../types';
+
 import { setFormState, getFormState } from './form-state.store';
 
 jest.mock('@openmrs/esm-framework', () => {
-  const stores: Record<string, any> = {};
+  type TestStoreState = Record<string, FormState>;
+  type Subscriber = (state: TestStoreState) => void;
+  type TestStore = {
+    getState: () => TestStoreState;
+    setState: (partial: TestStoreState) => void;
+    subscribe: (fn: Subscriber) => () => void;
+  };
+
+  const stores: Record<string, TestStore> = {};
   return {
     createGlobalStore: jest.fn((name, initialState) => {
-      let state = { ...initialState };
-      const subscribers: Array<(state: any) => void> = [];
+      let state = { ...initialState } as TestStoreState;
+      const subscribers: Array<Subscriber> = [];
       stores[name] = {
         getState: () => state,
-        setState: (partial: any) => {
+        setState: (partial) => {
           state = { ...state, ...partial };
-          subscribers.forEach((fn) => fn(state));
+          subscribers.forEach((fn) => {
+            fn(state);
+          });
         },
-        subscribe: (fn: (state: any) => void) => {
+        subscribe: (fn) => {
           subscribers.push(fn);
           return () => {
             const idx = subscribers.indexOf(fn);

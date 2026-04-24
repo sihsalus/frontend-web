@@ -31,7 +31,7 @@ export const useLocations = () => {
   }>(`${restBaseUrl}/location`, openmrsFetch);
 
   const locations: DropdownValue[] = [];
-  data?.data.results.map((location: Response, index: number) => {
+  data?.data.results.forEach((location: Response, index: number) => {
     locations.push({
       id: index,
       label: location.display,

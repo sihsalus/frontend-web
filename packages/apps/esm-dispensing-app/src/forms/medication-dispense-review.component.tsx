@@ -90,12 +90,12 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
     if (substitutionTypeValueSet?.compose?.include) {
       const uuidValueSet = substitutionTypeValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           substitutionTypeOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
       }
       substitutionTypeOptions.sort((a, b) => a.text.localeCompare(b.text));
     }
@@ -108,12 +108,12 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
     if (substitutionReasonValueSet?.compose?.include) {
       const uuidValueSet = substitutionReasonValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           substitutionReasonOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
       }
       substitutionReasonOptions.sort((a, b) => a.text.localeCompare(b.text));
     }
@@ -356,7 +356,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
             }
             min={0}
             max={config.dispenseBehavior.restrictTotalQuantityDispensed ? quantityRemaining : undefined}
-            onChange={(event, state) => {
+            onChange={(_event, state) => {
               updateMedicationDispense({
                 quantity: {
                   ...medicationDispense.quantity,
@@ -463,7 +463,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
                 min={0}
                 label={t('dose', 'Dose')}
                 value={medicationDispense.dosageInstruction[0].doseAndRate[0].doseQuantity.value}
-                onChange={(event, state) => {
+                onChange={(_event, state) => {
                   updateMedicationDispense({
                     dosageInstruction: [
                       {

@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './close-button.scss';
 
+const homePagePath = ['${openmrsSpaBase}', '/home'].join('');
+
 export function CloseButton({ patientUuid }: { patientUuid: string }) {
   const { t } = useTranslation();
 
@@ -23,7 +25,7 @@ export function CloseButton({ patientUuid }: { patientUuid: string }) {
     if (onCloseTarget) {
       goBackInHistory({ toUrl: onCloseTarget });
     } else {
-      navigate({ to: '${openmrsSpaBase}/home' });
+      navigate({ to: homePagePath });
     }
   }, [patientUuid]);
 

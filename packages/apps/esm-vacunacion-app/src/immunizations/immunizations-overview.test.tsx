@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import { useFhirFetchAll } from '@openmrs/esm-framework';
 import { mockImmunizationData } from 'test-utils';

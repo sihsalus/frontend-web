@@ -6,11 +6,15 @@ interface OfflineToolsNavLinkProps {
   title: string;
 }
 
+void React;
+
 export default function OfflineToolsNavLink({ page, title }: OfflineToolsNavLinkProps) {
+  const openmrsSpaBasePlaceholder = ['${', 'openmrsSpaBase', '}'].join('');
+
   return (
     <div key={page}>
       <ConfigurableLink
-        to={'${openmrsSpaBase}' + '/offline-tools' + (page ? `/${page}` : '')}
+        to={`${openmrsSpaBasePlaceholder}/offline-tools${page ? `/${page}` : ''}`}
         className="cds--side-nav__link"
       >
         {title}

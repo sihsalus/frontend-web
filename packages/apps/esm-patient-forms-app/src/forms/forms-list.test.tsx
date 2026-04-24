@@ -1,11 +1,13 @@
+import React from 'react';
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { renderWithSwr } from 'test-utils';
 
 import FormsList, { type FormsListProps } from './forms-list.component';
 
-jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
+void React;
+
+jest.mock('lodash-es/debounce', () => jest.fn((fn: (...args: Array<unknown>) => unknown) => fn));
 
 const defaultProps: FormsListProps & { reset: () => void } = {
   forms: [],
@@ -37,17 +39,15 @@ it('renders a list of forms fetched from the server', async () => {
 
   const expectedColumnHeaders = [/form name \(A-Z\)/, /last completed/];
 
-  expectedColumnHeaders.forEach((header) =>
-    expect(
-      within(screen.getByRole('table')).getByRole('columnheader', { name: new RegExp(header, 'i') }),
-    ).toBeInTheDocument(),
-  );
+  expectedColumnHeaders.forEach((header) => {
+    expect(within(screen.getByRole('table')).getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument();
+  });
 
   const expectedTableRows = [/laboratory tests never/, /surgical operation never/, /test form 1 never/];
 
-  expectedTableRows.map((row) =>
-    expect(within(screen.getByRole('table')).getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument(),
-  );
+  expectedTableRows.forEach((row) => {
+    expect(within(screen.getByRole('table')).getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument();
+  });
 
   await user.clear(searchbox);
   await user.type(searchbox, 'lab');

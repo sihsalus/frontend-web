@@ -159,7 +159,7 @@ const VaccinationSchedule: React.FC<VaccinationScheduleProps> = ({ patientUuid }
               {vaccineData.date || '--'}
             </Tag>
           ) : (
-            <span aria-label={t('notApplicable', 'Not applicable')}>--</span>
+            <span title={t('notApplicable', 'Not applicable')}>--</span>
           );
         });
 

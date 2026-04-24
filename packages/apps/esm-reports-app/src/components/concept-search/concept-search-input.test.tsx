@@ -1,13 +1,15 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 import ConceptSearchInput from './concept-search-input.component';
 
+void React;
+
 // Mock the dependencies
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, defaultValue: string) => defaultValue,
+    t: (_key: string, defaultValue: string) => defaultValue,
   }),
 }));
 
@@ -27,12 +29,13 @@ jest.mock('./concept-search-results', () => {
 
     return (
       <div data-testid="concept-search-results">
-        <div
+        <button
+          type="button"
           data-testid="concept-result"
           onClick={() => onConceptSelect({ uuid: 'test-uuid', display: 'Test Concept' })}
         >
           Test Concept
-        </div>
+        </button>
       </div>
     );
   };

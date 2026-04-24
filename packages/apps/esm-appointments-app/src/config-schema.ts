@@ -1,5 +1,7 @@
 import { Type, validators } from '@openmrs/esm-framework';
 
+const patientChartUrlPlaceholder = ['${openmrsSpaBase}', '/patient/', '${patientUuid}', '/chart'].join('');
+
 export const configSchema = {
   allowAllDayAppointments: {
     _type: Type.Boolean,
@@ -50,7 +52,7 @@ export const configSchema = {
     _description: `Template URL that will be used when clicking on the patient name in the queues table.
       Available argument: patientUuid, openmrsSpaBase, openBase
       (openmrsSpaBase and openBase are available to any <ConfigurableLink>)`,
-    _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
+    _default: patientChartUrlPlaceholder,
     _validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
   },
   includePhoneNumberInExcelSpreadsheet: {

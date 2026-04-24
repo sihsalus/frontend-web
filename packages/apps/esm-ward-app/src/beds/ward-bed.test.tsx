@@ -1,6 +1,5 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import { mockAdmissionLocation, mockLocationInpatientWard, mockPatientAlice, mockPatientBrian } from 'test-utils';
 import { configSchema, type WardConfigObject } from '../config-schema';
@@ -25,7 +24,7 @@ jest.mock('../ward-patient-card/row-elements/ward-patient-obs.resource', () => (
 const mockBedLayouts = filterBeds(mockAdmissionLocation);
 
 jest.mock('../hooks/useWardLocation', () => jest.fn());
-//@ts-ignore
+//@ts-expect-error
 jest.mocked(useObs).mockReturnValue({
   data: [],
 });

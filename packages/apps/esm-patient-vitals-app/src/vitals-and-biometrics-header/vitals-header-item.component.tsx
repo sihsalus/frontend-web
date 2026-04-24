@@ -44,7 +44,7 @@ const VitalsHeaderItem: React.FC<VitalsHeaderItemProps> = ({ interpretation, val
         </div>
         <div className={styles['value-container']}>
           <div className={styles['pad-right']}>
-            <span id={valueId} aria-labelledby={`${labelId} ${unitId}`} className={styles.value}>
+            <span id={valueId} className={styles.value}>
               {displayValue}
             </span>
             <span id={unitId} className={styles.units}>

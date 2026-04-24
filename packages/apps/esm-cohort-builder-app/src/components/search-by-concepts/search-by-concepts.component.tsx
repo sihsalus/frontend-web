@@ -218,7 +218,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
                     min={0}
                     size="sm"
                     value={operatorValue}
-                    onChange={(event, { value }) => setOperatorValue(Number(value))}
+                    onChange={(_event, { value }) => setOperatorValue(Number(value))}
                   />
                 </div>
               </div>
@@ -247,7 +247,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('numberIsNotValid', 'Number is not valid')}
               min={0}
               value={lastMonths}
-              onChange={(event, { value }) => setLastMonths(Number(value))}
+              onChange={(_event, { value }) => setLastMonths(Number(value))}
             />
           </Column>
           <Column>
@@ -259,7 +259,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('numberIsNotValid', 'Number is not valid')}
               min={0}
               value={lastDays}
-              onChange={(event, { value }) => setLastDays(Number(value))}
+              onChange={(_event, { value }) => setLastDays(Number(value))}
             />
           </Column>
         </Column>

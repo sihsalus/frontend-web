@@ -111,7 +111,7 @@ const SearchByDemographics: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('minAgeIsNotValid', 'The age must be greater than 0')}
               label={t('ageBetween', 'Age between')}
               min={0}
-              onChange={(event, { value }) => setMinAge(Number(value))}
+              onChange={(_event, { value }) => setMinAge(Number(value))}
               value={minAge}
             />
           </Column>
@@ -124,7 +124,7 @@ const SearchByDemographics: React.FC<SearchByProps> = ({ onSubmit }) => {
               label={t('and', 'and')}
               max={200}
               min={0}
-              onChange={(event, { value }) => setMaxAge(Number(value))}
+              onChange={(_event, { value }) => setMaxAge(Number(value))}
               value={maxAge}
             />
           </Column>

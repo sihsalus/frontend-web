@@ -784,7 +784,7 @@ const CustomNumberInput = ({ setValue, control, name, labelText, isTablet, ...in
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value.replace(/[^\d]/g, '').slice(0, 2);
-      onChange(val ? parseInt(val) : 0);
+      onChange(val ? parseInt(val, 10) : 0);
     },
     [onChange],
   );

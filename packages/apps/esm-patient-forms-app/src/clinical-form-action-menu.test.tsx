@@ -1,9 +1,11 @@
+import React from 'react';
 import { ActionMenuButton } from '@openmrs/esm-framework';
 import { useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import ClinicalFormActionMenu from './clinical-form-action-menu.component';
+
+void React;
 
 const mockActionMenuButton = jest.mocked(ActionMenuButton);
 const mockUseLaunchWorkspaceRequiringVisit = useLaunchWorkspaceRequiringVisit as jest.Mock;

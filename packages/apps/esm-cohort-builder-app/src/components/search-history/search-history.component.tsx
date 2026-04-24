@@ -64,7 +64,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ isHistoryUpdated, setIsHi
 
   const updateSearchHistory = (selectedSearchItem: SearchHistoryItem) => {
     const updatedSearchResults = [...searchResults].filter(
-      (searchResult, index) => index != searchResults.indexOf(selectedSearchItem),
+      (_searchResult, index) => index != searchResults.indexOf(selectedSearchItem),
     );
     setSearchResults(updatedSearchResults);
     globalThis.sessionStorage.setItem('openmrsHistory', JSON.stringify(updatedSearchResults));

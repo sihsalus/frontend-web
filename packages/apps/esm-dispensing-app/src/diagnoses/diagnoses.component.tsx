@@ -21,11 +21,11 @@ type PatientDiagnosesProps = {
   encounterUuid: string;
 };
 
-const PatientDiagnoses: React.FC<PatientDiagnosesProps> = ({ encounterUuid, patientUuid }) => {
+const PatientDiagnoses: React.FC<PatientDiagnosesProps> = ({ encounterUuid, patientUuid: _patientUuid }) => {
   const { diagnoses, isLoading, error } = usePatientDiagnosis(encounterUuid);
   const [pageSize, setPageSize] = useState(3);
   const pageSizesOptions = useMemo(() => [3, 5, 10, 20, 50, 100], []);
-  const { results, totalPages, currentPage, goTo } = usePagination(diagnoses, pageSize);
+  const { results, currentPage, goTo } = usePagination(diagnoses, pageSize);
   const { t } = useTranslation();
   const title = t('diagnoses', 'Diagnoses');
   const headers = useMemo(

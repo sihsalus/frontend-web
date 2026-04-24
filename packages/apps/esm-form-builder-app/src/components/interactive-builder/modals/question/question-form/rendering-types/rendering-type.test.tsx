@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RenderingTypeComponent from './rendering-type.component';
 import { FormFieldProvider } from '../../form-field-context';
@@ -98,3 +97,6 @@ function renderRenderingTypeComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

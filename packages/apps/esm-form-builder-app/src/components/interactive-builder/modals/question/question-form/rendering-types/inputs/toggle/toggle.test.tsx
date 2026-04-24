@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Toggle from './toggle.component';
 import { FormFieldProvider } from '../../../../form-field-context';
@@ -57,3 +56,6 @@ function renderToggleComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

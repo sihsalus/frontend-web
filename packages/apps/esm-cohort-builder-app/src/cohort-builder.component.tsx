@@ -36,7 +36,7 @@ const CohortBuilder: React.FC = () => {
       setPatients([]);
       search(searchParams)
         .then(({ data: { rows } }) => {
-          rows.map((patient: Patient) => {
+          rows.forEach((patient: Patient) => {
             patient.id = patient.patientId.toString();
             patient.name = `${patient.firstname} ${patient.lastname}`;
           });

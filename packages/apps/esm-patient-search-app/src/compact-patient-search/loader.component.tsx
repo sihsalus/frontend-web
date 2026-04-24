@@ -1,5 +1,4 @@
 import { SkeletonIcon, SkeletonText } from '@carbon/react';
-import React from 'react';
 
 import styles from './compact-patient-banner.scss';
 

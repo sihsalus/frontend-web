@@ -374,5 +374,7 @@ function createObsObject(
  * Invalidate all useVitalsAndBiometrics hooks data, to force them to reload
  */
 export async function invalidateCachedVitalsAndBiometrics() {
-  vitalsHooksMutates.forEach((mutate) => mutate());
+  vitalsHooksMutates.forEach((mutate) => {
+    mutate();
+  });
 }

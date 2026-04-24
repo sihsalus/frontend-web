@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Date from './date.component';
@@ -62,3 +61,6 @@ function renderDateComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

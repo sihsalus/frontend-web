@@ -11,7 +11,7 @@ export function usePersonAttributes() {
   }>(`${restBaseUrl}/personattributetype`, openmrsFetch);
 
   const personAttributes: DropdownValue[] = [];
-  data?.data.results.map((personAttribute: Response, index: number) => {
+  data?.data.results.forEach((personAttribute: Response, index: number) => {
     personAttributes.push({
       id: index,
       label: personAttribute.display,

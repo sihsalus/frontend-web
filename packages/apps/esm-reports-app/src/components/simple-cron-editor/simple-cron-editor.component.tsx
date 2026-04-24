@@ -68,13 +68,13 @@ function getEditorState(initialCron: string): EditorState {
       scheduleType,
       date: dayjs()
         .utc()
-        .set('year', parseInt(openMRSCron.year))
-        .set('month', parseInt(openMRSCron.month) - 1)
-        .set('date', parseInt(openMRSCron.day))
+        .set('year', parseInt(openMRSCron.year, 10))
+        .set('month', parseInt(openMRSCron.month, 10) - 1)
+        .set('date', parseInt(openMRSCron.day, 10))
         .toDate(),
       selectedDayOfMonth: undefined,
       selectedDaysOfWeek: [],
-      time: { hours: parseInt(openMRSCron.hours), minutes: parseInt(openMRSCron.minutes) },
+      time: { hours: parseInt(openMRSCron.hours, 10), minutes: parseInt(openMRSCron.minutes, 10) },
       cron: null,
     };
   } else if (scheduleType === ST_EVERY_DAY) {
@@ -83,7 +83,7 @@ function getEditorState(initialCron: string): EditorState {
       date: undefined,
       selectedDayOfMonth: undefined,
       selectedDaysOfWeek: [],
-      time: { hours: parseInt(openMRSCron.hours), minutes: parseInt(openMRSCron.minutes) },
+      time: { hours: parseInt(openMRSCron.hours, 10), minutes: parseInt(openMRSCron.minutes, 10) },
       cron: null,
     };
   } else if (scheduleType === ST_EVERY_WEEK) {
@@ -93,9 +93,9 @@ function getEditorState(initialCron: string): EditorState {
       selectedDayOfMonth: undefined,
       selectedDaysOfWeek: openMRSCron.dayOfWeek
         .split(',')
-        .map((dayId) => parseInt(dayId))
+        .map((dayId) => parseInt(dayId, 10))
         .map((dayId) => DAYS_OF_WEEK[dayId]),
-      time: { hours: parseInt(openMRSCron.hours), minutes: parseInt(openMRSCron.minutes) },
+      time: { hours: parseInt(openMRSCron.hours, 10), minutes: parseInt(openMRSCron.minutes, 10) },
       cron: null,
     };
   } else if (scheduleType === ST_EVERY_MONTH) {
@@ -104,7 +104,7 @@ function getEditorState(initialCron: string): EditorState {
       date: undefined,
       selectedDayOfMonth: DAYS_OF_MONTH.find((dayOfMonth) => dayOfMonth?.value === openMRSCron.day),
       selectedDaysOfWeek: [],
-      time: { hours: parseInt(openMRSCron.hours), minutes: parseInt(openMRSCron.minutes) },
+      time: { hours: parseInt(openMRSCron.hours, 10), minutes: parseInt(openMRSCron.minutes, 10) },
       cron: null,
     };
   }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FormFieldProvider } from '../../form-field-context';
 import QuestionTypeComponent from './question-type.component';
@@ -69,3 +68,6 @@ function renderQuestionTypeComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

@@ -20,7 +20,7 @@ describe('workspace system', () => {
 
   it('registering, launching, and closing a workspace', () => {
     const store = getWorkspaceStore();
-    registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo' });
+    registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
 
     launchWorkspace('allergies', { foo: true });
 
@@ -38,7 +38,7 @@ describe('workspace system', () => {
   describe('Testing launchPatientWorkspace', () => {
     it('should launch a workspace', () => {
       const store = getWorkspaceStore();
-      registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo' });
+      registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
 
       launchWorkspace('allergies', { foo: true });
 
@@ -52,7 +52,7 @@ describe('workspace system', () => {
     it('should update additionalProps when re-opening an already opened form with same name but with different props', () => {
       const store = getWorkspaceStore();
 
-      registerWorkspace({ name: 'POC HIV Form', title: 'Clinical Form', load: vi.fn(), moduleName: '@openmrs/foo' });
+      registerWorkspace({ name: 'POC HIV Form', title: 'Clinical Form', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
       launchWorkspace('POC HIV Form', { workspaceTitle: 'POC HIV Form' });
 
       expect(store.getState().openWorkspaces.length).toEqual(1);
@@ -73,7 +73,7 @@ describe('workspace system', () => {
 
     it('should show a modal when a workspace is already open (with changes) and it cannot hide', () => {
       const store = getWorkspaceStore();
-      registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo' });
+      registerWorkspace({ name: 'allergies', title: 'Allergies', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
 
       launchWorkspace('allergies', { foo: true });
 
@@ -82,7 +82,7 @@ describe('workspace system', () => {
       const allergies = store.getState().openWorkspaces?.[0];
       allergies.promptBeforeClosing(() => true);
 
-      registerWorkspace({ name: 'conditions', title: 'Conditions', load: vi.fn(), moduleName: '@openmrs/foo' });
+      registerWorkspace({ name: 'conditions', title: 'Conditions', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
       launchWorkspace('conditions', { foo: true });
 
       const prompt = store.getState().prompt as Prompt;
@@ -111,6 +111,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'allergies-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
 
       launchWorkspace('allergies', { foo: true });
@@ -123,6 +124,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'conditions-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       launchWorkspace('conditions', { foo: true });
 
@@ -143,6 +145,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'conditions',
@@ -151,6 +154,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'conditions-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'vitals',
@@ -158,6 +162,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
 
       launchWorkspace('allergies');
@@ -201,6 +206,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'allergies-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'conditions',
@@ -209,6 +215,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'conditions-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'vitals',
@@ -216,6 +223,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'vitals-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
 
       launchWorkspace('allergies');
@@ -245,6 +253,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'attachments',
@@ -253,6 +262,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'attachments-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'conditions',
@@ -260,6 +270,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'conditions-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'vitals',
@@ -267,6 +278,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
 
       launchWorkspace('allergies');
@@ -322,6 +334,7 @@ describe('workspace system', () => {
         type: 'form',
         preferredWindowSize: 'maximized',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'attachments',
@@ -330,6 +343,7 @@ describe('workspace system', () => {
         canHide: true,
         type: 'attachments-form',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'conditions',
@@ -338,6 +352,7 @@ describe('workspace system', () => {
         type: 'conditions-form',
         preferredWindowSize: 'maximized',
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
 
       launchWorkspace('allergies');
@@ -376,6 +391,7 @@ describe('workspace system', () => {
       load: vi.fn(),
       canHide: true,
       moduleName: '@openmrs/foo',
+      component: 'test',
     });
     registerWorkspace({
       name: 'form-entry',
@@ -383,6 +399,7 @@ describe('workspace system', () => {
       load: vi.fn(),
       canHide: true,
       moduleName: '@openmrs/foo',
+      component: 'test',
     });
     registerWorkspace({
       name: 'order-meds',
@@ -391,6 +408,7 @@ describe('workspace system', () => {
       canHide: true,
       type: 'order',
       moduleName: '@openmrs/foo',
+      component: 'test',
     });
 
     // Test opening the same workspace twice--should be a no-op
@@ -464,8 +482,8 @@ describe('workspace system', () => {
 
   it('respects promptBeforeClosing function', () => {
     const store = getWorkspaceStore();
-    registerWorkspace({ name: 'hiv', title: 'HIV', load: vi.fn(), moduleName: '@openmrs/foo' });
-    registerWorkspace({ name: 'diabetes', title: 'Diabetes', load: vi.fn(), moduleName: '@openmrs/foo' });
+    registerWorkspace({ name: 'hiv', title: 'HIV', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
+    registerWorkspace({ name: 'diabetes', title: 'Diabetes', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
 
     launchWorkspace('hiv');
 
@@ -518,7 +536,7 @@ describe('workspace system', () => {
 
   it('respects promptBeforeClosing function before closing workspace, with unsaved changes', () => {
     const store = getWorkspaceStore();
-    registerWorkspace({ name: 'hiv', title: 'HIV', load: vi.fn(), moduleName: '@openmrs/foo' });
+    registerWorkspace({ name: 'hiv', title: 'HIV', load: vi.fn(), moduleName: '@openmrs/foo', component: 'test' });
 
     launchWorkspace('hiv');
 
@@ -582,6 +600,7 @@ describe('workspace system', () => {
         title: 'Allergies',
         load: vi.fn(),
         moduleName: '@openmrs/foo',
+        component: 'test',
       });
       registerWorkspace({
         name: 'ward-patient-workspace',
@@ -589,6 +608,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
 
       registerWorkspaceGroup({
@@ -623,6 +643,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
       registerWorkspaceGroup({
         name: 'ward-patient-store',
@@ -653,6 +674,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
       registerWorkspace({
         name: 'transfer-patient-workspace',
@@ -660,6 +682,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'transfer-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
       registerWorkspaceGroup({
         name: workspaceGroup,
@@ -697,6 +720,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
       registerWorkspace({
         name: 'transfer-patient-workspace',
@@ -704,6 +728,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'transfer-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
 
       registerWorkspaceGroup({
@@ -752,6 +777,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
         canHide: true,
       });
       registerWorkspace({
@@ -760,6 +786,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'transfer-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
 
       registerWorkspaceGroup({
@@ -795,6 +822,7 @@ describe('workspace system', () => {
         load: vi.fn(),
         type: 'ward-patient',
         moduleName: '@openmrs/esm-ward-app',
+        component: 'test',
       });
       registerWorkspaceGroup({
         name: 'ward-patient-store',

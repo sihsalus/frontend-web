@@ -117,9 +117,9 @@ describe('ActiveMedications', () => {
       /14-Aug-2023 Admin User Aspirin 162.5mg — 162.5mg — tablet DOSE 1 tablet — oral — once daily — for 30 days INDICATION Heart — QUANTITY 30 Tablet/,
     ];
 
-    expectedTableRows.forEach((row) =>
-      expect(within(table).getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument(),
-    );
+    expectedTableRows.forEach((row) => {
+      expect(within(table).getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument();
+    });
   });
 });
 

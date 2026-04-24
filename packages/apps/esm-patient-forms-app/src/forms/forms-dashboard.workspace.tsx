@@ -13,6 +13,8 @@ import { type Form } from '../types';
 import styles from './forms-dashboard-workspace.scss';
 import FormsDashboard from './forms-dashboard.component';
 
+void React;
+
 type Workspace2FormsWorkspaceProps = PatientWorkspace2DefinitionProps<object, object>;
 type LegacyFormsWorkspaceProps = DefaultPatientWorkspaceProps;
 type FormsWorkspaceProps = Workspace2FormsWorkspaceProps | LegacyFormsWorkspaceProps;

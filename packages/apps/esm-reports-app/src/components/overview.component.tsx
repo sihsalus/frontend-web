@@ -258,7 +258,9 @@ const OverviewComponent: React.FC = () => {
       try {
         const response = await downloadMultipleReports(reportRequestUuids);
         if (Array.isArray(response)) {
-          response.forEach((file) => processAndDownloadFile(file));
+          response.forEach((file) => {
+            processAndDownloadFile(file);
+          });
         }
         clearReportCheckboxes();
         showSnackbar({

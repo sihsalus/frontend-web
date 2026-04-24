@@ -59,7 +59,18 @@ const NewRowStartCell: React.FC<NewRowStartCellProps> = ({
     >
       <span className={styles['trendline-link']}>
         {!isString ? (
-          <span className={styles['trendline-link-view']} onClick={handleLaunchResultsModal}>
+          <span
+            className={styles['trendline-link-view']}
+            onClick={handleLaunchResultsModal}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleLaunchResultsModal();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
             {title}
           </span>
         ) : (

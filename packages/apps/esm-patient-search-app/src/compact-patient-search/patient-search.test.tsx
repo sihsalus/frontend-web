@@ -1,7 +1,6 @@
 import { getDefaultsFromConfigSchema, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import dayjs from 'dayjs';
-import React from 'react';
 
 import { configSchema } from '../config-schema';
 import { PatientSearchContext } from '../patient-search-context';

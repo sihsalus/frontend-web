@@ -62,8 +62,8 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
   });
 
   const handleSorting = (
-    cellA,
-    cellB,
+    _cellA,
+    _cellB,
     { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
   ) => {
     if (sortDirection === 'NONE') {

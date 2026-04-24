@@ -262,8 +262,6 @@ function FormsList({ forms, isValidating, mutate, t }: FormsListProps) {
     },
   ];
 
-  const editSchemaUrl = '${openmrsSpaBase}/form-builder/edit/${formUuid}';
-
   const searchResults = useMemo(() => {
     if (searchString && searchString.trim() !== '') {
       return filteredRows.filter((form) => form.name.toLowerCase().includes(searchString.toLowerCase()));
@@ -280,8 +278,7 @@ function FormsList({ forms, isValidating, mutate, t }: FormsListProps) {
     name: (
       <ConfigurableLink
         className={styles.link}
-        to={editSchemaUrl}
-        templateParams={{ formUuid: form?.uuid }}
+        to={`${globalThis.spaBase}/form-builder/edit/${form?.uuid}`}
         onMouseEnter={() => void preload(`${restBaseUrl}/form/${form?.uuid}?v=full`, openmrsFetch)}
       >
         {form.name}

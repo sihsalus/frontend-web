@@ -21,6 +21,7 @@ const mockUpdatePatientAllergy = jest.mocked(updatePatientAllergy);
 const mockUseAllergens = jest.mocked(useAllergens);
 const mockUseAllergicReactions = jest.mocked(useAllergicReactions);
 const mockUseConfig = jest.mocked(useConfig<AllergiesConfigObject>);
+void React;
 
 jest.mock('./allergy-form.resource', () => ({
   ...jest.requireActual('./allergy-form.resource'),
@@ -227,7 +228,7 @@ function renderAllergyForm(workspaceProps: Partial<AllergyFormWorkspaceProps> = 
     },
   };
 
-  render(<AllergyForm {...props} />);
+  render(React.createElement(AllergyForm, props));
 }
 
 function buildExpectedPayload(allergen, reaction, severity, comment) {

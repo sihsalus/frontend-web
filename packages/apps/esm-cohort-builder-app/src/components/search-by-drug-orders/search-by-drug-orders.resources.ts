@@ -13,7 +13,7 @@ export function useDrugs() {
 
   const results = useMemo(() => {
     const drugs: DropdownValue[] = [];
-    data?.data.results.map((drug: Response, index: number) => {
+    data?.data.results.forEach((drug: Response, index: number) => {
       drugs.push({
         id: index,
         label: drug.display,
@@ -40,7 +40,7 @@ export function useCareSettings() {
 
   const results = useMemo(() => {
     const careSettings: DropdownValue[] = [];
-    data?.data.results.map((careSetting: Response, index: number) => {
+    data?.data.results.forEach((careSetting: Response, index: number) => {
       careSettings.push({
         id: index,
         label: careSetting.display,

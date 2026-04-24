@@ -1,7 +1,6 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen, render } from '@testing-library/react';
 import { mockConceptUnits } from 'test-utils';
-import React from 'react';
 
 import { assessValue, getReferenceRangesForConcept } from '../common';
 import { configSchema, type ConfigObject } from '../config-schema';

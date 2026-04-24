@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UiSelectExtended from './ui-select-extended.component';
@@ -56,3 +55,6 @@ function renderUiSelectExtendedComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

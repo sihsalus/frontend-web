@@ -93,7 +93,14 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
             <li
               key={index}
               onClick={() => handleClick(index)}
-              role="presentation"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleClick(index);
+                }
+              }}
+              role="button"
+              tabIndex={0}
               className={typeof renderSuggestionItem !== 'function' ? styles.displayText : undefined}
             >
               {typeof renderSuggestionItem === 'function'

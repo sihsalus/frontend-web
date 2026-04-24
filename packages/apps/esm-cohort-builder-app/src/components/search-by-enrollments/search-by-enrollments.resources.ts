@@ -15,7 +15,7 @@ export function usePrograms() {
   }>(`${restBaseUrl}/program`, openmrsFetch);
 
   const programs: DropdownValue[] = [];
-  data?.data.results.map((program: ProgramsResponse, index: number) => {
+  data?.data.results.forEach((program: ProgramsResponse, index: number) => {
     programs.push({
       id: index,
       label: program.name,

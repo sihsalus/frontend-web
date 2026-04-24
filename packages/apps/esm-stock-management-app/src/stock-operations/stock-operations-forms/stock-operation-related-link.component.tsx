@@ -36,9 +36,20 @@ const StockOperationRelatedLink: React.FC<StockOperationRelatedLinkProps> = ({
 
   if (isLoading || error || stockOperationError || isStockOperationLoading) return null;
   return (
-    <span onClick={handleEdit} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+    <button
+      onClick={handleEdit}
+      style={{
+        cursor: 'pointer',
+        textDecoration: 'underline',
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        color: 'inherit',
+      }}
+      type="button"
+    >
       {operationNumber}
-    </span>
+    </button>
   );
 };
 

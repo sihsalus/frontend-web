@@ -250,7 +250,7 @@ const AddFormReferenceModal: React.FC<AddFormReferenceModalProps> = ({
                       id={`${selectedSection.label}-${question.id}`}
                       value={question.id}
                       checked={!excludedQuestions.includes(question.id)}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>, { checked }) =>
+                      onChange={(_e: React.ChangeEvent<HTMLInputElement>, { checked }) =>
                         handleExcludedQuestions(question, checked)
                       }
                     />

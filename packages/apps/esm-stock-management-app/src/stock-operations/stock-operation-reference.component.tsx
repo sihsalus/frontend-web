@@ -55,9 +55,13 @@ const StockOperationReference = ({ operationNumber, operationUuid }: StockOperat
   }
 
   return (
-    <a onClick={handleEdit} style={{ cursor: 'pointer' }}>
+    <button
+      onClick={handleEdit}
+      style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0, color: 'inherit' }}
+      type="button"
+    >
       {operationNumber}
-    </a>
+    </button>
   );
 };
 

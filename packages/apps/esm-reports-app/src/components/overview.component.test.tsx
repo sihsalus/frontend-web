@@ -1,10 +1,12 @@
+import React from 'react';
 import { useConfig, useSession } from '@openmrs/esm-framework';
 import { screen, waitFor } from '@testing-library/react';
 import { mockSession, renderWithSwr } from 'test-utils';
-import React from 'react';
 
 import OverviewComponent from './overview.component';
 import { useReports } from './reports.resource';
+
+void React;
 
 const mockReports = [
   {

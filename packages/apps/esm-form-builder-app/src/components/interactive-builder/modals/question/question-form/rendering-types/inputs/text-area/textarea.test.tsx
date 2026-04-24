@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TextArea from './textarea.component';
@@ -58,3 +57,6 @@ function renderTextComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

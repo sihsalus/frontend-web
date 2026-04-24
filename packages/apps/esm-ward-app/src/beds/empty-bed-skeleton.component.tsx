@@ -1,5 +1,4 @@
 import { SkeletonIcon } from '@carbon/react';
-import React from 'react';
 
 import WardPatientSkeletonText from '../ward-patient-card/row-elements/ward-patient-skeleton-text.component';
 

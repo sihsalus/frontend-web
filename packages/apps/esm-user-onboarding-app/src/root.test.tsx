@@ -5,6 +5,7 @@ import { useDefineAppContext } from '@openmrs/esm-framework';
 import RootComponent from './root.component';
 
 const mockUseDefineAppContext = jest.mocked(useDefineAppContext);
+void React;
 
 let joyrideCallback: (data: any) => void;
 

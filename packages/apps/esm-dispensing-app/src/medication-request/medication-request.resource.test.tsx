@@ -20,7 +20,7 @@ jest.mock('react', () => ({
 
 describe('Medication Request Resource Test', () => {
   test('usePrescriptionsTable should call active endpoint and proper date based on expiration period if status parameter is active', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: 'mockedReturnData' } }));
     usePrescriptionsTable(true, '', 'ACTIVE', 5, 5, 'bob', null, 10, 10000);
     expect(useSWR).toHaveBeenCalledWith(
@@ -34,7 +34,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('usePrescriptionsTable should call all endpoint if status parameter is not active', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: 'mockedReturnData' } }));
     usePrescriptionsTable(true, '', '', 5, 5, 'bob', null, 10, 10000);
     expect(useSWR).toHaveBeenCalledWith(
@@ -45,7 +45,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('usePrescriptionsTable should include location uuids', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: 'mockedReturnData' } }));
     usePrescriptionsTable(
       true,
@@ -614,7 +614,7 @@ describe('Medication Request Resource Test', () => {
       ],
     };
 
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: queryResultsBundle } }));
     const { prescriptionsTableRows, totalOrders } = usePrescriptionsTable(
       true,
@@ -650,7 +650,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('usePrescriptionsDetails should call endpoint with encounter uuid', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: [] } }));
     usePrescriptionDetails('123abc', 10000);
     expect(useSWR).toHaveBeenCalledWith(
@@ -1044,7 +1044,7 @@ describe('Medication Request Resource Test', () => {
         },
       ],
     };
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: queryRequestBundle } }));
     const { medicationRequestBundles, prescriptionDate } = usePrescriptionDetails(
       '1aafa3c6-83c2-4485-baaa-f700056e43c9',
@@ -1059,7 +1059,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('usePatientAllergies should call endpoint with patient uuid', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: [] } }));
     usePatientAllergies('123abc', 10000);
     expect(useSWR).toHaveBeenCalledWith('/ws/fhir2/R4/AllergyIntolerance?patient=123abc', openmrsFetch, {
@@ -1277,7 +1277,7 @@ describe('Medication Request Resource Test', () => {
       ],
     };
 
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: queryRequestBundle } }));
     const { totalAllergies } = usePatientAllergies('558494fe-5850-4b34-a3bf-06550334ba4a', 10000);
     expect(totalAllergies).toBe(2);
@@ -1285,7 +1285,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('useMedicationRequest should prepend MedicationRequest and call endpoint if uuid passed in', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: [] } }));
     useMedicationRequest('123abc', 10000);
     expect(useSWR).toHaveBeenCalledWith('/ws/fhir2/R4/MedicationRequest/123abc', openmrsFetch, {
@@ -1294,7 +1294,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('useMedicationRequest should prepend MedicationRequest and call endpoint if uuid passed in', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: [] } }));
     useMedicationRequest('123abc', 10000);
     expect(useSWR).toHaveBeenCalledWith('/ws/fhir2/R4/MedicationRequest/123abc', openmrsFetch, {
@@ -1303,7 +1303,7 @@ describe('Medication Request Resource Test', () => {
   });
 
   test('useMedicationRequest should not prepend MedicationRequest and call endpoint if full reference passed in', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: [] } }));
     useMedicationRequest('MedicationRequest/123abc', 10000);
     expect(useSWR).toHaveBeenCalledWith('/ws/fhir2/R4/MedicationRequest/123abc', openmrsFetch, {

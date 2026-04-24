@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, InlineLoading } from '@carbon/react';
 import { useParams } from 'react-router-dom';
 import { showModal, showSnackbar, useConfig } from '@openmrs/esm-framework';

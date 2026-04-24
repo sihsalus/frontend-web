@@ -12,7 +12,9 @@ const RootComponent: React.FC = () => {
   const intervalIds = useRef<Set<ReturnType<typeof setInterval>>>(new Set());
 
   const clearAllIntervals = useCallback(() => {
-    intervalIds.current.forEach((id) => clearInterval(id));
+    intervalIds.current.forEach((id) => {
+      clearInterval(id);
+    });
     intervalIds.current.clear();
   }, []);
 
@@ -105,6 +107,8 @@ const RootComponent: React.FC = () => {
   return (
     <AppErrorBoundary appName="esm-user-onboarding-app">
       <div
+        role="button"
+        tabIndex={-1}
         onMouseDown={(e) => {
           e.stopPropagation();
         }}

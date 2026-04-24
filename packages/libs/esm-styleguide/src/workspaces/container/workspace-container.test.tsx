@@ -41,6 +41,7 @@ describe('WorkspaceContainer in window mode', () => {
       title: 'clinicalForm',
       load: vi.fn(),
       moduleName: '@openmrs/foo',
+      component: 'test',
       canHide: true,
       canMaximize: true,
     });
@@ -50,6 +51,7 @@ describe('WorkspaceContainer in window mode', () => {
       title: 'orderBasket',
       load: vi.fn(),
       moduleName: '@openmrs/bar',
+      component: 'test',
       canHide: true,
       canMaximize: true,
     });
@@ -222,6 +224,7 @@ describe('WorkspaceContainer in overlay mode', () => {
       title: 'Patient Search',
       load: vi.fn(),
       moduleName: '@openmrs/foo',
+      component: 'test',
     });
   });
 

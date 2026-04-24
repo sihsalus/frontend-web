@@ -129,7 +129,7 @@ describe('Testing address search bar', () => {
       expect(optionElement).toBeInTheDocument();
       await user.click(optionElement);
       const values = address.split(separator);
-      allFields.map(({ name }, index) => {
+      allFields.forEach(({ name }, index) => {
         expect(setFieldValue).toHaveBeenCalledWith(`address.${name}`, values?.[index]);
       });
     });

@@ -51,12 +51,12 @@ const PauseDispenseForm: React.FC<Workspace2DefinitionProps<PauseDispenseFormPro
     if (reasonForPauseValueSet?.compose?.include) {
       const uuidValueSet = reasonForPauseValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           reasonForPauseOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
         reasonForPauseOptions.sort((a, b) => a.text.localeCompare(b.text));
       }
     }

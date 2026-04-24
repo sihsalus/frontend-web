@@ -42,7 +42,7 @@ const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({ address
   const handleChange = (address) => {
     if (address) {
       const values = address.split(separator);
-      addressLayout.map(({ name }, index) => {
+      addressLayout.forEach(({ name }, index) => {
         setFieldValue(`address.${name}`, values?.[index] ?? '');
       });
       setSearchString('');

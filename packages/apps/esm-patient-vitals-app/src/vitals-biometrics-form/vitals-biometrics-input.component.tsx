@@ -197,6 +197,8 @@ const VitalsAndBiometricsInput: React.FC<VitalsAndBiometricsInputProps> = ({
                   </ResponsiveWrapper>
                 );
               }
+
+              return null;
             })}
           </div>
           {Boolean(unitSymbol) && <p className={styles.unitName}>{unitSymbol}</p>}

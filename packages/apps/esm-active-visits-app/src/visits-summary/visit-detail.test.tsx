@@ -5,6 +5,8 @@ import React from 'react';
 import VisitDetailComponent from './visit-detail.component';
 import { useVisit } from './visit.resource';
 
+void React;
+
 const mockUseVisit = jest.mocked(useVisit);
 const defaultProps = {
   patientUuid: '691eed12-c0f1-11e2-94be-8c13b969e334',

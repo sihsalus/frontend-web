@@ -29,7 +29,7 @@ const FillPrescriptionButton: React.FC<{}> = () => {
         onPatientSelected(
           patientUuid: string,
           patient: fhir.Patient,
-          launchChildWorkspace: Workspace2DefinitionProps['launchChildWorkspace'],
+          _launchChildWorkspace: Workspace2DefinitionProps['launchChildWorkspace'],
           closeWorkspace: Workspace2DefinitionProps['closeWorkspace'],
         ) {
           getActiveVisitsForPatient(patientUuid).then(async (response) => {

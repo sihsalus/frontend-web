@@ -52,7 +52,7 @@ const pharmacyConfig: PharmacyConfig = {
 
 describe('Location Resource tests', () => {
   test('useLoginLocations should call proper endpoint via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: 'mockedLoginLocations' },
     }));
@@ -64,7 +64,7 @@ describe('Location Resource tests', () => {
     );
   });
   test('useLoginLocations should parse into Login Locations Array', () => {
-    // @ts-ignore
+    // @ts-expect-error
     const queryResultsBundle = {
       results: [
         {
@@ -94,7 +94,7 @@ describe('Location Resource tests', () => {
       ],
     };
 
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: queryResultsBundle } }));
     const { result } = renderHook(() => useLocations(pharmacyConfig));
     const { locations } = result.current;

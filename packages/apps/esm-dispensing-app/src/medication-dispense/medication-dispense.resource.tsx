@@ -97,7 +97,7 @@ export function useValueSet(uuid: string) {
 export function initiateMedicationDispenseBody(
   medicationRequest: MedicationRequest,
   session: Session,
-  providers: Provider[],
+  _providers: Provider[],
   populateDispenseInformation: boolean,
 ): MedicationDispense {
   let medicationDispense: MedicationDispense = {

@@ -107,7 +107,9 @@ const CameraMediaUploadTabs: React.FC<CameraMediaUploadTabsProps> = ({ title }) 
   const [view, setView] = useState('upload');
 
   const stopCameraStream = useCallback(() => {
-    mediaStream.current?.getTracks().forEach((t) => t.stop());
+    mediaStream.current?.getTracks().forEach((t) => {
+      t.stop();
+    });
   }, [mediaStream]);
 
   useEffect(() => {

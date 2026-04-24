@@ -101,6 +101,14 @@ const IndividualResultsTable: React.FC<IndividualResultsTableProps> = ({ isLoadi
                 <span
                   className={styles['trendline-link-view']}
                   onClick={() => launchResultsDialog(row.display, row.conceptUuid)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      launchResultsDialog(row.display, row.conceptUuid);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   {row.display}
                 </span>

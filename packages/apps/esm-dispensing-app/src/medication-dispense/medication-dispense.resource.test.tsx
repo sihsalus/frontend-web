@@ -93,14 +93,14 @@ describe('Medication Dispense Resource tests', () => {
   });
 
   test('useOrderConfig should fetch order config via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: 'mockedOrderConfig' } }));
     const orderConfig = useOrderConfig();
     expect(orderConfig.orderConfigObject).toBe('mockedOrderConfig');
   });
 
   test('useSubstitutionTypeValueSet should call fetch substitution type value set via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: 'mockedSubstitutionTypeValueSet' },
     }));
@@ -110,7 +110,7 @@ describe('Medication Dispense Resource tests', () => {
   });
 
   test('useSubstitutionReasonValueSet should call fetch substitution reason value set via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: 'mockedSubstitutionReasonValueSet' },
     }));

@@ -36,7 +36,7 @@ const PrescriptionPrintPreviewModal: React.FC<PrescriptionPrintPreviewModalProps
     onBeforeGetContent: () => {
       setPrintError(null);
     },
-    onPrintError: (error) => {
+    onPrintError: (_error) => {
       setPrintError(t('printError', 'An error occurred while printing. Please try again.'));
     },
     copyStyles: true,

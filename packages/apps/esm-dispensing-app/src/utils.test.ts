@@ -1394,7 +1394,7 @@ describe('Util Tests', () => {
       whenHandedOver: '',
       whenPrepared: '',
     };
-    const medicationRequestDifferentUnits: MedicationRequest = {
+    const _medicationRequestDifferentUnits: MedicationRequest = {
       id: '1c1ad91e-8653-453a-9f59-8d5c36249aff',
       dispenseRequest: {
         numberOfRepeatsAllowed: undefined,
@@ -1522,7 +1522,7 @@ describe('Util Tests', () => {
       whenPrepared: '',
     };
 
-    const medicationDispenseDifferentUnits: MedicationDispense = {
+    const _medicationDispenseDifferentUnits: MedicationDispense = {
       dosageInstruction: undefined,
       id: '',
       location: { display: '', reference: '', type: '' },
@@ -2527,9 +2527,37 @@ describe('Util Tests', () => {
       );
     });
     test('should return custom endpoint properly populated', () => {
+      const templateOpen = '${';
+      const templateClose = '}';
+      const customEndpoint = [
+        templateOpen,
+        'fhirBaseUrl',
+        templateClose,
+        '/Encounter?_query=someCustomEndpoint&_getpagesoffset=',
+        templateOpen,
+        'pageOffset',
+        templateClose,
+        '&_count=',
+        templateOpen,
+        'pageSize',
+        templateClose,
+        '&date=ge',
+        templateOpen,
+        'date',
+        templateClose,
+        '&status=ACTIVE&patientSearchTerm=',
+        templateOpen,
+        'patientSearchTerm',
+        templateClose,
+        '&location=',
+        templateOpen,
+        'location',
+        templateClose,
+      ].join('');
+
       expect(
         getPrescriptionTableEndpoint(
-          '${fhirBaseUrl}/Encounter?_query=someCustomEndpoint&_getpagesoffset=${pageOffset}&_count=${pageSize}&date=ge${date}&status=ACTIVE&patientSearchTerm=${patientSearchTerm}&location=${location}',
+          customEndpoint,
           'ACTIVE',
           1,
           10,

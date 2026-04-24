@@ -828,6 +828,8 @@ function DiagnosesDisplay({
               </li>
             );
           }
+
+          return null;
         })}
       </ul>
     );

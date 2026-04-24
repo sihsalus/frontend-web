@@ -1,4 +1,3 @@
-import React from 'react';
 import { openmrsFetch } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import type { DefinitionDataRow } from '../../types';

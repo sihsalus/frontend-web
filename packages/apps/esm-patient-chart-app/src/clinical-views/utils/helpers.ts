@@ -126,7 +126,7 @@ export function getConceptFromMappings(encounter: Encounter, concepts: Array<str
 
 export function getMultipleObsFromEncounter(encounter: Encounter, obsConcepts: Array<string>, config: ConfigConcepts) {
   const observations = [];
-  obsConcepts.map((concept) => {
+  obsConcepts.forEach((concept) => {
     const obs = getObsFromEncounter({ encounter: encounter, obsConcept: concept, config: config });
     if (obs !== '--') {
       observations.push(obs);

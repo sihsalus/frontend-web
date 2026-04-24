@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TestOrderTypeQuestion from './test-order-type-question.component';
@@ -192,3 +191,6 @@ function renderTestOrderComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

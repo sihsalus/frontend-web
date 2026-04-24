@@ -1,14 +1,16 @@
 import { getDefaultsFromConfigSchema, type OpenmrsResource, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockSession } from 'test-utils';
 import React from 'react';
+import { mockSession } from 'test-utils';
 
 import { type ActiveVisitsConfigSchema, configSchema } from '../config-schema';
 import { type ActiveVisit, type Observation } from '../types';
 
 import ActiveVisitsTable from './active-visits.component';
 import { useActiveVisits, useObsConcepts } from './active-visits.resource';
+
+void React;
 
 const mockUseActiveVisits = jest.mocked(useActiveVisits);
 const mockUseObsConcepts = jest.mocked(useObsConcepts);

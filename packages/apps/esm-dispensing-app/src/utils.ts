@@ -491,29 +491,30 @@ export function getPrescriptionTableEndpoint(
   patientSearchTerm: string,
   location: string,
 ): string {
-  // use custom endpoint if provided, otherwise only include the "date" parameter when requesting "active" results
+  if (customPrescriptionsTableEndpoint) {
+    return template(customPrescriptionsTableEndpoint)({
+      fhirBaseUrl,
+      PRESCRIPTIONS_TABLE_ENDPOINT,
+      status,
+      pageOffset,
+      pageSize,
+      date,
+      patientSearchTerm,
+      location,
+    });
+  }
 
-  const compiledUrl = template(
-    customPrescriptionsTableEndpoint
-      ? customPrescriptionsTableEndpoint
-      : status === 'ACTIVE'
-        ? '${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}&_getpagesoffset=${pageOffset}&_count=${pageSize}&date=ge${date}&status=${status}' +
-          (patientSearchTerm ? '&patientSearchTerm=${patientSearchTerm}' : '') +
-          (location ? '&location=${location}' : '')
-        : '${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}&_getpagesoffset=${pageOffset}&_count=${pageSize}&status=${status}' +
-          (patientSearchTerm ? '&patientSearchTerm=${patientSearchTerm}' : '') +
-          (location ? '&location=${location}' : ''),
-  );
-  return compiledUrl({
-    fhirBaseUrl,
-    PRESCRIPTIONS_TABLE_ENDPOINT,
-    status,
-    pageOffset,
-    pageSize,
-    date,
-    patientSearchTerm,
-    location,
-  });
+  const baseEndpoint =
+    `${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}` +
+    `&_getpagesoffset=${pageOffset}` +
+    `&_count=${pageSize}` +
+    `&status=${status}`;
+
+  const activeDateFilter = status === 'ACTIVE' ? `&date=ge${date}` : '';
+  const patientFilter = patientSearchTerm ? `&patientSearchTerm=${patientSearchTerm}` : '';
+  const locationFilter = location ? `&location=${location}` : '';
+
+  return `${baseEndpoint}${activeDateFilter}${patientFilter}${locationFilter}`;
 }
 
 export function getQuantity(resource: MedicationRequest | MedicationDispense): Quantity {

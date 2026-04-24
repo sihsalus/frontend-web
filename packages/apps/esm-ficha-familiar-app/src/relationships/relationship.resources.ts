@@ -189,7 +189,7 @@ export const saveRelationship = async (
     );
     results.forEach((res) => {
       if (res.status === 'rejected') {
-        return showSnackbar({ title: 'Failure', kind: 'error', subtitle: 'Error creating patient attribute' });
+        showSnackbar({ title: 'Failure', kind: 'error', subtitle: 'Error creating patient attribute' });
       }
     });
   }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Number from './number.component';
@@ -84,3 +83,6 @@ function renderNumberComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

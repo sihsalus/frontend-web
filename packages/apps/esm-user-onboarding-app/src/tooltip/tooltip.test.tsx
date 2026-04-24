@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { type ExtendedStep } from '../types';
 import CustomTooltip from './tooltip.component';
 
+void React;
+
 const defaultStep: ExtendedStep = {
   target: 'body',
   content: 'Test content',

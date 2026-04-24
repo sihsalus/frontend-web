@@ -5,6 +5,8 @@ import { type Observation } from '../../types';
 
 import EncounterObservations from './encounter-observations.component';
 
+void React;
+
 describe('EncounterObservations', () => {
   test('renders skeleton text while loading', () => {
     render(<EncounterObservations observations={null} />);

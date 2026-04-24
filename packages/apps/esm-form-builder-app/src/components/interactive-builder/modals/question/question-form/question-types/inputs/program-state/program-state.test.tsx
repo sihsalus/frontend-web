@@ -1,4 +1,3 @@
-import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import ProgramStateTypeQuestion from './program-state-type-question.component';
@@ -195,3 +194,6 @@ function renderComponent() {
     </FormFieldProvider>,
   );
 }
+import React from 'react';
+
+void React;

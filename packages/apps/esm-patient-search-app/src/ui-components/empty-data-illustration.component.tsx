@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const EmptyDataIllustration = ({ width = '72', height = '72' }) => {
   return (
     <svg width={width} height={height} viewBox="0 0 74 72">

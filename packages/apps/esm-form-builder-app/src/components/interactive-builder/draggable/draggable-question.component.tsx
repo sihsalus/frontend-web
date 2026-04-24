@@ -99,6 +99,16 @@ const DraggableQuestion: React.FC<DraggableQuestionProps> = ({
     }
   }, [handleDuplicateQuestion, isDragging, question, pageIndex, sectionIndex, questionIndex, subQuestionIndex]);
 
+  const handleContainerKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCollapse();
+      }
+    },
+    [toggleCollapse],
+  );
+
   return (
     <div
       ref={setNodeRef}
@@ -114,6 +124,9 @@ const DraggableQuestion: React.FC<DraggableQuestionProps> = ({
           [styles.obsGroup]: question?.questions && question?.questions.length > 0,
         })}
         onClick={toggleCollapse}
+        onKeyDown={handleContainerKeyDown}
+        role="button"
+        tabIndex={0}
       >
         <div className={styles.iconAndName}>
           <div ref={setNodeRef} {...attributes} {...listeners}>

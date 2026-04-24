@@ -1,5 +1,5 @@
 import { usePatient } from '@openmrs/esm-framework';
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { evaluateExpression } from '../utils/expression-helper';
 
@@ -21,7 +21,6 @@ const DashboardGroup = memo(
     const {
       patientEnrollments,
       isLoading: isLoadingActiveEnrollment,
-      isValidating,
     } = usePatientEnrollment(patient?.id);
 
     const showGroup = useMemo(

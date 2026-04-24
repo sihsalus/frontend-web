@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import classNames from 'classnames';
 import { BrowserRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';

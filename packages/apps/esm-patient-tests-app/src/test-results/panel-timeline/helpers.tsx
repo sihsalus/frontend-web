@@ -146,6 +146,14 @@ export const RowStartCell = ({ title, range, units, shadow = false, testUuid, is
           <span
             className={styles['trendline-link-view']}
             onClick={() => launchResultsDialog(patientUuid, title, testUuid)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                launchResultsDialog(patientUuid, title, testUuid);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             {title}
           </span>

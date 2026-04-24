@@ -136,7 +136,9 @@ export async function clearEntries(dbName: string, ids: string[]): Promise<void>
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
-    ids.forEach((id) => store.delete(id));
+    ids.forEach((id) => {
+      store.delete(id);
+    });
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error ?? new Error('Failed to clear entries from IndexedDB'));
   });

@@ -4,7 +4,7 @@ export const configSchema = {
   search: {
     patientChartUrl: {
       _type: Type.String,
-      _default: '${openmrsSpaBase}/patient/${patientUuid}/chart/',
+      _default: ['${', 'openmrsSpaBase', '}', '/patient/', '${', 'patientUuid', '}', '/chart/'].join(''),
       _description:
         'The URL template to navigate to when a patient is selected from the search results. `openmrsSpaBase` is the base URL for the SPA, and patientUuid is the UUID of the patient.',
       _validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],

@@ -1,3 +1,4 @@
+import React from 'react';
 import { getDefaultsFromConfigSchema, showModal, useConfig } from '@openmrs/esm-framework';
 import {
   launchPatientWorkspace,
@@ -7,13 +8,15 @@ import {
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockCurrentVisit, mockForms } from 'test-utils';
-import React from 'react';
 import { mockPatient } from 'test-utils';
 
 import { configSchema, type ConfigObject } from '../config-schema';
 
 import FormView from './form-view.component';
 
+void React;
+
+const mockFhirPatient = mockPatient as unknown as fhir.Patient;
 const mockLaunchPatientWorkspace = launchPatientWorkspace as jest.Mock;
 const mockLaunchStartVisitPrompt = launchStartVisitPrompt as jest.Mock;
 const mockShowModal = jest.mocked(showModal);
@@ -52,7 +55,7 @@ describe('FormView', () => {
         forms={mockForms}
         pageSize={5}
         pageUrl={'/some-url'}
-        patient={mockPatient}
+        patient={mockFhirPatient}
         urlLabel="some-url-label"
       />,
     );
@@ -80,7 +83,7 @@ describe('FormView', () => {
         forms={mockForms}
         pageSize={5}
         pageUrl={'/some-url'}
-        patient={mockPatient}
+        patient={mockFhirPatient}
         urlLabel="some-url-label"
       />,
     );
@@ -121,7 +124,7 @@ describe('FormView', () => {
         forms={mockForms}
         pageSize={5}
         pageUrl={'/some-url'}
-        patient={mockPatient}
+        patient={mockFhirPatient}
         urlLabel="some-url-label"
       />,
     );
@@ -155,7 +158,7 @@ describe('FormView', () => {
         forms={mockForms}
         pageSize={5}
         pageUrl={'/some-url'}
-        patient={mockPatient}
+        patient={mockFhirPatient}
         urlLabel="some-url-label"
       />,
     );

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { useConfig, ExtensionSlot } from '@openmrs/esm-framework';
 import { computeMedicationRequestStatus, getMostRecentMedicationDispenseStatus } from '../utils';
@@ -156,7 +155,7 @@ describe('Action Buttons Component tests', () => {
       </div>
     ));
 
-    const { getByText, container } = render(
+    const { getByText } = render(
       <ActionButtons
         patientUuid={mockPatientUuid}
         encounterUuid={mockEncounterUuid}

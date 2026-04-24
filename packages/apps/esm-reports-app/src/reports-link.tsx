@@ -1,6 +1,5 @@
 import { ClickableTile, Layer } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { basePath } from './constants';

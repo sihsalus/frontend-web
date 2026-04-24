@@ -16,7 +16,6 @@ import {
   EditIcon,
   formatDate,
   getCoreTranslation,
-  parseDate,
   showModal,
   TrashCanIcon,
   useLayoutType,

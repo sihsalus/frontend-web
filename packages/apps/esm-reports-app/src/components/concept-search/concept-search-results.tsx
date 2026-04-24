@@ -1,7 +1,6 @@
 import { Button, ButtonSkeleton, SkeletonText, Tile } from '@carbon/react';
 import { useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useConceptSearch } from '../../hooks/useConceptSearch';

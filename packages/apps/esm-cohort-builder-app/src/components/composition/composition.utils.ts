@@ -7,7 +7,7 @@ export const isCompositionValid = (search: string) => {
 };
 
 const formatFilterCombination = (filterText: string, numberOfSearches: number) => {
-  return filterText.replace(/\d/, (theDigit) => (parseInt(theDigit) + numberOfSearches).toString());
+  return filterText.replace(/\d/, (theDigit) => (parseInt(theDigit, 10) + numberOfSearches).toString());
 };
 
 export const createCompositionQuery = (compositionQuery: string) => {
@@ -24,7 +24,7 @@ export const createCompositionQuery = (compositionQuery: string) => {
   searchTokens.forEach((eachToken) => {
     if (eachToken.match(/\d/)) {
       const history = JSON.parse(globalThis.sessionStorage.getItem('openmrsHistory'));
-      const operandQuery = history[parseInt(eachToken) - 1];
+      const operandQuery = history[parseInt(eachToken, 10) - 1];
 
       const jsonRequestObject = operandQuery.parameters;
       jsonRequestObject.customRowFilterCombination = formatFilterCombination(

@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import AddFormReferenceModal from './add-form-reference.modal';
 import { type Schema } from '@types';
@@ -344,3 +343,6 @@ const renderAddFormReferenceModal = () => {
     />,
   );
 };
+import React from 'react';
+
+void React;

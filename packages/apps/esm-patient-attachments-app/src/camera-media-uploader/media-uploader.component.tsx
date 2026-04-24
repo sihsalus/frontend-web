@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { FileUploaderDropContainer, InlineNotification } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { useConfig } from '@openmrs/esm-framework';
@@ -105,7 +105,7 @@ const MediaUploaderComponent = () => {
           labelText={t('fileSizeInstructions', 'Drag and drop files here or click to upload')}
           tabIndex={0}
           multiple={multipleFiles}
-          onAddFiles={(evt, { addedFiles }) => {
+          onAddFiles={(_evt, { addedFiles }) => {
             upload(addedFiles);
           }}
         />

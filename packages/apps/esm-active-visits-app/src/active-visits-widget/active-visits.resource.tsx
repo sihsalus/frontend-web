@@ -87,7 +87,7 @@ export function useActiveVisits() {
       activeVisits.idNumber = visit?.patient?.identifiers[0]?.identifier ?? '--';
     } else {
       // map identifiers on config
-      config?.activeVisits?.identifiers?.map((configIdentifier) => {
+      config?.activeVisits?.identifiers?.forEach((configIdentifier) => {
         // check if in the current visit the patient has in his identifiers the current identifierType name
         const visitIdentifier = visit?.patient?.identifiers.find(
           (visitIdentifier) => visitIdentifier?.identifierType?.name === configIdentifier?.identifierName,
@@ -102,7 +102,7 @@ export function useActiveVisits() {
     }
 
     // map attributes on config
-    config?.activeVisits?.attributes?.map(({ display, header }) => {
+    config?.activeVisits?.attributes?.forEach(({ display, header }) => {
       // check if in the current visit the person has in his attributes the current display
       const personAttributes = visit?.patient?.person?.attributes.find(
         (personAttributes) => personAttributes?.attributeType?.display === display,
@@ -183,7 +183,7 @@ export function useActiveVisitsSorting(tableRows: Array<any>) {
     sortDirection: 'ASC' | 'DESC' | 'NONE';
   }>({ key: 'visitStartTime', sortDirection: 'DESC' });
 
-  const sortRow = (cellA, cellB, { key, sortDirection }) => {
+  const sortRow = (_cellA, _cellB, { key, sortDirection }) => {
     setSortParams({ key, sortDirection });
     return 0;
   };

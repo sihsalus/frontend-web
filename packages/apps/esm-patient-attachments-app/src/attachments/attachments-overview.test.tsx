@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AttachmentsOverview from './attachments-overview.component';
 import { useAttachments } from '@openmrs/esm-framework';

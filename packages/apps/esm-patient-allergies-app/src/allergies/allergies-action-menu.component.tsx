@@ -15,6 +15,7 @@ interface allergiesActionMenuProps {
 export const AllergiesActionMenu = ({ allergy, patientUuid }: allergiesActionMenuProps) => {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
+  void React;
 
   const launchEditAllergiesForm = useCallback(() => {
     launchPatientWorkspace(patientAllergiesFormWorkspace, {

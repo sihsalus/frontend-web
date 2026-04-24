@@ -101,7 +101,7 @@ const PatientSearchCreate: React.FC<PatientSearchCreateProps> = () => {
                   />
                 )}
                 onClear={() => field.onChange('')}
-                onSuggestionSelected={(field_, value) => {
+                onSuggestionSelected={(_field_, value) => {
                   if (value) {
                     field.onChange(value);
                   }

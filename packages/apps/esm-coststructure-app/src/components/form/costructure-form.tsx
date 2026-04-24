@@ -2,7 +2,7 @@ import { Button, Tabs, Tab, TabList, TabPanels, TabPanel } from '@carbon/react';
 import { WhitePaper } from '@carbon/react/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { openmrsFetch, showSnackbar } from '@openmrs/esm-framework';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 

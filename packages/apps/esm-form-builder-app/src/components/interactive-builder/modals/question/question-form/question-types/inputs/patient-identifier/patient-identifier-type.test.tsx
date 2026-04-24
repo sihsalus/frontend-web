@@ -1,11 +1,13 @@
-import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import type { FormField } from '@sihsalus/esm-form-engine-lib';
 import type { PatientIdentifierType } from '@types';
+import React from 'react';
 import { FormFieldProvider } from '../../../../form-field-context';
 import { usePatientIdentifierTypes } from '@hooks/usePatientIdentifierTypes';
 import PatientIdentifierTypeQuestion from './patient-identifier-type-question.component';
+
+void React;
 
 const mockSetFormField = jest.fn();
 const formField: FormField = {

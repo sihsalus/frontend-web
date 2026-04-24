@@ -177,6 +177,8 @@ export class FormManager {
               return updateRelationship(relationshipUuid, relationshipToSave);
             case 'DELETE':
               return deleteRelationship(relationshipUuid);
+            default:
+              return Promise.resolve(undefined);
           }
         }),
     );

@@ -65,8 +65,8 @@ const PaginatedClinicalData: React.FC<PaginatedClinicalDataProps> = ({
   });
 
   const handleSorting = (
-    cellA,
-    cellB,
+    _cellA,
+    _cellB,
     { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
   ): number => {
     if (sortDirection === 'NONE') {

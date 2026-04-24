@@ -31,6 +31,14 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
   return (
     <div
       onClick={() => handleAppoiment('')}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleAppoiment('');
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
         styles.largeDesktop,

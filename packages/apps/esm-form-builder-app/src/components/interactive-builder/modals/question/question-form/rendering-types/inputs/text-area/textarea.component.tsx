@@ -15,7 +15,7 @@ const TextArea: React.FC = () => {
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         const updatedQuestion = {
           ...formField,
-          questionOptions: { ...formField.questionOptions, rows: parseInt(event.target.value) },
+          questionOptions: { ...formField.questionOptions, rows: parseInt(event.target.value, 10) },
         };
         setFormField(updatedQuestion);
       }}

@@ -7,7 +7,7 @@ jest.mock('swr');
 
 describe('Medication Resource Tests', () => {
   test('useMedicationCodeableConcept should call useSWR with null reference if existing codeable concept uuid passed in', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: null }));
     const result = useMedicationCodeableConcept('123abc', 'Medication/123abc');
     expect(useSWR).toHaveBeenCalledWith(null, openmrsFetch);
@@ -15,7 +15,7 @@ describe('Medication Resource Tests', () => {
   });
 
   test('useMedicationCodeableConcept should call useSWR with medication reference if no existing codeable concept uuid passed in', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: { code: { coding: [{ code: 'def678' }] } } },
     }));
@@ -25,7 +25,7 @@ describe('Medication Resource Tests', () => {
   });
 
   test('useMedicationFormulations should call useSWR with null reference if no concept uuid provided', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: null }));
     const result = useMedicationFormulations(null);
     expect(useSWR).toHaveBeenCalledWith(null, openmrsFetch);
@@ -33,7 +33,7 @@ describe('Medication Resource Tests', () => {
   });
 
   test('useMedicationFormulations should call useSWR with with medications by concept endpoint and return formualations if concept defined', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: {
         data: {

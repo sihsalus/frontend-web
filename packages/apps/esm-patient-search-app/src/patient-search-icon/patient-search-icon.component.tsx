@@ -1,6 +1,7 @@
 import { HeaderGlobalAction } from '@carbon/react';
 import { Close, Search } from '@carbon/react/icons';
 import {
+  getOpenmrsSpaBase,
   isDesktop,
   navigate,
   openmrsFetch,
@@ -47,7 +48,7 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
   const closePatientSearch = useCallback(() => {
     if (isSearchPage) {
       navigate({
-        to: globalThis.sessionStorage.getItem('searchReturnUrl') ?? '${openmrsSpaBase}/',
+        to: globalThis.sessionStorage.getItem('searchReturnUrl') ?? `${getOpenmrsSpaBase()}/`,
       });
       globalThis.sessionStorage.removeItem('searchReturnUrl');
     }
@@ -111,21 +112,20 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
           </div>
         </>
       ) : (
-        <div
-          onMouseEnter={() => {
-            // Preload the user object on hover. This object may contain a 'patientsVisited'
-            // property with UUIDs of recently viewed patients. This data can be used to display
-            // recently viewed patients if the 'showRecentlySearchedPatients' config property
-            // is enabled.
-            if (userUuid) {
-              void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
-            }
-          }}
-        >
+        <div>
           <HeaderGlobalAction
             aria-label={t('searchPatient', 'Search patient')}
             className={styles.searchIconButton}
             data-testid="searchPatientIcon"
+            onMouseEnter={() => {
+              // Preload the user object on hover. This object may contain a 'patientsVisited'
+              // property with UUIDs of recently viewed patients. This data can be used to display
+              // recently viewed patients if the 'showRecentlySearchedPatients' config property
+              // is enabled.
+              if (userUuid) {
+                void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
+              }
+            }}
             onClick={handleShowSearchInput}
           >
             <Search size={20} />

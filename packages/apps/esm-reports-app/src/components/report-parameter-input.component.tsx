@@ -16,9 +16,6 @@ interface ReportParameterInputProps {
   onChange: (value: unknown) => void;
 }
 
-type LocationParameterValue = { uuid: string } | null;
-type ReportInputValue = string | number;
-
 function isLocationValue(value: unknown): value is { uuid: string } {
   return typeof value === 'object' && value !== null && 'uuid' in value && typeof value.uuid === 'string';
 }

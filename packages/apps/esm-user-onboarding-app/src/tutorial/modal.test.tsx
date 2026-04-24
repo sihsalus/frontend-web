@@ -9,6 +9,7 @@ import TutorialModal from './modal.component';
 const mockNavigate = jest.mocked(navigate);
 const mockUseAppContext = jest.mocked(useAppContext<TutorialContext>);
 const mockUseConfig = jest.mocked(useConfig<Config>);
+void React;
 
 const setShowTutorial = jest.fn();
 const setSteps = jest.fn();

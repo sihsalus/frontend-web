@@ -15,6 +15,8 @@ import React, { useMemo, useState } from 'react';
 import styles from './paginated-biometrics.scss';
 import type { BiometricsTableHeader, BiometricsTableRow } from './types';
 
+type DataTableCellValue = React.ReactNode | { content?: React.ReactNode };
+
 interface PaginatedBiometricsProps {
   tableRows: Array<BiometricsTableRow>;
   pageSize: number;
@@ -45,8 +47,8 @@ const PaginatedBiometrics: React.FC<PaginatedBiometricsProps> = ({
   });
 
   const handleSorting = (
-    cellA,
-    cellB,
+    _cellA: DataTableCellValue,
+    _cellB: DataTableCellValue,
     { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
   ) => {
     if (sortDirection === 'NONE') {

@@ -1,4 +1,3 @@
-import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import {
@@ -31,10 +30,13 @@ const mockLaunchWorkspace = launchWorkspace2 as jest.Mock;
 const mockUseConfig = jest.mocked(useConfig<ImmunizationConfigObject>);
 const mockUsePatientChartStore = jest.mocked(usePatientChartStore);
 const mockUseVisitOrOfflineVisit = jest.mocked(useVisitOrOfflineVisit);
+type VaccinationConfig = {
+  immunizationsConfig: ImmunizationConfigObject;
+};
 
 mockUseConfig.mockReturnValue({
   immunizationsConfig: getDefaultsFromConfigSchema(configSchema),
-} as any);
+} as VaccinationConfig);
 
 mockLaunchWorkspace.mockImplementation(jest.fn());
 
@@ -53,7 +55,7 @@ mockUseConfig.mockReturnValue({
       },
     ],
   },
-} as any);
+} as VaccinationConfig);
 
 const mockImmunizationData = [
   {
@@ -92,7 +94,7 @@ describe('ImmunizationsDetailedSummary', () => {
           },
         ],
       },
-    } as any);
+    } as VaccinationConfig);
     mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: null } as VisitReturnType);
     mockUsePatientChartStore.mockReturnValue({
       patientUuid: 'patient-123',

@@ -1,4 +1,6 @@
 import { renderHook } from '@testing-library/react';
+import type { FormSchema } from '@sihsalus/esm-form-engine-lib';
+import type { SWRResponse } from 'swr';
 
 import useFormSchema from './useFormSchema';
 
@@ -19,6 +21,18 @@ jest.mock('swr', () => {
 import useSWR from 'swr';
 
 const mockUseSWR = jest.mocked(useSWR);
+type FormSchemaApiResponse = { data: FormSchema };
+
+function createSwrResponse<T>(overrides: Partial<SWRResponse<T, Error>>): SWRResponse<T, Error> {
+  return {
+    data: undefined,
+    error: undefined,
+    isLoading: false,
+    isValidating: false,
+    mutate: jest.fn(),
+    ...overrides,
+  } as SWRResponse<T, Error>;
+}
 
 describe('useFormSchema', () => {
   beforeEach(() => {
@@ -26,13 +40,7 @@ describe('useFormSchema', () => {
   });
 
   it('returns loading state initially', () => {
-    mockUseSWR.mockReturnValue({
-      data: undefined,
-      error: undefined,
-      isLoading: true,
-      isValidating: false,
-      mutate: jest.fn(),
-    } as any);
+    mockUseSWR.mockReturnValue(createSwrResponse<FormSchemaApiResponse>({ isLoading: true }));
 
     const { result } = renderHook(() => useFormSchema('form-uuid'));
     expect(result.current.isLoading).toBe(true);
@@ -40,7 +48,8 @@ describe('useFormSchema', () => {
   });
 
   it('returns schema with encounterType UUID extracted', () => {
-    mockUseSWR.mockReturnValue({
+    mockUseSWR.mockReturnValue(
+      createSwrResponse<FormSchemaApiResponse>({
       data: {
         data: {
           uuid: 'form-uuid',
@@ -49,11 +58,8 @@ describe('useFormSchema', () => {
           pages: [],
         },
       },
-      error: undefined,
-      isLoading: false,
-      isValidating: false,
-      mutate: jest.fn(),
-    } as any);
+      }),
+    );
 
     const { result } = renderHook(() => useFormSchema('form-uuid'));
     expect(result.current.isLoading).toBe(false);
@@ -62,7 +68,8 @@ describe('useFormSchema', () => {
   });
 
   it('normalizes legacy concept UUIDs in nested schema questions', () => {
-    mockUseSWR.mockReturnValue({
+    mockUseSWR.mockReturnValue(
+      createSwrResponse<FormSchemaApiResponse>({
       data: {
         data: {
           uuid: 'form-uuid',
@@ -145,11 +152,8 @@ describe('useFormSchema', () => {
           ],
         },
       },
-      error: undefined,
-      isLoading: false,
-      isValidating: false,
-      mutate: jest.fn(),
-    } as any);
+      }),
+    );
 
     const { result } = renderHook(() => useFormSchema('form-uuid'));
 
@@ -178,26 +182,14 @@ describe('useFormSchema', () => {
 
   it('returns error on fetch failure', () => {
     const testError = new Error('Network error');
-    mockUseSWR.mockReturnValue({
-      data: undefined,
-      error: testError,
-      isLoading: false,
-      isValidating: false,
-      mutate: jest.fn(),
-    } as any);
+    mockUseSWR.mockReturnValue(createSwrResponse<FormSchemaApiResponse>({ error: testError }));
 
     const { result } = renderHook(() => useFormSchema('form-uuid'));
     expect(result.current.error).toBe(testError);
   });
 
   it('passes null URL when formUuid is empty', () => {
-    mockUseSWR.mockReturnValue({
-      data: undefined,
-      error: undefined,
-      isLoading: false,
-      isValidating: false,
-      mutate: jest.fn(),
-    } as any);
+    mockUseSWR.mockReturnValue(createSwrResponse<FormSchemaApiResponse>({}));
 
     renderHook(() => useFormSchema(''));
     expect(mockUseSWR).toHaveBeenCalledWith(null, expect.any(Function));

@@ -34,7 +34,7 @@ const SectionModal: React.FC<SectionModalProps> = ({
     closeModal();
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, { checked }: { checked: boolean }) => {
+  const handleCheckboxChange = (_event: React.ChangeEvent<HTMLInputElement>, { checked }: { checked: boolean }) => {
     setIsExpanded(checked === true ? 'true' : 'false');
   };
 

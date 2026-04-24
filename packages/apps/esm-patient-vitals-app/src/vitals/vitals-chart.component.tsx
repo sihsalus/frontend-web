@@ -70,7 +70,7 @@ const VitalsChart: React.FC<VitalsChartProps> = ({ patientVitals, conceptUnits, 
       .filter((vitals) => vitals[selectedVitalSign.value])
       .slice(0, 10)
       .sort((vitalA, vitalB) => new Date(vitalA.date).getTime() - new Date(vitalB.date).getTime())
-      .map((vitals) => {
+      .flatMap((vitals) => {
         if (vitals[selectedVitalSign.value]) {
           if (['systolic', 'diastolic'].includes(selectedVitalSign.value)) {
             return [
@@ -96,6 +96,8 @@ const VitalsChart: React.FC<VitalsChartProps> = ({ patientVitals, conceptUnits, 
             };
           }
         }
+
+        return [];
       });
   }, [patientVitals, selectedVitalSign]);
 
@@ -163,7 +165,7 @@ const VitalsChart: React.FC<VitalsChartProps> = ({ patientVitals, conceptUnits, 
         </Tabs>
       </div>
       <div className={styles.vitalsChartArea}>
-        <LineChart data={chartData.flat()} options={chartOptions} />
+        <LineChart data={chartData} options={chartOptions} />
       </div>
     </div>
   );

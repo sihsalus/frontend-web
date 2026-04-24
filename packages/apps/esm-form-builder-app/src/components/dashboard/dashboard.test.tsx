@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type FetchResponse, navigate, openmrsFetch, showModal } from '@openmrs/esm-framework';
@@ -245,3 +244,6 @@ describe('Dashboard', () => {
 function renderDashboard() {
   renderWithSwr(<Dashboard />);
 }
+import React from 'react';
+
+void React;

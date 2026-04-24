@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { usePagination } from '@openmrs/esm-framework';
 import { usePatientConditions } from './conditions.resource';

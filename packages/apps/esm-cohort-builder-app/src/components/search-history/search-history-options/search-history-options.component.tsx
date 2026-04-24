@@ -30,7 +30,9 @@ const createCohortFromSearchItem = async (
 ) => {
   const cohortMembers: number[] = [];
   const { patients } = searchItem;
-  patients.forEach((patient: Patient) => cohortMembers.push(parseInt(patient.id)));
+  patients.forEach((patient: Patient) => {
+    cohortMembers.push(parseInt(patient.id, 10));
+  });
 
   const cohort: Cohort = {
     display: name,

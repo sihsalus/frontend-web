@@ -110,7 +110,7 @@ const SearchByEncounters: React.FC<SearchByProps> = ({ onSubmit }) => {
               min={0}
               size="sm"
               value={atLeastCount}
-              onChange={(event, { value }) => setAtLeastCount(Number(value))}
+              onChange={(_event, { value }) => setAtLeastCount(Number(value))}
             />
           </div>
           <div className={styles.multipleInputs}>
@@ -122,7 +122,7 @@ const SearchByEncounters: React.FC<SearchByProps> = ({ onSubmit }) => {
               min={0}
               size="sm"
               value={atMostCount}
-              onChange={(event, { value }) => setAtMostCount(Number(value))}
+              onChange={(_event, { value }) => setAtMostCount(Number(value))}
             />
           </div>
         </Column>

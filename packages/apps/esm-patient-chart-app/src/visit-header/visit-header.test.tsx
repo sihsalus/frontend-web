@@ -18,6 +18,8 @@ import { getByTextWithMarkup } from 'test-utils';
 
 import VisitHeader from './visit-header.component';
 
+const homePagePath = ['${openmrsSpaBase}', '/home'].join('');
+
 const mockAge = jest.mocked(age);
 const mockUseAssignedExtensions = jest.mocked(useAssignedExtensions);
 const mockUseVisit = jest.mocked(useVisit);
@@ -185,6 +187,6 @@ describe('Visit header', () => {
     ]);
     const closeButton = screen.getByRole('button', { name: 'Close' });
     await user.click(closeButton);
-    expect(navigate).toHaveBeenCalledWith({ to: '${openmrsSpaBase}/home' });
+    expect(navigate).toHaveBeenCalledWith({ to: homePagePath });
   });
 });

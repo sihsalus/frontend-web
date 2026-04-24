@@ -13,13 +13,12 @@ import styles from './styles.scss';
 // and list which forms are associated with that permission
 export const getFormPermissions = (forms) => {
   const output = {};
-  forms?.forEach(
-    (form) =>
-      (output[form.encounterType.editPrivilege.display] = [
-        ...(output[form.encounterType.editPrivilege.display] || []),
-        form.display,
-      ]),
-  );
+  forms?.forEach((form) => {
+    output[form.encounterType.editPrivilege.display] = [
+      ...(output[form.encounterType.editPrivilege.display] || []),
+      form.display,
+    ];
+  });
   return output;
 };
 

@@ -25,7 +25,7 @@ export const DoseInput: React.FC<{
   );
 
   const handleChange = useCallback(
-    (event, { value }) => {
+    (_event, { value }) => {
       const parsedValue =
         value === '' || value === null || (typeof value === 'string' && !value.trim()) ? undefined : Number(value);
       field.onChange(isNaN(parsedValue) ? undefined : parsedValue);
@@ -44,7 +44,7 @@ export const DoseInput: React.FC<{
             items={availableSequences.map((sequence) => sequence.sequenceNumber)}
             itemToString={(item) => availableSequences.find((sequence) => sequence.sequenceNumber === item)?.sequenceLabel}
             label={t('pleaseSelect', 'Please select')}
-            onChange={(val) => field.onChange(parseInt(val.selectedItem || 0))}
+            onChange={(val) => field.onChange(parseInt(String(val.selectedItem || 0), 10))}
             selectedItem={field.value}
             titleText={t('sequence', 'Sequence')}
           />

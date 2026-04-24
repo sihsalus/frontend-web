@@ -1,10 +1,12 @@
-import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { openmrsFetch } from '@openmrs/esm-framework';
+import React from 'react';
 import PatientListDetailsWorkspace, { type PatientListDetailsWorkspaceProps } from './patient-list-details.workspace';
 import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;
+
+void React;
 
 const defaultProps: PatientWorkspace2DefinitionProps<PatientListDetailsWorkspaceProps, object> = {
   groupProps: {

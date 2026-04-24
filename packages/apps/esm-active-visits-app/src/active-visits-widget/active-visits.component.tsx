@@ -197,8 +197,6 @@ const ActiveVisitsTable = () => {
                     return null;
                   }
 
-                  const patientChartUrl = '${openmrsSpaBase}/patient/${patientUuid}/chart';
-
                   return (
                     <React.Fragment key={`active-visit-row-${index}`}>
                       <TableExpandRow
@@ -209,8 +207,7 @@ const ActiveVisitsTable = () => {
                           <TableCell key={`active-visit-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
                             {cell.info.header === 'name' && currentVisit.patientUuid ? (
                               <ConfigurableLink
-                                to={patientChartUrl}
-                                templateParams={{ patientUuid: currentVisit.patientUuid }}
+                                to={`${globalThis.spaBase}/patient/${currentVisit.patientUuid}/chart`}
                               >
                                 {cell.value}
                               </ConfigurableLink>

@@ -8,6 +8,8 @@ This directory contains architecture documentation and decision records for the 
 - `forms/` — Form stack migration and ownership docs
 - `operations/` — Repository operations and maintainer runbooks
 - `operations/dependency-bots.md` — Renovate and Dependabot setup, ownership, and verification guide
+- `operations/monorepo-discipline-rfc.md` — Repo discipline policy for TypeScript, tests, fixtures, and merge criteria
+- `operations/week-1-tsconfig-inventory.md` — Week 1 inventory of `tsconfig` patterns across apps and libs
 
 ## Architecture Overview
 
