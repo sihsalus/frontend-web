@@ -1,8 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { of } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import '@testing-library/jest-dom/vitest';
 import {
   type AssignedExtension,
   type Session,
@@ -21,24 +19,24 @@ import { isDesktop } from './utils';
 const mockUserObservable = of(mockUser);
 const mockSessionObservable = of({ data: mockSession });
 
-vi.mock('@openmrs/esm-framework', () => ({
-  useConfig: vi.fn(),
-  useAssignedExtensions: vi.fn(),
-  useSession: vi.fn(),
-  useLeftNavStore: vi.fn(),
-  interpolateUrl: vi.fn(),
+jest.mock('@openmrs/esm-framework', () => ({
+  useConfig: jest.fn(),
+  useAssignedExtensions: jest.fn(),
+  useSession: jest.fn(),
+  useLeftNavStore: jest.fn(),
+  interpolateUrl: jest.fn(),
 }));
 
-vi.mock('./root.resource', () => ({
-  getSynchronizedCurrentUser: vi.fn(() => mockUserObservable),
-  getCurrentSession: vi.fn(() => mockSessionObservable),
+jest.mock('./root.resource', () => ({
+  getSynchronizedCurrentUser: jest.fn(() => mockUserObservable),
+  getCurrentSession: jest.fn(() => mockSessionObservable),
 }));
 
-vi.mock('./utils', () => ({
-  isDesktop: vi.fn(() => true),
+jest.mock('./utils', () => ({
+  isDesktop: jest.fn(() => true),
 }));
 
-vi.mock('react-router-dom', () => ({
+jest.mock('react-router-dom', () => ({
   BrowserRouter: ({ children }: any) => <>{children}</>,
   Route: ({ children, element, path }: any) => {
     if (path === 'login/*' || path === 'logout/*') {
@@ -49,15 +47,15 @@ vi.mock('react-router-dom', () => ({
   Routes: ({ children }: any) => <>{children}</>,
 }));
 
-vi.mock('./components/navbar/navbar.component', () => ({
+jest.mock('./components/navbar/navbar.component', () => ({
   default: () => <div data-testid="navbar">Mock EMR</div>,
 }));
 
-const mockUseConfig = vi.mocked(useConfig);
-const mockUseAssignedExtensions = vi.mocked(useAssignedExtensions);
-const mockUseSession = vi.mocked(useSession);
-const mockUseLeftNavStore = vi.mocked(useLeftNavStore);
-const mockIsDesktop = vi.mocked(isDesktop);
+const mockUseConfig = jest.mocked(useConfig);
+const mockUseAssignedExtensions = jest.mocked(useAssignedExtensions);
+const mockUseSession = jest.mocked(useSession);
+const mockUseLeftNavStore = jest.mocked(useLeftNavStore);
+const mockIsDesktop = jest.mocked(isDesktop);
 
 mockUseConfig.mockReturnValue({
   logo: { src: null, alt: null, name: 'Mock EMR', link: 'Mock EMR' },

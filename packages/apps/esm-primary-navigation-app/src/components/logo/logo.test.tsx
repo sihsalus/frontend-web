@@ -1,19 +1,18 @@
 import { useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
 
 import { type ConfigSchema } from '../../config-schema';
 
 import Logo from './logo.component';
 
-vi.mock('@openmrs/esm-framework', () => ({
+jest.mock('@openmrs/esm-framework', () => ({
   __esModule: true,
-  useConfig: vi.fn(),
-  interpolateUrl: vi.fn((url: string) => url),
+  useConfig: jest.fn(),
+  interpolateUrl: jest.fn((url: string) => url),
 }));
 
-const mockUseConfig = vi.mocked(useConfig);
+const mockUseConfig = jest.mocked(useConfig);
 
 describe('Logo', () => {
   it('should display the OpenMRS logo by default', () => {
@@ -61,7 +60,7 @@ describe('Logo', () => {
   });
 
   it('should handle image load errors', () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const mockConfig = {
       logo: {
         src: 'invalid-image.png',
