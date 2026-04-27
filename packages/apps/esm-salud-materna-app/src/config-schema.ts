@@ -74,6 +74,9 @@ export const configSchema = {
       medicationPrescriptionDispensation: '79488027-0292-4807-afe4-9c037052be40', // Prescripción y Dispensación — NTS 042
       labResults: '328f6f79-4a85-4ff8-9fb8-6b2c839c7649', // Resultados de Laboratorio — NTS 090
       vaccinationAdministration: '29c02aff-9a93-46c9-bf6f-48b552fcb1fa',
+      familyPlanning: 'c8a42de8-caa7-42da-9a76-20bbd388db16',
+      cervicalCancerScreening: '56ac61e7-2629-4834-b2b0-6831bc20f50f',
+      breastCancerScreening: '2f2a0a11-6ec9-4d01-96bd-11c3188d4a9d',
       electiveAmbulatorySurgery: 'a0a7d43a-1fd1-4df9-9429-a3e84f1d7c62', // Cirugía Ambulatoria Electiva — NTS 172
 
       // Administrative
@@ -172,6 +175,18 @@ export const configSchema = {
       nutritionalAssessmentForm: 'CRED-006-EVALUACIÓN NUTRICIONAL',
       feedingCounselingForm: 'CRED-007-CONSEJERÍA ALIMENTARIA',
       nutritionFollowupForm: 'CRED-008-SEGUIMIENTO NUTRICIONAL',
+      ediDevelopmentForm: 'CRED-009-EDI',
+      autismScreeningForm: 'CRED-010-TAMIZAJE TEA',
+      childMentalHealthForm: 'CRED-011-SALUD MENTAL NIÑO Y CUIDADOR',
+      adverseReactionForm: 'INMU-002-REPORTE ESAVI',
+
+      // Salud materna, planificación familiar y prevención de cáncer
+      perinatalMentalHealthForm: 'OBST-014-SALUD MENTAL PERINATAL',
+      maternalViolenceScreeningForm: 'OBST-015-TAMIZAJE VIOLENCIA GESTANTE',
+      familyPlanningCounselingForm: 'PF-001-CONSEJERÍA Y MÉTODO ANTICONCEPTIVO',
+      familyPlanningFollowupForm: 'PF-002-SEGUIMIENTO PLANIFICACIÓN FAMILIAR',
+      cervicalCancerScreeningForm: 'CANCER-001-TAMIZAJE CERVICAL',
+      breastCancerScreeningForm: 'CANCER-002-TAMIZAJE MAMA',
     },
   },
 
@@ -1254,6 +1269,9 @@ export interface ConfigObject {
     antecedentesPerinatales: string;
     labResults: string;
     vaccinationAdministration: string;
+    familyPlanning: string;
+    cervicalCancerScreening: string;
+    breastCancerScreening: string;
     healthEducationCounseling: string;
     consultation: string;
     referralCounterReferral: string;
@@ -1344,6 +1362,16 @@ export interface ConfigObject {
     nutritionalAssessmentForm: string;
     feedingCounselingForm: string;
     nutritionFollowupForm: string;
+    ediDevelopmentForm: string;
+    autismScreeningForm: string;
+    childMentalHealthForm: string;
+    adverseReactionForm: string;
+    perinatalMentalHealthForm: string;
+    maternalViolenceScreeningForm: string;
+    familyPlanningCounselingForm: string;
+    familyPlanningFollowupForm: string;
+    cervicalCancerScreeningForm: string;
+    breastCancerScreeningForm: string;
   };
   clinicalEncounterUuid: string;
   concepts: Record<string, string>;

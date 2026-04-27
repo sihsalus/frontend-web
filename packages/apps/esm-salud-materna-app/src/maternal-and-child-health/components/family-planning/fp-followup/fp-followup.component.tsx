@@ -1,7 +1,10 @@
 import { Tag, Tile } from '@carbon/react';
+import { useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { ConfigObject } from '../../../../config-schema';
+import ConfiguredFormButton from '../../configured-form-button.component';
 import styles from './fp-followup.scss';
 
 interface FpFollowupProps {
@@ -14,6 +17,7 @@ interface FpFollowupProps {
  */
 const FpFollowup: React.FC<FpFollowupProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
+  const config = useConfig<ConfigObject>();
 
   // TODO: Connect to SWR hook when concept UUIDs are configured
   const adherenceStatus = null;
@@ -47,6 +51,10 @@ const FpFollowup: React.FC<FpFollowupProps> = ({ patientUuid }) => {
           <span className={styles.value}>{nextAppointment ?? t('pending', 'Pending')}</span>
         </div>
       </div>
+      <ConfiguredFormButton
+        formUuid={config.formsList.familyPlanningFollowupForm}
+        label={t('registerFpFollowup', 'Registrar seguimiento')}
+      />
     </Tile>
   );
 };

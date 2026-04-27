@@ -133,6 +133,15 @@ function getFormDisplayName(formKey: string): string {
     roomingIn: 'Alojamiento Conjunto',
     birthDetails: 'Detalles de Nacimiento',
     pregnancyDetails: 'Embarazo y Parto',
+
+    // NTS 238 gap forms
+    ediDevelopmentForm: 'EDI',
+    autismScreeningForm: 'Tamizaje TEA',
+    childMentalHealthForm: 'Salud mental niño y cuidador',
+    adverseReactionForm: 'Reporte ESAVI',
+    nutritionalAssessmentForm: 'Evaluación nutricional',
+    feedingCounselingForm: 'Consejería alimentaria',
+    nutritionFollowupForm: 'Seguimiento nutricional',
   };
 
   return displayNames[formKey] || formKey;

@@ -1,7 +1,10 @@
 import { Tag, Tile } from '@carbon/react';
+import { useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { ConfigObject } from '../../../../config-schema';
+import ConfiguredFormButton from '../../configured-form-button.component';
 import styles from './contraceptive-methods.scss';
 
 interface ContraceptiveMethodsProps {
@@ -14,6 +17,7 @@ interface ContraceptiveMethodsProps {
  */
 const ContraceptiveMethods: React.FC<ContraceptiveMethodsProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
+  const config = useConfig<ConfigObject>();
 
   // TODO: Connect to SWR hook when concept UUIDs are configured
   const currentMethod = null;
@@ -47,6 +51,10 @@ const ContraceptiveMethods: React.FC<ContraceptiveMethodsProps> = ({ patientUuid
           <span className={styles.value}>{nextFollowUp ?? t('pending', 'Pending')}</span>
         </div>
       </div>
+      <ConfiguredFormButton
+        formUuid={config.formsList.familyPlanningCounselingForm}
+        label={t('registerContraceptiveMethod', 'Registrar método')}
+      />
     </Tile>
   );
 };

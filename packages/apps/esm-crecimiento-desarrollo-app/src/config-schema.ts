@@ -172,6 +172,10 @@ export const configSchema = {
       nutritionalAssessmentForm: 'CRED-006-EVALUACIÓN NUTRICIONAL',
       feedingCounselingForm: 'CRED-007-CONSEJERÍA ALIMENTARIA',
       nutritionFollowupForm: 'CRED-008-SEGUIMIENTO NUTRICIONAL',
+      ediDevelopmentForm: 'CRED-009-EDI',
+      autismScreeningForm: 'CRED-010-TAMIZAJE TEA',
+      childMentalHealthForm: 'CRED-011-SALUD MENTAL NIÑO Y CUIDADOR',
+      adverseReactionForm: 'INMU-002-REPORTE ESAVI',
     },
   },
 
@@ -1408,6 +1412,10 @@ export interface ConfigObject {
     nutritionalAssessmentForm: string;
     feedingCounselingForm: string;
     nutritionFollowupForm: string;
+    ediDevelopmentForm: string;
+    autismScreeningForm: string;
+    childMentalHealthForm: string;
+    adverseReactionForm: string;
   };
   clinicalEncounterUuid: string;
   concepts: Record<string, string>;

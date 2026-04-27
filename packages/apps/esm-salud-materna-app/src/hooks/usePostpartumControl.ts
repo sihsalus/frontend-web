@@ -38,10 +38,10 @@ export const usePostpartumControlTable = (
   const config = useConfig() as ConfigObject;
   const formName = config.formsList.postpartumControl;
 
-  const tipoEncuentro = 'Control Postnatal';
+  const tipoEncuentro = config.encounterTypes.postnatalControl;
   const attentionssUrl = useMemo(() => {
     return `${restBaseUrl}/encounter?patient=${patientUuid}&encounterType=${tipoEncuentro}`;
-  }, [patientUuid]);
+  }, [patientUuid, tipoEncuentro]);
 
   const { data, error, isValidating, mutate } = useSWR<EncounterResponse>(
     patientUuid ? attentionssUrl : null,
@@ -74,7 +74,7 @@ export const usePostpartumControlTable = (
     if (!detailedEncounters) return [];
 
     return detailedEncounters
-      .filter((encounter) => encounter?.form?.display === formName)
+      .filter((encounter) => encounter?.form?.display === formName || encounter?.form?.uuid === formName)
       .sort((a, b) => new Date(a.encounterDatetime).getTime() - new Date(b.encounterDatetime).getTime());
   }, [detailedEncounters, formName]);
 

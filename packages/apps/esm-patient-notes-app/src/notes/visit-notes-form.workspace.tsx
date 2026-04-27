@@ -213,7 +213,7 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
         if (tipoObs.length) {
           const restored: Record<string, string> = {};
           tipoObs.forEach((o) => {
-            const codedUuid = o.formFieldPath.replace('tipo-dx-', '');
+            const codedUuid = (o.formFieldPath as string).replace('tipo-dx-', '');
             const valueUuid = typeof o.value === 'object' && o.value !== null ? o.value.uuid : o.value;
             if (codedUuid && valueUuid) restored[codedUuid] = valueUuid;
           });
