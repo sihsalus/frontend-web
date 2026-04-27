@@ -1,14 +1,14 @@
-@use '@carbon/colors';
-@use '@carbon/layout';
-@use '@carbon/type';
+@use "@carbon/colors";
+@use "@carbon/layout";
+@use "@carbon/type";
 
 .heading {
-  @include type.type-style('heading-03');
+  @include type.type-style("heading-03");
   margin-bottom: layout.$spacing-03;
 }
 
 .columnLabel {
-  @include type.type-style('heading-compact-02');
+  @include type.type-style("heading-compact-02");
   color: colors.$gray-70;
 }
 
@@ -37,19 +37,19 @@
 }
 
 .diagnosesText {
-  @include type.type-style('body-compact-01');
+  @include type.type-style("body-compact-01");
   color: colors.$gray-70;
   margin-bottom: layout.$spacing-05;
 }
 
 .emptyResults {
-  @include type.type-style('body-compact-01');
+  @include type.type-style("body-compact-01");
   color: colors.$gray-70;
   min-height: layout.$spacing-05;
 }
 
 .imgUploadHelperText {
-  @include type.type-style('body-compact-01');
+  @include type.type-style("body-compact-01");
   color: colors.$gray-70;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .errorMessage {
-  @include type.type-style('label-02');
+  @include type.type-style("label-02");
   color: colors.$red-60;
 }
 
@@ -210,6 +210,29 @@
 .tag {
   margin-right: layout.$spacing-03;
   margin-left: 0;
+}
+
+.diagnosisRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: layout.$spacing-03;
+  padding: layout.$spacing-02 0;
+  border-bottom: 1px solid colors.$gray-20;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.tipoSelector {
+  :global(.cds--radio-button-group) {
+    gap: 0;
+  }
+
+  :global(.cds--radio-button__label) {
+    @include type.type-style("label-01");
+  }
 }
 
 .uploadButton {

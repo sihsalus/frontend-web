@@ -9,6 +9,7 @@ This directory contains architecture documentation and decision records for the 
 - `operations/` — Repository operations and maintainer runbooks
 - `operations/dependency-bots.md` — Renovate and Dependabot setup, ownership, and verification guide
 - `operations/monorepo-discipline-rfc.md` — Repo discipline policy for TypeScript, tests, fixtures, and merge criteria
+- `operations/manual-usuario-consulta-externa-nino-sano-madre-gestante.md` — Manual de usuario para Consulta Externa, paquetes complementarios, Niño Sano y Madre Gestante
 - `operations/workspace-quality-registry.md` — Package ownership, test model, and warning budget registry
 - `operations/week-1-tsconfig-inventory.md` — Week 1 inventory of `tsconfig` patterns across apps and libs
 

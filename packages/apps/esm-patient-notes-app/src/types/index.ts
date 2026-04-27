@@ -143,6 +143,7 @@ export interface Location {
 }
 
 export interface ObsData {
+  uuid?: string;
   concept: Concept;
   value?: string | any;
   groupMembers?: Array<{
@@ -150,6 +151,8 @@ export interface ObsData {
     value?: string | any;
   }>;
   obsDatetime: string;
+  formFieldNamespace?: string;
+  formFieldPath?: string;
 }
 
 export interface Diagnosis {
@@ -160,6 +163,8 @@ export interface Diagnosis {
   certainty: string;
   rank: number;
   display: string;
+  /** UUID de la respuesta al concepto "Tipo de diagnóstico" (NTS-139): Presuntivo | Definitivo | Repetitivo */
+  tipoConceptUuid?: string;
 }
 
 export interface DiagnosisPayload {
@@ -188,8 +193,11 @@ export interface VisitNotePayload {
 export interface ObsPayload {
   concept: Concept;
   value?: string;
+  uuid?: string;
   groupMembers?: Array<{
     concept: Concept;
     value: string;
   }>;
+  formFieldNamespace?: string;
+  formFieldPath?: string;
 }

@@ -7,6 +7,8 @@ import {
   FormGroup,
   InlineLoading,
   InlineNotification,
+  RadioButton,
+  RadioButtonGroup,
   Row,
   Search,
   SkeletonText,
@@ -110,8 +112,16 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
   const session = useSession();
   const { isPrimaryDiagnosisRequired, ...config } = useConfig<ConfigObject>();
   const memoizedState = useMemo(() => ({ patientUuid, patient }), [patientUuid, patient]);
-  const { clinicianEncounterRole, encounterNoteTextConceptUuid, encounterTypeUuid, formConceptUuid } =
-    config.visitNoteConfig;
+  const {
+    clinicianEncounterRole,
+    encounterNoteTextConceptUuid,
+    encounterTypeUuid,
+    formConceptUuid,
+    diagnosisTypeConceptUuid,
+    diagnosisTypePresuntivoUuid,
+    diagnosisTypeDefinitivoUuid,
+    diagnosisTypeRepetitivoUuid,
+  } = config.visitNoteConfig;
   const [isLoadingPrimaryDiagnoses, setIsLoadingPrimaryDiagnoses] = useState(false);
   const [isLoadingSecondaryDiagnoses, setIsLoadingSecondaryDiagnoses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -123,6 +133,9 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
   const [rows, setRows] = useState<number>();
   const [error, setError] = useState<Error>(null);
   const { allowedFileExtensions } = useAllowedFileExtensions();
+
+  // NTS-139: Tipo de diagnóstico per coded concept UUID → tipoConceptUuid answer
+  const [diagnosisTipos, setDiagnosisTipos] = useState<Record<string, string>>({});
 
   const visitNoteFormSchema = useMemo(() => createSchema(t), [t]);
 
@@ -172,9 +185,7 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
       try {
         const transformedDiagnoses = encounter.diagnoses.map((d) => ({
           patient: patientUuid,
-          diagnosis: {
-            coded: d.diagnosis.coded?.uuid,
-          },
+          diagnosis: { coded: d.diagnosis.coded?.uuid },
           certainty: d.certainty,
           rank: d.rank,
           display: d.display,
@@ -186,6 +197,28 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
         setSelectedPrimaryDiagnoses(primaryDiagnoses);
         setSelectedSecondaryDiagnoses(secondaryDiagnoses);
         setCombinedDiagnoses([...primaryDiagnoses, ...secondaryDiagnoses]);
+
+        // Restore tipo from OBS saved with formFieldPath = tipo-dx-{codedUuid}
+        const obsArray = (encounter.obs ?? []) as Array<{
+          formFieldNamespace?: string;
+          formFieldPath?: string;
+          value?: any;
+        }>;
+        const tipoObs = obsArray.filter(
+          (o) =>
+            o.formFieldNamespace === 'visit-notes' &&
+            typeof o.formFieldPath === 'string' &&
+            o.formFieldPath.startsWith('tipo-dx-'),
+        );
+        if (tipoObs.length) {
+          const restored: Record<string, string> = {};
+          tipoObs.forEach((o) => {
+            const codedUuid = o.formFieldPath.replace('tipo-dx-', '');
+            const valueUuid = typeof o.value === 'object' && o.value !== null ? o.value.uuid : o.value;
+            if (codedUuid && valueUuid) restored[codedUuid] = valueUuid;
+          });
+          setDiagnosisTipos(restored);
+        }
       } catch {
         setError(new Error(t('errorTransformingDiagnoses', 'Error transforming diagnoses')));
         createErrorHandler();
@@ -275,12 +308,14 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
         setSelectedSecondaryDiagnoses((selectedDiagnoses) => [...selectedDiagnoses, newDiagnosis]);
       }
       setCombinedDiagnoses((combinedDiagnoses) => [...combinedDiagnoses, newDiagnosis]);
+      // Default tipo = Presuntivo for every newly added diagnosis
+      setDiagnosisTipos((prev) => ({ ...prev, [conceptDiagnosisToAdd.uuid]: diagnosisTypePresuntivoUuid }));
     },
-    [createDiagnosis, setValue, clearErrors],
+    [createDiagnosis, setValue, clearErrors, diagnosisTypePresuntivoUuid],
   );
 
   const handleRemoveDiagnosis = useCallback(
-    (diagnosisToRemove: Diagnosis, searchInputField) => {
+    (diagnosisToRemove: Diagnosis, searchInputField: string) => {
       if (searchInputField === 'primaryInputSearch') {
         setSelectedPrimaryDiagnoses(
           selectedPrimaryDiagnoses.filter(
@@ -297,6 +332,11 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
       setCombinedDiagnoses(
         combinedDiagnoses.filter((diagnosis) => diagnosis.diagnosis.coded !== diagnosisToRemove.diagnosis.coded),
       );
+      setDiagnosisTipos((prev) => {
+        const next = { ...prev };
+        delete next[diagnosisToRemove.diagnosis.coded];
+        return next;
+      });
     },
     [combinedDiagnoses, selectedPrimaryDiagnoses, selectedSecondaryDiagnoses],
   );
@@ -363,6 +403,27 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
 
       const existingClinicalNoteObs = encounter?.obs?.find((obs) => obs.concept.uuid === encounterNoteTextConceptUuid);
 
+      // Build NTS-139 tipo OBS per diagnosis (formFieldPath = tipo-dx-{codedUuid})
+      const tipoObsList = combinedDiagnoses.map((dx) => ({
+        concept: { uuid: diagnosisTypeConceptUuid, display: '' },
+        value: diagnosisTipos[dx.diagnosis.coded] ?? diagnosisTypePresuntivoUuid,
+        formFieldNamespace: 'visit-notes',
+        formFieldPath: `tipo-dx-${dx.diagnosis.coded}`,
+      }));
+
+      const obsPayload = [
+        ...(clinicalNote
+          ? [
+              {
+                concept: { uuid: encounterNoteTextConceptUuid, display: '' },
+                value: clinicalNote,
+                ...(existingClinicalNoteObs && { uuid: existingClinicalNoteObs.uuid }),
+              },
+            ]
+          : []),
+        ...tipoObsList,
+      ];
+
       const visitNotePayload: VisitNotePayload = {
         encounterDatetime: finalNoteDate?.format(),
         form: formConceptUuid,
@@ -375,15 +436,7 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
           },
         ],
         encounterType: encounterTypeUuid,
-        obs: clinicalNote
-          ? [
-              {
-                concept: { uuid: encounterNoteTextConceptUuid, display: '' },
-                value: clinicalNote,
-                ...(existingClinicalNoteObs && { uuid: existingClinicalNoteObs.uuid }),
-              },
-            ]
-          : [],
+        obs: obsPayload,
       };
 
       const abortController = new AbortController();
@@ -410,6 +463,7 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
         .then((encounterUuid) => {
           return Promise.all(
             combinedDiagnoses.map((diagnosis) => {
+              const tipoUuid = diagnosisTipos[diagnosis.diagnosis.coded] ?? diagnosisTypePresuntivoUuid;
               const diagnosesPayload: DiagnosisPayload = {
                 encounter: encounterUuid,
                 patient: patientUuid,
@@ -417,7 +471,8 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
                 diagnosis: {
                   coded: diagnosis.diagnosis.coded,
                 },
-                certainty: diagnosis.certainty,
+                // NTS-139: Definitivo → CONFIRMED, Presuntivo/Repetitivo → PROVISIONAL
+                certainty: tipoUuid === diagnosisTypeDefinitivoUuid ? 'CONFIRMED' : 'PROVISIONAL',
                 rank: diagnosis.rank,
               };
               return savePatientDiagnosis(abortController, diagnosesPayload);
@@ -476,6 +531,10 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
       clinicianEncounterRole,
       closeWorkspace,
       combinedDiagnoses,
+      diagnosisTipos,
+      diagnosisTypeConceptUuid,
+      diagnosisTypeDefinitivoUuid,
+      diagnosisTypePresuntivoUuid,
       encounter?.diagnoses,
       encounter?.id,
       encounter?.obs,
@@ -539,12 +598,11 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
               </Column>
             </Row>
             <div className={styles.diagnosesText}>
-              {selectedPrimaryDiagnoses && selectedPrimaryDiagnoses.length ? (
-                <>
-                  {selectedPrimaryDiagnoses.map((diagnosis, index) => (
+              {selectedPrimaryDiagnoses?.length > 0 &&
+                selectedPrimaryDiagnoses.map((diagnosis, index) => (
+                  <div key={index} className={styles.diagnosisRow}>
                     <DismissibleTag
                       className={styles.tag}
-                      key={index}
                       dismissTooltipLabel={t('clearFilter', 'Clear filter')}
                       onClose={() => handleRemoveDiagnosis(diagnosis, 'primaryInputSearch')}
                       tagTitle={diagnosis.display}
@@ -552,15 +610,41 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
                       title={t('clearFilter', 'Clear filter')}
                       type="red"
                     />
-                  ))}
-                </>
-              ) : null}
-              {selectedSecondaryDiagnoses && selectedSecondaryDiagnoses.length ? (
-                <>
-                  {selectedSecondaryDiagnoses.map((diagnosis, index) => (
+                    <div className={styles.tipoSelector}>
+                      <RadioButtonGroup
+                        legendText=""
+                        name={`tipo-primary-${index}`}
+                        valueSelected={diagnosisTipos[diagnosis.diagnosis.coded] ?? diagnosisTypePresuntivoUuid}
+                        onChange={(value) =>
+                          value != null &&
+                          setDiagnosisTipos((prev) => ({ ...prev, [diagnosis.diagnosis.coded]: String(value) }))
+                        }
+                        orientation="horizontal"
+                      >
+                        <RadioButton
+                          id={`tipo-primary-${index}-p`}
+                          labelText={t('presuntivo', 'P - Presuntivo')}
+                          value={diagnosisTypePresuntivoUuid}
+                        />
+                        <RadioButton
+                          id={`tipo-primary-${index}-d`}
+                          labelText={t('definitivo', 'D - Definitivo')}
+                          value={diagnosisTypeDefinitivoUuid}
+                        />
+                        <RadioButton
+                          id={`tipo-primary-${index}-r`}
+                          labelText={t('repetitivo', 'R - Repetido')}
+                          value={diagnosisTypeRepetitivoUuid}
+                        />
+                      </RadioButtonGroup>
+                    </div>
+                  </div>
+                ))}
+              {selectedSecondaryDiagnoses?.length > 0 &&
+                selectedSecondaryDiagnoses.map((diagnosis, index) => (
+                  <div key={index} className={styles.diagnosisRow}>
                     <DismissibleTag
                       className={styles.tag}
-                      key={index}
                       dismissTooltipLabel={t('clearFilter', 'Clear filter')}
                       onClose={() => handleRemoveDiagnosis(diagnosis, 'secondaryInputSearch')}
                       tagTitle={diagnosis.display}
@@ -568,15 +652,39 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
                       title={t('clearFilter', 'Clear filter')}
                       type="blue"
                     />
-                  ))}
-                </>
-              ) : null}
-              {selectedPrimaryDiagnoses &&
-                !selectedPrimaryDiagnoses.length &&
-                selectedSecondaryDiagnoses &&
-                !selectedSecondaryDiagnoses.length && (
-                  <span>{t('emptyDiagnosisText', 'No diagnosis selected — Enter a diagnosis below')}</span>
-                )}
+                    <div className={styles.tipoSelector}>
+                      <RadioButtonGroup
+                        legendText=""
+                        name={`tipo-secondary-${index}`}
+                        valueSelected={diagnosisTipos[diagnosis.diagnosis.coded] ?? diagnosisTypePresuntivoUuid}
+                        onChange={(value) =>
+                          value != null &&
+                          setDiagnosisTipos((prev) => ({ ...prev, [diagnosis.diagnosis.coded]: String(value) }))
+                        }
+                        orientation="horizontal"
+                      >
+                        <RadioButton
+                          id={`tipo-secondary-${index}-p`}
+                          labelText={t('presuntivo', 'P - Presuntivo')}
+                          value={diagnosisTypePresuntivoUuid}
+                        />
+                        <RadioButton
+                          id={`tipo-secondary-${index}-d`}
+                          labelText={t('definitivo', 'D - Definitivo')}
+                          value={diagnosisTypeDefinitivoUuid}
+                        />
+                        <RadioButton
+                          id={`tipo-secondary-${index}-r`}
+                          labelText={t('repetitivo', 'R - Repetido')}
+                          value={diagnosisTypeRepetitivoUuid}
+                        />
+                      </RadioButtonGroup>
+                    </div>
+                  </div>
+                ))}
+              {!selectedPrimaryDiagnoses?.length && !selectedSecondaryDiagnoses?.length && (
+                <span>{t('emptyDiagnosisText', 'No diagnosis selected — Enter a diagnosis below')}</span>
+              )}
             </div>
             <Row className={styles.row}>
               <Column sm={1}>
