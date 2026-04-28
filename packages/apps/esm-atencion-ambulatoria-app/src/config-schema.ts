@@ -98,6 +98,8 @@ export const configSchema = {
 
       // Consulta Externa Forms
       consultaExternaForm: 'CE-001-CONSULTA EXTERNA',
+      anamnesisForm: 'CE-ANAM-001-ANAMNESIS',
+      soapNoteForm: 'CE-SOAP-001-NOTA SOAP',
       referralForm: 'CE-REF-001-REFERENCIA-CONTRARREFERENCIA',
 
       // Hospital Forms
@@ -602,6 +604,8 @@ export interface ConfigObject {
     clinicalEncounterFormUuid: string;
     // Consulta Externa Forms
     consultaExternaForm: string;
+    anamnesisForm: string;
+    soapNoteForm: string;
     referralForm: string;
     // HIV/HTS Forms
     defaulterTracingFormUuid: string;

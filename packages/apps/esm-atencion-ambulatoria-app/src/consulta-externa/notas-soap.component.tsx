@@ -25,7 +25,7 @@ const NotasSoap: React.FC<NotasSoapProps> = ({ patientUuid }) => {
   const handleLaunchForm = () => {
     launchWorkspace('patient-form-entry-workspace', {
       formInfo: {
-        formUuid: config.formsList?.consultaExternaForm,
+        formUuid: config.formsList?.soapNoteForm ?? config.formsList?.consultaExternaForm,
       },
     });
   };
