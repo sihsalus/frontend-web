@@ -30,6 +30,38 @@ export const configSchema = {
     _default: 'CIEL:984',
     _description: 'A UUID or concept mapping which will have all the possible vaccines as set-members.',
   },
+  supplementalVaccines: {
+    _type: Type.Array,
+    _elements: {
+      _type: Type.Object,
+      uuid: {
+        _type: Type.UUID,
+        _description: 'Concept UUID for an additional MINSA vaccine/biologic not present in the base concept set.',
+      },
+      display: {
+        _type: Type.String,
+        _description: 'Display name for the additional vaccine/biologic.',
+      },
+      minsaCategory: {
+        _type: Type.String,
+        _description: 'MINSA population or operational category.',
+      },
+    },
+    _description:
+      'Additional MINSA 2026 vaccines/biologics configured locally while the OpenMRS concept set is updated.',
+    _default: [
+      {
+        uuid: 'f0000180-0000-4000-8000-000000000180',
+        display: 'Vacuna contra Virus Sincitial Respiratorio (VRS)',
+        minsaCategory: 'Gestantes',
+      },
+      {
+        uuid: 'f0000181-0000-4000-8000-000000000181',
+        display: 'Nirsevimab',
+        minsaCategory: 'Recién nacidos y lactantes',
+      },
+    ],
+  },
   sequenceDefinitions: {
     _type: Type.Array,
     _elements: {
@@ -69,6 +101,10 @@ export const configSchema = {
           minsaLabel: {
             _type: Type.String,
             _description: 'Human-readable MINSA schedule label for this dose.',
+          },
+          minsaPopulation: {
+            _type: Type.String,
+            _description: 'MINSA target population for this dose.',
           },
         },
       },
@@ -289,6 +325,28 @@ export const configSchema = {
           },
         ],
       },
+      {
+        vaccineConceptUuid: 'f0000180-0000-4000-8000-000000000180',
+        sequences: [
+          {
+            sequenceLabel: 'Dosis-Unica',
+            sequenceNumber: 1,
+            minsaLabel: 'Gestante',
+            minsaPopulation: 'Gestantes según lineamientos MINSA para VRS',
+          },
+        ],
+      },
+      {
+        vaccineConceptUuid: 'f0000181-0000-4000-8000-000000000181',
+        sequences: [
+          {
+            sequenceLabel: 'Dosis-Unica',
+            sequenceNumber: 1,
+            minsaLabel: 'Recién nacido/lactante',
+            minsaPopulation: 'Recién nacidos y lactantes según lineamientos MINSA para VRS',
+          },
+        ],
+      },
     ],
   },
 };
@@ -303,6 +361,11 @@ export interface ImmunizationConfigObject {
     notes?: string;
   };
   immunizationConceptSet: string;
+  supplementalVaccines?: Array<{
+    uuid: string;
+    display: string;
+    minsaCategory?: string;
+  }>;
   sequenceDefinitions: Array<{
     vaccineConceptUuid: string;
     sequences: Array<{
@@ -312,6 +375,7 @@ export interface ImmunizationConfigObject {
       minAgeInDays?: number;
       maxAgeInDays?: number;
       minsaLabel?: string;
+      minsaPopulation?: string;
     }>;
   }>;
 }

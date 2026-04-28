@@ -10,8 +10,23 @@ export function useImmunizationsConceptSet(config: ImmunizationWidgetConfigObjec
     `${restBaseUrl}/concept?references=${config.immunizationConceptSet}&v=${conceptRepresentation}`,
     openmrsFetch,
   );
+  const conceptSet = data?.data?.results?.[0];
+  const supplementalAnswers = config.supplementalVaccines?.map((vaccine) => ({
+    uuid: vaccine.uuid,
+    display: vaccine.display,
+  }));
+  const answersByUuid = new Map(
+    [...(conceptSet?.answers ?? []), ...(supplementalAnswers ?? [])].map((answer) => [answer.uuid, answer]),
+  );
+
   return {
-    immunizationsConceptSet: data?.data?.results?.[0],
+    immunizationsConceptSet: {
+      ...(conceptSet ?? {
+        uuid: config.immunizationConceptSet,
+        display: 'Configured immunizations',
+      }),
+      answers: Array.from(answersByUuid.values()),
+    },
     isLoading,
   };
 }

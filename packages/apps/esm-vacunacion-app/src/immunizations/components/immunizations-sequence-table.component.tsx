@@ -53,7 +53,14 @@ const SequenceTable: React.FC<SequenceTableProps> = ({
         key: 'sequence',
         header: sequences.length ? t('sequence', 'Sequence') : t('doseNumberWithinSeries', 'Dose number within series'),
       },
-      { key: 'vaccinationDate', header: t('vaccinationDate', 'Vaccination date') },
+      {
+        key: 'status',
+        header: t('immunizationStatus', 'Estado de aplicación'),
+      },
+      {
+        key: 'vaccinationDate',
+        header: t('vaccinationDate', 'Vaccination date'),
+      },
       { key: 'nextDoseDate', header: t('nextDoseDate', 'Next dose date') },
       { key: 'expirationDate', header: t('expirationDate', 'Expiration date') },
       { key: 'note', header: t('note', 'Note') },
@@ -77,6 +84,10 @@ const SequenceTable: React.FC<SequenceTableProps> = ({
     sequence: !sequences.length
       ? dose.doseNumber || 0
       : sequences?.find((s) => s.sequenceNumber === dose.doseNumber)?.sequenceLabel || dose.doseNumber,
+    status:
+      dose.status === 'not-done'
+        ? `${t('notAdministered', 'No aplicada / diferida')}${dose.statusReason ? `: ${dose.statusReason}` : ''}`
+        : t('administered', 'Aplicada'),
     vaccinationDate:
       dose?.occurrenceDateTime &&
       formatDate(new Date(dose.occurrenceDateTime), {
@@ -85,7 +96,11 @@ const SequenceTable: React.FC<SequenceTableProps> = ({
         time: false,
       }),
     nextDoseDate: dose?.nextDoseDate
-      ? formatDate(new Date(dose.nextDoseDate), { mode: 'standard', noToday: true, time: false })
+      ? formatDate(new Date(dose.nextDoseDate), {
+          mode: 'standard',
+          noToday: true,
+          time: false,
+        })
       : '--',
     expirationDate:
       (dose?.expirationDate &&
@@ -107,6 +122,9 @@ const SequenceTable: React.FC<SequenceTableProps> = ({
               immunizationId: dose.immunizationObsUuid,
               vaccinationDate: dose.occurrenceDateTime,
               doseNumber: dose.doseNumber,
+              status: dose.status,
+              statusReason: dose.statusReason,
+              programContext: dose.programContext,
               nextDoseDate: dose.nextDoseDate,
               note: dose.note?.[0]?.text,
               expirationDate: dose.expirationDate,

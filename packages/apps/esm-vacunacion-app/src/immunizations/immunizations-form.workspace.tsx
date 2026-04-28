@@ -54,32 +54,45 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
   }>();
 
   const immunizationFormSchema = useMemo(() => {
-    return z.object({
-      vaccineUuid: z.string().min(1, t('vaccineRequired', 'Vaccine is required')),
-      vaccinationDate: z
-        .date()
-        .min(new Date(patient.birthDate), {
-          message: t('vaccinationDateCannotBeBeforeBirthDate', 'Vaccination date cannot precede birth date'),
-        })
-        .refine(
-          (date) => {
-            // Normalize both dates to start of day in local timezone
-            const inputDate = dayjs(date).startOf('day');
-            const today = dayjs().startOf('day');
-            return inputDate.isSame(today) || inputDate.isBefore(today);
-          },
-          {
-            message: t('vaccinationDateCannotBeInTheFuture', 'Vaccination date cannot be in the future'),
-          },
-        ),
-      // null means unset; when provided, must be an integer ≥ 1
-      doseNumber: z.union([z.number({ coerce: true }).int().min(1), z.null()]).optional(),
-      note: z.string().trim().max(255).optional(),
-      nextDoseDate: z.date().nullable().optional(),
-      expirationDate: z.date().nullable().optional(),
-      lotNumber: z.string().nullable().optional(),
-      manufacturer: z.string().nullable().optional(),
-    });
+    return z
+      .object({
+        vaccineUuid: z.string().min(1, t('vaccineRequired', 'Vaccine is required')),
+        vaccinationDate: z
+          .date()
+          .min(new Date(patient.birthDate), {
+            message: t('vaccinationDateCannotBeBeforeBirthDate', 'Vaccination date cannot precede birth date'),
+          })
+          .refine(
+            (date) => {
+              // Normalize both dates to start of day in local timezone
+              const inputDate = dayjs(date).startOf('day');
+              const today = dayjs().startOf('day');
+              return inputDate.isSame(today) || inputDate.isBefore(today);
+            },
+            {
+              message: t('vaccinationDateCannotBeInTheFuture', 'Vaccination date cannot be in the future'),
+            },
+          ),
+        // null means unset; when provided, must be an integer ≥ 1
+        doseNumber: z.union([z.number({ coerce: true }).int().min(1), z.null()]).optional(),
+        status: z.enum(['completed', 'not-done']).default('completed'),
+        statusReason: z.string().trim().max(255).optional(),
+        programContext: z.enum(['routine', 'catch-up', 'campaign', 'special']).default('routine'),
+        note: z.string().trim().max(255).optional(),
+        nextDoseDate: z.date().nullable().optional(),
+        expirationDate: z.date().nullable().optional(),
+        lotNumber: z.string().nullable().optional(),
+        manufacturer: z.string().nullable().optional(),
+      })
+      .superRefine((value, ctx) => {
+        if (value.status === 'not-done' && !value.statusReason?.trim()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['statusReason'],
+            message: t('statusReasonRequired', 'Debe registrar el motivo de no aplicación o diferimiento'),
+          });
+        }
+      });
   }, [patient.birthDate, t]);
 
   type ImmunizationFormInputData = z.infer<typeof immunizationFormSchema>;
@@ -90,6 +103,9 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
       vaccineUuid: '',
       vaccinationDate: dayjs().startOf('day').toDate(),
       doseNumber: 1,
+      status: 'completed',
+      statusReason: '',
+      programContext: 'routine',
       nextDoseDate: null,
       note: '',
       expirationDate: null,
@@ -109,6 +125,7 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
   const vaccinationDate = watch('vaccinationDate');
   const vaccineUuid = watch('vaccineUuid');
   const doseNumber = watch('doseNumber');
+  const immunizationStatus = watch('status');
 
   const selectedSequence = useMemo(() => {
     if (!vaccineUuid || doseNumber == null) return null;
@@ -156,6 +173,14 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           vaccineUuid: props.vaccineUuid,
           vaccinationDate: vaccinationDateOrNow,
           doseNumber: props.doseNumber,
+          status: props.status === 'not-done' ? 'not-done' : 'completed',
+          statusReason: props.statusReason,
+          programContext:
+            props.programContext === 'campaign' ||
+            props.programContext === 'catch-up' ||
+            props.programContext === 'special'
+              ? props.programContext
+              : 'routine',
           nextDoseDate: props.nextDoseDate ? parseDate(props.nextDoseDate) : null,
           note: props.note,
           expirationDate: props.expirationDate ? parseDate(props.expirationDate) : null,
@@ -209,6 +234,9 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           vaccineUuid,
           vaccinationDate,
           doseNumber,
+          status,
+          statusReason,
+          programContext,
           expirationDate,
           lotNumber,
           manufacturer,
@@ -224,6 +252,9 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           vaccineUuid: vaccineUuid,
           vaccinationDate: dayjs(vaccinationDate).startOf('day').toDate().toISOString(),
           doseNumber,
+          status,
+          statusReason,
+          programContext,
           nextDoseDate: nextDoseDate ? dayjs(nextDoseDate).startOf('day').toDate().toISOString() : null,
           note,
           expirationDate: expirationDate ? dayjs(expirationDate).format('YYYY-MM-DD') : null,
@@ -323,6 +354,70 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
                 />
               </ResponsiveWrapper>
             )}
+            <ResponsiveWrapper>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    id="immunizationStatus"
+                    itemToString={(item) =>
+                      item === 'not-done'
+                        ? t('notAdministered', 'No aplicada / diferida')
+                        : t('administered', 'Aplicada')
+                    }
+                    items={['completed', 'not-done']}
+                    label={t('selectStatus', 'Seleccione estado')}
+                    onChange={(val) => onChange(val.selectedItem)}
+                    selectedItem={value}
+                    titleText={t('immunizationStatus', 'Estado de aplicación')}
+                  />
+                )}
+              />
+            </ResponsiveWrapper>
+            <ResponsiveWrapper>
+              <Controller
+                name="programContext"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    id="programContext"
+                    itemToString={(item) =>
+                      ({
+                        routine: t('routineSchedule', 'Esquema regular'),
+                        'catch-up': t('catchUpSchedule', 'Rescate'),
+                        campaign: t('campaignSchedule', 'Campaña o barrido'),
+                        special: t('specialIndication', 'Indicación especial'),
+                      })[item] ?? item
+                    }
+                    items={['routine', 'catch-up', 'campaign', 'special']}
+                    label={t('selectProgramContext', 'Seleccione contexto')}
+                    onChange={(val) => onChange(val.selectedItem)}
+                    selectedItem={value}
+                    titleText={t('programContext', 'Contexto MINSA')}
+                  />
+                )}
+              />
+            </ResponsiveWrapper>
+            {immunizationStatus === 'not-done' ? (
+              <ResponsiveWrapper>
+                <Controller
+                  name="statusReason"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      id="statusReason"
+                      invalid={!!errors?.statusReason}
+                      invalidText={errors?.statusReason?.message}
+                      labelText={t('statusReason', 'Motivo de no aplicación o diferimiento')}
+                      onChange={(evt) => onChange(evt.target.value)}
+                      type="text"
+                      value={value}
+                    />
+                  )}
+                />
+              </ResponsiveWrapper>
+            ) : null}
             {minsaAgeWarning ? (
               <InlineNotification
                 kind="warning"
