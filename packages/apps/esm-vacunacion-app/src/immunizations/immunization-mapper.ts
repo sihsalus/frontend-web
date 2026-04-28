@@ -154,7 +154,7 @@ export const mapToFHIRImmunizationResource = (
             },
           ]
         : []),
-      ...(immunizationFormData.programContext
+      ...(immunizationFormData.programContext && immunizationFormData.programContext !== 'routine'
         ? [
             {
               url: FHIR_MINSA_PROGRAM_CONTEXT_EXTENSION_URL,
