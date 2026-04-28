@@ -50,7 +50,7 @@ describe('InProgressFuaRequestsTile', () => {
     });
     render(<InProgressFuaRequestsTile />);
     expect(screen.getByText('3')).toBeInTheDocument();
-    expect(screen.getByText('En Proceso')).toBeInTheDocument();
+    expect(screen.getAllByText('Visitas')).toHaveLength(2);
   });
 
   it('passes status IN_PROGRESS to hook', () => {

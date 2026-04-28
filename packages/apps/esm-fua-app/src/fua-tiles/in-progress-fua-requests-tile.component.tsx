@@ -10,9 +10,9 @@ const InProgressFuaRequestsTile = () => {
 
   return (
     <FuaSummaryTile
-      label={t('activeFuas', 'FUAs activos')}
+      label={t('activeFuas', 'Visitas')}
       value={fuaOrders?.length}
-      headerLabel={t('inProcessHeader', 'En Proceso')}
+      headerLabel={t('inProcessHeader', 'Visitas')}
     />
   );
 };

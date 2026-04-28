@@ -10,9 +10,9 @@ const CompletedFuaRequestsTile = () => {
 
   return (
     <FuaSummaryTile
-      label={t('completed', 'Completed')}
+      label={t('completed', 'Lista de Formatos FUA')}
       value={fuaOrders?.length}
-      headerLabel={t('completedHeader', 'Atenciones Completadas')}
+      headerLabel={t('completedHeader', 'Lista de Formatos FUA')}
     />
   );
 };
