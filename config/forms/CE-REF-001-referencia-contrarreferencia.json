@@ -1,0 +1,136 @@
+{
+  "name": "CE-REF-001-REFERENCIA-CONTRARREFERENCIA",
+  "description": "Formulario de Referencia y Contrarreferencia según NTS-102-MINSA. Registra la referencia del paciente a otro establecimiento y la respuesta de contrarreferencia.",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounterType": "16bec8b6-4a2d-4cf9-8e66-9bb6e1c5d1da",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "pages": [
+    {
+      "label": "Referencia",
+      "sections": [
+        {
+          "label": "Datos de la Referencia",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "tipoReferencia",
+              "label": "Tipo de Referencia",
+              "type": "obs",
+              "required": true,
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "1272AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "answers": [
+                  {
+                    "concept": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Emergencia"
+                  },
+                  {
+                    "concept": "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Urgencia"
+                  },
+                  {
+                    "concept": "160429AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Electiva"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "establecimientoDestino",
+              "label": "Establecimiento de Destino",
+              "type": "obs",
+              "required": true,
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "163391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              }
+            },
+            {
+              "id": "motivoReferencia",
+              "label": "Motivo de Referencia",
+              "type": "obs",
+              "required": true,
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "160481AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "rows": 4
+              }
+            },
+            {
+              "id": "diagnosticoPrincipal",
+              "label": "Diagnóstico Principal (CIE-10)",
+              "type": "obs",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "159947AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              }
+            },
+            {
+              "id": "indicacionesReferencia",
+              "label": "Indicaciones / Observaciones",
+              "type": "obs",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "rows": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Contrarreferencia",
+      "sections": [
+        {
+          "label": "Respuesta del Establecimiento Destino",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "respuestaContrarreferencia",
+              "label": "Respuesta de Contrarreferencia",
+              "type": "obs",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "161011AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "rows": 5
+              },
+              "validators": []
+            },
+            {
+              "id": "condicionPacienteRetorno",
+              "label": "Condición del Paciente al Retorno",
+              "type": "obs",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "159640AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "answers": [
+                  {
+                    "concept": "162844AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Mejorado"
+                  },
+                  {
+                    "concept": "160432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Sin cambio"
+                  },
+                  {
+                    "concept": "160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Deteriorado"
+                  },
+                  {
+                    "concept": "160034AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Fallecido"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
