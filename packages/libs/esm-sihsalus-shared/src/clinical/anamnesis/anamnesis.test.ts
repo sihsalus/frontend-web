@@ -12,6 +12,7 @@ describe('anamnesis domain helpers', () => {
           { concept: { uuid: 'duration' }, value: '3 dias' },
           { concept: { uuid: 'onset' }, value: { uuid: 'sudden', display: 'Brusco' } },
           { concept: { uuid: 'narrative' }, value: 'Inicio posterior a alimentos.' },
+          { concept: { uuid: 'appetite' }, value: 'Disminuido' },
         ],
       },
       {
@@ -19,6 +20,7 @@ describe('anamnesis domain helpers', () => {
         illnessDurationUuid: 'duration',
         onsetTypeUuid: 'onset',
         anamnesisUuid: 'narrative',
+        appetiteUuid: 'appetite',
       },
     );
 
@@ -27,6 +29,7 @@ describe('anamnesis domain helpers', () => {
     expect(entry.illnessDuration).toBe('3 dias');
     expect(entry.onsetType).toBe('Brusco');
     expect(entry.narrative).toBe('Inicio posterior a alimentos.');
+    expect(entry.biologicalFunctions.appetite).toBe('Disminuido');
     expect(hasAnamnesisData(entry)).toBe(true);
   });
 

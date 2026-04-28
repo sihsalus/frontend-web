@@ -287,6 +287,36 @@ export const configSchema = {
       _description: 'Curso de la enfermedad actual',
       _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.courseUuid,
     },
+    appetiteUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: apetito',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.appetiteUuid,
+    },
+    thirstUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: sed',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.thirstUuid,
+    },
+    sleepUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: sueño',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.sleepUuid,
+    },
+    moodUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: estado de ánimo',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.moodUuid,
+    },
+    urineUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: orina',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.urineUuid,
+    },
+    bowelMovementsUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: deposiciones',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.bowelMovementsUuid,
+    },
 
     // SOAP Notes (CE-5)
     soapSubjectiveUuid: {
