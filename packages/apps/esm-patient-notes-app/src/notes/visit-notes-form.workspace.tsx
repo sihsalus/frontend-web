@@ -134,7 +134,9 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
   const [error, setError] = useState<Error>(null);
   const { allowedFileExtensions } = useAllowedFileExtensions();
 
-  // NTS-139: Tipo de diagnóstico per coded concept UUID → tipoConceptUuid answer
+  // MINSA/NTS-139 records each diagnosis as Presuntivo, Definitivo or
+  // Repetitivo. OpenMRS patientdiagnoses only stores certainty, so SIH.SALUS
+  // keeps the exact MINSA type as an obs keyed by the diagnosis concept UUID.
   const [diagnosisTipos, setDiagnosisTipos] = useState<Record<string, string>>({});
 
   const visitNoteFormSchema = useMemo(() => createSchema(t), [t]);
@@ -198,7 +200,8 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
         setSelectedSecondaryDiagnoses(secondaryDiagnoses);
         setCombinedDiagnoses([...primaryDiagnoses, ...secondaryDiagnoses]);
 
-        // Restore tipo from OBS saved with formFieldPath = tipo-dx-{codedUuid}
+        // Restore the exact MINSA diagnosis type saved alongside the encounter.
+        // The formFieldPath ties the type obs back to its coded diagnosis.
         const obsArray = (encounter.obs ?? []) as Array<{
           formFieldNamespace?: string;
           formFieldPath?: string;
@@ -403,7 +406,9 @@ const VisitNotesForm: React.FC<PatientWorkspace2DefinitionProps<VisitNotesFormPr
 
       const existingClinicalNoteObs = encounter?.obs?.find((obs) => obs.concept.uuid === encounterNoteTextConceptUuid);
 
-      // Build NTS-139 tipo OBS per diagnosis (formFieldPath = tipo-dx-{codedUuid})
+      // Persist the exact MINSA diagnosis type for each CIE-10 diagnosis.
+      // This complements patientdiagnoses.certainty, which cannot represent
+      // "Repetitivo" without losing information.
       const tipoObsList = combinedDiagnoses.map((dx) => ({
         concept: { uuid: diagnosisTypeConceptUuid, display: '' },
         value: diagnosisTipos[dx.diagnosis.coded] ?? diagnosisTypePresuntivoUuid,

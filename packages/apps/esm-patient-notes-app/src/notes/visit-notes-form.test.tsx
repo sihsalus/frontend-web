@@ -19,7 +19,13 @@ import {
   mockSessionDataResponse,
 } from 'test-utils';
 import { type ConfigObject, configSchema } from '../config-schema';
-import { fetchDiagnosisConceptsByName, saveVisitNote, updateVisitNote } from './visit-notes.resource';
+import {
+  deletePatientDiagnosis,
+  fetchDiagnosisConceptsByName,
+  savePatientDiagnosis,
+  saveVisitNote,
+  updateVisitNote,
+} from './visit-notes.resource';
 import VisitNotesForm, { type VisitNotesFormProps } from './visit-notes-form.workspace';
 
 const defaultProps: PatientWorkspace2DefinitionProps<VisitNotesFormProps, {}> = {
@@ -50,6 +56,8 @@ function renderVisitNotesForm(workspaceProps: Partial<VisitNotesFormProps> = {})
 }
 
 const mockFetchDiagnosisConceptsByName = jest.mocked(fetchDiagnosisConceptsByName);
+const mockDeletePatientDiagnosis = jest.mocked(deletePatientDiagnosis);
+const mockSavePatientDiagnosis = jest.mocked(savePatientDiagnosis);
 const mockSaveVisitNote = jest.mocked(saveVisitNote);
 const mockShowSnackbar = jest.mocked(showSnackbar);
 const mockUpdateVisitNote = jest.mocked(updateVisitNote);
@@ -60,6 +68,8 @@ jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
 
 jest.mock('./visit-notes.resource', () => ({
   fetchDiagnosisConceptsByName: jest.fn(),
+  deletePatientDiagnosis: jest.fn(),
+  savePatientDiagnosis: jest.fn(),
   updateVisitNote: jest.fn(),
   useLocationUuid: jest.fn().mockImplementation(() => ({
     data: mockFetchLocationByUuidResponse.data.uuid,
@@ -318,13 +328,19 @@ test('updates existing visit note when in edit mode', async () => {
     encounterType: ConfigMock.visitNoteConfig.encounterTypeUuid,
     form: ConfigMock.visitNoteConfig.formConceptUuid,
     location: mockSessionDataResponse.data.sessionLocation.uuid,
-    obs: [
-      {
+    obs: expect.arrayContaining([
+      expect.objectContaining({
         concept: { display: '', uuid: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' },
         value: 'Updated clinical note',
         uuid: undefined,
-      },
-    ],
+      }),
+      expect.objectContaining({
+        concept: { display: '', uuid: ConfigMock.visitNoteConfig.diagnosisTypeConceptUuid },
+        formFieldNamespace: 'visit-notes',
+        formFieldPath: 'tipo-dx-789',
+        value: ConfigMock.visitNoteConfig.diagnosisTypePresuntivoUuid,
+      }),
+    ]),
     patient: mockPatient.id,
     encounterDatetime: undefined,
   };
@@ -333,6 +349,8 @@ test('updates existing visit note when in edit mode', async () => {
   mockUpdateVisitNote.mockResolvedValueOnce({ status: 200, body: 'Visit note updated' } as unknown as ReturnType<
     typeof updateVisitNote
   >);
+  mockDeletePatientDiagnosis.mockResolvedValue({ status: 204 } as unknown as ReturnType<typeof deletePatientDiagnosis>);
+  mockSavePatientDiagnosis.mockResolvedValue({ status: 201 } as unknown as ReturnType<typeof savePatientDiagnosis>);
 
   renderVisitNotesForm({
     formContext: 'editing',
