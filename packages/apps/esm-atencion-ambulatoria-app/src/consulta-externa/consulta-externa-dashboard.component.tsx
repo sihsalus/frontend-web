@@ -6,6 +6,7 @@ import {
   DocumentMultiple_01,
   Finance,
   ListChecked,
+  Migrate,
   UserIdentification,
 } from '@carbon/react/icons';
 import React from 'react';
@@ -18,6 +19,7 @@ import MotivoConsulta from './motivo-consulta.component';
 import NotasSoap from './notas-soap.component';
 import PertenenciaEtnica from './pertenencia-etnica.component';
 import PlanTratamiento from './plan-tratamiento.component';
+import ReferenciaContraReferencia from './referencia-contrarreferencia.component';
 import TriageSummary from './triage-summary.component';
 
 interface ConsultaExternaDashboardProps {
@@ -47,6 +49,7 @@ const ConsultaExternaDashboard: React.FC<ConsultaExternaDashboardProps> = ({ pat
             <Tab renderIcon={ListChecked}>{t('treatmentPlan', 'Plan de Tratamiento')}</Tab>
             <Tab renderIcon={Finance}>{t('insuranceProvider', 'Financiador')}</Tab>
             <Tab renderIcon={UserIdentification}>{t('ethnicIdentity', 'Pertenencia Étnica')}</Tab>
+            <Tab renderIcon={Migrate}>{t('referralCounterReferral', 'Ref. / Contraref.')}</Tab>
           </TabList>
 
           <TabPanels>
@@ -70,6 +73,9 @@ const ConsultaExternaDashboard: React.FC<ConsultaExternaDashboardProps> = ({ pat
             </TabPanel>
             <TabPanel>
               <PertenenciaEtnica patientUuid={patientUuid} />
+            </TabPanel>
+            <TabPanel>
+              <ReferenciaContraReferencia patientUuid={patientUuid} />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -1,4 +1,14 @@
-import { Button, ButtonSet, Dropdown, Form, InlineLoading, Stack, TextArea, TextInput } from '@carbon/react';
+import {
+  Button,
+  ButtonSet,
+  Dropdown,
+  Form,
+  InlineLoading,
+  InlineNotification,
+  Stack,
+  TextArea,
+  TextInput,
+} from '@carbon/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   getCoreTranslation,
@@ -100,6 +110,44 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
   const vaccineUuid = watch('vaccineUuid');
   const doseNumber = watch('doseNumber');
 
+  const selectedSequence = useMemo(() => {
+    if (!vaccineUuid || doseNumber == null) return null;
+
+    return config.sequenceDefinitions
+      .find((sequence) => sequence.vaccineConceptUuid === vaccineUuid)
+      ?.sequences.find((sequence) => sequence.sequenceNumber === doseNumber);
+  }, [config.sequenceDefinitions, doseNumber, vaccineUuid]);
+
+  const minsaAgeWarning = useMemo(() => {
+    if (!selectedSequence || !vaccinationDate || !patient.birthDate) return null;
+
+    const ageInDays = dayjs(vaccinationDate).startOf('day').diff(dayjs(patient.birthDate).startOf('day'), 'day');
+    const minAge = selectedSequence.minAgeInDays;
+    const maxAge = selectedSequence.maxAgeInDays;
+
+    if (typeof minAge === 'number' && ageInDays < minAge) {
+      return t(
+        'minsaMinimumAgeWarning',
+        'La fecha seleccionada está antes de la edad recomendada por MINSA para esta dosis{{label}}.',
+        {
+          label: selectedSequence.minsaLabel ? ` (${selectedSequence.minsaLabel})` : '',
+        },
+      );
+    }
+
+    if (typeof maxAge === 'number' && ageInDays > maxAge) {
+      return t(
+        'minsaMaximumAgeWarning',
+        'La fecha seleccionada está después de la edad recomendada por MINSA para esta dosis{{label}}. Verifique si corresponde a rescate, campaña o indicación especial.',
+        {
+          label: selectedSequence.minsaLabel ? ` (${selectedSequence.minsaLabel})` : '',
+        },
+      );
+    }
+
+    return null;
+  }, [patient.birthDate, selectedSequence, t, vaccinationDate]);
+
   useEffect(() => {
     const sub = immunizationFormSub.subscribe((props) => {
       if (props) {
@@ -114,7 +162,10 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           lotNumber: props.lotNumber,
           manufacturer: props.manufacturer,
         });
-        setImmunizationToEditMeta({ immunizationObsUuid: props.immunizationId, visitUuid: props.visitId });
+        setImmunizationToEditMeta({
+          immunizationObsUuid: props.immunizationId,
+          visitUuid: props.visitId,
+        });
       }
     });
 
@@ -272,6 +323,14 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
                 />
               </ResponsiveWrapper>
             )}
+            {minsaAgeWarning ? (
+              <InlineNotification
+                kind="warning"
+                lowContrast
+                title={t('minsaScheduleWarning', 'Advertencia de esquema MINSA')}
+                subtitle={minsaAgeWarning}
+              />
+            ) : null}
             <div className={styles.vaccineBatchHeading}>
               {t('vaccineBatchInformation', 'Vaccine Batch Information')}
             </div>

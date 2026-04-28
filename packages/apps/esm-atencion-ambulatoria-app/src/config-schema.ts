@@ -97,6 +97,7 @@ export const configSchema = {
 
       // Consulta Externa Forms
       consultaExternaForm: 'CE-001-CONSULTA EXTERNA',
+      referralForm: 'CE-REF-001-REFERENCIA-CONTRARREFERENCIA',
 
       // Hospital Forms
       medicalProgress: 'HOSP-004-EVOLUCIÓN MÉDICA',
@@ -336,6 +337,28 @@ export const configSchema = {
       _description: 'Ethnic self-identification concept for HIS reporting (Pertenencia Étnica)',
       _default: '160581AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
+
+    // Referencia y Contrarreferencia (CE-8) — NTS 102
+    referralTypeUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Tipo de referencia: Emergencia, Urgencia, Electiva (concepto codificado)',
+      _default: '1272AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
+    referralReasonUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Motivo de referencia (texto libre)',
+      _default: '160481AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
+    referralDestinationUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Establecimiento destino de la referencia (texto libre)',
+      _default: '163391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
+    counterReferralResponseUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Respuesta de contrarreferencia del establecimiento destino (texto libre)',
+      _default: '161011AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
   },
 
   // 11. RELATIONSHIPS CONFIGURATION
@@ -556,6 +579,7 @@ export interface ConfigObject {
     clinicalEncounterFormUuid: string;
     // Consulta Externa Forms
     consultaExternaForm: string;
+    referralForm: string;
     // HIV/HTS Forms
     defaulterTracingFormUuid: string;
     htsScreening: string;

@@ -51,6 +51,9 @@ export type ImmunizationSequence = {
   sequenceLabel: string;
   sequenceNumber: number;
   intervalInDaysAfterPreviousDose?: number;
+  minAgeInDays?: number;
+  maxAgeInDays?: number;
+  minsaLabel?: string;
 };
 
 export type ImmunizationSequenceDefinition = {
@@ -59,6 +62,14 @@ export type ImmunizationSequenceDefinition = {
 };
 
 export type ImmunizationWidgetConfigObject = {
+  minsaReference?: {
+    nts: string;
+    approvedBy: string;
+    latestModification: string;
+    vaccineCount: number;
+    protectedDiseaseCount: number;
+    notes?: string;
+  };
   immunizationConceptSet: string;
   sequenceDefinitions: Array<ImmunizationSequenceDefinition>;
 };
