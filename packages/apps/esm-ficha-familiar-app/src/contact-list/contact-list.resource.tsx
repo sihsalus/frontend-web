@@ -27,6 +27,12 @@ export const useContactListFormSchema = () => {
       baselineStatus: z.string().optional(),
       preferedPNSAproach: z.string().optional(),
       ipvOutcome: z.enum(['True', 'False']).optional(),
+      dataConsent: z.boolean().refine((v) => v === true, {
+        message: t(
+          'dataConsentRequired',
+          'Se requiere el consentimiento del titular para registrar sus datos de salud (Ley 29733)',
+        ),
+      }),
     })
     .refine(
       (data) => {
@@ -58,6 +64,9 @@ export const ContactListFormSchema = relationshipFormSchema
     baselineStatus: z.string().optional(),
     preferedPNSAproach: z.string().optional(),
     ipvOutcome: z.enum(['True', 'False']).optional(),
+    dataConsent: z.boolean().refine((v) => v === true, {
+      message: 'Se requiere el consentimiento del titular para registrar sus datos de salud (Ley 29733)',
+    }),
   })
   .refine(
     (data) => {
@@ -185,7 +194,7 @@ export const saveContact = async (
   config: ConfigObject,
   session: Session,
 ) => {
-  const { baselineStatus, ipvOutcome, preferedPNSAproach, livingWithClient } = data;
+  const { baselineStatus, ipvOutcome, preferedPNSAproach, livingWithClient, dataConsent } = data;
 
   // Save contact with relationship
   await saveRelationship(
@@ -197,6 +206,7 @@ export const saveContact = async (
       'livingWithClient',
       'sexualAssault',
       'threatened',
+      'dataConsent',
     ]),
     config,
     session,
@@ -247,6 +257,16 @@ export const saveContact = async (
             {
               attributeType: config.contactPersonAttributesUuid.contactipvOutcome,
               value: ipvOutcome,
+            },
+          ]
+        : []),
+
+      // Store data protection consent (Ley 29733)
+      ...(config.contactPersonAttributesUuid.dataConsent
+        ? [
+            {
+              attributeType: config.contactPersonAttributesUuid.dataConsent,
+              value: dataConsent ? 'true' : 'false',
             },
           ]
         : []),

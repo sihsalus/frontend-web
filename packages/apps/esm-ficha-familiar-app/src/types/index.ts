@@ -33,6 +33,7 @@ export interface Contact {
   pnsAproach: string | null;
   ipvOutcome: string | null;
   age: number | null;
+  dataConsent: boolean | null;
 }
 
 export interface Person {

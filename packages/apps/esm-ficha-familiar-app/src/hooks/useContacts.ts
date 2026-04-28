@@ -39,6 +39,7 @@ function extractAttributeData(person: Person, config: ConfigObject) {
     pnsAproach: string | null;
     livingWithClient: string | null;
     ipvOutcome: string | null;
+    dataConsent: boolean | null;
   }>(
     (prev, attr) => {
       if (attr.attributeType.uuid === config.contactPersonAttributesUuid.telephone) {
@@ -53,6 +54,8 @@ function extractAttributeData(person: Person, config: ConfigObject) {
         return { ...prev, pnsAproach: getConceptName(attr.value) ?? null };
       } else if (attr.attributeType.uuid === config.contactPersonAttributesUuid.contactipvOutcome) {
         return { ...prev, ipvOutcome: attr.display ? extractValue(attr.display) : null };
+      } else if (attr.attributeType.uuid === config.contactPersonAttributesUuid.dataConsent) {
+        return { ...prev, dataConsent: attr.value === 'true' || attr.value === '1065' };
       }
       return prev;
     },
@@ -63,6 +66,7 @@ function extractAttributeData(person: Person, config: ConfigObject) {
       pnsAproach: null,
       livingWithClient: null,
       ipvOutcome: null,
+      dataConsent: null,
     },
   );
 }
