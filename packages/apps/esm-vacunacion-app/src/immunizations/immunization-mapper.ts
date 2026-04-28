@@ -27,6 +27,9 @@ const mapToImmunizationDoseFromResource = (immunizationResource: FHIRImmunizatio
     (ext) => ext.url === FHIR_NEXT_DOSE_DATE_EXTENSION_URL,
   );
   const nextDoseDate = nextDoseDateExtension?.valueDateTime?.toString();
+
+  // SIH.SALUS extension used to distinguish regular schedule, catch-up,
+  // campaign and special-indication records without overloading the dose label.
   const programContextExtension = immunizationResource?.extension?.find(
     (ext) => ext.url === FHIR_MINSA_PROGRAM_CONTEXT_EXTENSION_URL,
   );
@@ -154,6 +157,8 @@ export const mapToFHIRImmunizationResource = (
             },
           ]
         : []),
+      // Routine schedule is the default and is intentionally omitted to avoid
+      // storing redundant extensions in FHIR resources.
       ...(immunizationFormData.programContext && immunizationFormData.programContext !== 'routine'
         ? [
             {

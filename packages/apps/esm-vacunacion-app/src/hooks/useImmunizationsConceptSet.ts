@@ -11,6 +11,11 @@ export function useImmunizationsConceptSet(config: ImmunizationWidgetConfigObjec
     openmrsFetch,
   );
   const conceptSet = data?.data?.results?.[0];
+
+  // MINSA 2026 adds biologics such as VRS/Nirsevimab before every OpenMRS
+  // dictionary has them in the base immunization concept set. Keep them
+  // configurable here so the UI can expose them once the content package
+  // provides the local concepts.
   const supplementalAnswers = config.supplementalVaccines?.map((vaccine) => ({
     uuid: vaccine.uuid,
     display: vaccine.display,

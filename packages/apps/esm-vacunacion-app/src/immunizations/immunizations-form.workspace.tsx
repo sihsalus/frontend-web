@@ -75,6 +75,8 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           ),
         // null means unset; when provided, must be an integer ≥ 1
         doseNumber: z.union([z.number({ coerce: true }).int().min(1), z.null()]).optional(),
+        // FHIR supports not-done immunizations; MINSA workflows need this for
+        // missed, deferred or contraindicated doses without deleting the event.
         status: z.enum(['completed', 'not-done']).default('completed'),
         statusReason: z.string().trim().max(255).optional(),
         programContext: z.enum(['routine', 'catch-up', 'campaign', 'special']).default('routine'),
@@ -138,6 +140,8 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
   const minsaAgeWarning = useMemo(() => {
     if (!selectedSequence || !vaccinationDate || !patient.birthDate) return null;
 
+    // Age limits are warnings, not blockers. MINSA allows rescue schedules,
+    // campaigns and special indications that still need clinical validation.
     const ageInDays = dayjs(vaccinationDate).startOf('day').diff(dayjs(patient.birthDate).startOf('day'), 'day');
     const minAge = selectedSequence.minAgeInDays;
     const maxAge = selectedSequence.maxAgeInDays;
@@ -175,6 +179,8 @@ const ImmunizationsForm: React.FC<PatientWorkspace2DefinitionProps<Record<string
           doseNumber: props.doseNumber,
           status: props.status === 'not-done' ? 'not-done' : 'completed',
           statusReason: props.statusReason,
+          // Older records do not have the SIH.SALUS MINSA context extension;
+          // treat them as routine so editing remains backward compatible.
           programContext:
             props.programContext === 'campaign' ||
             props.programContext === 'catch-up' ||
