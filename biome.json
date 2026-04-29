@@ -4,6 +4,8 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
+      "!**/.claude",
+      "!**/.claude/**",
       "!**/node_modules",
       "!**/dist",
       "!**/build",
@@ -33,14 +35,14 @@
         "noSvgWithoutTitle": "off",
         "useAltText": "off",
         "useAriaPropsForRole": "off",
-        "useButtonType": "off",
+        "useButtonType": "warn",
         "useFocusableInteractive": "off",
         "useHeadingContent": "off",
         "useIframeTitle": "off",
         "useKeyWithClickEvents": "off",
         "useSemanticElements": "off",
         "useValidAnchor": "off",
-        "useValidAriaRole": "off"
+        "useValidAriaRole": "warn"
       },
       "complexity": {
         "noBannedTypes": "off",
@@ -59,7 +61,7 @@
       },
       "correctness": {
         "noChildrenProp": "off",
-        "useExhaustiveDependencies": "off",
+        "useExhaustiveDependencies": "warn",
         "useJsxKeyInIterable": "off"
       },
       "performance": {
@@ -91,14 +93,14 @@
         "noAssignInExpressions": "off",
         "noConfusingVoidType": "off",
         "noEmptyInterface": "off",
-        "noExplicitAny": "off",
+        "noExplicitAny": "warn",
         "noGlobalIsNan": "off",
         "noImplicitAnyLet": "off",
         "noMisleadingCharacterClass": "off",
         "noShorthandPropertyOverrides": "off",
         "noShadowRestrictedNames": "off",
         "noThenProperty": "off",
-        "noDoubleEquals": "off"
+        "noDoubleEquals": "warn"
       }
     }
   },

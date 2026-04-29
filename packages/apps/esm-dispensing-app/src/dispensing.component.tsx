@@ -1,5 +1,3 @@
-import React from 'react';
-import classNames from 'classnames';
 import {
   ExtensionSlot,
   isDesktop,
@@ -8,6 +6,7 @@ import {
   useLeftNav,
   WorkspaceContainer,
 } from '@openmrs/esm-framework';
+import classNames from 'classnames';
 import { type PharmacyConfig } from './config-schema';
 import styles from './dispensing.scss';
 

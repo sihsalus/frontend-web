@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function PaperIlustration() {
   return (
     <svg width="64" height="64" viewBox="0 0 64 64">

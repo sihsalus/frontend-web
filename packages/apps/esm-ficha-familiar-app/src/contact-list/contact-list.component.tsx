@@ -2,6 +2,7 @@ import {
   Button,
   DataTable,
   DataTableSkeleton,
+  InlineNotification,
   Pagination,
   Table,
   TableBody,
@@ -10,6 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Tag,
   Tile,
 } from '@carbon/react';
 import { Add, Edit, TrashCan } from '@carbon/react/icons';
@@ -30,6 +32,7 @@ import { deleteRelationship } from '../relationships/relationship.resources';
 
 import styles from './contact-list.scss';
 import HIVStatus from './hiv-status.component';
+import SensitiveDataReveal from './sensitive-data-reveal.component';
 
 interface ContactListProps {
   patientUuid: string;
@@ -95,6 +98,10 @@ const ContactList: React.FC<ContactListProps> = ({ patientUuid }) => {
       header: t('ipvOutcome', 'IPV Outcome'),
       key: 'ipvOutcome',
     },
+    {
+      header: t('dataConsent', 'Consentimiento Ley 29733'),
+      key: 'dataConsent',
+    },
     { header: t('actions', 'Actions'), key: 'actions' },
   ];
 
@@ -130,11 +137,33 @@ const ContactList: React.FC<ContactListProps> = ({ patientUuid }) => {
         sex: relation.gender,
         alive: relation?.dead ? t('dead', 'Dead') : t('alive', 'Alive'),
         contact: relation.contact ?? '--',
-        hivStatus: <HIVStatus relativeUuid={relation.relativeUuid} />,
-        baseLineivStatus: relation.baselineHIVStatus ?? '--',
+        hivStatus: (
+          <SensitiveDataReveal>
+            <HIVStatus relativeUuid={relation.relativeUuid} />
+          </SensitiveDataReveal>
+        ),
+        baseLineivStatus: relation.baselineHIVStatus ? (
+          <SensitiveDataReveal>{relation.baselineHIVStatus}</SensitiveDataReveal>
+        ) : (
+          '--'
+        ),
         livingWithClient: relation.livingWithClient ?? '--',
         pnsAproach: relation.pnsAproach ?? '--',
-        ipvOutcome: relation.ipvOutcome ?? '--',
+        ipvOutcome: relation.ipvOutcome ? <SensitiveDataReveal>{relation.ipvOutcome}</SensitiveDataReveal> : '--',
+        dataConsent:
+          relation.dataConsent === null ? (
+            <Tag type="gray" size="sm">
+              {t('consentUnknown', 'No registrado')}
+            </Tag>
+          ) : relation.dataConsent ? (
+            <Tag type="green" size="sm">
+              {t('consentGiven', 'Autorizado')}
+            </Tag>
+          ) : (
+            <Tag type="red" size="sm">
+              {t('consentDenied', 'No autorizado')}
+            </Tag>
+          ),
         actions: (
           <>
             <Button
@@ -183,6 +212,16 @@ const ContactList: React.FC<ContactListProps> = ({ patientUuid }) => {
   }
   return (
     <div className={styles.widgetContainer}>
+      <InlineNotification
+        kind="warning"
+        lowContrast
+        hideCloseButton
+        title={t('sensitiveDataWarning', 'Datos sensibles — Ley 29733')}
+        subtitle={t(
+          'sensitiveDataWarningSubtitle',
+          'Esta sección contiene información de salud protegida. El acceso queda registrado. Use los botones Ver para revelar datos individuales.',
+        )}
+      />
       <CardHeader title={headerTitle}>
         <Button onClick={handleAddContact} renderIcon={Add} kind="ghost">
           {t('add', 'Add')}

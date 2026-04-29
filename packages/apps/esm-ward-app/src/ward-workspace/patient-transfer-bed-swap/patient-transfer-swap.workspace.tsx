@@ -1,6 +1,6 @@
 import { ContentSwitcher, Switch } from '@carbon/react';
 import { useFeatureFlag } from '@openmrs/esm-framework';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { WardPatientWorkspaceProps } from '../../types';

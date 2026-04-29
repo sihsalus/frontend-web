@@ -1,9 +1,8 @@
 import { getDefaultsFromConfigSchema, launchWorkspace, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
-import { type PatientSearchConfig, configSchema } from '../config-schema';
+import { configSchema, type PatientSearchConfig } from '../config-schema';
 
 import PatientSearchButton from './patient-search-button.component';
 

@@ -1,10 +1,10 @@
+import { Layer, TextArea as TextAreaInput } from '@carbon/react';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Layer, TextArea as TextAreaInput } from '@carbon/react';
-import { shouldUseInlineLayout } from '../../../utils/form-helper';
-import { isTrue } from '../../../utils/boolean-utils';
-import { type FormFieldInputProps } from '../../../types';
 import { useFormProviderContext } from '../../../provider/form-provider';
+import { type FormFieldInputProps } from '../../../types';
+import { isTrue } from '../../../utils/boolean-utils';
+import { shouldUseInlineLayout } from '../../../utils/form-helper';
 import FieldLabel from '../../field-label/field-label.component';
 import FieldValueView from '../../value/view/field-value-view.component';
 import styles from './text-area.scss';
@@ -34,7 +34,7 @@ const TextArea: React.FC<FormFieldInputProps<string | number | null | undefined>
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <FieldValueView
       label={t(field.label)}
       value={value}

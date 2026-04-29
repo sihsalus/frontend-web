@@ -2,7 +2,6 @@ import { type LoggedInUser, type Session, useSession } from '@openmrs/esm-framew
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 import ChangeLanguageModal from './change-language.modal';
 
@@ -13,21 +12,21 @@ const mockUser = {
   },
 };
 
-const mockUpdateUserProperties = vi.fn((..._args) => Promise.resolve());
-const mockUpdateSessionLocale = vi.fn((..._args) => Promise.resolve());
+const mockUpdateUserProperties = jest.fn((..._args) => Promise.resolve());
+const mockUpdateSessionLocale = jest.fn((..._args) => Promise.resolve());
 
-vi.mock('@openmrs/esm-framework', () => ({
+jest.mock('@openmrs/esm-framework', () => ({
   __esModule: true,
-  useSession: vi.fn(),
-  useAbortController: vi.fn(() => new AbortController()),
+  useSession: jest.fn(),
+  useAbortController: jest.fn(() => new AbortController()),
 }));
 
-vi.mock('./change-language.resource', () => ({
+jest.mock('./change-language.resource', () => ({
   updateUserProperties: (...args) => mockUpdateUserProperties(...args),
   updateSessionLocale: (...args) => mockUpdateSessionLocale(...args),
 }));
 
-const mockUseSession = vi.mocked(useSession);
+const mockUseSession = jest.mocked(useSession);
 
 describe(`Change Language Modal`, () => {
   beforeEach(() => {
@@ -40,7 +39,7 @@ describe(`Change Language Modal`, () => {
   });
 
   it('should correctly displays all allowed locales', () => {
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     expect(screen.getByRole('radio', { name: /english/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /français/i })).toBeInTheDocument();
@@ -50,7 +49,7 @@ describe(`Change Language Modal`, () => {
 
   it('should close the modal when the cancel button is clicked', async () => {
     const user = userEvent.setup();
-    const mockClose = vi.fn();
+    const mockClose = jest.fn();
 
     render(<ChangeLanguageModal close={mockClose} />);
 
@@ -61,7 +60,7 @@ describe(`Change Language Modal`, () => {
   it('should change user locale when the submit button is clicked', async () => {
     const user = userEvent.setup();
 
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     expect(screen.getByRole('radio', { name: /français/i })).toBeChecked();
 
@@ -75,7 +74,7 @@ describe(`Change Language Modal`, () => {
     const user = userEvent.setup();
     mockUpdateUserProperties.mockImplementation(() => new Promise(() => {}));
 
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     await user.click(screen.getByRole('radio', { name: /english/i }));
     await user.click(screen.getByRole('button', { name: /change/i }));
@@ -84,7 +83,7 @@ describe(`Change Language Modal`, () => {
   });
 
   it('should display the "Save as my default language" checkbox checked by default', () => {
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     const checkbox = screen.getByRole('checkbox', { name: /Save as my default language/i });
     expect(checkbox).toBeChecked();
@@ -93,7 +92,7 @@ describe(`Change Language Modal`, () => {
   it('should call updateSessionLocale when checkbox is unchecked and user changes locale', async () => {
     const user = userEvent.setup();
 
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     // Uncheck the checkbox to only update session locale
     const checkbox = screen.getByRole('checkbox', { name: /Save as my default language/i });
@@ -108,7 +107,7 @@ describe(`Change Language Modal`, () => {
   });
 
   it('should disable submit button when selected locale is same as current locale', () => {
-    render(<ChangeLanguageModal close={vi.fn()} />);
+    render(<ChangeLanguageModal close={jest.fn()} />);
 
     const submitButton = screen.getByRole('button', { name: /change/i });
     expect(submitButton).toBeDisabled();

@@ -1,7 +1,10 @@
+import type { FormSchema } from '@sihsalus/esm-form-engine-lib';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import FormRenderer from './form-renderer.component';
+
+void React;
 
 // Mock dependencies
 jest.mock('@openmrs/esm-framework', () => ({
@@ -59,6 +62,13 @@ import useFormSchema from '../hooks/useFormSchema';
 
 const mockUseFormSchema = jest.mocked(useFormSchema);
 
+const mockSchema: FormSchema = {
+  uuid: 'test',
+  name: 'Test Form',
+  encounterType: 'enc-type-uuid',
+  pages: [],
+};
+
 const defaultProps = {
   formUuid: 'test-form-uuid',
   patientUuid: 'test-patient-uuid',
@@ -110,7 +120,7 @@ describe('FormRenderer', () => {
 
   it('renders FormEngine when schema is loaded', () => {
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -121,7 +131,7 @@ describe('FormRenderer', () => {
   it('passes encounterUUID for edit mode', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -139,7 +149,7 @@ describe('FormRenderer', () => {
   it('defaults to enter mode when no encounterUuid', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -156,7 +166,7 @@ describe('FormRenderer', () => {
   it('constructs visit object from string props', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -178,7 +188,7 @@ describe('FormRenderer', () => {
   it('uses the canonical visit object when provided by a v12-style caller', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -196,7 +206,7 @@ describe('FormRenderer', () => {
   it('allows canonical callers to omit visit context', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -214,7 +224,7 @@ describe('FormRenderer', () => {
   it('bridges dirty state through promptBeforeClosing for legacy callers', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -231,7 +241,7 @@ describe('FormRenderer', () => {
   it('uses setHasUnsavedChanges directly for canonical callers', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });
@@ -248,7 +258,7 @@ describe('FormRenderer', () => {
     const { FormEngine } = jest.requireMock('../form-engine-lib-runtime');
     const handlePostResponse = jest.fn();
     mockUseFormSchema.mockReturnValue({
-      schema: { uuid: 'test', name: 'Test Form', encounterType: 'enc-type-uuid' } as any,
+      schema: mockSchema,
       error: undefined,
       isLoading: false,
     });

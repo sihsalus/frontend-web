@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
 import { ComboBox, Dropdown, NumberInput, Stack, TextArea, Toggle } from '@carbon/react';
-import { OpenmrsDatePicker, useConfig, useSession, userHasAccess, ResponsiveWrapper } from '@openmrs/esm-framework';
-import { getConceptCodingUuid, getMedicationReferenceOrCodeableConcept, getOpenMRSMedicineDrugName } from '../utils';
+import { OpenmrsDatePicker, ResponsiveWrapper, useConfig, userHasAccess, useSession } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import MedicationCard from '../components/medication-card.component';
+import styles from '../components/medication-dispense-review.scss';
+import { type PharmacyConfig } from '../config-schema';
+import { PRIVILEGE_CREATE_DISPENSE_MODIFY_DETAILS } from '../constants';
 import { useMedicationCodeableConcept, useMedicationFormulations } from '../medication/medication.resource';
-import { useMedicationRequest, usePrescriptionDetails } from '../medication-request/medication-request.resource';
 import {
   blankSubstitution,
   useOrderConfig,
@@ -13,11 +15,9 @@ import {
   useSubstitutionReasonValueSet,
   useSubstitutionTypeValueSet,
 } from '../medication-dispense/medication-dispense.resource';
-import { PRIVILEGE_CREATE_DISPENSE_MODIFY_DETAILS } from '../constants';
+import { useMedicationRequest, usePrescriptionDetails } from '../medication-request/medication-request.resource';
 import { type Medication, type MedicationDispense } from '../types';
-import { type PharmacyConfig } from '../config-schema';
-import MedicationCard from '../components/medication-card.component';
-import styles from '../components/medication-dispense-review.scss';
+import { getConceptCodingUuid, getMedicationReferenceOrCodeableConcept, getOpenMRSMedicineDrugName } from '../utils';
 
 interface MedicationDispenseReviewProps {
   medicationDispense: MedicationDispense;
@@ -90,12 +90,12 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
     if (substitutionTypeValueSet?.compose?.include) {
       const uuidValueSet = substitutionTypeValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           substitutionTypeOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
       }
       substitutionTypeOptions.sort((a, b) => a.text.localeCompare(b.text));
     }
@@ -108,12 +108,12 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
     if (substitutionReasonValueSet?.compose?.include) {
       const uuidValueSet = substitutionReasonValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           substitutionReasonOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
       }
       substitutionReasonOptions.sort((a, b) => a.text.localeCompare(b.text));
     }
@@ -356,7 +356,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
             }
             min={0}
             max={config.dispenseBehavior.restrictTotalQuantityDispensed ? quantityRemaining : undefined}
-            onChange={(event, state) => {
+            onChange={(_event, state) => {
               updateMedicationDispense({
                 quantity: {
                   ...medicationDispense.quantity,
@@ -463,7 +463,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
                 min={0}
                 label={t('dose', 'Dose')}
                 value={medicationDispense.dosageInstruction[0].doseAndRate[0].doseQuantity.value}
-                onChange={(event, state) => {
+                onChange={(_event, state) => {
                   updateMedicationDispense({
                     dosageInstruction: [
                       {

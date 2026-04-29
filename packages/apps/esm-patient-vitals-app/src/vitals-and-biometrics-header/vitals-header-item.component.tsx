@@ -24,7 +24,8 @@ const VitalsHeaderItem: React.FC<VitalsHeaderItemProps> = ({ interpretation, val
   const valueId = `omrs-patient-chart-value-${unitName}-${generatedId}`;
   const unitId = `omrs-patient-chart-unit-${unitName}-${generatedId}`;
 
-  const displayValue = value ? value : t('notAvailable', 'Not available');
+  const hasValue = value !== '' && value != null;
+  const displayValue = hasValue ? value : t('notAvailable', 'Not available');
 
   return (
     <section className={styles.container}>
@@ -44,11 +45,11 @@ const VitalsHeaderItem: React.FC<VitalsHeaderItemProps> = ({ interpretation, val
         </div>
         <div className={styles['value-container']}>
           <div className={styles['pad-right']}>
-            <span id={valueId} aria-labelledby={`${labelId} ${unitId}`} className={styles.value}>
+            <span id={valueId} className={styles.value}>
               {displayValue}
             </span>
             <span id={unitId} className={styles.units}>
-              {value ? ` ${unitSymbol}` : ''}
+              {hasValue ? ` ${unitSymbol}` : ''}
             </span>
           </div>
         </div>

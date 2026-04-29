@@ -1,5 +1,4 @@
 import { ActionMenuButton, launchWorkspace, MovementIcon } from '@openmrs/esm-framework';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PatientTransferAndSwapSiderailIcon() {

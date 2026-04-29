@@ -1,6 +1,5 @@
 import { Exit } from '@carbon/react/icons';
 import { ActionMenuButton, launchWorkspace } from '@openmrs/esm-framework';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PatientDischargeSideRailIcon() {

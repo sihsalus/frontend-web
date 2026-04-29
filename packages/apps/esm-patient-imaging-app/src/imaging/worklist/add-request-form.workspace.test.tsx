@@ -1,9 +1,9 @@
+import { showSnackbar } from '@openmrs/esm-framework';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as api from '../../api';
 import AddNewRequestWorkspace from './add-request-form.workspace';
-import { showSnackbar } from '@openmrs/esm-framework';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('../../api');
 jest.mock('@openmrs/esm-framework', () => ({
@@ -44,7 +44,6 @@ describe('AddNewProcedureStepWorkspace', () => {
 
   const defaultProps = {
     patientUuid,
-    patient: null,
     closeWorkspace: mockClose,
     closeWorkspaceWithSavedChanges: mockCloseWithChanges,
     promptBeforeClosing: jest.fn(),
@@ -66,7 +65,6 @@ describe('AddNewProcedureStepWorkspace', () => {
       <AddNewRequestWorkspace
         patientUuid={patientUuid}
         closeWorkspace={mockClose}
-        patient={null}
         promptBeforeClosing={jest.fn()}
         closeWorkspaceWithSavedChanges={jest.fn()}
         setTitle={jest.fn()}
@@ -83,7 +81,6 @@ describe('AddNewProcedureStepWorkspace', () => {
     render(
       <AddNewRequestWorkspace
         patientUuid={patientUuid}
-        patient={null}
         closeWorkspace={mockClose}
         promptBeforeClosing={jest.fn()}
         closeWorkspaceWithSavedChanges={jest.fn()}
@@ -98,7 +95,6 @@ describe('AddNewProcedureStepWorkspace', () => {
     render(
       <AddNewRequestWorkspace
         patientUuid={patientUuid}
-        patient={null}
         closeWorkspace={mockClose}
         promptBeforeClosing={jest.fn()}
         closeWorkspaceWithSavedChanges={jest.fn()}
@@ -184,7 +180,6 @@ describe('AddNewProcedureStepWorkspace', () => {
         closeWorkspaceWithSavedChanges={mockCloseWithChanges}
         promptBeforeClosing={jest.fn()}
         setTitle={jest.fn()}
-        patient={null}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /Discard/i }));

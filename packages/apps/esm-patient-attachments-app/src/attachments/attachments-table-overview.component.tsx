@@ -1,5 +1,3 @@
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
@@ -22,6 +20,8 @@ import {
   useLayoutType,
 } from '@openmrs/esm-framework';
 import { compare, EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type AttachmentTableData } from '../utils';
 import styles from './attachments-table-overview.scss';
 
@@ -140,26 +140,27 @@ const AttachmentsTableOverview: React.FC<AttachmentsTableOverviewProps> = ({
           <Table {...getTableProps()} useZebraStyles>
             <TableHead>
               <TableRow>
-                {headers.map((header) => (
-                  <TableHeader
-                    key={header.key}
-                    {...getHeaderProps({
-                      header,
-                    })}
-                  >
-                    {header.header}
-                  </TableHeader>
-                ))}
+                {headers.map((header) => {
+                  const { key, ...headerProps } = getHeaderProps({ header });
+                  return (
+                    <TableHeader key={key} {...headerProps}>
+                      {header.header}
+                    </TableHeader>
+                  );
+                })}
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id} {...getRowProps({ row })}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
+              {rows.map((row) => {
+                const { key, ...rowProps } = getRowProps({ row });
+                return (
+                  <TableRow key={key} {...rowProps}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

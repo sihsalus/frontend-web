@@ -1,11 +1,10 @@
 import React from 'react';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { act, screen, renderHook, render, within } from '@testing-library/react';
+import { ComponentContext, isDesktop, registerWorkspace, useLayoutType } from '@openmrs/esm-framework/src/internal';
+import { act, render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { registerWorkspace } from '@openmrs/esm-framework/src/internal';
-import { ComponentContext, isDesktop, useLayoutType } from '@openmrs/esm-framework/src/internal';
-import { type DefaultWorkspaceProps, WorkspaceContainer, launchWorkspace, useWorkspaces } from '..';
+import { type DefaultWorkspaceProps, launchWorkspace, useWorkspaces, WorkspaceContainer } from '..';
 
 vi.mock('./workspace-renderer.component.tsx', () => {
   return {
@@ -41,6 +40,7 @@ describe('WorkspaceContainer in window mode', () => {
       title: 'clinicalForm',
       load: vi.fn(),
       moduleName: '@openmrs/foo',
+      component: 'test',
       canHide: true,
       canMaximize: true,
     });
@@ -50,6 +50,7 @@ describe('WorkspaceContainer in window mode', () => {
       title: 'orderBasket',
       load: vi.fn(),
       moduleName: '@openmrs/bar',
+      component: 'test',
       canHide: true,
       canMaximize: true,
     });
@@ -222,6 +223,7 @@ describe('WorkspaceContainer in overlay mode', () => {
       title: 'Patient Search',
       load: vi.fn(),
       moduleName: '@openmrs/foo',
+      component: 'test',
     });
   });
 

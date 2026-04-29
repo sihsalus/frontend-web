@@ -1,10 +1,10 @@
-import { type FetchResponse, openmrsFetch, type OpenmrsResource, restBaseUrl } from '@openmrs/esm-framework';
+import { type FetchResponse, type OpenmrsResource, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 
 export function usePatientPendingOrders(patientUuid: string, orderTypeUUid: string, visitStartDate: string) {
   const apiUrl =
     patientUuid && orderTypeUUid && visitStartDate
-      ? `${restBaseUrl}/order?includeNullFulfillerStatus=true&patient=${patientUuid}&orderTypes=${orderTypeUUid}&activatedOnOrAfterDate=${visitStartDate}`
+      ? `${restBaseUrl}/order?includeNullFulfillerStatus=true&patient=${patientUuid}&orderTypes=${orderTypeUUid}&activatedOnOrAfterDate=${visitStartDate}&excludeCanceledAndExpired=true&excludeDiscontinueOrders=true`
       : null;
   const { data, ...rest } = useSWR<FetchResponse<{ results: Array<OpenmrsResource> }>, Error>(apiUrl, openmrsFetch);
 

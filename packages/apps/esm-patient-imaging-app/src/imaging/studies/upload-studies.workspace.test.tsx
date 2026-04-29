@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import UploadStudiesWorkspace from './upload-studies.workspace';
-import * as api from '../../api';
 import * as framework from '@openmrs/esm-framework';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
+import * as api from '../../api';
 import { maxUploadImageDataSize } from '../constants';
+import UploadStudiesWorkspace from './upload-studies.workspace';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string, fallback: string) => fallback }),
@@ -66,7 +66,6 @@ describe('UploadStudiesWorkspace', () => {
       <UploadStudiesWorkspace
         patientUuid={patientUuid}
         closeWorkspace={closeWorkspace}
-        patient={undefined}
         promptBeforeClosing={jest.fn()}
         closeWorkspaceWithSavedChanges={jest.fn()}
         setTitle={jest.fn()}

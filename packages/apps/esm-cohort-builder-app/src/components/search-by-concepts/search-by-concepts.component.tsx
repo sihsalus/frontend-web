@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { DatePicker, DatePickerInput, Column, Dropdown, NumberInput, Switch, ContentSwitcher } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
+import { Column, ContentSwitcher, DatePicker, DatePickerInput, Dropdown, NumberInput, Switch } from '@carbon/react';
 import dayjs from 'dayjs';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { composeJson, queryDescriptionBuilder } from '../../cohort-builder.utils';
 import type { Concept, SearchByProps } from '../../types';
-import { SearchConcept } from './search-concept/search-concept.component';
 import SearchButtonSet from '../search-button-set/search-button-set';
 import styles from './search-by-concepts.style.scss';
+import { SearchConcept } from './search-concept/search-concept.component';
 
 const operators = [
   {
@@ -218,7 +218,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
                     min={0}
                     size="sm"
                     value={operatorValue}
-                    onChange={(event, { value }) => setOperatorValue(Number(value))}
+                    onChange={(_event, { value }) => setOperatorValue(Number(value))}
                   />
                 </div>
               </div>
@@ -247,7 +247,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('numberIsNotValid', 'Number is not valid')}
               min={0}
               value={lastMonths}
-              onChange={(event, { value }) => setLastMonths(Number(value))}
+              onChange={(_event, { value }) => setLastMonths(Number(value))}
             />
           </Column>
           <Column>
@@ -259,7 +259,7 @@ const SearchByConcepts: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('numberIsNotValid', 'Number is not valid')}
               min={0}
               value={lastDays}
-              onChange={(event, { value }) => setLastDays(Number(value))}
+              onChange={(_event, { value }) => setLastDays(Number(value))}
             />
           </Column>
         </Column>

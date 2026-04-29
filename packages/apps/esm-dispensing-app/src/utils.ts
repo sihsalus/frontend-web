@@ -1,6 +1,14 @@
+import { createGlobalStore, fhirBaseUrl, parseDate, useStore } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
 import template from 'lodash/template';
 import { mutate } from 'swr';
+import {
+  OPENMRS_FHIR_EXT_DISPENSE_RECORDED,
+  OPENMRS_FHIR_EXT_MEDICINE,
+  OPENMRS_FHIR_EXT_REQUEST_FULFILLER_STATUS,
+  PRESCRIPTION_DETAILS_ENDPOINT,
+  PRESCRIPTIONS_TABLE_ENDPOINT,
+} from './constants';
 import {
   type Coding,
   type DispensingStore,
@@ -16,14 +24,6 @@ import {
   MedicationRequestStatus,
   type Quantity,
 } from './types';
-import { createGlobalStore, fhirBaseUrl, parseDate, useStore } from '@openmrs/esm-framework';
-import {
-  OPENMRS_FHIR_EXT_DISPENSE_RECORDED,
-  OPENMRS_FHIR_EXT_MEDICINE,
-  OPENMRS_FHIR_EXT_REQUEST_FULFILLER_STATUS,
-  PRESCRIPTION_DETAILS_ENDPOINT,
-  PRESCRIPTIONS_TABLE_ENDPOINT,
-} from './constants';
 
 const unitsDontMatchErrorMessage =
   "Misconfiguration, please contact your System Administrator:  Can't calculate quantity dispensed if units don't match. Likely issue: allowModifyingPrescription and restrictTotalQuantityDispensed configuration parameters both set to true. " +
@@ -491,29 +491,30 @@ export function getPrescriptionTableEndpoint(
   patientSearchTerm: string,
   location: string,
 ): string {
-  // use custom endpoint if provided, otherwise only include the "date" parameter when requesting "active" results
+  if (customPrescriptionsTableEndpoint) {
+    return template(customPrescriptionsTableEndpoint)({
+      fhirBaseUrl,
+      PRESCRIPTIONS_TABLE_ENDPOINT,
+      status,
+      pageOffset,
+      pageSize,
+      date,
+      patientSearchTerm,
+      location,
+    });
+  }
 
-  const compiledUrl = template(
-    customPrescriptionsTableEndpoint
-      ? customPrescriptionsTableEndpoint
-      : status === 'ACTIVE'
-        ? '${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}&_getpagesoffset=${pageOffset}&_count=${pageSize}&date=ge${date}&status=${status}' +
-          (patientSearchTerm ? '&patientSearchTerm=${patientSearchTerm}' : '') +
-          (location ? '&location=${location}' : '')
-        : '${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}&_getpagesoffset=${pageOffset}&_count=${pageSize}&status=${status}' +
-          (patientSearchTerm ? '&patientSearchTerm=${patientSearchTerm}' : '') +
-          (location ? '&location=${location}' : ''),
-  );
-  return compiledUrl({
-    fhirBaseUrl,
-    PRESCRIPTIONS_TABLE_ENDPOINT,
-    status,
-    pageOffset,
-    pageSize,
-    date,
-    patientSearchTerm,
-    location,
-  });
+  const baseEndpoint =
+    `${fhirBaseUrl}/${PRESCRIPTIONS_TABLE_ENDPOINT}` +
+    `&_getpagesoffset=${pageOffset}` +
+    `&_count=${pageSize}` +
+    `&status=${status}`;
+
+  const activeDateFilter = status === 'ACTIVE' ? `&date=ge${date}` : '';
+  const patientFilter = patientSearchTerm ? `&patientSearchTerm=${patientSearchTerm}` : '';
+  const locationFilter = location ? `&location=${location}` : '';
+
+  return `${baseEndpoint}${activeDateFilter}${patientFilter}${locationFilter}`;
 }
 
 export function getQuantity(resource: MedicationRequest | MedicationDispense): Quantity {

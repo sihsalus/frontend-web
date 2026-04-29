@@ -2,13 +2,13 @@ import { Button, ButtonSet, Form, InlineNotification } from '@carbon/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSnackbar, useAppContext } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import type { WardPatientWorkspaceProps, WardViewContext } from '../../types';
-import { assignPatientToBed, useCreateEncounter, removePatientFromBed } from '../../ward.resource';
+import { assignPatientToBed, removePatientFromBed, useCreateEncounter } from '../../ward.resource';
 import BedSelector from '../bed-selector.component';
 
 import styles from './patient-transfer-swap.scss';
@@ -18,7 +18,7 @@ export default function PatientBedSwapForm({
   closeWorkspaceWithSavedChanges,
   wardPatient,
 }: WardPatientWorkspaceProps) {
-  const { patient } = wardPatient;
+  const { patient, visit } = wardPatient;
   const { t } = useTranslation();
   const [showErrorNotifications, setShowErrorNotifications] = useState(false);
   const { createEncounter, emrConfiguration, isLoadingEmrConfiguration, errorFetchingEmrConfiguration } =
@@ -57,7 +57,7 @@ export default function PatientBedSwapForm({
       const bedSelected = beds.find((bed) => bed.bedId === values.bedId);
       setIsSubmitting(true);
       setShowErrorNotifications(false);
-      createEncounter(patient, emrConfiguration.bedAssignmentEncounterType)
+      createEncounter(patient, emrConfiguration.bedAssignmentEncounterType, visit.uuid)
         .then(async (response) => {
           if (response.ok) {
             if (bedSelected) {
@@ -65,7 +65,7 @@ export default function PatientBedSwapForm({
             } else {
               // get the bed that the patient is currently assigned to
               const bedAssignedToPatient = beds.find((bed) =>
-                bed.patients.some((bedPatient) => bedPatient.uuid == patient.uuid),
+                bed.patients.some((bedPatient) => bedPatient.uuid === patient.uuid),
               );
               if (bedAssignedToPatient) {
                 return removePatientFromBed(bedAssignedToPatient.bedId, patient.uuid);
@@ -111,7 +111,16 @@ export default function PatientBedSwapForm({
           closeWorkspaceWithSavedChanges();
         });
     },
-    [beds, createEncounter, patient, emrConfiguration, t, wardPatientGroupDetails, closeWorkspaceWithSavedChanges],
+    [
+      beds,
+      createEncounter,
+      patient,
+      visit,
+      emrConfiguration,
+      t,
+      wardPatientGroupDetails,
+      closeWorkspaceWithSavedChanges,
+    ],
   );
 
   const onError = useCallback(() => {

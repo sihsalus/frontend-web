@@ -1,5 +1,7 @@
 import {
+  Button,
   DataTable,
+  InlineLoading,
   Table,
   TableBody,
   TableCell,
@@ -7,8 +9,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  InlineLoading,
-  Button,
 } from '@carbon/react';
 import { Add } from '@carbon/react/icons';
 import { launchWorkspace } from '@openmrs/esm-framework';
@@ -39,7 +39,9 @@ function collectPrefixesFromEncounter(
   seenPrefixes: Set<string>,
 ): void {
   encounter.obs.forEach((obs) => {
-    (obs.groupMembers || []).forEach((member) => collectPrefixesFromMember(member, rowDefinitions, seenPrefixes));
+    (obs.groupMembers || []).forEach((member) => {
+      collectPrefixesFromMember(member, rowDefinitions, seenPrefixes);
+    });
   });
 }
 
@@ -66,9 +68,9 @@ function applyObsToRows(
   encounterNumber: number,
   extractValue: (d: string) => string,
 ): void {
-  (obs.groupMembers || []).forEach((member) =>
-    applyMemberToRow(member, activeRows, base, encounterNumber, extractValue),
-  );
+  (obs.groupMembers || []).forEach((member) => {
+    applyMemberToRow(member, activeRows, base, encounterNumber, extractValue);
+  });
 }
 
 function getTableHeaderContent(header: React.ReactNode): React.ReactNode {
@@ -165,7 +167,9 @@ const CareSummaryTable: React.FC<CareSummaryTableProps> = ({
     const seenPrefixes = new Set<string>();
     seenPrefixes.add('encounterDatetime');
 
-    prenatalEncounters.forEach((encounter) => collectPrefixesFromEncounter(encounter, rowDefinitions, seenPrefixes));
+    prenatalEncounters.forEach((encounter) => {
+      collectPrefixesFromEncounter(encounter, rowDefinitions, seenPrefixes);
+    });
 
     return rowDefinitions.filter((row) => seenPrefixes.has(row.prefix));
   }, [prenatalEncounters, rowDefinitions]);
@@ -221,7 +225,9 @@ const CareSummaryTable: React.FC<CareSummaryTableProps> = ({
         dateRow[`atencion${encounterNumber}`] = dayjs(encounter.encounterDatetime).format('DD/MM/YYYY HH:mm');
       }
 
-      encounter.obs.forEach((obs) => applyObsToRows(obs, activeRows, base, encounterNumber, extractValue));
+      encounter.obs.forEach((obs) => {
+        applyObsToRows(obs, activeRows, base, encounterNumber, extractValue);
+      });
     });
 
     return base;

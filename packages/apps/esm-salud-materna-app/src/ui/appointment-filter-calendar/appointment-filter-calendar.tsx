@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import SelectedDateContext from '../../hooks/selectedDateContext';
 import type { AppointmentFilterCalendarProps } from '../../types';

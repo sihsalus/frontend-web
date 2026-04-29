@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerInput, Select, SelectItem, TextInput, Search } from '@carbon/react';
+import { DatePicker, DatePickerInput, Search, Select, SelectItem, TextInput } from '@carbon/react';
 import { useDebounce } from '@openmrs/esm-framework';
 import { isEqual } from 'lodash-es';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -15,9 +15,6 @@ interface ReportParameterInputProps {
   value: unknown;
   onChange: (value: unknown) => void;
 }
-
-type LocationParameterValue = { uuid: string } | null;
-type ReportInputValue = string | number;
 
 function isLocationValue(value: unknown): value is { uuid: string } {
   return typeof value === 'object' && value !== null && 'uuid' in value && typeof value.uuid === 'string';

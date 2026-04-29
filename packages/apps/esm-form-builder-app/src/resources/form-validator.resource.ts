@@ -1,4 +1,4 @@
-import { openmrsFetch, restBaseUrl, type FetchResponse } from '@openmrs/esm-framework';
+import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 import type { FormField } from '@sihsalus/esm-form-engine-lib';
 import type { Schema } from '@types';
 import type { ConfigObject } from '../config-schema';
@@ -95,8 +95,8 @@ export const handleFormValidation = async (
 
     const asyncTasks: Array<Promise<void>> = [];
 
-    parsedForm.pages?.forEach((page) =>
-      page.sections?.forEach((section: { questions: Array<FormField> }) =>
+    parsedForm.pages?.forEach((page) => {
+      page.sections?.forEach((section: { questions: Array<FormField> }) => {
         section.questions?.forEach((question) => {
           asyncTasks.push(
             handleQuestionValidation(question, errors, configObject, warnings),
@@ -104,16 +104,16 @@ export const handleFormValidation = async (
             handlePatientIdentifierValidation(question, errors),
           );
           if (question.type === 'obsGroup') {
-            question?.questions?.forEach((obsGrpQuestion) =>
+            question?.questions?.forEach((obsGrpQuestion) => {
               asyncTasks.push(
                 handleQuestionValidation(obsGrpQuestion, errors, configObject, warnings),
                 handleAnswerValidation(obsGrpQuestion, errors),
-              ),
-            );
+              );
+            });
           }
-        }),
-      ),
-    );
+        });
+      });
+    });
 
     await Promise.all(asyncTasks);
   }

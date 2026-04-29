@@ -1,5 +1,4 @@
 import { ActionMenuButton, launchWorkspace, StickyNoteAddIcon } from '@openmrs/esm-framework';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type WardPatientWorkspaceProps } from '../../types';

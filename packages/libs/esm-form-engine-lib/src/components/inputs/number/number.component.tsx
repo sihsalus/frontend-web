@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { Layer, NumberInput } from '@carbon/react';
-import { isTrue } from '../../../utils/boolean-utils';
-import { type FormFieldInputProps } from '../../../types';
-import { shouldUseInlineLayout } from '../../../utils/form-helper';
+import classNames from 'classnames';
+import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormProviderContext } from '../../../provider/form-provider';
+import { type FormFieldInputProps } from '../../../types';
+import { isTrue } from '../../../utils/boolean-utils';
+import { shouldUseInlineLayout } from '../../../utils/form-helper';
 import FieldLabel from '../../field-label/field-label.component';
 import FieldValueView from '../../value/view/field-value-view.component';
 import styles from './number.scss';
@@ -50,7 +50,7 @@ const NumberField: React.FC<FormFieldInputProps<number | string | null | undefin
   const max = getNumericValue(field.questionOptions.max);
   const min = getNumericValue(field.questionOptions.min);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <div className={styles.formField}>
       <FieldValueView
         label={t(field.label)}

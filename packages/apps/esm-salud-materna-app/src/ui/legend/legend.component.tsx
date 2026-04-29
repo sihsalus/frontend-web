@@ -1,4 +1,4 @@
-import { Tile, Tag, InlineLoading, type TagProps } from '@carbon/react';
+import { InlineLoading, Tag, type TagProps, Tile } from '@carbon/react';
 import { ErrorState, useConfig } from '@openmrs/esm-framework';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +56,7 @@ const LegendTile: React.FC<LegendTileProps> = ({ conceptSetUUID }) => {
         label: t(status, concept.display || 'Unknown'),
       },
     ];
-  }, [schemasConceptSet, t]);
+  }, [schemasConceptSet, t, resolveTagType]);
 
   if (error) {
     return (

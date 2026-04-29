@@ -1,6 +1,6 @@
 import '@carbon/styles/css/styles.css';
 import { AppErrorBoundary } from '@sihsalus/esm-rbac';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import OdontogramCanvas from './odontogram/components/Odontogram';
 import { adultConfig } from './odontogram/config/adultConfig';

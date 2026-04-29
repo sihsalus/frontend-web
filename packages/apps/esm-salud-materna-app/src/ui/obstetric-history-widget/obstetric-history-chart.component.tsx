@@ -8,9 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 import type { ConfigObject } from '../../config-schema';
 import type { PatientPrenatalAntecedents } from '../../types';
-
-import styles from './obstetric-history-chart.scss';
 import type { ObstetricDisplayDataType } from './obstetric-history.schema';
+import styles from './obstetric-history-chart.scss';
 
 interface ObstetricHistoryChartProps {
   obstetricData: ObstetricDisplayDataType;
@@ -79,7 +78,7 @@ const ObstetricHistoryChart: React.FC<ObstetricHistoryChartProps> = ({
       .map((data) => ({
         group: selectedMetric.title,
         key: formatDate(parseDate(data.date), { year: true }),
-        value: parseInt(data[selectedMetric.value]) || 0,
+        value: parseInt(data[selectedMetric.value], 10) || 0,
         date: data.date,
       }));
   }, [historicalData, selectedMetric]);

@@ -1,14 +1,23 @@
-import { type WorkspacesInfo, getDefaultsFromConfigSchema, useConfig, useWorkspaces } from '@openmrs/esm-framework';
+import { getDefaultsFromConfigSchema, useConfig, useWorkspaces, type WorkspacesInfo } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockVitalsConfig, mockCurrentVisit, mockConceptUnits, mockConceptMetadata, formattedVitals } from 'test-utils';
 import dayjs from 'dayjs';
-import React from 'react';
-import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import {
+  formattedVitals,
+  getByTextWithMarkup,
+  mockConceptMetadata,
+  mockConceptUnits,
+  mockCurrentVisit,
+  mockFhirPatient,
+  mockPatient,
+  mockVitalsConfig,
+  renderWithSwr,
+  waitForLoadingToFinish,
+} from 'test-utils';
 
 import { invalidateCachedVitalsAndBiometrics, useVitalsAndBiometrics } from '../common';
-import { configSchema, type ConfigObject } from '../config-schema';
+import { type ConfigObject, configSchema } from '../config-schema';
 import { patientVitalsBiometricsFormWorkspace } from '../constants';
 
 import VitalsHeader from './vitals-header.component';
@@ -247,5 +256,54 @@ describe('VitalsHeader', () => {
 
     expect(screen.queryByRole('link', { name: /vitals history/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /record vitals/i })).not.toBeInTheDocument();
+  });
+
+  it('displays correct overdue tag for vitals less than 1 day old', async () => {
+    mockUseConfig.mockReturnValue({
+      ...getDefaultsFromConfigSchema(configSchema),
+      ...mockVitalsConfig,
+      vitals: { ...mockVitalsConfig.vitals, vitalsOverdueThresholdHours: 1 },
+    } as ConfigObject);
+
+    const twoHoursAgo = dayjs().subtract(2, 'hours').toISOString();
+    mockUseVitalsAndBiometrics.mockReturnValue({
+      data: [{ ...formattedVitals[0], date: twoHoursAgo }],
+    } as ReturnType<typeof useVitalsAndBiometrics>);
+
+    renderWithSwr(<VitalsHeader {...testProps} visitContext={mockCurrentVisit} />);
+    await waitForLoadingToFinish();
+
+    expect(getByTextWithMarkup(/These vitals are 2 hour/i)).toBeInTheDocument();
+  });
+
+  it('hides BMI in vitals header when bmiMinimumAge is set and patient is under minimum age', async () => {
+    mockUseConfig.mockReturnValue({
+      ...getDefaultsFromConfigSchema(configSchema),
+      ...mockVitalsConfig,
+      biometrics: { ...mockVitalsConfig.biometrics, bmiMinimumAge: 18 },
+    } as ConfigObject);
+
+    mockUseVitalsAndBiometrics.mockReturnValue({
+      data: formattedVitals,
+    } as ReturnType<typeof useVitalsAndBiometrics>);
+
+    const minorPatient = { ...mockFhirPatient, birthDate: '2020-01-01' } as fhir.Patient;
+    renderWithSwr(<VitalsHeader {...testProps} patient={minorPatient} />);
+    await waitForLoadingToFinish();
+
+    expect(screen.queryByText(/BMI/i)).not.toBeInTheDocument();
+  });
+
+  it('shows BMI by default (bmiMinimumAge = 0)', async () => {
+    mockUseConfig.mockReturnValue({
+      ...getDefaultsFromConfigSchema(configSchema),
+      ...mockVitalsConfig,
+    } as ConfigObject);
+
+    mockUseVitalsAndBiometrics.mockReturnValue({ data: formattedVitals } as ReturnType<typeof useVitalsAndBiometrics>);
+    renderWithSwr(<VitalsHeader {...testProps} />);
+    await waitForLoadingToFinish();
+
+    expect(getByTextWithMarkup(/BMI\s*/i)).toBeInTheDocument();
   });
 });

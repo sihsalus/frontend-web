@@ -1,12 +1,12 @@
 import { ContentSwitcher, Switch } from '@carbon/react';
 import {
-  ExtensionSlot,
-  Extension,
-  useConnectedExtensions,
-  type ConnectedExtension,
   type ConfigObject,
-  useLayoutType,
+  type ConnectedExtension,
+  Extension,
+  ExtensionSlot,
   isDesktop,
+  useConnectedExtensions,
+  useLayoutType,
 } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -81,7 +81,7 @@ const ScheduledAppointments: React.FC<ScheduledAppointmentsProps> = ({ appointme
         className={styles.switcher}
         size={responsiveSize}
         onChange={({ name }) => setCurrentTab(name)}
-        selectedIndex={panelsToShow.findIndex((panel) => panel.name == currentTab) ?? 0}
+        selectedIndex={panelsToShow.findIndex((panel) => panel.name === currentTab) ?? 0}
         selectionMode="manual"
       >
         {panelsToShow.map((panel) => (

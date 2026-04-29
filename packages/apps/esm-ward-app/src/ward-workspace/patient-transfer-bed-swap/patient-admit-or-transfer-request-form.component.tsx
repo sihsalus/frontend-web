@@ -11,7 +11,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResponsiveWrapper, showSnackbar, useAppContext } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -116,7 +116,7 @@ export default function PatientAdmitOrTransferForm({
         });
       }
 
-      createEncounter(patient, emrConfiguration.transferRequestEncounterType, [
+      createEncounter(patient, emrConfiguration.transferRequestEncounterType, visit.uuid, [
         {
           concept: emrConfiguration.dispositionDescriptor.dispositionSetConcept.uuid,
           groupMembers: obs,
@@ -147,6 +147,7 @@ export default function PatientAdmitOrTransferForm({
       dispositionsWithTypeTransfer,
       emrConfiguration,
       patient,
+      visit,
       t,
       wardPatientGroupDetails,
     ],

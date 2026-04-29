@@ -1,18 +1,17 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen, render } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
-import { mockAllergens, mockAllergicReactions, mockAllergy } from 'test-utils';
-import { mockFhirPatient } from 'test-utils';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { mockAllergens, mockAllergicReactions, mockAllergy, mockFhirPatient } from 'test-utils';
+import { type AllergiesConfigObject, configSchema } from '../../config-schema';
 import {
   type NewAllergy,
   saveAllergy,
+  updatePatientAllergy,
   useAllergens,
   useAllergicReactions,
-  updatePatientAllergy,
 } from './allergy-form.resource';
-import { type AllergiesConfigObject, configSchema } from '../../config-schema';
 import AllergyForm, { type AllergyFormWorkspaceProps } from './allergy-form.workspace';
 
 const mockSaveAllergy = jest.mocked(saveAllergy);
@@ -21,6 +20,7 @@ const mockUpdatePatientAllergy = jest.mocked(updatePatientAllergy);
 const mockUseAllergens = jest.mocked(useAllergens);
 const mockUseAllergicReactions = jest.mocked(useAllergicReactions);
 const mockUseConfig = jest.mocked(useConfig<AllergiesConfigObject>);
+void React;
 
 jest.mock('./allergy-form.resource', () => ({
   ...jest.requireActual('./allergy-form.resource'),
@@ -227,7 +227,7 @@ function renderAllergyForm(workspaceProps: Partial<AllergyFormWorkspaceProps> = 
     },
   };
 
-  render(<AllergyForm {...props} />);
+  render(React.createElement(AllergyForm, props));
 }
 
 function buildExpectedPayload(allergen, reaction, severity, comment) {

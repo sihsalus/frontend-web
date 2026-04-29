@@ -1,6 +1,21 @@
-import type { EncounterCreate } from '../types';
+import type { Encounter, EncounterCreate } from '../types';
 
 import { mutateEncounterCreateToPartialEncounter } from './syncItemMutation';
+
+type EncounterWithObs = EncounterCreate & {
+  obs: Array<{
+    concept: string;
+    value: string;
+  }>;
+};
+
+type PartialEncounterWithObs = Partial<Encounter> & {
+  obs: Array<{
+    concept: {
+      uuid: string;
+    };
+  }>;
+};
 
 jest.mock('uuid', () => ({
   validate: jest.fn((val: string) => {
@@ -26,7 +41,7 @@ describe('mutateEncounterCreateToPartialEncounter', () => {
   });
 
   it('handles obs concept UUIDs including non-standard formats', () => {
-    const encounterCreate: any = {
+    const encounterCreate: EncounterWithObs = {
       encounterDatetime: '2024-01-01',
       patient: 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378',
       encounterType: 'a22e39fd-7db2-45e7-80f1-60fa0d5a4378',
@@ -40,13 +55,14 @@ describe('mutateEncounterCreateToPartialEncounter', () => {
     };
 
     const result = mutateEncounterCreateToPartialEncounter(encounterCreate);
+    const partialEncounter = result as PartialEncounterWithObs;
 
     // Non-standard UUID should be converted by the manual path mutation
-    expect((result as any).obs[0].concept).toEqual({ uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' });
+    expect(partialEncounter.obs[0].concept).toEqual({ uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' });
   });
 
   it('does not modify the uuid key itself', () => {
-    const encounterCreate: any = {
+    const encounterCreate: EncounterCreate = {
       uuid: 'c22e39fd-7db2-45e7-80f1-60fa0d5a4378',
       encounterDatetime: '2024-01-01',
       patient: 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378',
@@ -56,6 +72,6 @@ describe('mutateEncounterCreateToPartialEncounter', () => {
 
     const result = mutateEncounterCreateToPartialEncounter(encounterCreate);
     // uuid should remain a string
-    expect((result as any).uuid).toBe('c22e39fd-7db2-45e7-80f1-60fa0d5a4378');
+    expect(result.uuid).toBe('c22e39fd-7db2-45e7-80f1-60fa0d5a4378');
   });
 });

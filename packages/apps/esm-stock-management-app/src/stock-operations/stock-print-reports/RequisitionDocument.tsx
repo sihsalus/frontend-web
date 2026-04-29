@@ -1,11 +1,11 @@
-import { formatDisplayDate } from '../../core/utils/datetimeUtils';
-import { GetHeaderSection, GetPrintTemplate } from '../../core/print/PrintTemplate';
 import {
   CLOSE_PRINT_AFTER_PRINT,
   STOCK_OPERATION_PRINT_DISABLE_BALANCE_ON_HAND,
   STOCK_OPERATION_PRINT_DISABLE_COSTS,
 } from '../../constants';
+import { GetHeaderSection, GetPrintTemplate } from '../../core/print/PrintTemplate';
 import { printDocument } from '../../core/print/printUtils';
+import { formatDisplayDate } from '../../core/utils/datetimeUtils';
 import { type StockOperationPrintData } from './StockOperationReport';
 
 export const FormatRequisitionDocument = async (data: StockOperationPrintData): Promise<string> => {
@@ -93,7 +93,7 @@ export const FormatRequisitionDocument = async (data: StockOperationPrintData): 
                 ? Array(emptyRowCount)
                     .fill(0)
                     .map(
-                      (p) => `
+                      (_p) => `
         <tr class="data-row">
             <td valign="middle">&nbsp;</td>
             <td valign="middle">&nbsp;</td>

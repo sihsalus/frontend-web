@@ -11,7 +11,7 @@ import {
   TextInput,
 } from '@carbon/react';
 import { Calculator } from '@carbon/react/icons';
-import { showModal, type Patient } from '@openmrs/esm-framework';
+import { type Patient, showModal } from '@openmrs/esm-framework';
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -101,7 +101,7 @@ const PatientSearchCreate: React.FC<PatientSearchCreateProps> = () => {
                   />
                 )}
                 onClear={() => field.onChange('')}
-                onSuggestionSelected={(field_, value) => {
+                onSuggestionSelected={(_field_, value) => {
                   if (value) {
                     field.onChange(value);
                   }

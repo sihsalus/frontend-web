@@ -1,17 +1,17 @@
-import React from 'react';
-import { screen } from '@testing-library/react';
 import { openmrsFetch } from '@openmrs/esm-framework';
-import { mockFhirAllergyIntoleranceResponse } from 'test-utils';
-import { mockFhirPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import { screen } from '@testing-library/react';
+import React from 'react';
+import { mockFhirAllergyIntoleranceResponse, mockFhirPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 import AllergiesDetailedSummary from './allergies-detailed-summary.component';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;
 mockOpenmrsFetch.mockImplementation(jest.fn());
+void React;
 
 describe('AllergiesDetailedSummary', () => {
   it('renders an empty state view if allergy data is unavailable', async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: { entry: [] } });
-    renderWithSwr(<AllergiesDetailedSummary patient={mockFhirPatient} />);
+    renderWithSwr(React.createElement(AllergiesDetailedSummary, { patient: mockFhirPatient }));
     await waitForLoadingToFinish();
 
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('AllergiesDetailedSummary', () => {
       },
     };
     mockOpenmrsFetch.mockRejectedValueOnce(error);
-    renderWithSwr(<AllergiesDetailedSummary patient={mockFhirPatient} />);
+    renderWithSwr(React.createElement(AllergiesDetailedSummary, { patient: mockFhirPatient }));
     await waitForLoadingToFinish();
 
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('AllergiesDetailedSummary', () => {
 
   it("renders a detailed summary of the patient's allergic reactions and their manifestations", async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergiesDetailedSummary patient={mockFhirPatient} />);
+    renderWithSwr(React.createElement(AllergiesDetailedSummary, { patient: mockFhirPatient }));
     await waitForLoadingToFinish();
 
     expect(screen.getByRole('heading', { name: /allergies/i })).toBeInTheDocument();
@@ -58,18 +58,18 @@ describe('AllergiesDetailedSummary', () => {
       /aspirin severe mental status change comments/i,
     ];
 
-    expectedColumnHeaders.forEach((header) =>
-      expect(screen.getByRole('columnheader', { name: new RegExp(header) })).toBeInTheDocument(),
-    );
+    expectedColumnHeaders.forEach((header) => {
+      expect(screen.getByRole('columnheader', { name: new RegExp(header) })).toBeInTheDocument();
+    });
 
-    expectedAllergies.forEach((allergy) =>
-      expect(screen.getByRole('row', { name: new RegExp(allergy) })).toBeInTheDocument(),
-    );
+    expectedAllergies.forEach((allergy) => {
+      expect(screen.getByRole('row', { name: new RegExp(allergy) })).toBeInTheDocument();
+    });
   });
 
   it("renders non-coded allergen name and non-coded allergic reaction name in the detailed summary of the patient's allergies", async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergiesDetailedSummary patient={mockFhirPatient} />);
+    renderWithSwr(React.createElement(AllergiesDetailedSummary, { patient: mockFhirPatient }));
     await waitForLoadingToFinish();
 
     expect(screen.getByRole('heading', { name: /allergies/i })).toBeInTheDocument();

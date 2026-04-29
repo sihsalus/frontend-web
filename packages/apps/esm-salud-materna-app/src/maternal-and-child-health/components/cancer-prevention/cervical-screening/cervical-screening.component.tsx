@@ -1,7 +1,10 @@
-import { Tile, Tag } from '@carbon/react';
+import { Tag, Tile } from '@carbon/react';
+import { useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { ConfigObject } from '../../../../config-schema';
+import ConfiguredFormButton from '../../configured-form-button.component';
 import styles from './cervical-screening.scss';
 
 interface CervicalScreeningProps {
@@ -14,6 +17,7 @@ interface CervicalScreeningProps {
  */
 const CervicalScreening: React.FC<CervicalScreeningProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
+  const config = useConfig<ConfigObject>();
 
   // TODO: Connect to SWR hook when concept UUIDs are configured
   const lastPapDate = null;
@@ -52,6 +56,10 @@ const CervicalScreening: React.FC<CervicalScreeningProps> = ({ patientUuid }) =>
           <span className={styles.value}>{nextScreeningDate ?? t('pending', 'Pending')}</span>
         </div>
       </div>
+      <ConfiguredFormButton
+        formUuid={config.formsList.cervicalCancerScreeningForm}
+        label={t('registerCervicalScreening', 'Registrar tamizaje')}
+      />
     </Tile>
   );
 };

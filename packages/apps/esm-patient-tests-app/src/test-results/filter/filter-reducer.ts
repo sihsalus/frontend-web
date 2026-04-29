@@ -1,7 +1,7 @@
 import {
-  ReducerActionType,
   type LowestNode,
   type ReducerAction,
+  ReducerActionType,
   type ReducerState,
   type TreeNode,
   type TreeParents,
@@ -104,7 +104,9 @@ function reducer(state: ReducerState, action: ReducerAction): ReducerState {
       const affectedLeaves = state.parents[action.name];
       const checkboxes = JSON.parse(JSON.stringify(state.checkboxes));
       const allChecked = affectedLeaves.every((leaf) => checkboxes[leaf]);
-      affectedLeaves.forEach((leaf) => (checkboxes[leaf] = !allChecked));
+      affectedLeaves.forEach((leaf) => {
+        checkboxes[leaf] = !allChecked;
+      });
       return {
         ...state,
         checkboxes: checkboxes,

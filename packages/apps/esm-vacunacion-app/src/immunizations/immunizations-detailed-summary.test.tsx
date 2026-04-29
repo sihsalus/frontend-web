@@ -1,18 +1,16 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
 import {
   formatDate,
   getDefaultsFromConfigSchema,
   launchWorkspace2,
   parseDate,
-  type VisitReturnType,
   useConfig,
+  type VisitReturnType,
 } from '@openmrs/esm-framework';
-import { configSchema, type ImmunizationConfigObject } from '../config-schema';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
-import { mockCurrentVisit } from 'test-utils';
 import { usePatientChartStore, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { mockCurrentVisit, mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import { configSchema, type ImmunizationConfigObject } from '../config-schema';
 import { useImmunizations } from '../hooks/useImmunizations';
 import ImmunizationsDetailedSummary from './immunizations-detailed-summary.component';
 
@@ -26,15 +24,19 @@ jest.mock('@openmrs/esm-patient-common-lib', () => ({
   useVisitOrOfflineVisit: jest.fn(),
 }));
 
+type VaccinationConfig = {
+  immunizationsConfig: ImmunizationConfigObject;
+};
+
 const mockUseImmunizations = jest.mocked(useImmunizations);
 const mockLaunchWorkspace = launchWorkspace2 as jest.Mock;
-const mockUseConfig = jest.mocked(useConfig<ImmunizationConfigObject>);
+const mockUseConfig = jest.mocked(useConfig<VaccinationConfig>);
 const mockUsePatientChartStore = jest.mocked(usePatientChartStore);
 const mockUseVisitOrOfflineVisit = jest.mocked(useVisitOrOfflineVisit);
 
 mockUseConfig.mockReturnValue({
   immunizationsConfig: getDefaultsFromConfigSchema(configSchema),
-} as any);
+} as VaccinationConfig);
 
 mockLaunchWorkspace.mockImplementation(jest.fn());
 
@@ -53,7 +55,7 @@ mockUseConfig.mockReturnValue({
       },
     ],
   },
-} as any);
+} as VaccinationConfig);
 
 const mockImmunizationData = [
   {
@@ -92,7 +94,7 @@ describe('ImmunizationsDetailedSummary', () => {
           },
         ],
       },
-    } as any);
+    } as VaccinationConfig);
     mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: null } as VisitReturnType);
     mockUsePatientChartStore.mockReturnValue({
       patientUuid: 'patient-123',

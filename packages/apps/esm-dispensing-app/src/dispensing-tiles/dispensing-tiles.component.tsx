@@ -1,13 +1,13 @@
+import { DataTableSkeleton } from '@carbon/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { DataTableSkeleton } from '@carbon/react';
-import { useMetrics } from './dispensing-tiles.resource';
 import DispensingTile from './dispensing-tile.component';
+import { useMetrics } from './dispensing-tiles.resource';
 import styles from './dispensing-tiles.scss';
 
 const DispensingTiles: React.FC = () => {
   const { t } = useTranslation();
-  const { metrics, error, isLoading } = useMetrics();
+  const { metrics, isLoading } = useMetrics();
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;

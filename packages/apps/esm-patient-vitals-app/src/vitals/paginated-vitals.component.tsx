@@ -4,16 +4,22 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableExpandedRow,
+  TableExpandHeader,
+  TableExpandRow,
   TableHead,
   TableHeader,
   TableRow,
 } from '@carbon/react';
 import { useLayoutType, usePagination } from '@openmrs/esm-framework';
 import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './paginated-vitals.scss';
 import type { VitalsTableHeader, VitalsTableRow } from './types';
+
+type DataTableCellValue = React.ReactNode | { content?: React.ReactNode };
+type SortParams = { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' };
 
 interface PaginatedVitalsProps {
   isPrinting?: boolean;
@@ -22,6 +28,7 @@ interface PaginatedVitalsProps {
   tableHeaders: Array<VitalsTableHeader>;
   tableRows: Array<VitalsTableRow>;
   urlLabel: string;
+  patient?: fhir.Patient;
 }
 
 const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
@@ -56,21 +63,31 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
     }
   };
 
-  const [sortParams, setSortParams] = useState<{ key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' }>({
+  const [sortParams, setSortParams] = useState<SortParams>({
     key: '',
     sortDirection: 'NONE',
   });
+  const pendingSortParamsRef = useRef<SortParams | null>(null);
+
+  useEffect(() => {
+    const pendingSortParams = pendingSortParamsRef.current;
+
+    if (
+      pendingSortParams &&
+      (pendingSortParams.key !== sortParams.key || pendingSortParams.sortDirection !== sortParams.sortDirection)
+    ) {
+      setSortParams(pendingSortParams);
+    }
+
+    pendingSortParamsRef.current = null;
+  });
 
   const handleSorting = (
-    cellA,
-    cellB,
-    { key, sortDirection }: { key: string; sortDirection: 'ASC' | 'DESC' | 'NONE' },
+    _cellA: DataTableCellValue,
+    _cellB: DataTableCellValue,
+    { key, sortDirection }: SortParams,
   ) => {
-    if (sortDirection === 'NONE') {
-      setSortParams({ key: '', sortDirection });
-    } else {
-      setSortParams({ key, sortDirection });
-    }
+    pendingSortParamsRef.current = sortDirection === 'NONE' ? { key: '', sortDirection } : { key, sortDirection };
     return 0;
   };
 
@@ -97,6 +114,8 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
 
   const rows = isPrinting ? sortedData : paginatedVitals;
 
+  const hasAnyNotes = tableRows.some((row) => Boolean(row.note));
+
   return (
     <>
       <DataTable
@@ -107,33 +126,63 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
         sortRow={handleSorting}
         isSortable
       >
-        {({ rows, headers, getTableProps, getHeaderProps }) => (
+        {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
           <TableContainer className={styles.tableContainer}>
             <Table className={styles.table} aria-label="vitals" {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header, isSortable: header.isSortable })} key={header.key}>
-                      {renderHeader(header.header)}
-                    </TableHeader>
-                  ))}
+                  {hasAnyNotes && <TableExpandHeader />}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header, isSortable: header.isSortable });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {renderHeader(header.header)}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.cells.map((cell) => {
-                      const vitalsObj = rows.find((obj) => obj.id === row.id);
-                      const vitalSignInterpretation = vitalsObj && vitalsObj[cell.id.substring(2) + 'Interpretation'];
+                {rows.map((row) => {
+                  const vitalsObj = rows.find((obj) => obj.id === row.id);
+                  const note = (vitalsObj as unknown as VitalsTableRow)?.note;
 
-                      return (
-                        <StyledTableCell key={`styled-cell-${cell.id}`} interpretation={vitalSignInterpretation}>
-                          {cell.value?.content ?? cell.value}
-                        </StyledTableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
+                  if (hasAnyNotes) {
+                    const { key: rowKey, ...rowProps } = getRowProps({ row });
+                    return (
+                      <React.Fragment key={rowKey}>
+                        <TableExpandRow {...rowProps}>
+                          {row.cells.map((cell) => {
+                            const vitalSignInterpretation =
+                              vitalsObj && vitalsObj[cell.id.substring(2) + 'Interpretation'];
+
+                            return (
+                              <StyledTableCell key={`styled-cell-${cell.id}`} interpretation={vitalSignInterpretation}>
+                                {cell.value?.content ?? cell.value}
+                              </StyledTableCell>
+                            );
+                          })}
+                        </TableExpandRow>
+                        <TableExpandedRow colSpan={headers.length + 1}>{note ? <p>{note}</p> : null}</TableExpandedRow>
+                      </React.Fragment>
+                    );
+                  }
+
+                  return (
+                    <TableRow key={row.id}>
+                      {row.cells.map((cell) => {
+                        const vitalSignInterpretation = vitalsObj && vitalsObj[cell.id.substring(2) + 'Interpretation'];
+
+                        return (
+                          <StyledTableCell key={`styled-cell-${cell.id}`} interpretation={vitalSignInterpretation}>
+                            {cell.value?.content ?? cell.value}
+                          </StyledTableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

@@ -1,13 +1,12 @@
+import { Button, DataTableSkeleton } from '@carbon/react';
+import { AddIcon, launchWorkspace, useLayoutType } from '@openmrs/esm-framework';
+import { CardHeader, EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequestProcedures, useRequestsByPatient, useStudiesByPatient } from '../../api';
-import { DataTableSkeleton } from '@carbon/react';
-import { CardHeader, EmptyState, ErrorState } from '@openmrs/esm-patient-common-lib';
-import { AddIcon, launchWorkspace, useLayoutType } from '@openmrs/esm-framework';
-import StudiesDetailTable from '../components/studies-details-table.component';
 import RequestProcedureTable from '../components/requests-details-table.component';
+import StudiesDetailTable from '../components/studies-details-table.component';
 import { addNewRequestWorkspace, linkStudiesFormWorkspace, uploadStudiesFormWorkspace } from '../constants';
-import { Button } from '@carbon/react';
 
 interface ImagingDetailedSummaryProps {
   patientUuid: string;
@@ -64,7 +63,7 @@ export default function ImagingDetailedSummary({ patientUuid }: ImagingDetailedS
           const headerTitle = t('Studies', 'Studies');
 
           if (isLoadingPatientStudies)
-            return <DataTableSkeleton data-testid="studies-loading" role="progressbar" compact={isDesktop} zebra />;
+            return <DataTableSkeleton data-testid="studies-loading" role="progressbar" zebra />;
 
           if (studiesError) return <ErrorState error={studiesError} headerTitle={headerTitle} />;
 
@@ -92,7 +91,7 @@ export default function ImagingDetailedSummary({ patientUuid }: ImagingDetailedS
           const displayTextWorklist = t('worklistNoFoundMessage', 'No worklist found');
           const headerTitle = t('worklist', 'Worklist');
 
-          if (isLoadingRequests) return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;
+          if (isLoadingRequests) return <DataTableSkeleton role="progressbar" zebra />;
 
           if (requestError) return <ErrorState error={requestError} headerTitle={headerTitle} />;
           if (requests?.length > 0) {

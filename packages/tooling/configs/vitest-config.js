@@ -1,7 +1,7 @@
 import { defineConfig, mergeConfig } from 'vitest/config';
 import aliasPresets from './alias-presets.json';
-import { createVitestAliases } from './vitest-aliases';
 import sharedTestAliases from './shared-test-aliases.json';
+import { createVitestAliases } from './vitest-aliases';
 export function defineWorkspaceVitestConfig(config = {}) {
   return defineConfig(
     mergeConfig(

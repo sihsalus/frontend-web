@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import React, { useContext, useMemo } from 'react';
 
 import SelectedDateContext from '../../../hooks/selectedDateContext';
@@ -26,10 +26,11 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
     [dateTime, events],
   );
 
-  const handleAppoiment = (serviceUuid: string) => {};
+  const handleAppoiment = (_serviceUuid: string) => {};
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => handleAppoiment('')}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
@@ -58,7 +59,7 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
           )}
         </div>
       )}
-    </div>
+    </button>
   );
 };
 

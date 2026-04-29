@@ -1,7 +1,6 @@
 import { DatePicker, DatePickerInput } from '@carbon/react';
 import { useAppContext } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type DateFilterContext } from '../types';

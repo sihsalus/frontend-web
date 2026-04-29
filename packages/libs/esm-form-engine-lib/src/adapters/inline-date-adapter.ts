@@ -1,10 +1,10 @@
-import { formatDate, parseDate, toOmrsIsoString, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
+import { formatDate, type OpenmrsResource, parseDate, toOmrsIsoString } from '@openmrs/esm-framework/src/internal';
 import { type FormContextProps } from '../provider/form-provider';
-import { isNewSubmissionEffective } from './obs-comment-adapter';
-import { isEmpty } from '../validators/form-validator';
 import { type FormField, type FormFieldValueAdapter, type FormProcessorContextProps } from '../types';
 import { hasSubmission, isDateValue, isFormFieldSubmissionValue, isStringValue } from '../utils/common-utils';
+import { isEmpty } from '../validators/form-validator';
 import { editObs } from './obs-adapter';
+import { isNewSubmissionEffective } from './obs-comment-adapter';
 
 export const InlineDateAdapter: FormFieldValueAdapter = {
   transformFieldValue: function (field: FormField, value: unknown, context: FormContextProps) {
@@ -58,7 +58,7 @@ export const InlineDateAdapter: FormFieldValueAdapter = {
   ): null {
     return null;
   },
-  getDisplayValue: function (field: FormField, value: Date) {
+  getDisplayValue: function (_field: FormField, value: Date) {
     if (value) {
       return formatDate(value);
     }

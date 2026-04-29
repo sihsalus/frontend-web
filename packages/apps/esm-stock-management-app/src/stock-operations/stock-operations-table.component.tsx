@@ -1,4 +1,3 @@
-import React, { useCallback, useMemo, useState } from 'react';
 import {
   DataTable,
   DataTableSkeleton,
@@ -25,17 +24,18 @@ import {
   Tile,
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
-import { useTranslation } from 'react-i18next';
 import { isDesktop, restBaseUrl } from '@openmrs/esm-framework';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DATE_PICKER_CONTROL_FORMAT, DATE_PICKER_FORMAT, StockFilters } from '../constants';
+import { ResourceRepresentation } from '../core/api/api';
 import { formatDisplayDate } from '../core/utils/datetimeUtils';
 import { handleMutate } from '../utils';
-import { ResourceRepresentation } from '../core/api/api';
-import { useStockOperationPages } from './stock-operations-table.resource';
+import StockOperationExpandedRow from './add-stock-operation/stock-operations-expanded-row/stock-operation-expanded-row.component';
 import EditStockOperationActionMenu from './edit-stock-operation/edit-stock-operation-action-menu.component';
 import StockOperationTypesSelector from './stock-operation-types-selector/stock-operation-types-selector.component';
 import StockOperationsFilters from './stock-operations-filters.component';
-import StockOperationExpandedRow from './add-stock-operation/stock-operations-expanded-row/stock-operation-expanded-row.component';
+import { useStockOperationPages } from './stock-operations-table.resource';
 import styles from './stock-operations-table.scss';
 
 interface StockOperationsTableProps {
@@ -235,7 +235,7 @@ const StockOperations: React.FC<StockOperationsTableProps> = () => {
               <TableBody>
                 {rows?.map((row: any, index) => {
                   const props = getRowProps({ row });
-                  const expandedRowProps = getExpandedRowProps({ row });
+                  const _expandedRowProps = getExpandedRowProps({ row });
                   return (
                     <React.Fragment key={row.id}>
                       <TableExpandRow className={isDesktop ? styles.desktopRow : styles.tabletRow} {...props}>

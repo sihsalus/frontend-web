@@ -1,9 +1,8 @@
-import React from 'react';
+import type { FormField } from '@sihsalus/esm-form-engine-lib';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import TextArea from './textarea.component';
 import { FormFieldProvider } from '../../../../form-field-context';
-import type { FormField } from '@sihsalus/esm-form-engine-lib';
+import TextArea from './textarea.component';
 
 const mockSetFormField = jest.fn();
 const formField: FormField = {
@@ -58,3 +57,7 @@ function renderTextComponent() {
     </FormFieldProvider>,
   );
 }
+
+import React from 'react';
+
+void React;

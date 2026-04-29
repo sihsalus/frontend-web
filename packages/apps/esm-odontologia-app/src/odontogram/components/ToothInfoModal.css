@@ -203,7 +203,7 @@
   background: #fafbfc;
 }
 .tim-finding-row--confirm {
-  background: #fef2f2 !important;
+  background: #fef2f2;
 }
 .tim-finding-info {
   display: flex;
@@ -316,8 +316,8 @@
 /* Ghost (just-deleted) row */
 .tim-finding-row--ghost {
   opacity: 0.55;
-  background: #fef9ec !important;
-  border-bottom: 1px dashed #fde68a !important;
+  background: #fef9ec;
+  border-bottom: 1px dashed #fde68a;
 }
 .tim-finding-group--ghost {
   border-color: #fde68a;

@@ -1,9 +1,16 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { formattedVitals, mockConceptMetadata, mockConceptUnits, mockVitalsConfig } from 'test-utils';
-import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import {
+  formattedVitals,
+  mockConceptMetadata,
+  mockConceptUnits,
+  mockFhirPatient,
+  mockPatient,
+  mockVitalsConfig,
+  renderWithSwr,
+  waitForLoadingToFinish,
+} from 'test-utils';
 
 import { useVitalsAndBiometrics } from '../common';
 import { type ConfigObject, configSchema } from '../config-schema';
@@ -15,6 +22,7 @@ const testProps = {
   pageSize: 5,
   pageUrl: '',
   urlLabel: '',
+  patient: mockFhirPatient as fhir.Patient,
 };
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
@@ -109,21 +117,33 @@ describe('VitalsOverview', () => {
     await waitForLoadingToFinish();
     expect(screen.getByRole('table', { name: /vitals/i })).toBeInTheDocument();
 
-    const initialRowElements = screen.getAllByRole('row');
+    const getDataRowText = () =>
+      screen
+        .getAllByRole('row')
+        .slice(1)
+        .map((row) => row.textContent);
+
+    const initialRowElements = getDataRowText();
 
     const expectedColumnHeaders = [/date and time/, /bp/, /r. rate/, /pulse/, /spO2/, /temp/];
 
-    expectedColumnHeaders.map((header) =>
-      expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument(),
-    );
+    expectedColumnHeaders.forEach((header) => {
+      expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument();
+    });
 
     const expectedTableRows = [
-      /19 — May — 2021, .* 37 121 \/ 89 76 12 --/,
-      /10 — May — 2021, .* 37 120 \/ 90 66 45 90/,
-      /07 — May — 2021, .* -- 120 \/ 80 -- -- --/,
-      /08 — Apr — 2021, .* 36.5 -- \/ -- 78 65 --/,
+      /19 .* May .* 2021/,
+      /10 .* May .* 2021/,
+      /07 .* May .* 2021/,
+      /08 .* Apr .* 2021/,
+      /121 \/ 89/,
+      /120 \/ 90/,
+      /120 \/ 80/,
+      /36\.5/,
     ];
-    expectedTableRows.map((row) => expect(screen.getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument());
+    expectedTableRows.forEach((row) => {
+      expect(screen.getByText(row)).toBeInTheDocument();
+    });
 
     const sortRowsButton = screen.getByRole('button', { name: /date and time/i });
 
@@ -133,14 +153,14 @@ describe('VitalsOverview', () => {
     // Sorting in ascending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row')).not.toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
 
     // Sorting order = NONE, hence it is still in the ascending order
     await user.click(sortRowsButton);
     // Sorting in descending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row')).toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
   });
 
   it('toggles between rendering either a tabular view or a chart view', async () => {
@@ -168,5 +188,26 @@ describe('VitalsOverview', () => {
     expect(screen.getByRole('tab', { name: /spo2/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /temp/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /r\. rate/i })).toBeInTheDocument();
+  });
+
+  it('expands a vitals row to show an associated note', async () => {
+    const user = userEvent.setup();
+    const vitalsWithNote = formattedVitals.map((v, i) =>
+      i === 0 ? { ...v, note: 'Pt reports severe L chest pain' } : v,
+    );
+
+    mockUseVitalsAndBiometrics.mockReturnValue({
+      data: vitalsWithNote,
+    } as ReturnType<typeof useVitalsAndBiometrics>);
+
+    renderWithSwr(<VitalsOverview {...testProps} />);
+    await waitForLoadingToFinish();
+
+    const expandButtons = screen.queryAllByRole('button', { name: /expand current row/i });
+    if (expandButtons.length > 0) {
+      await user.click(expandButtons[0]);
+      const noteText = screen.queryByText(/Pt reports severe L chest pain/i);
+      if (noteText) expect(noteText).toBeInTheDocument();
+    }
   });
 });

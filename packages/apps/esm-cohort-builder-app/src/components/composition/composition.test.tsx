@@ -1,7 +1,6 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
 import { showSnackbar } from '@openmrs/esm-framework';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Composition from './composition.component';
 
 const mockCompositionQuery = {

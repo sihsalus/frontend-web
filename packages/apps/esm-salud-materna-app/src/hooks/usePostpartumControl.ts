@@ -1,14 +1,9 @@
 import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
-import filter from 'lodash-es/filter';
-import includes from 'lodash-es/includes';
-import map from 'lodash-es/map';
-import uniqBy from 'lodash-es/uniqBy';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 
 import type { ConfigObject } from '../config-schema';
-import type { ProgramWorkflowState, PatientProgram, Program, ProgramsFetchResponse } from '../types';
 
 export const customRepresentation = `custom:(uuid,display,program,dateEnrolled,dateCompleted,location:(uuid,display),states:(startDate,endDate,voided,state:(uuid,concept:(display))))`;
 
@@ -43,10 +38,10 @@ export const usePostpartumControlTable = (
   const config = useConfig() as ConfigObject;
   const formName = config.formsList.postpartumControl;
 
-  const tipoEncuentro = 'Control Postnatal';
+  const tipoEncuentro = config.encounterTypes.postnatalControl;
   const attentionssUrl = useMemo(() => {
     return `${restBaseUrl}/encounter?patient=${patientUuid}&encounterType=${tipoEncuentro}`;
-  }, [patientUuid]);
+  }, [patientUuid, tipoEncuentro]);
 
   const { data, error, isValidating, mutate } = useSWR<EncounterResponse>(
     patientUuid ? attentionssUrl : null,
@@ -79,7 +74,7 @@ export const usePostpartumControlTable = (
     if (!detailedEncounters) return [];
 
     return detailedEncounters
-      .filter((encounter) => encounter?.form?.display === formName)
+      .filter((encounter) => encounter?.form?.display === formName || encounter?.form?.uuid === formName)
       .sort((a, b) => new Date(a.encounterDatetime).getTime() - new Date(b.encounterDatetime).getTime());
   }, [detailedEncounters, formName]);
 

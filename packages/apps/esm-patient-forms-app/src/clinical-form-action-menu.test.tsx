@@ -5,6 +5,8 @@ import React from 'react';
 
 import ClinicalFormActionMenu from './clinical-form-action-menu.component';
 
+void React;
+
 const mockActionMenuButton = jest.mocked(ActionMenuButton);
 const mockUseLaunchWorkspaceRequiringVisit = useLaunchWorkspaceRequiringVisit as jest.Mock;
 

@@ -1,6 +1,5 @@
 import { getDefaultsFromConfigSchema, useConfig, useLayoutType } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import { configSchema, type PatientSearchConfig } from '../config-schema';
 

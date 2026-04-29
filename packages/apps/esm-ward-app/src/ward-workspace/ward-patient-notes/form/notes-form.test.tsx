@@ -2,7 +2,6 @@ import { showSnackbar, useSession } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { emrConfigurationMock, mockPatient, mockSession } from 'test-utils';
-import React from 'react';
 
 import useEmrConfiguration from '../../../hooks/useEmrConfiguration';
 import { savePatientNote } from '../notes.resource';
@@ -30,9 +29,12 @@ jest.mock('../notes.resource', () => ({
 jest.mock('../../../hooks/useEmrConfiguration', () => jest.fn());
 
 const mockedUseEmrConfiguration = jest.mocked(useEmrConfiguration);
+const typedEmrConfigurationMock = emrConfigurationMock as NonNullable<
+  ReturnType<typeof useEmrConfiguration>['emrConfiguration']
+>;
 
 mockedUseEmrConfiguration.mockReturnValue({
-  emrConfiguration: emrConfigurationMock,
+  emrConfiguration: typedEmrConfigurationMock,
   mutateEmrConfiguration: jest.fn(),
   isLoadingEmrConfiguration: false,
   errorFetchingEmrConfiguration: null,
@@ -50,11 +52,11 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
     encounterProviders: expect.arrayContaining([
       {
         encounterRole: emrConfigurationMock.clinicianEncounterRole.uuid,
-        provider: undefined,
+        provider: mockSession.data.currentProvider.uuid,
       },
     ]),
     encounterType: emrConfigurationMock.inpatientNoteEncounterType.uuid,
-    location: undefined,
+    location: mockSession.data.sessionLocation.uuid,
     obs: expect.arrayContaining([
       {
         concept: { display: '', uuid: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' },
@@ -77,7 +79,10 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
   await userEvent.click(submitButton);
 
   expect(mockSavePatientNote).toHaveBeenCalledTimes(1);
-  expect(mockSavePatientNote).toHaveBeenCalledWith(expect.objectContaining(successPayload), new AbortController());
+  expect(mockSavePatientNote).toHaveBeenCalledWith(
+    expect.objectContaining(successPayload),
+    expect.any(AbortController),
+  );
 });
 
 test('renders an error snackbar if there was a problem recording a visit note', async () => {
@@ -110,6 +115,6 @@ test('renders an error snackbar if there was a problem recording a visit note', 
 });
 
 function renderWardPatientNotesForm() {
-  mockedUseSession.mockReturnValue(mockSession);
+  mockedUseSession.mockReturnValue(mockSession.data);
   render(<PatientNotesForm {...testProps} />);
 }

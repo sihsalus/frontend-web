@@ -1,19 +1,18 @@
 import { type LoggedInUser, type Session, useSession } from '@openmrs/esm-framework';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { mockLoggedInUser } from '../../../test-utils/mocks/mock-user';
 
 import UserPanelSwitcher from './user-panel-switcher.component';
 
-vi.mock('@openmrs/esm-framework', () => ({
+jest.mock('@openmrs/esm-framework', () => ({
   __esModule: true,
-  useSession: vi.fn(),
+  useSession: jest.fn(),
   UserAvatarIcon: () => null,
 }));
 
-const mockUseSession = vi.mocked(useSession);
+const mockUseSession = jest.mocked(useSession);
 
 describe('UserPanelSwitcher', () => {
   beforeEach(() => {

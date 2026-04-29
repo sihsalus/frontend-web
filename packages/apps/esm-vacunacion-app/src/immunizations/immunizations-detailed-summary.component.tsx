@@ -1,30 +1,27 @@
-import React, { type ComponentProps, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DataTable,
   DataTableSkeleton,
+  InlineLoading,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
-  InlineLoading,
-  TableExpandHeader,
-  TableExpandRow,
   TableContainer,
   TableExpandedRow,
+  TableExpandHeader,
+  TableExpandRow,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@carbon/react';
-import { orderBy } from 'lodash-es';
 import {
   AddIcon,
   formatDate,
+  launchWorkspace2,
   parseDate,
   useConfig,
   useLayoutType,
   usePagination,
-  launchWorkspace2,
 } from '@openmrs/esm-framework';
 import {
   CardHeader,
@@ -33,10 +30,13 @@ import {
   PatientChartPagination,
   useVisitOrOfflineVisit,
 } from '@openmrs/esm-patient-common-lib';
-import { immunizationFormSub, latestFirst, linkConfiguredSequences } from './utils';
+import { orderBy } from 'lodash-es';
+import React, { type ComponentProps, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useImmunizations } from '../hooks/useImmunizations';
 import SequenceTable from './components/immunizations-sequence-table.component';
 import styles from './immunizations-detailed-summary.scss';
+import { immunizationFormSub, latestFirst, linkConfiguredSequences } from './utils';
 
 interface ImmunizationsDetailedSummaryProps {
   patientUuid: string;
@@ -197,9 +197,15 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
                 <TableHead>
                   <TableRow>
                     <TableExpandHeader enableToggle {...getExpandHeaderProps()} />
-                    {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({ header });
+
+                      return (
+                        <TableHeader key={key} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -208,11 +214,17 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
 
                     return (
                       <React.Fragment key={row.id}>
-                        <TableExpandRow {...getRowProps({ row })}>
-                          {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>{cell.value}</TableCell>
-                          ))}
-                        </TableExpandRow>
+                        {(() => {
+                          const { key, ...rowProps } = getRowProps({ row });
+
+                          return (
+                            <TableExpandRow key={key} {...rowProps}>
+                              {row.cells.map((cell) => (
+                                <TableCell key={cell.id}>{cell.value}</TableCell>
+                              ))}
+                            </TableExpandRow>
+                          );
+                        })()}
                         {row.isExpanded ? (
                           <TableExpandedRow {...getExpandedRowProps({ row })} colSpan={headers.length + 2}>
                             {immunization && (

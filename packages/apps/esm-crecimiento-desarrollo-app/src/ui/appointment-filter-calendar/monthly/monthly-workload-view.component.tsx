@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import React, { useContext, useMemo } from 'react';
 
 import SelectedDateContext from '../../../hooks/selectedDateContext';
@@ -30,7 +30,6 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
 
   return (
     <div
-      onClick={() => handleAppoiment('')}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
         styles.largeDesktop,

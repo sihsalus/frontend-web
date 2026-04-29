@@ -2,7 +2,7 @@ import { showNotification } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useMotherAndChildren, type MothersAndChildrenSearchCriteria } from '../../hooks/useMotherAndChildren';
+import { type MothersAndChildrenSearchCriteria, useMotherAndChildren } from '../../hooks/useMotherAndChildren';
 import { type MotherChildRelationships, type PatientAndAdmission } from '../../types';
 
 const motherAndChildrenRep =
@@ -77,7 +77,7 @@ export function useMotherChildrenRelationshipsByPatient(
 
       // careful, we need to avoid duplicate entries if both mother and child as in same ward
       const children = childrenByMotherUuid.get(mother.uuid);
-      const hasChildAlready = children.some(({ patient }) => patient.uuid == child.uuid);
+      const hasChildAlready = children.some(({ patient }) => patient.uuid === child.uuid);
       if (!hasChildAlready) {
         children.push({ patient: child, currentAdmission: childAdmission });
       }

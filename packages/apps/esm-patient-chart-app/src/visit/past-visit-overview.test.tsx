@@ -63,10 +63,14 @@ describe('PastVisitOverview', () => {
     expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
 
     const tableHeaders = [/Start Date/i, /Type/i, /Location/i, /End Date/i];
-    tableHeaders.forEach((header) => expect(screen.getByRole('columnheader', { name: header })).toBeInTheDocument());
+    tableHeaders.forEach((header) => {
+      expect(screen.getByRole('columnheader', { name: header })).toBeInTheDocument();
+    });
 
     const tableRows = [/Sep 7, 2021 ECH Laboratory/i, /Sep 3, 2021 Facility Visit Registration Desk/i];
-    tableRows.forEach((header) => expect(screen.getByRole('row', { name: header })).toBeInTheDocument());
+    tableRows.forEach((header) => {
+      expect(screen.getByRole('row', { name: header })).toBeInTheDocument();
+    });
 
     const cancelButton = screen.getByRole('button', { name: /Cancel/i });
 

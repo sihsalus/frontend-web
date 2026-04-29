@@ -1,10 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { usePatientLists } from '../patient-lists.resource';
 import PatientListsWorkspace from './patient-lists.workspace';
 
 const mockUsePatientLists = jest.mocked(usePatientLists);
+
+void React;
 
 jest.mock('../patient-lists.resource', () => {
   return {
@@ -56,9 +58,9 @@ it('renders a tabular overview of the available patient lists', async () => {
 
   const columnHeaders = [/list name/, /list type/, /no\. of patients/];
 
-  columnHeaders.forEach((header) =>
-    expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument(),
-  );
+  columnHeaders.forEach((header) => {
+    expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument();
+  });
 
   expect(screen.getByRole('row', { name: /COTD Study My List 2/i })).toBeInTheDocument();
 

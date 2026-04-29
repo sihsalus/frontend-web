@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { type SearchedPatient } from '../types';
 
@@ -31,7 +31,7 @@ const useArrowNavigation = (
         setFocusedResult(initalFocusedResult);
       }
     },
-    [setFocusedResult, totalResults, focusedResult, enterCallback, initalFocusedResult, resetFocusCallback],
+    [totalResults, focusedResult, enterCallback, initalFocusedResult, resetFocusCallback],
   );
 
   useEffect(() => {

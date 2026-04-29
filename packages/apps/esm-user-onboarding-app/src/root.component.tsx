@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { AppErrorBoundary } from '@sihsalus/esm-rbac';
-import ReactJoyride, { ACTIONS, type CallBackProps, EVENTS } from 'react-joyride';
 import { useDefineAppContext } from '@openmrs/esm-framework';
-import { type TutorialContext, type ExtendedStep } from './types';
+import { AppErrorBoundary } from '@sihsalus/esm-rbac';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import ReactJoyride, { ACTIONS, type CallBackProps, EVENTS } from 'react-joyride';
 import CustomTooltip from './tooltip/tooltip.component';
+import { type ExtendedStep, type TutorialContext } from './types';
 
 const RootComponent: React.FC = () => {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -12,7 +12,9 @@ const RootComponent: React.FC = () => {
   const intervalIds = useRef<Set<ReturnType<typeof setInterval>>>(new Set());
 
   const clearAllIntervals = useCallback(() => {
-    intervalIds.current.forEach((id) => clearInterval(id));
+    intervalIds.current.forEach((id) => {
+      clearInterval(id);
+    });
     intervalIds.current.clear();
   }, []);
 
@@ -105,6 +107,8 @@ const RootComponent: React.FC = () => {
   return (
     <AppErrorBoundary appName="esm-user-onboarding-app">
       <div
+        role="button"
+        tabIndex={-1}
         onMouseDown={(e) => {
           e.stopPropagation();
         }}

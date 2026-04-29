@@ -4,7 +4,7 @@ svg.tooth {
 }
 
 svg.tooth polygon {
-  fill: white !important;
+  fill: white;
   stroke: black;
 }
 

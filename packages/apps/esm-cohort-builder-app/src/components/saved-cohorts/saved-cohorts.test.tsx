@@ -1,9 +1,8 @@
-import React from 'react';
 import { openmrsFetch } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import type { DefinitionDataRow } from '../../types';
-import { useCohorts } from './saved-cohorts.resources';
 import SavedCohorts from './saved-cohorts.component';
+import { useCohorts } from './saved-cohorts.resources';
 
 const mockCohorts: DefinitionDataRow[] = [
   {

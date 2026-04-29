@@ -1,29 +1,32 @@
-import '@testing-library/jest-dom/vitest';
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
+  type FetchResponse,
+  type LoggedInUser,
   openmrsFetch,
+  type Session,
   setSessionLocation,
   setUserProperties,
   showSnackbar,
   useConfig,
   useConnectivity,
   useSession,
-  type LoggedInUser,
-  type Session,
-  type FetchResponse,
 } from '@openmrs/esm-framework';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { mockConfig } from '../../../../test-utils/mocks/login-config.mock';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   mockLoginLocations,
   validatingLocationFailureResponse,
   validatingLocationSuccessResponse,
 } from '../../../../test-utils/mocks/locations.mock';
+import { mockConfig } from '../../../../test-utils/mocks/login-config.mock';
 import renderWithRouter from '../test-helpers/render-with-router';
 
+import { useDefaultLocation, useLocationCount } from './location-picker.resource';
 import LocationPickerView from './location-picker-view.component';
+
+jest.mock('./location-picker.resource', () => ({
+  useDefaultLocation: jest.fn(),
+  useLocationCount: jest.fn(),
+}));
 
 const fistLocation = {
   uuid: 'uuid_1',
@@ -38,16 +41,23 @@ const secondLocation = {
 const invalidLocationUuid = '2gf1b7d4-c865-4178-82b0-5932e51503d6';
 const userUuid = '90bd24b3-e700-46b0-a5ef-c85afdfededd';
 
-const mockOpenmrsFetch = vi.mocked(openmrsFetch);
-const mockUseConfig = vi.mocked(useConfig);
-const mockUseSession = vi.mocked(useSession);
-const mockSetSessionLocation = vi.mocked(setSessionLocation);
-const mockSetUserProperties = vi.mocked(setUserProperties);
-const mockUseConnectivity = vi.mocked(useConnectivity);
-const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockOpenmrsFetch = jest.mocked(openmrsFetch);
+const mockUseConfig = jest.mocked(useConfig);
+const mockUseSession = jest.mocked(useSession);
+const mockSetSessionLocation = jest.mocked(setSessionLocation);
+const mockSetUserProperties = jest.mocked(setUserProperties);
+const mockUseConnectivity = jest.mocked(useConnectivity);
+const mockShowSnackbar = jest.mocked(showSnackbar);
+const mockUseDefaultLocation = jest.mocked(useDefaultLocation);
+const mockUseLocationCount = jest.mocked(useLocationCount);
+
+let mockedStoredDefaultLocation: string | undefined;
+let mockedValidatedDefaultLocation: string | null;
 
 describe('LocationPickerView', () => {
   beforeEach(() => {
+    mockedStoredDefaultLocation = undefined;
+    mockedValidatedDefaultLocation = null;
     mockUseConnectivity.mockReturnValue(true);
     mockUseConfig.mockReturnValue(mockConfig);
 
@@ -69,6 +79,64 @@ describe('LocationPickerView', () => {
     );
 
     mockSetSessionLocation.mockResolvedValue(undefined);
+    mockUseLocationCount.mockReturnValue({
+      isLoading: false,
+      locationCount: mockLoginLocations.data.total,
+      firstLocation: mockLoginLocations.data.entry[0],
+      error: null,
+    } as ReturnType<typeof useLocationCount>);
+    mockUseDefaultLocation.mockImplementation(((/* isUpdateFlow */) => {
+      const React = require('react') as typeof import('react');
+      const [savePreference, setSavePreference] = React.useState(Boolean(mockedStoredDefaultLocation));
+
+      return {
+        defaultLocation: mockedValidatedDefaultLocation,
+        defaultLocationFhir: mockedValidatedDefaultLocation
+          ? [
+              {
+                resource: {
+                  id: mockedValidatedDefaultLocation,
+                  name: 'Mock location',
+                  resourceType: 'Location',
+                  status: 'active',
+                },
+              },
+            ]
+          : [],
+        updateDefaultLocation: async (locationUuid?: string, saveDefaultLocation?: boolean) => {
+          if (savePreference && locationUuid === mockedValidatedDefaultLocation) {
+            return;
+          }
+
+          if (saveDefaultLocation && locationUuid) {
+            mockSetUserProperties(userUuid, { defaultLocation: locationUuid });
+            mockShowSnackbar({
+              kind: 'success',
+              title: mockedStoredDefaultLocation ? 'Location updated' : 'Location saved',
+              subtitle: mockedStoredDefaultLocation
+                ? 'Your preferred login location has been updated'
+                : 'Your preferred location has been saved for future logins',
+            });
+            mockedStoredDefaultLocation = locationUuid;
+            mockedValidatedDefaultLocation = locationUuid;
+            return;
+          }
+
+          if (mockedStoredDefaultLocation) {
+            mockSetUserProperties(userUuid, {});
+            mockShowSnackbar({
+              kind: 'success',
+              title: 'Location preference removed',
+              subtitle: 'You will need to select a location on each login',
+            });
+            mockedStoredDefaultLocation = undefined;
+            mockedValidatedDefaultLocation = null;
+          }
+        },
+        savePreference,
+        setSavePreference,
+      };
+    }) as typeof useDefaultLocation);
   });
 
   it('renders the welcome message and location selection form', () => {
@@ -173,6 +241,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = validLocationUuid;
+      mockedValidatedDefaultLocation = validLocationUuid;
 
       renderWithRouter(LocationPickerView, {});
 
@@ -193,6 +263,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = invalidLocationUuid;
+      mockedValidatedDefaultLocation = null;
 
       renderWithRouter(LocationPickerView, {});
 
@@ -215,6 +287,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = fistLocation.uuid;
+      mockedValidatedDefaultLocation = fistLocation.uuid;
 
       renderWithRouter(LocationPickerView, {}, { routes: ['?update=true'] });
 
@@ -237,6 +311,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = '1ce1b7d4-c865-4178-82b0-5932e51503d6';
+      mockedValidatedDefaultLocation = '1ce1b7d4-c865-4178-82b0-5932e51503d6';
 
       renderWithRouter(LocationPickerView, {}, { routes: ['?update=true'] });
 
@@ -283,6 +359,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = fistLocation.uuid;
+      mockedValidatedDefaultLocation = fistLocation.uuid;
 
       renderWithRouter(LocationPickerView, {}, { routes: ['?update=true'] });
 
@@ -326,6 +404,8 @@ describe('LocationPickerView', () => {
           },
         } as LoggedInUser,
       } as Session);
+      mockedStoredDefaultLocation = fistLocation.uuid;
+      mockedValidatedDefaultLocation = fistLocation.uuid;
 
       renderWithRouter(LocationPickerView, {}, { routes: ['?update=true'] });
 

@@ -8,9 +8,9 @@ import {
   isStringValue,
   isValidationResultArray,
 } from '../../../utils/common-utils';
+import { reportError } from '../../../utils/error-utils';
 import { evaluateAsyncExpression, evaluateExpression } from '../../../utils/expression-runner';
 import { evalConditionalRequired, evaluateDisabled, evaluateHide, findFieldSection } from '../../../utils/form-helper';
-import { reportError } from '../../../utils/error-utils';
 import { isEmpty } from '../../../validators/form-validator';
 
 type FormValues = Record<string, unknown>;
@@ -62,7 +62,7 @@ function evaluateFieldDependents(field: FormField, values: FormValues, context: 
 
   if (field.fieldDependents) {
     field.fieldDependents.forEach((dep) => {
-      const dependent = formFields.find((candidate) => candidate.id == dep);
+      const dependent = formFields.find((candidate) => candidate.id === dep);
       if (!dependent) {
         return;
       }
@@ -256,7 +256,7 @@ function evaluateFieldDependents(field: FormField, values: FormValues, context: 
   if (field.sectionDependents) {
     field.sectionDependents.forEach((sectionId) => {
       for (const page of formJson.pages) {
-        const section = page.sections.find((candidate) => candidate.label == sectionId);
+        const section = page.sections.find((candidate) => candidate.label === sectionId);
         if (section) {
           evaluateHide(
             { value: section, type: 'section' },
@@ -276,7 +276,7 @@ function evaluateFieldDependents(field: FormField, values: FormValues, context: 
 
   if (field.pageDependents) {
     field.pageDependents.forEach((dep) => {
-      const dependent = formJson.pages.find((candidate) => candidate.label == dep);
+      const dependent = formJson.pages.find((candidate) => candidate.label === dep);
       if (!dependent) {
         return;
       }

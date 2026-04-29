@@ -6,11 +6,10 @@ import {
   useFeatureFlag,
 } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { renderWithSwr } from 'test-utils';
 
-import { mockWardPatientGroupDetails, mockWardViewContext } from '../../mock';
+import { mockWardPatientGroupDetails, mockWardViewContext } from '../../test-utils/mock';
 import { configSchema } from '../config-schema';
 import { useObs } from '../hooks/useObs';
 import useWardLocation from '../hooks/useWardLocation';
@@ -20,8 +19,8 @@ import DefaultWardView from './default-ward/default-ward-view.component';
 import WardView from './ward-view.component';
 
 jest.mocked(useConfig).mockReturnValue({
-  ...getDefaultsFromConfigSchema<ConfigSchema>(configSchema),
-});
+  ...getDefaultsFromConfigSchema(configSchema as Record<string, unknown>),
+} as ConfigSchema);
 
 const mockUseFeatureFlag = jest.mocked(useFeatureFlag);
 
@@ -46,7 +45,7 @@ jest.mock('react-router-dom', () => ({
 const mockUseParams = useParams as jest.Mock;
 
 jest.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
-//@ts-ignore
+//@ts-expect-error
 jest.mocked(useObs).mockReturnValue({
   data: [],
 });

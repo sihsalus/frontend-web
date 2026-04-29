@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 type Timer = ReturnType<typeof setTimeout>;
-type SomeFunction = (...args: any[]) => void;
+type SomeFunction = (...args: unknown[]) => void;
 
 /**
  *

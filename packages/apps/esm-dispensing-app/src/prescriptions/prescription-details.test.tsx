@@ -1,7 +1,6 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { useConfig } from '@openmrs/esm-framework';
-import { usePrescriptionDetails, usePatientAllergies } from '../medication-request/medication-request.resource';
+import { render, screen } from '@testing-library/react';
+import { usePatientAllergies, usePrescriptionDetails } from '../medication-request/medication-request.resource';
 import { useStaleEncounterUuids } from '../utils';
 import PrescriptionDetails from './prescription-details.component';
 

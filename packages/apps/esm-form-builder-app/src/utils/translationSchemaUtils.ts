@@ -40,7 +40,9 @@ export function extractTranslatableStrings(form: TranslationSchemaLike | null | 
         result[section.label] = section.label;
       }
 
-      section.questions?.forEach((question) => handleExtractQuestion(question, result));
+      section.questions?.forEach((question) => {
+        handleExtractQuestion(question, result);
+      });
     });
   });
 
@@ -97,7 +99,9 @@ function handleExtractQuestion(question: FormField, translatableStrings: Record<
     }
   }
 
-  question.questions?.forEach((nestedQuestion) => handleExtractQuestion(nestedQuestion, translatableStrings));
+  question.questions?.forEach((nestedQuestion) => {
+    handleExtractQuestion(nestedQuestion, translatableStrings);
+  });
 }
 
 function handleMergeQuestion(question: FormField, translations: Record<string, string>): FormField {

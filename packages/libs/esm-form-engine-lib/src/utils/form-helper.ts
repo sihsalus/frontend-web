@@ -1,19 +1,19 @@
 import { type LayoutType } from '@openmrs/esm-framework/src/internal';
+import dayjs from 'dayjs';
+import { ConceptFalse, ConceptTrue } from '../constants';
 import type {
+  FHIRObsResource,
   FormField,
   FormPage,
-  FormSection,
-  SessionMode,
-  FHIRObsResource,
-  RenderType,
   FormSchema,
+  FormSection,
   OpenmrsObs,
+  RenderType,
+  SessionMode,
 } from '../types';
 import { isEmpty } from '../validators/form-validator';
 import { parseToLocalDateTime } from './common-utils';
-import dayjs from 'dayjs';
-import { ConceptFalse, ConceptTrue } from '../constants';
-import { type FormNode, type ExpressionContext, type EvaluateReturnType } from './expression-runner';
+import { type EvaluateReturnType, type ExpressionContext, type FormNode } from './expression-runner';
 
 interface ExpressionRunner {
   (
@@ -65,13 +65,13 @@ export function shouldUseInlineLayout(
   workspaceLayout: 'minimized' | 'maximized',
   sessionMode: SessionMode,
 ): boolean {
-  if (sessionMode == 'embedded-view') {
+  if (sessionMode === 'embedded-view') {
     return true;
   }
-  if (renderingType == 'automatic') {
-    return workspaceLayout == 'maximized' && layoutType.endsWith('desktop');
+  if (renderingType === 'automatic') {
+    return workspaceLayout === 'maximized' && layoutType.endsWith('desktop');
   }
-  return renderingType == 'single-line';
+  return renderingType === 'single-line';
 }
 
 export function evaluateConditionalAnswered(field: FormField, allFields: FormField[]): void {
@@ -81,7 +81,7 @@ export function evaluateConditionalAnswered(field: FormField, allFields: FormFie
     return;
   }
 
-  const referencedField = allFields.find((candidate) => candidate.id == referencedFieldId);
+  const referencedField = allFields.find((candidate) => candidate.id === referencedFieldId);
   if (referencedField) {
     (referencedField.fieldDependents || (referencedField.fieldDependents = new Set())).add(field.id);
   }
@@ -125,7 +125,7 @@ export function evalConditionalRequired(
     return false;
   }
   const { referenceQuestionAnswers, referenceQuestionId } = field.required;
-  const referencedField = allFields.find((candidate) => candidate.id == referenceQuestionId);
+  const referencedField = allFields.find((candidate) => candidate.id === referenceQuestionId);
   if (referencedField) {
     (referencedField.fieldDependents || (referencedField.fieldDependents = new Set())).add(field.id);
     const referencedValue = formValues[referenceQuestionId];
@@ -197,7 +197,7 @@ function cascadeVisibilityToChildFields(
     .filter((field) => candidateIds.includes(field.id))
     .forEach((field) => {
       field.isParentHidden = visibility;
-      if (field.questionOptions.rendering == 'group') {
+      if (field.questionOptions.rendering === 'group') {
         field.questions?.forEach((member) => {
           member.isParentHidden = visibility;
         });

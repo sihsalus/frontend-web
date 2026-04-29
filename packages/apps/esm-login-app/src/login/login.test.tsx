@@ -6,21 +6,20 @@ import {
   useConnectivity,
   useSession,
 } from '@openmrs/esm-framework';
-import { waitFor, screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mockConfig } from '../../../../test-utils/mocks/login-config.mock';
 import renderWithRouter from '../test-helpers/render-with-router';
 
 import Login from './login.component';
 
-const mockGetSessionStore = vi.mocked(getSessionStore);
-const mockLogin = vi.mocked(refetchCurrentUser);
-const mockUseConfig = vi.mocked(useConfig);
-const mockUseConnectivity = vi.mocked(useConnectivity);
-const mockUseSession = vi.mocked(useSession);
+const mockGetSessionStore = jest.mocked(getSessionStore);
+const mockLogin = jest.mocked(refetchCurrentUser);
+const mockUseConfig = jest.mocked(useConfig);
+const mockUseConnectivity = jest.mocked(useConnectivity);
+const mockUseSession = jest.mocked(useSession);
 
 describe('Login', () => {
   beforeEach(() => {
@@ -28,16 +27,16 @@ describe('Login', () => {
     mockLogin.mockResolvedValue({} as SessionStore);
     mockGetSessionStore.mockImplementation(() => {
       return {
-        getState: vi.fn().mockReturnValue({
+        getState: jest.fn().mockReturnValue({
           loaded: true,
           session: {
             authenticated: true,
           },
         }),
-        setState: vi.fn(),
-        getInitialState: vi.fn(),
-        subscribe: vi.fn(),
-        destroy: vi.fn(),
+        setState: jest.fn(),
+        getInitialState: jest.fn(),
+        subscribe: jest.fn(),
+        destroy: jest.fn(),
       };
     });
     mockUseSession.mockReturnValue({ authenticated: false, sessionId: '123' });

@@ -1,17 +1,17 @@
 import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
+import { type FormContextProps } from '../provider/form-provider';
 import {
   type Diagnosis,
   type DiagnosisPayload,
+  type FormField,
   type FormFieldValueAdapter,
   type FormProcessorContextProps,
   type OpenmrsEncounter,
-  type FormField,
   type ValueAndDisplay,
 } from '../types';
-import { type FormContextProps } from '../provider/form-provider';
+import { isTrue } from '../utils/boolean-utils';
 import { getResourceUuid, gracefullySetSubmission, isPlainObject, isStringValue } from '../utils/common-utils';
 import { isEmpty } from '../validators/form-validator';
-import { isTrue } from '../utils/boolean-utils';
 
 export let assignedDiagnosesIds: string[] = [];
 
@@ -72,7 +72,7 @@ export const EncounterDiagnosisAdapter: FormFieldValueAdapter = {
     return null;
   },
   getDisplayValue: (field: FormField, value: unknown): unknown => {
-    return field.questionOptions.answers?.find((option) => option.concept == value)?.label || value;
+    return field.questionOptions.answers?.find((option) => option.concept === value)?.label || value;
   },
   tearDown: function (): void {
     assignedDiagnosesIds = [];

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { type WardPatientCardType } from '../../types';
 import AdmissionRequestNoteRow from '../../ward-patient-card/card-rows/admission-request-note-row.component';
 import PendingItemsRow from '../../ward-patient-card/card-rows/pending-items-row.component';

@@ -7,7 +7,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TableToolbar,
 } from '@carbon/react';
 import { isDesktop, useLayoutType, useSession, useVisitContextStore } from '@openmrs/esm-framework';
 import React from 'react';
@@ -37,7 +36,7 @@ interface ObservationGroupDetailsProps {
 const ObservationGroupDetails: React.FC<ObservationGroupDetailsProps> = ({ group }) => {
   const { t } = useTranslation();
   const desktopLayout = isDesktop(useLayoutType());
-  const session = useSession();
+  const _session = useSession();
   const { mutateVisit } = useVisitContextStore();
   const responsiveSize = desktopLayout ? 'sm' : 'lg';
 

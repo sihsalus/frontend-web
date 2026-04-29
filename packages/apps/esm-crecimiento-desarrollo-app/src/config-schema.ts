@@ -127,8 +127,8 @@ export const configSchema = {
 
       // Assessment Forms
       riskInterview0to30: '(Página 19) PRIMERA ENTREVISTA EN BUSCA DE FACTORES DE RIESGO (0 - 30 meses)',
-      childFeeding0to5: '(Página 20) Evaluación de la alimentación del niño/niña (0 - 5 meses)',
-      childFeeding6to42: '(Página 20) Evaluación de la alimentación del niño/niña (6 - 42 meses)',
+      childFeeding0to5: '(Página 20) Evaluación de la alimentación del niño_niña (0 - 5 meses)',
+      childFeeding6to42: '(Página 20) Evaluación de la alimentación del niño_niña (6 - 42 meses)',
       childAbuseScreening: '(Página 37) Ficha de Tamizaje Violencia y maltrato infantil',
 
       // Clinical Forms
@@ -146,19 +146,19 @@ export const configSchema = {
 
       // Hospital Forms
       puerperiumLab: '(Página 4 y 5) Puerperio - Laboratorio',
-      obstetricMonitor: 'HOSP-011-HOJA DE MONITORIZACIÓN OBSTÉTRICA',
-      obstetricHistory: 'HOSP-002-HISTORIA CLÍNICA OBSTÉTRICA',
-      obstetricProgress: 'HOSP-005-EVOLUCIÓN OBSTÉTRICA',
+      obstetricMonitor: 'HOSP-011-HOJA DE MONITORIZACIÓN OBSTÉTRICA-PARTO',
+      obstetricHistory: 'HOSP-002-HISTORIA CLÍNICA OBSTÉTRICA-PARTO',
+      obstetricProgress: 'HOSP-005-EVOLUCIÓN OBSTÉTRICA-PARTO',
       obstetricAntecedents: 'OBST-001-ANTECEDENTES',
       medicalProgress: 'HOSP-004-EVOLUCIÓN MÉDICA',
       nursingNotes: 'HOSP-009-NOTAS DE ENFERMERÍA',
       therapeuticSheet: 'HOSP-008-HOJA TERAPÉUTICA',
       birthPlanForm: 'OBST-004-FICHA PLAN DE PARTO',
       vitalSignsControl: 'HOSP-001-CONTROL DE FUNCIONES VITALES',
-      birthSummary: 'HOSP-007-RESUMEN DE PARTO',
+      birthSummary: 'HOSP-007-RESUMEN DE PARTO-POSTPARTO',
       puerperiumEpicrisis: '(Página 12) Puerperio - Epicrisis',
       puerperiumDischarge: '(Página 14) Puerperio - Informe de Alta',
-      clinicalHistory: 'HOSP-003-HISTORIA CLÍNICA OBSTÉTRICA',
+      clinicalHistory: 'HOSP-003-HISTORIA CLÍNICA OBSTÉTRICA-PARTO',
 
       // CRED Seguimiento Forms
       anemiaScreeningForm: 'CRED-001-TAMIZAJE DE ANEMIA',
@@ -172,6 +172,10 @@ export const configSchema = {
       nutritionalAssessmentForm: 'CRED-006-EVALUACIÓN NUTRICIONAL',
       feedingCounselingForm: 'CRED-007-CONSEJERÍA ALIMENTARIA',
       nutritionFollowupForm: 'CRED-008-SEGUIMIENTO NUTRICIONAL',
+      ediDevelopmentForm: 'CRED-009-EDI',
+      autismScreeningForm: 'CRED-010-TAMIZAJE TEA',
+      childMentalHealthForm: 'CRED-011-SALUD MENTAL NIÑO Y CUIDADOR',
+      adverseReactionForm: 'INMU-002-REPORTE ESAVI',
     },
   },
 
@@ -1408,6 +1412,10 @@ export interface ConfigObject {
     nutritionalAssessmentForm: string;
     feedingCounselingForm: string;
     nutritionFollowupForm: string;
+    ediDevelopmentForm: string;
+    autismScreeningForm: string;
+    childMentalHealthForm: string;
+    adverseReactionForm: string;
   };
   clinicalEncounterUuid: string;
   concepts: Record<string, string>;

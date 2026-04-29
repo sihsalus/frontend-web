@@ -1,9 +1,11 @@
 import { HeaderGlobalAction } from '@carbon/react';
-import { getHistory, goBackInHistory, navigate, CloseFilledIcon } from '@openmrs/esm-framework';
+import { CloseFilledIcon, getHistory, goBackInHistory, navigate } from '@openmrs/esm-framework';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './close-button.scss';
+
+const homePagePath = ['${openmrsSpaBase}', '/home'].join('');
 
 export function CloseButton({ patientUuid }: { patientUuid: string }) {
   const { t } = useTranslation();
@@ -23,7 +25,7 @@ export function CloseButton({ patientUuid }: { patientUuid: string }) {
     if (onCloseTarget) {
       goBackInHistory({ toUrl: onCloseTarget });
     } else {
-      navigate({ to: '${openmrsSpaBase}/home' });
+      navigate({ to: homePagePath });
     }
   }, [patientUuid]);
 

@@ -1,5 +1,13 @@
-import useSWR from 'swr';
 import { openmrsFetch, type Session } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import useSWR from 'swr';
+import {
+  type MedicationDispense,
+  MedicationDispenseStatus,
+  type MedicationRequest,
+  MedicationRequestStatus,
+  type Provider,
+} from '../types';
 import {
   deleteMedicationDispense,
   initiateMedicationDispenseBody,
@@ -8,14 +16,6 @@ import {
   useSubstitutionReasonValueSet,
   useSubstitutionTypeValueSet,
 } from './medication-dispense.resource';
-import {
-  type MedicationDispense,
-  type MedicationRequest,
-  MedicationDispenseStatus,
-  MedicationRequestStatus,
-  type Provider,
-} from '../types';
-import dayjs from 'dayjs';
 
 jest.mocked(openmrsFetch);
 jest.mock('swr');
@@ -93,14 +93,14 @@ describe('Medication Dispense Resource tests', () => {
   });
 
   test('useOrderConfig should fetch order config via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({ data: { data: 'mockedOrderConfig' } }));
     const orderConfig = useOrderConfig();
     expect(orderConfig.orderConfigObject).toBe('mockedOrderConfig');
   });
 
   test('useSubstitutionTypeValueSet should call fetch substitution type value set via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: 'mockedSubstitutionTypeValueSet' },
     }));
@@ -110,7 +110,7 @@ describe('Medication Dispense Resource tests', () => {
   });
 
   test('useSubstitutionReasonValueSet should call fetch substitution reason value set via SWR', () => {
-    // @ts-ignore
+    // @ts-expect-error
     useSWR.mockImplementation(() => ({
       data: { data: 'mockedSubstitutionReasonValueSet' },
     }));

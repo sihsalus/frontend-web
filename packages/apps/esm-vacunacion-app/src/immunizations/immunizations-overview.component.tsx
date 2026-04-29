@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useMemo, type ComponentProps } from 'react';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
+
 import {
   Button,
   DataTable,
@@ -17,6 +15,9 @@ import {
 } from '@carbon/react';
 import { AddIcon, formatDate, launchWorkspace2, parseDate, usePagination } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState, ErrorState, PatientChartPagination } from '@openmrs/esm-patient-common-lib';
+import classNames from 'classnames';
+import React, { type ComponentProps, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useImmunizations } from '../hooks/useImmunizations';
 import styles from './immunizations-overview.scss';
 
@@ -93,16 +94,21 @@ const ImmunizationsOverview: React.FC<ImmunizationsOverviewProps> = ({ patient: 
               <Table aria-label="immunizations overview" {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader
-                        className={classNames(styles.productiveHeading01, styles.text02)}
-                        {...getHeaderProps({
-                          header,
-                        })}
-                      >
-                        {header.header}
-                      </TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({
+                        header,
+                      });
+
+                      return (
+                        <TableHeader
+                          key={key}
+                          className={classNames(styles.productiveHeading01, styles.text02)}
+                          {...headerProps}
+                        >
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>

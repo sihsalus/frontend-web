@@ -1,5 +1,5 @@
-import useSWRImmutable from 'swr/immutable';
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import useSWRImmutable from 'swr/immutable';
 import type { DropdownValue, Response } from '../../types';
 
 /**
@@ -11,7 +11,7 @@ export const useForms = () => {
   }>(`${restBaseUrl}/form`, openmrsFetch);
 
   const forms: DropdownValue[] = [];
-  data?.data.results.map((form: Response, index: number) => {
+  data?.data.results.forEach((form: Response, index: number) => {
     forms.push({
       id: index,
       label: form.display,
@@ -35,7 +35,7 @@ export const useEncounterTypes = () => {
   }>(`${restBaseUrl}/encountertype`, openmrsFetch);
 
   const encounterTypes: DropdownValue[] = [];
-  data?.data.results.map((encounterType: Response, index: number) => {
+  data?.data.results.forEach((encounterType: Response, index: number) => {
     encounterTypes.push({
       id: index,
       label: encounterType.display,

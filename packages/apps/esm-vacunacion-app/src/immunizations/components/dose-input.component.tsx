@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
 import { Dropdown, NumberInput } from '@carbon/react';
-import { useController, type Control } from 'react-hook-form';
+import React, { useCallback, useMemo } from 'react';
+import { type Control, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type ImmunizationSequenceDefinition } from '../../types/fhir-immunization-domain';
 import styles from './../immunizations-form.scss';
@@ -25,7 +25,7 @@ export const DoseInput: React.FC<{
   );
 
   const handleChange = useCallback(
-    (event, { value }) => {
+    (_event, { value }) => {
       const parsedValue =
         value === '' || value === null || (typeof value === 'string' && !value.trim()) ? undefined : Number(value);
       field.onChange(isNaN(parsedValue) ? undefined : parsedValue);
@@ -42,9 +42,11 @@ export const DoseInput: React.FC<{
           <Dropdown
             id="sequence"
             items={availableSequences.map((sequence) => sequence.sequenceNumber)}
-            itemToString={(item) => availableSequences.find((sequence) => sequence.sequenceNumber === item)?.sequenceLabel}
+            itemToString={(item) =>
+              availableSequences.find((sequence) => sequence.sequenceNumber === item)?.sequenceLabel
+            }
             label={t('pleaseSelect', 'Please select')}
-            onChange={(val) => field.onChange(parseInt(val.selectedItem || 0))}
+            onChange={(val) => field.onChange(parseInt(String(val.selectedItem || 0), 10))}
             selectedItem={field.value}
             titleText={t('sequence', 'Sequence')}
           />

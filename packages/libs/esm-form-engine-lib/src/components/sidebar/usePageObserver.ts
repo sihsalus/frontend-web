@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { type FormPage } from '../../types';
 import { pageObserver } from './page-observer';
 
@@ -38,7 +38,11 @@ export const usePageObserver = (): PageObserverState => {
       }),
     ];
 
-    return (): void => subscriptions.forEach((sub) => sub.unsubscribe());
+    return (): void => {
+      subscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      });
+    };
   }, []);
 
   return state;

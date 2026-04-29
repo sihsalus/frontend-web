@@ -19,7 +19,6 @@ interface PatientSearchComponentProps {
 }
 
 const PatientSearchComponent: React.FC<PatientSearchComponentProps> = ({
-  query,
   stickyPagination,
   inTabletOrOverlay,
   searchResults,
@@ -37,7 +36,7 @@ const PatientSearchComponent: React.FC<PatientSearchComponentProps> = ({
 
   useEffect(() => {
     goTo(1);
-  }, [query, goTo]);
+  }, [goTo]);
 
   const searchResultsView = useMemo(() => {
     if (isLoading) {

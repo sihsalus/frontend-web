@@ -31,7 +31,7 @@ const AdmitPatientButton: React.FC<AdmitPatientButtonProps> = ({
   disabled,
   dispositionType,
 }) => {
-  const { patient, bed } = wardPatient ?? {};
+  const { patient, visit, bed } = wardPatient ?? {};
   const { t } = useTranslation();
   const { location } = useWardLocation();
   const responsiveSize = useLayoutType() === 'tablet' ? 'lg' : 'md';
@@ -50,7 +50,7 @@ const AdmitPatientButton: React.FC<AdmitPatientButtonProps> = ({
     if (isBedManagementModuleInstalled && !bed) {
       launchPatientAdmissionForm();
     } else {
-      admitPatient(patient, dispositionType)
+      admitPatient(patient, dispositionType, visit.uuid)
         .then(
           (response) => {
             if (response && response?.ok) {
@@ -81,7 +81,7 @@ const AdmitPatientButton: React.FC<AdmitPatientButtonProps> = ({
   const disabledButton = isLoadingEmrConfiguration || errorFetchingEmrConfiguration || disabled;
   return (
     <Button kind="ghost" renderIcon={ArrowRightIcon} size={responsiveSize} disabled={disabledButton} onClick={onAdmit}>
-      {dispositionType == 'ADMIT' || disabledButton
+      {dispositionType === 'ADMIT' || disabledButton
         ? t('admitPatient', 'Admit patient')
         : t('transferPatient', 'Transfer patient')}
     </Button>

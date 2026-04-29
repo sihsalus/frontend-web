@@ -73,12 +73,12 @@ export function loadSubforms(parentForm: FormSchema): FormSchema {
 }
 
 export function getLatestFormVersion(forms: FormJsonFile[]): FormJsonFile {
-  if (forms.length == 1) {
+  if (forms.length === 1) {
     return forms[0];
   }
   const candidates = forms.map((f) => f.semanticVersion);
   const latest = candidates.sort(formsVersionComparator)[candidates.length - 1];
-  return forms.find((f) => f.semanticVersion == latest) ?? forms[0];
+  return forms.find((f) => f.semanticVersion === latest) ?? forms[0];
 }
 
 export function getFormByVersion(
@@ -247,7 +247,7 @@ function updateQuestionRequiredBehaviour(question: FormField, intent: string): v
     // 2. Intent-specific behaviour overrides default behaviour
     const combinedBehaviours = Object.assign(fallbackBehaviour || {}, requiredBehaviour || {}) as QuestionBehaviour;
     const defaultValue = combinedBehaviours.defaultValue;
-    if (defaultValue != undefined) {
+    if (defaultValue !== undefined) {
       // add the default value under the question options
       question.questionOptions.defaultValue = defaultValue;
       // delete it so that it's not added at the root level of the question
@@ -325,7 +325,7 @@ function formsVersionComparator(v1: string, v2: string): number {
     }
     return -1;
   }
-  if (v1parts.length != v2parts.length) {
+  if (v1parts.length !== v2parts.length) {
     return -1;
   }
   return 0;

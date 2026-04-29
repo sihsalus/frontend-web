@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useOdontogramContext } from '../providers/OdontogramProvider';
 import type { FindingColor, FindingSuboption } from '../types/odontogram';
 import { COLOR_CSS, COLOR_LABEL } from './constants';
@@ -194,19 +194,22 @@ const FormDentalClinicalFindings = () => {
   // Close docs modal when finding selection changes
   useEffect(() => {
     setShowInfo(false);
-  }, [selectedOption]);
+  }, []);
 
-  const norm = (s: string) =>
-    s
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+  const norm = useCallback(
+    (s: string) =>
+      s
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, ''),
+    [],
+  );
 
   const filtered = useMemo(() => {
     const q = norm(query.trim());
     if (!q) return opciones;
     return opciones.filter((op) => norm(op.nombre).includes(q) || String(op.id).includes(q));
-  }, [opciones, query]);
+  }, [opciones, query, norm]);
 
   const handleSelectFinding = useCallback(
     (id: number) => {
@@ -410,8 +413,23 @@ const FormDentalClinicalFindings = () => {
         (() => {
           const group = SIGLAS_MAP[selectedOption];
           return (
-            <div className="odon-siglas-overlay" onClick={() => setShowInfo(false)}>
-              <div className="odon-siglas-modal" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="odon-siglas-overlay"
+              role="button"
+              tabIndex={0}
+              onClick={(event) => {
+                if (event.target === event.currentTarget) {
+                  setShowInfo(false);
+                }
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  setShowInfo(false);
+                }
+              }}
+            >
+              <div className="odon-siglas-modal">
                 <div className="odon-siglas-header">
                   <h3 className="odon-siglas-title">{group.hallazgo}</h3>
                   <button

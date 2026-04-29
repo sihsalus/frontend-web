@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import { ArrowRightIcon, showModal, useLayoutType, formatDate } from '@openmrs/esm-framework';
+import { ArrowRightIcon, formatDate, showModal, useLayoutType } from '@openmrs/esm-framework';
 import { getPatientUuidFromStore, type OBSERVATION_INTERPRETATION } from '@openmrs/esm-patient-common-lib';
 import classNames from 'classnames';
 import React, { type ComponentProps, useCallback, useMemo } from 'react';
@@ -101,6 +101,14 @@ const IndividualResultsTable: React.FC<IndividualResultsTableProps> = ({ isLoadi
                 <span
                   className={styles['trendline-link-view']}
                   onClick={() => launchResultsDialog(row.display, row.conceptUuid)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      launchResultsDialog(row.display, row.conceptUuid);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   {row.display}
                 </span>

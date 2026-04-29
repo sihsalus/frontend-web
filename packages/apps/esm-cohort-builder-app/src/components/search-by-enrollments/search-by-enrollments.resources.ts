@@ -1,5 +1,5 @@
-import useSWRImmutable from 'swr/immutable';
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import useSWRImmutable from 'swr/immutable';
 import { type DropdownValue, type Response } from '../../types';
 
 interface ProgramsResponse extends Response {
@@ -15,7 +15,7 @@ export function usePrograms() {
   }>(`${restBaseUrl}/program`, openmrsFetch);
 
   const programs: DropdownValue[] = [];
-  data?.data.results.map((program: ProgramsResponse, index: number) => {
+  data?.data.results.forEach((program: ProgramsResponse, index: number) => {
     programs.push({
       id: index,
       label: program.name,

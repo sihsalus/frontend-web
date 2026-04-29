@@ -2,16 +2,15 @@ import { type FetchResponse } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import ChangePasswordModal from './change-password.modal';
 import { changeUserPassword } from './change-password.resource';
 
-const mockClose = vi.fn();
-const mockChangeUserPassword = vi.mocked(changeUserPassword);
+const mockClose = jest.fn();
+const mockChangeUserPassword = jest.mocked(changeUserPassword);
 
-vi.mock('./change-password.resource', () => ({
-  changeUserPassword: vi.fn().mockResolvedValue({}),
+jest.mock('./change-password.resource', () => ({
+  changeUserPassword: jest.fn().mockResolvedValue({}),
 }));
 
 describe('ChangePasswordModal', () => {

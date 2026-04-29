@@ -1,6 +1,6 @@
+import { TextInput } from '@carbon/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput } from '@carbon/react';
 import { useFormField } from '../../../../form-field-context';
 
 const TextArea: React.FC = () => {
@@ -15,7 +15,7 @@ const TextArea: React.FC = () => {
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         const updatedQuestion = {
           ...formField,
-          questionOptions: { ...formField.questionOptions, rows: parseInt(event.target.value) },
+          questionOptions: { ...formField.questionOptions, rows: parseInt(event.target.value, 10) },
         };
         setFormField(updatedQuestion);
       }}

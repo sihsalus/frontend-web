@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
 import { showSnackbar } from '@openmrs/esm-framework';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { previewInstance } from '../../api';
 
 interface InstancePreviewModalProps {
@@ -19,7 +19,7 @@ const InstancePreviewModal: React.FC<InstancePreviewModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [imageData, setImageData] = useState(null);
+  const [imageData, setImageData] = useState<string | null>(null);
 
   useEffect(() => {
     setIsLoading(true);

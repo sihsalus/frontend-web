@@ -14,7 +14,7 @@ export async function getQueries(): Promise<DefinitionDataRow[]> {
 
   const queries: DefinitionDataRow[] = [];
   if (response.data.results.length > 0) {
-    response.data.results.map((query: Response) => {
+    response.data.results.forEach((query: Response) => {
       const queryData: DefinitionDataRow = {
         id: query.uuid,
         name: query.name.replace('[AdHocDataExport]', ''),

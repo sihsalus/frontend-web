@@ -12,11 +12,12 @@ import {
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockCurrentVisit } from 'test-utils';
 import React from 'react';
-import { getByTextWithMarkup } from 'test-utils';
+import { getByTextWithMarkup, mockCurrentVisit } from 'test-utils';
 
 import VisitHeader from './visit-header.component';
+
+const homePagePath = ['${openmrsSpaBase}', '/home'].join('');
 
 const mockAge = jest.mocked(age);
 const mockUseAssignedExtensions = jest.mocked(useAssignedExtensions);
@@ -185,6 +186,6 @@ describe('Visit header', () => {
     ]);
     const closeButton = screen.getByRole('button', { name: 'Close' });
     await user.click(closeButton);
-    expect(navigate).toHaveBeenCalledWith({ to: '${openmrsSpaBase}/home' });
+    expect(navigate).toHaveBeenCalledWith({ to: homePagePath });
   });
 });

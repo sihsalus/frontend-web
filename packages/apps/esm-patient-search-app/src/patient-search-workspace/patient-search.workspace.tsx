@@ -27,7 +27,7 @@ const PatientSearchWorkspace: React.FC<PatientSearchWorkspaceProps> = ({
   const showSearchResults = Boolean(searchTerm?.trim());
   const debouncedSearchTerm = useDebounce(searchTerm);
 
-  const handleClearSearchTerm = useCallback(() => setSearchTerm(''), [setSearchTerm]);
+  const handleClearSearchTerm = useCallback(() => setSearchTerm(''), []);
 
   const onSearchTermChange = useCallback(
     (value: string) => {

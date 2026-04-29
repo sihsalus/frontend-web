@@ -1,5 +1,4 @@
 import { useDefineAppContext } from '@openmrs/esm-framework';
-import React from 'react';
 
 import { useWardPatientGrouping } from '../../hooks/useWardPatientGrouping';
 import { type WardViewContext } from '../../types';

@@ -5,10 +5,12 @@ import React from 'react';
 
 import ClinicalFormActionButton from './clinical-form-action-button.component';
 
+void React;
+
 const mockActionMenuButton2 = jest.mocked(ActionMenuButton2);
 const mockUseStartVisitIfNeeded = useStartVisitIfNeeded as jest.Mock;
 
-mockActionMenuButton2.mockImplementation(({ label }) => <button>{label}</button>);
+mockActionMenuButton2.mockImplementation(({ label }: { label?: React.ReactNode }) => <button>{label}</button>);
 
 jest.mock('@openmrs/esm-patient-common-lib', () => {
   const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');

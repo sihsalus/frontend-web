@@ -9,7 +9,7 @@ import {
   useOnClickOutside,
   useSession,
 } from '@openmrs/esm-framework';
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { preload } from 'swr';
@@ -40,28 +40,39 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
     if (isDesktop(layout) && !isSearchPage) {
       setShowSearchInput(false);
     }
-  }, [setShowSearchInput, isSearchPage, layout]);
+  }, [isSearchPage, layout]);
 
   const ref = useOnClickOutside<HTMLDivElement>(handleCloseSearchInput, canClickOutside);
 
   const closePatientSearch = useCallback(() => {
     if (isSearchPage) {
       navigate({
-        to: globalThis.sessionStorage.getItem('searchReturnUrl') ?? '${openmrsSpaBase}/',
+        to: globalThis.sessionStorage.getItem('searchReturnUrl') ?? `${globalThis.getOpenmrsSpaBase()}/`,
       });
       globalThis.sessionStorage.removeItem('searchReturnUrl');
     }
     setShowSearchInput(false);
-  }, [isSearchPage, setShowSearchInput]);
+  }, [isSearchPage]);
+
+  const preloadRecentPatients = useCallback(() => {
+    // Preload the user object on hover. This object may contain a 'patientsVisited'
+    // property with UUIDs of recently viewed patients. This data can be used to display
+    // recently viewed patients if the 'showRecentlySearchedPatients' config property
+    // is enabled.
+    if (userUuid) {
+      void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
+    }
+  }, [userUuid]);
 
   const handleShowSearchInput = useCallback(() => {
+    preloadRecentPatients();
     setShowSearchInput(true);
-  }, [setShowSearchInput]);
+  }, [preloadRecentPatients]);
 
   const resetToInitialState = useCallback(() => {
     setShowSearchInput(false);
     setCanClickOutside(false);
-  }, [setShowSearchInput, setCanClickOutside]);
+  }, []);
 
   useEffect(() => {
     // Search input should always be open when we direct to the search page.
@@ -111,21 +122,10 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
           </div>
         </>
       ) : (
-        <div
-          onMouseEnter={() => {
-            // Preload the user object on hover. This object may contain a 'patientsVisited'
-            // property with UUIDs of recently viewed patients. This data can be used to display
-            // recently viewed patients if the 'showRecentlySearchedPatients' config property
-            // is enabled.
-            if (userUuid) {
-              void preload(`${restBaseUrl}/user/${userUuid}`, openmrsFetch);
-            }
-          }}
-        >
+        <div data-testid="searchPatientIcon">
           <HeaderGlobalAction
             aria-label={t('searchPatient', 'Search patient')}
             className={styles.searchIconButton}
-            data-testid="searchPatientIcon"
             onClick={handleShowSearchInput}
           >
             <Search size={20} />

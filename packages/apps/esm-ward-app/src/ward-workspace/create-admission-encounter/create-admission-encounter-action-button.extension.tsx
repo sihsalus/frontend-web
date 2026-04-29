@@ -1,5 +1,5 @@
 import { ActionMenuButton, AddIcon, launchWorkspace } from '@openmrs/esm-framework';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type CreateAdmissionEncounterWorkspaceProps } from './create-admission-encounter.workspace';

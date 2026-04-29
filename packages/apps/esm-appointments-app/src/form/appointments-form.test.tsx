@@ -7,13 +7,19 @@ import {
   useLocations,
   useSession,
 } from '@openmrs/esm-framework';
-import { screen, within } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockUseAppointmentServiceData, mockSession, mockLocations, mockProviders } from 'test-utils';
-import React from 'react';
-import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import {
+  mockLocations,
+  mockPatient,
+  mockProviders,
+  mockSession,
+  mockUseAppointmentServiceData,
+  renderWithSwr,
+  waitForLoadingToFinish,
+} from 'test-utils';
 
-import { configSchema, type ConfigObject } from '../config-schema';
+import { type ConfigObject, configSchema } from '../config-schema';
 import { useProviders } from '../hooks/useProviders';
 
 import { saveAppointment } from './appointments-form.resource';

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   DataTable,
   DataTableSkeleton,
@@ -16,12 +15,13 @@ import {
   TableRow,
   Tile,
 } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
 import { formatDatetime, parseDate, useConfig } from '@openmrs/esm-framework';
-import { usePrescriptionsTable } from '../medication-request/medication-request.resource';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type PharmacyConfig } from '../config-schema';
-import { type SimpleLocation } from '../types';
+import { usePrescriptionsTable } from '../medication-request/medication-request.resource';
 import PatientInfoCell from '../patient/patient-info-cell.component';
+import { type SimpleLocation } from '../types';
 import PrescriptionExpanded from './prescription-expanded.component';
 import styles from './prescriptions.scss';
 
@@ -60,7 +60,7 @@ const PrescriptionsTable: React.FC<PrescriptionsTableProps> = ({
   // reset back to page 1 whenever search term changes
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearchTerm]);
+  }, []);
 
   // dynamic status keys we need to maintain
   // t('active', 'Active')
@@ -108,43 +108,51 @@ const PrescriptionsTable: React.FC<PrescriptionsTableProps> = ({
                   <TableHead>
                     <TableRow>
                       <TableExpandHeader {...getExpandHeaderProps()} />
-                      {headers.map((header) => (
-                        <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                      ))}
+                      {headers.map((header) => {
+                        const { key, ...headerProps } = getHeaderProps({ header });
+                        return (
+                          <TableHeader key={key} {...headerProps}>
+                            {header.header}
+                          </TableHeader>
+                        );
+                      })}
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
-                      <React.Fragment key={row.id}>
-                        <TableExpandRow {...getRowProps({ row })}>
-                          {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>
-                              {cell.id.endsWith('created') ? (
-                                formatDatetime(parseDate(cell.value))
-                              ) : cell.id.endsWith('patient') ? (
-                                <PatientInfoCell patient={cell.value} />
-                              ) : cell.id.endsWith('status') ? (
-                                t(cell.value)
-                              ) : (
-                                cell.value
+                    {rows.map((row) => {
+                      const { key, ...rowProps } = getRowProps({ row });
+                      return (
+                        <React.Fragment key={row.id}>
+                          <TableExpandRow {...rowProps}>
+                            {row.cells.map((cell) => (
+                              <TableCell key={cell.id}>
+                                {cell.id.endsWith('created') ? (
+                                  formatDatetime(parseDate(cell.value))
+                                ) : cell.id.endsWith('patient') ? (
+                                  <PatientInfoCell patient={cell.value} />
+                                ) : cell.id.endsWith('status') ? (
+                                  t(cell.value)
+                                ) : (
+                                  cell.value
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableExpandRow>
+                          {row.isExpanded ? (
+                            <TableExpandedRow colSpan={headers.length + 1}>
+                              {row.cells.find((cell) => cell.id.endsWith('patient'))?.value?.uuid && (
+                                <PrescriptionExpanded
+                                  encounterUuid={row.id}
+                                  patientUuid={row.cells.find((cell) => cell.id.endsWith('patient')).value.uuid}
+                                />
                               )}
-                            </TableCell>
-                          ))}
-                        </TableExpandRow>
-                        {row.isExpanded ? (
-                          <TableExpandedRow colSpan={headers.length + 1}>
-                            {row.cells.find((cell) => cell.id.endsWith('patient'))?.value?.uuid && (
-                              <PrescriptionExpanded
-                                encounterUuid={row.id}
-                                patientUuid={row.cells.find((cell) => cell.id.endsWith('patient')).value.uuid}
-                              />
-                            )}
-                          </TableExpandedRow>
-                        ) : (
-                          <TableExpandedRow className={styles.hiddenRow} colSpan={headers.length + 1} />
-                        )}
-                      </React.Fragment>
-                    ))}
+                            </TableExpandedRow>
+                          ) : (
+                            <TableExpandedRow className={styles.hiddenRow} colSpan={headers.length + 1} />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>

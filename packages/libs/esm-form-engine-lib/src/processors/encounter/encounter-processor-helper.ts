@@ -1,3 +1,12 @@
+import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
+import dayjs from 'dayjs';
+import { assignedDiagnosesIds } from '../../adapters/encounter-diagnosis-adapter';
+import { assignedObsIds, constructObs, voidObs } from '../../adapters/obs-adapter';
+import { assignedOrderIds } from '../../adapters/orders-adapter';
+import { createAttachment, findPatientsByIdentifier, savePatientIdentifier, saveProgramEnrollment } from '../../api';
+import { cloneRepeatField } from '../../components/repeat/helpers';
+import { ConceptTrue } from '../../constants';
+import { type FormContextProps } from '../../provider/form-provider';
 import {
   type Diagnosis,
   type DiagnosisPayload,
@@ -10,7 +19,6 @@ import {
   type PatientProgram,
   type PatientProgramPayload,
 } from '../../types';
-import { createAttachment, findPatientsByIdentifier, savePatientIdentifier, saveProgramEnrollment } from '../../api';
 import {
   getResourceUuid,
   hasRendering,
@@ -23,15 +31,7 @@ import {
   isPlainObject,
   isStringValue,
 } from '../../utils/common-utils';
-import dayjs from 'dayjs';
-import { assignedObsIds, constructObs, voidObs } from '../../adapters/obs-adapter';
-import { type FormContextProps } from '../../provider/form-provider';
-import { ConceptTrue } from '../../constants';
 import { DefaultValueValidator } from '../../validators/default-value-validator';
-import { cloneRepeatField } from '../../components/repeat/helpers';
-import { assignedOrderIds } from '../../adapters/orders-adapter';
-import { type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
-import { assignedDiagnosesIds } from '../../adapters/encounter-diagnosis-adapter';
 
 export async function prepareEncounter(
   context: FormContextProps,
@@ -54,7 +54,7 @@ export async function prepareEncounter(
     // update encounter providers
     const hasCurrentProvider =
       (encounterForSubmission.encounterProviders ?? []).findIndex(
-        (encProvider) => getResourceUuid(encProvider.provider) == encounterProvider,
+        (encProvider) => getResourceUuid(encProvider.provider) === encounterProvider,
       ) !== -1;
     if (!hasCurrentProvider) {
       encounterForSubmission.encounterProviders = [
@@ -273,7 +273,11 @@ function getPatientIdentifierKey(identifier: string, identifierType?: string): s
 // Helpers
 
 function prepareObs(obsForSubmission: OpenmrsObs[], fields: FormField[]): void {
-  fields.filter((field) => hasSubmittableObs(field)).forEach((field) => processObsField(obsForSubmission, field));
+  fields
+    .filter((field) => hasSubmittableObs(field))
+    .forEach((field) => {
+      processObsField(obsForSubmission, field);
+    });
 }
 
 function processObsField(obsForSubmission: OpenmrsObs[], field: FormField): void {
@@ -361,8 +365,8 @@ function hasSubmittableObs(field: FormField): boolean {
 }
 
 export function inferInitialValueFromDefaultFieldValue(field: FormField): FormField['questionOptions']['defaultValue'] {
-  if (field.questionOptions.rendering == 'toggle' && typeof field.questionOptions.defaultValue != 'boolean') {
-    return field.questionOptions.defaultValue == ConceptTrue;
+  if (field.questionOptions.rendering === 'toggle' && typeof field.questionOptions.defaultValue !== 'boolean') {
+    return field.questionOptions.defaultValue === ConceptTrue;
   }
 
   // validate default value
@@ -387,7 +391,7 @@ export async function hydrateRepeatField(
   const unMappedGroups = encounter.obs.filter(
     (obs) =>
       getResourceUuid(obs.concept) === field.questionOptions.concept &&
-      obs.uuid != (field.meta.initialValue?.omrsObject as OpenmrsResource)?.uuid &&
+      obs.uuid !== (field.meta.initialValue?.omrsObject as OpenmrsResource)?.uuid &&
       !assignedObsIds.includes(obs.uuid),
   );
   const unMappedOrders = encounter.orders.filter((order) => {
@@ -429,7 +433,7 @@ export async function hydrateRepeatField(
   if (field.type === 'diagnosis') {
     return Promise.all(
       unMappedDiagnoses.map(async (diagnosis) => {
-        const idSuffix = parseInt(diagnosis.formFieldPath.split('_')[1]);
+        const idSuffix = parseInt(diagnosis.formFieldPath.split('_')[1], 10);
         const clone = cloneRepeatField(field, diagnosis, idSuffix);
         initialValues[clone.id] = await formFieldAdapters[field.type].getInitialValue(
           clone,

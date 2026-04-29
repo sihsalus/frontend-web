@@ -1,4 +1,4 @@
-import { type OpenmrsResource, formatDate, type FormatDateOptions } from '@openmrs/esm-framework/src/internal';
+import { type FormatDateOptions, formatDate, type OpenmrsResource } from '@openmrs/esm-framework/src/internal';
 import dayjs from 'dayjs';
 import {
   type AttachmentFieldValue,
@@ -82,7 +82,7 @@ export function parseToLocalDateTime(dateString: string): Date {
     const timePart = dateString.split('T')[1];
     if (timePart) {
       const localTimeTokens = timePart.split(':');
-      dateObj.setHours(parseInt(localTimeTokens[0]), parseInt(localTimeTokens[1]), 0);
+      dateObj.setHours(parseInt(localTimeTokens[0], 10), parseInt(localTimeTokens[1], 10), 0);
     }
   } catch (e) {
     console.error(e);

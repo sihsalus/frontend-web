@@ -1,6 +1,6 @@
 import { fetchCurrentPatient, formatDate, getConfig } from '@openmrs/esm-framework';
-import { writeFile, utils } from 'xlsx';
 import type { WorkSheet } from 'xlsx';
+import { utils, writeFile } from 'xlsx';
 
 import type { ConfigObject } from '../config-schema';
 import type { Appointment } from '../types';
@@ -23,7 +23,7 @@ export async function exportAppointmentsToSpreadsheet(
   rowData: Array<RowData>,
   fileName = 'Appointments',
 ): Promise<void> {
-  const config = await getConfig<ConfigObject>(moduleName);
+  const _config = await getConfig<ConfigObject>(moduleName);
   // const includePhoneNumbers = config.includePhoneNumberInExcelSpreadsheet ?? false;
   const includePhoneNumbers = false;
 

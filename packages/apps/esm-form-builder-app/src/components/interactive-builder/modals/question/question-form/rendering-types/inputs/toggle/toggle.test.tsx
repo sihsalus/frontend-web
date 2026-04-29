@@ -1,8 +1,7 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import Toggle from './toggle.component';
-import { FormFieldProvider } from '../../../../form-field-context';
 import type { FormField } from '@sihsalus/esm-form-engine-lib';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormFieldProvider } from '../../../../form-field-context';
+import Toggle from './toggle.component';
 
 const mockSetFormField = jest.fn();
 const formField: FormField = {
@@ -57,3 +56,7 @@ function renderToggleComponent() {
     </FormFieldProvider>,
   );
 }
+
+import React from 'react';
+
+void React;

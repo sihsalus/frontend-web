@@ -1,4 +1,3 @@
-import React from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
 import { calculateCostEquipment, calculateDepreciationMinutes } from '../../../utils/equipments';

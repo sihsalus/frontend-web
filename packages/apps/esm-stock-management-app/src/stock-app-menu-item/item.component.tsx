@@ -1,7 +1,6 @@
 import { ClickableTile } from '@carbon/react';
-import React from 'react';
-import styles from './item.scss';
 import { Report } from '@carbon/react/icons';
+import styles from './item.scss';
 
 const Item = () => {
   // items

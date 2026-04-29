@@ -1,22 +1,20 @@
 import React from 'react';
-import { describe, expect, it, afterEach, vi } from 'vitest';
-import '@testing-library/jest-dom/vitest';
+import { implementerToolsConfigStore, Type, temporaryConfigStore } from '@openmrs/esm-framework/src/internal';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { implementerToolsConfigStore, temporaryConfigStore, Type } from '@openmrs/esm-framework/src/internal';
 import { Configuration } from './configuration.component';
 import { useConceptLookup, useGetConceptByUuid } from './interactive-editor/value-editors/concept-search.resource';
 
-const mockUseConceptLookup = vi.mocked(useConceptLookup);
-const mockUseGetConceptByUuid = vi.mocked(useGetConceptByUuid);
+const mockUseConceptLookup = jest.mocked(useConceptLookup);
+const mockUseGetConceptByUuid = jest.mocked(useGetConceptByUuid);
 
-vi.mock('./interactive-editor/value-editors/concept-search.resource', () => ({
-  useConceptLookup: vi.fn().mockImplementation(() => ({
+jest.mock('./interactive-editor/value-editors/concept-search.resource', () => ({
+  useConceptLookup: jest.fn().mockImplementation(() => ({
     concepts: [],
     error: undefined,
     isSearchingConcepts: false,
   })),
-  useGetConceptByUuid: vi.fn().mockImplementation(() => ({
+  useGetConceptByUuid: jest.fn().mockImplementation(() => ({
     concept: null,
     error: undefined,
     isLoadingConcept: false,
@@ -91,7 +89,11 @@ const mockImplToolsConfig = {
 };
 
 describe('Configuration', () => {
+  let temporaryConfigSetStateSpy: jest.SpyInstance;
+
   beforeEach(() => {
+    temporaryConfigSetStateSpy = jest.spyOn(temporaryConfigStore, 'setState');
+
     mockUseConceptLookup.mockImplementation(() => ({
       concepts: [],
       error: undefined,
@@ -108,6 +110,7 @@ describe('Configuration', () => {
   afterEach(() => {
     implementerToolsConfigStore.setState({ config: {} });
     temporaryConfigStore.setState({ config: {} });
+    temporaryConfigSetStateSpy.mockRestore();
   });
 
   function renderConfiguration() {
@@ -146,9 +149,9 @@ describe('Configuration', () => {
       const editor = row.getByRole('button', { name: /edit/i });
 
       await user.click(editor);
-      await user.click(row.getByText(/save/i));
+      await user.click(row.getByRole('button', { name: /save/i }));
 
-      expect(temporaryConfigStore.setState).toHaveBeenCalledWith({
+      expect(temporaryConfigSetStateSpy).toHaveBeenCalledWith({
         config: { '@openmrs/mario': { hasHat: false } },
       });
     }
@@ -202,7 +205,7 @@ describe('Configuration', () => {
       const targetConcept = await row.findByText('Fedora');
 
       await user.click(targetConcept);
-      await user.click(row.getByText(/save/i));
+      await user.click(row.getByRole('button', { name: /save/i }));
 
       // expect(temporaryConfigStore.setState).toHaveBeenCalledWith({
       //   config: {
@@ -242,9 +245,9 @@ describe('Configuration', () => {
 
       await user.clear(editor);
       await user.type(editor, '11');
-      await user.click(row.getByText(/save/i));
+      await user.click(row.getByRole('button', { name: /save/i }));
 
-      expect(temporaryConfigStore.setState).toHaveBeenCalledWith({
+      expect(temporaryConfigSetStateSpy).toHaveBeenCalledWith({
         config: { '@openmrs/mario': { numberFingers: 11 } },
       });
     }
@@ -275,9 +278,9 @@ describe('Configuration', () => {
 
       await user.clear(editor);
       await user.type(editor, 'Bowser');
-      await user.click(row.getByText(/save/i));
+      await user.click(row.getByRole('button', { name: /save/i }));
 
-      expect(temporaryConfigStore.setState).toHaveBeenCalledWith({
+      expect(temporaryConfigSetStateSpy).toHaveBeenCalledWith({
         config: { '@openmrs/mario': { nemesisName: 'Bowser' } },
       });
     }
@@ -311,9 +314,9 @@ describe('Configuration', () => {
       await user.clear(editor);
       const newUuid = '34f03796-f0e2-4f64-9e9a-28fb49a94baf';
       await user.type(editor, newUuid);
-      await user.click(row.getByText(/save/i));
+      await user.click(row.getByRole('button', { name: /save/i }));
 
-      expect(temporaryConfigStore.setState).toHaveBeenCalledWith({
+      expect(temporaryConfigSetStateSpy).toHaveBeenCalledWith({
         config: { '@openmrs/mario': { mustacheUuid: newUuid } },
       });
     }

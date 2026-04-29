@@ -1,16 +1,16 @@
-import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
 import { openmrsFetch } from '@openmrs/esm-framework';
-import { mockFhirAllergyIntoleranceResponse } from 'test-utils';
-import { mockFhirPatient, renderWithSwr } from 'test-utils';
+import { screen, waitFor } from '@testing-library/react';
+import React from 'react';
+import { mockFhirAllergyIntoleranceResponse, mockFhirPatient, renderWithSwr } from 'test-utils';
 import AllergyList from './allergies-list.extension';
 
 const mockOpenmrsFetch = openmrsFetch as jest.Mock;
+void React;
 
 describe('AllergyList', () => {
   it('renders a loading skeleton when allergy data is being fetched', () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: { total: 0, entry: [] } });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     // The TagSkeleton is a span, so we check if rendering has started but data isn't loaded yet
     expect(screen.queryByText(/allergies/i)).not.toBeInTheDocument();
@@ -23,7 +23,7 @@ describe('AllergyList', () => {
         entry: [],
       },
     });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     await waitFor(() => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('AllergyList', () => {
 
   it('renders allergy tags with correct severity indicators when allergies are available', async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     await waitFor(() => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('AllergyList', () => {
 
   it('applies correct data-severity attributes to allergy tags', async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     await waitFor(() => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('AllergyList', () => {
 
   it('sorts allergies by severity (severe, moderate, mild)', async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     await waitFor(() => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -110,7 +110,7 @@ describe('AllergyList', () => {
 
   it('displays severity information in tooltip', async () => {
     mockOpenmrsFetch.mockReturnValueOnce({ data: mockFhirAllergyIntoleranceResponse });
-    renderWithSwr(<AllergyList patientUuid={mockFhirPatient.id} />);
+    renderWithSwr(React.createElement(AllergyList, { patientUuid: mockFhirPatient.id }));
 
     await waitFor(() => {
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();

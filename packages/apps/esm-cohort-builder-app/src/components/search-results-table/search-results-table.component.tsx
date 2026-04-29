@@ -1,9 +1,9 @@
+import { DataTable, Pagination, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@carbon/react';
 import React, { useState } from 'react';
-import { DataTable, Table, TableHead, TableRow, TableHeader, TableBody, TableCell, Pagination } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
+import mainStyle from '../../cohort-builder.scss';
 import type { PaginationData, Patient } from '../../types';
 import EmptyData from '../empty-data/empty-data.component';
-import mainStyle from '../../cohort-builder.scss';
 import styles from './search-results-table.scss';
 
 interface SearchResultsTableProps {
@@ -47,22 +47,32 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({ patients }) => 
           <Table {...getTableProps()}>
             <TableHead>
               <TableRow>
-                {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                ))}
+                {headers.map((header) => {
+                  const { key, ...headerProps } = getHeaderProps({ header });
+
+                  return (
+                    <TableHeader key={key} {...headerProps}>
+                      {header.header}
+                    </TableHeader>
+                  );
+                })}
               </TableRow>
             </TableHead>
             <TableBody>
               {rows
                 .slice((page - 1) * pageSize)
                 .slice(0, pageSize)
-                .map((row, index) => (
-                  <TableRow {...getRowProps({ row })} key={index}>
-                    {row.cells.map((cell, index) => (
-                      <TableCell key={index}>{cell.value}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                .map((row) => {
+                  const { key, ...rowProps } = getRowProps({ row });
+
+                  return (
+                    <TableRow key={key} {...rowProps}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         )}

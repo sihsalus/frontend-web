@@ -1,5 +1,5 @@
 import { Button, InlineLoading } from '@carbon/react';
-import { Workspace2, navigate, openmrsFetch, showSnackbar, useConfig } from '@openmrs/esm-framework';
+import { navigate, openmrsFetch, showSnackbar, useConfig, Workspace2 } from '@openmrs/esm-framework';
 import {
   type DefaultPatientWorkspaceProps,
   type PatientWorkspace2DefinitionProps,
@@ -45,7 +45,7 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [fuaId, setFuaId] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [retrySeed, setRetrySeed] = useState(0);
+  const [_retrySeed, setRetrySeed] = useState(0);
 
   useEffect(() => {
     if (isLoadingVisit) {
@@ -107,7 +107,6 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
     currentVisit?.uuid,
     isLoadingVisit,
     patientUuid,
-    retrySeed,
     t,
     visitUuid,
   ]);
@@ -123,7 +122,7 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
         <Button kind="primary" onClick={() => setRetrySeed((seed) => seed + 1)}>
           {t('retry', 'Reintentar')}
         </Button>
-        <Button kind="secondary" onClick={() => navigate({ to: '${openmrsSpaBase}/fua-request' })}>
+        <Button kind="secondary" onClick={() => navigate({ to: `${openmrsSpaBase}/fua-request` })}>
           {t('openFuaManagement', 'Abrir gestión FUA')}
         </Button>
       </div>
@@ -137,7 +136,7 @@ const FuaEncounterWorkspace: React.FC<FuaEncounterWorkspaceProps> = (props) => {
         )}
       </p>
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <Button kind="secondary" onClick={() => navigate({ to: '${openmrsSpaBase}/fua-request' })}>
+        <Button kind="secondary" onClick={() => navigate({ to: `${openmrsSpaBase}/fua-request` })}>
           {t('openFuaManagement', 'Abrir gestión FUA')}
         </Button>
         <Button kind="primary" onClick={() => setRetrySeed((seed) => seed + 1)}>

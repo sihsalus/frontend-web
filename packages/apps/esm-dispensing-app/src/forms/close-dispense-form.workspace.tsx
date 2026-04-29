@@ -1,5 +1,3 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ComboBox, Form, InlineLoading } from '@carbon/react';
 import {
   ExtensionSlot,
@@ -11,10 +9,12 @@ import {
   Workspace2,
   type Workspace2DefinitionProps,
 } from '@openmrs/esm-framework';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { type PharmacyConfig } from '../config-schema';
 import { saveMedicationDispense, useReasonForCloseValueSet } from '../medication-dispense/medication-dispense.resource';
 import { updateMedicationRequestFulfillerStatus } from '../medication-request/medication-request.resource';
 import { type MedicationDispense, MedicationDispenseStatus, MedicationRequestFulfillerStatus } from '../types';
-import { type PharmacyConfig } from '../config-schema';
 import { getUuidFromReference, markEncounterAsStale, revalidate } from '../utils';
 import styles from './forms.scss';
 
@@ -51,12 +51,12 @@ const CloseDispenseForm: React.FC<Workspace2DefinitionProps<CloseDispenseFormPro
     if (reasonForCloseValueSet?.compose?.include) {
       const uuidValueSet = reasonForCloseValueSet.compose.include.find((include) => !include.system);
       if (uuidValueSet) {
-        uuidValueSet.concept?.forEach((concept) =>
+        uuidValueSet.concept?.forEach((concept) => {
           reasonForCloseOptions.push({
             id: concept.code,
             text: concept.display,
-          }),
-        );
+          });
+        });
         reasonForCloseOptions.sort((a, b) => a.text.localeCompare(b.text));
       }
     }

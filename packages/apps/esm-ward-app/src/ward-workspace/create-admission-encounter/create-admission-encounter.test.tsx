@@ -7,11 +7,9 @@ import {
   mockLocationInpatientWard,
   mockLocationMosoriot,
   mockPatientAlice,
+  renderWithSwr,
 } from 'test-utils';
-import React from 'react';
-
-import { renderWithSwr } from 'test-utils';
-import { mockWardViewContext } from '../../../mock';
+import { mockWardViewContext } from '../../../test-utils/mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useEmrConfiguration from '../../hooks/useEmrConfiguration';
 import { useInpatientAdmissionByPatients } from '../../hooks/useInpatientAdmissionByPatients';
@@ -29,6 +27,7 @@ jest.mocked(useVisit).mockReturnValue({
   activeVisit: {
     encounters: [],
     startDatetime: new Date().toISOString(),
+    stopDatetime: null,
     uuid: 'mock-visit',
     visitType: { display: 'Some Visit Type', uuid: 'some-visit-type-uuid' },
   },
@@ -61,7 +60,7 @@ jest.mocked(useRestPatient).mockReturnValue({
 jest.mock('../../hooks/useAssignedBedByPatient', () => ({
   useAssignedBedByPatient: jest.fn(),
 }));
-// @ts-ignore - we don't need to mock the entire object
+// @ts-expect-error - we don't need to mock the entire object
 jest.mocked(useAssignedBedByPatient).mockReturnValue({
   data: {
     data: {
@@ -113,7 +112,7 @@ jest.mock('../../hooks/useEmrConfiguration', () => jest.fn());
 jest.mocked(useEmrConfiguration).mockReturnValue({
   isLoadingEmrConfiguration: false,
   errorFetchingEmrConfiguration: null,
-  // @ts-ignore - we only need these keys for now
+  // @ts-expect-error - we only need these keys for now
   emrConfiguration: {
     admissionEncounterType: {
       uuid: 'admission-encounter-type-uuid',
@@ -142,7 +141,7 @@ const mockedUseAdmitPatient: ReturnType<typeof useAdmitPatient> = {
 };
 jest.mocked(useAdmitPatient).mockReturnValue(mockedUseAdmitPatient);
 const mockedAdmitPatient = mockedUseAdmitPatient.admitPatient;
-// @ts-ignore - we only need these two keys for now
+// @ts-expect-error - we only need these two keys for now
 mockedAdmitPatient.mockResolvedValue({
   ok: true,
   data: {
@@ -159,7 +158,7 @@ describe('CreateAdmissionEncounterWorkspace', () => {
     expect(admitPatientButton).toBeEnabled();
 
     await user.click(admitPatientButton);
-    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'ADMIT');
+    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'ADMIT', 'mock-visit');
   });
   it('should have warning when patient has a pending admission request', async () => {
     mockedUseInpatientRequestByPatients.mockReturnValueOnce({
@@ -185,7 +184,7 @@ describe('CreateAdmissionEncounterWorkspace', () => {
     expect(admitPatientButton).toBeEnabled();
 
     await user.click(admitPatientButton);
-    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'ADMIT');
+    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'ADMIT', 'mock-visit');
   });
 
   it('should have warning when patient is already admitted elsewhere', async () => {
@@ -208,7 +207,7 @@ describe('CreateAdmissionEncounterWorkspace', () => {
     expect(admitPatientButton).toBeEnabled();
 
     await user.click(admitPatientButton);
-    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'TRANSFER');
+    expect(mockedAdmitPatient).toHaveBeenCalledWith(expect.any(Object), 'TRANSFER', 'mock-visit');
   });
 
   it('should disable admit patient button when patient is already admitted to current location', () => {

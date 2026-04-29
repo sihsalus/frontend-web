@@ -7,16 +7,15 @@ import { useTranslation } from 'react-i18next';
 import FilterContext from '../filter/filter-context';
 import { makeThrottled } from '../helpers';
 import { Grid, ShadowBox } from '../panel-timeline/helpers';
-
+import styles from './grouped-timeline.scss';
 import type {
+  DataRowsProps,
   DateHeaderGridProps,
+  NewRowStartCellProps,
   PanelNameCornerProps,
   TimelineCellProps,
-  DataRowsProps,
-  NewRowStartCellProps,
   TimelineDataGroupProps,
 } from './grouped-timeline-types';
-import styles from './grouped-timeline.scss';
 
 const TimeSlots: React.FC<{
   children?: React.ReactNode;
@@ -59,7 +58,18 @@ const NewRowStartCell: React.FC<NewRowStartCellProps> = ({
     >
       <span className={styles['trendline-link']}>
         {!isString ? (
-          <span className={styles['trendline-link-view']} onClick={handleLaunchResultsModal}>
+          <span
+            className={styles['trendline-link-view']}
+            onClick={handleLaunchResultsModal}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleLaunchResultsModal();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
             {title}
           </span>
         ) : (

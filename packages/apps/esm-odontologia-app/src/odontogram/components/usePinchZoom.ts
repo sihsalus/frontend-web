@@ -8,7 +8,7 @@
  * Final values are flushed to state on touchEnd.
  */
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface PinchZoomOptions {
   /** Minimum effective scale (baseScale × userZoom). Default: 0.2 */
@@ -58,7 +58,7 @@ export function usePinchZoom({ minScale = 0.2, maxScale = 3, baseScale }: PinchZ
   // Reset when baseScale changes (orientation change, resize)
   useEffect(() => {
     reset();
-  }, [baseScale, reset]);
+  }, [reset]);
 
   useEffect(() => {
     const el = containerRef.current;

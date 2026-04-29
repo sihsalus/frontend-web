@@ -1,11 +1,16 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
+import { showModal, useLayoutType } from '@openmrs/esm-framework';
+import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { render, screen } from '@testing-library/react';
-import { launchWorkspace2, showModal, useLayoutType } from '@openmrs/esm-framework';
+import userEvent from '@testing-library/user-event';
 import { type Condition } from './conditions.resource';
 import { ConditionsActionMenu } from './conditions-action-menu.component';
 
-const mockLaunchWorkspace2 = jest.mocked(launchWorkspace2);
+jest.mock('@openmrs/esm-patient-common-lib', () => ({
+  ...jest.requireActual('@openmrs/esm-patient-common-lib'),
+  launchPatientWorkspace: jest.fn(),
+}));
+
+const mockLaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
 const mockShowModal = jest.mocked(showModal);
 const mockUseLayoutType = jest.mocked(useLayoutType);
 
@@ -72,16 +77,11 @@ describe('ConditionsActionMenu', () => {
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByText('Edit'));
 
-    expect(mockLaunchWorkspace2).toHaveBeenCalledWith(
-      'conditions-form-workspace',
-      {
-        workspaceTitle: 'Edit a Condition',
-        condition: specificCondition,
-        formContext: 'editing',
-      },
-      null,
-      null,
-    );
+    expect(mockLaunchPatientWorkspace).toHaveBeenCalledWith('conditions-form-workspace', {
+      workspaceTitle: 'Edit a Condition',
+      condition: specificCondition,
+      formContext: 'editing',
+    });
   });
 
   it('opens delete confirmation modal with condition ID when Delete button is clicked', async () => {

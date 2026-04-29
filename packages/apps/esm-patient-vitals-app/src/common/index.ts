@@ -1,17 +1,21 @@
 export {
+  type ConceptMetadata,
   invalidateCachedVitalsAndBiometrics,
+  saveVitalsAndBiometrics,
+  updateVitalsAndBiometrics,
+  useConceptUnits,
   useVitalsAndBiometrics,
   useVitalsConceptMetadata,
-  updateVitalsAndBiometrics,
-  saveVitalsAndBiometrics,
   withUnit,
-  type ConceptMetadata,
 } from './data.resource';
 export {
   assessValue,
   calculateBodyMassIndex,
-  getReferenceRangesForConcept,
   generatePlaceholder,
+  getPatientAge,
+  getReferenceRangesForConcept,
   interpretBloodPressure,
+  mapFhirInterpretationToObservationInterpretation,
+  shouldShowBmi,
 } from './helpers';
-export type { ObservationInterpretation, PatientVitalsAndBiometrics } from './types';
+export type { FHIRInterpretation, ObservationInterpretation, PatientVitalsAndBiometrics } from './types';

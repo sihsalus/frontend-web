@@ -1,6 +1,3 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { type TFunction } from 'i18next';
 import {
   Button,
   DataTable,
@@ -23,7 +20,8 @@ import {
   Tile,
 } from '@carbon/react';
 import { Add, DocumentImport, Download, Edit, TrashCan } from '@carbon/react/icons';
-import { type KeyedMutator, preload } from 'swr';
+import { useClobdata } from '@hooks/useClobdata';
+import { useForms } from '@hooks/useForms';
 import {
   ConfigurableLink,
   navigate,
@@ -35,15 +33,17 @@ import {
   useLayoutType,
   usePagination,
 } from '@openmrs/esm-framework';
+import { deleteForm } from '@resources/forms.resource';
+import type { Form as TypedForm } from '@types';
+import { type TFunction } from 'i18next';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { type KeyedMutator, preload } from 'swr';
+import type { ConfigObject } from '../../config-schema';
 import EmptyState from '../empty-state/empty-state.component';
 import ErrorState from '../error-state/error-state.component';
 import Header from '../header/header.component';
-import { deleteForm } from '@resources/forms.resource';
 import { FormBuilderPagination } from '../pagination';
-import { useClobdata } from '@hooks/useClobdata';
-import { useForms } from '@hooks/useForms';
-import type { ConfigObject } from '../../config-schema';
-import type { Form as TypedForm } from '@types';
 import styles from './dashboard.scss';
 
 type Mutator = KeyedMutator<{
@@ -262,8 +262,6 @@ function FormsList({ forms, isValidating, mutate, t }: FormsListProps) {
     },
   ];
 
-  const editSchemaUrl = '${openmrsSpaBase}/form-builder/edit/${formUuid}';
-
   const searchResults = useMemo(() => {
     if (searchString && searchString.trim() !== '') {
       return filteredRows.filter((form) => form.name.toLowerCase().includes(searchString.toLowerCase()));
@@ -280,8 +278,7 @@ function FormsList({ forms, isValidating, mutate, t }: FormsListProps) {
     name: (
       <ConfigurableLink
         className={styles.link}
-        to={editSchemaUrl}
-        templateParams={{ formUuid: form?.uuid }}
+        to={`${globalThis.spaBase}/form-builder/edit/${form?.uuid}`}
         onMouseEnter={() => void preload(`${restBaseUrl}/form/${form?.uuid}?v=full`, openmrsFetch)}
       >
         {form.name}

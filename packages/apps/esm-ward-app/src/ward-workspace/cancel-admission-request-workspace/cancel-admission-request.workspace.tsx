@@ -2,7 +2,7 @@ import { Button, ButtonSet, Form, InlineNotification, TextArea } from '@carbon/r
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResponsiveWrapper, showSnackbar, useAppContext } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -18,7 +18,7 @@ export default function CancelAdmissionRequestWorkspace({
   wardPatient,
   promptBeforeClosing,
 }: WardPatientWorkspaceProps) {
-  const { patient } = wardPatient ?? {};
+  const { patient, visit } = wardPatient ?? {};
   const { t } = useTranslation();
   const [showErrorNotifications, setShowErrorNotifications] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,7 +76,7 @@ export default function CancelAdmissionRequestWorkspace({
         },
       ];
 
-      createEncounter(patient, emrConfiguration?.cancelADTRequestEncounterType, obs)
+      createEncounter(patient, emrConfiguration?.cancelADTRequestEncounterType, visit.uuid, obs)
         .then(() => {
           showSnackbar({
             title: t('admissionRequestCancelled', 'Admission request cancelled.'),
@@ -103,6 +103,7 @@ export default function CancelAdmissionRequestWorkspace({
       emrConfiguration?.cancelADTRequestEncounterType,
       createEncounter,
       patient,
+      visit,
       t,
       closeWorkspaceWithSavedChanges,
       wardPatientGroupDetails,

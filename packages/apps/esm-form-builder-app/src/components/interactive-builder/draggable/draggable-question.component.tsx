@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
-import classNames from 'classnames';
-import { SortableContext, useSortable } from '@dnd-kit/sortable';
-import { useTranslation } from 'react-i18next';
 import { IconButton } from '@carbon/react';
-import { Draggable, Edit, TrashCan, Copy } from '@carbon/react/icons';
-import { showModal, ChevronDownIcon, ChevronUpIcon } from '@openmrs/esm-framework';
-import MarkdownWrapper from '../markdown-wrapper/markdown-wrapper';
+import { Copy, Draggable, Edit, TrashCan } from '@carbon/react/icons';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { ChevronDownIcon, ChevronUpIcon, showModal } from '@openmrs/esm-framework';
 import type { FormField } from '@sihsalus/esm-form-engine-lib';
 import type { Schema } from '@types';
+import classNames from 'classnames';
+import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import MarkdownWrapper from '../markdown-wrapper/markdown-wrapper';
 import styles from './draggable-question.scss';
 
 interface DraggableQuestionProps {
@@ -99,6 +99,16 @@ const DraggableQuestion: React.FC<DraggableQuestionProps> = ({
     }
   }, [handleDuplicateQuestion, isDragging, question, pageIndex, sectionIndex, questionIndex, subQuestionIndex]);
 
+  const handleContainerKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCollapse();
+      }
+    },
+    [toggleCollapse],
+  );
+
   return (
     <div
       ref={setNodeRef}
@@ -114,6 +124,9 @@ const DraggableQuestion: React.FC<DraggableQuestionProps> = ({
           [styles.obsGroup]: question?.questions && question?.questions.length > 0,
         })}
         onClick={toggleCollapse}
+        onKeyDown={handleContainerKeyDown}
+        role="button"
+        tabIndex={0}
       >
         <div className={styles.iconAndName}>
           <div ref={setNodeRef} {...attributes} {...listeners}>

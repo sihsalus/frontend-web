@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
 import { OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import { showModal, showSnackbar } from '@openmrs/esm-framework';
+import type { TFunction } from 'i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { downloadCSV } from '../../../cohort-builder.utils';
 import type { Cohort, Patient, SearchHistoryItem } from '../../../types';
 import { createCohort, createQuery } from './search-history-options.resources';
@@ -30,7 +30,9 @@ const createCohortFromSearchItem = async (
 ) => {
   const cohortMembers: number[] = [];
   const { patients } = searchItem;
-  patients.forEach((patient: Patient) => cohortMembers.push(parseInt(patient.id)));
+  patients.forEach((patient: Patient) => {
+    cohortMembers.push(parseInt(patient.id, 10));
+  });
 
   const cohort: Cohort = {
     display: name,

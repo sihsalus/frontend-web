@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { find, groupBy, isUndefined, orderBy } from 'lodash-es';
+import { type ExistingDoses, type ImmunizationFormData, type ImmunizationGrouped } from '../types';
 import {
   type Code,
   type FHIRImmunizationBundle,
   type FHIRImmunizationResource,
   type Reference,
 } from '../types/fhir-immunization-domain';
-import { type ExistingDoses, type ImmunizationFormData, type ImmunizationGrouped } from '../types';
 
 export const FHIR_NEXT_DOSE_DATE_EXTENSION_URL = 'http://hl7.eu/fhir/StructureDefinition/immunization-nextDoseDate';
+export const FHIR_MINSA_PROGRAM_CONTEXT_EXTENSION_URL =
+  'https://sihsalus.org/fhir/StructureDefinition/minsa-immunization-program-context';
 
 const mapToImmunizationDoseFromResource = (immunizationResource: FHIRImmunizationResource): ExistingDoses | null => {
   if (!immunizationResource) {
@@ -26,6 +28,13 @@ const mapToImmunizationDoseFromResource = (immunizationResource: FHIRImmunizatio
   );
   const nextDoseDate = nextDoseDateExtension?.valueDateTime?.toString();
 
+  // SIH.SALUS extension used to distinguish regular schedule, catch-up,
+  // campaign and special-indication records without overloading the dose label.
+  const programContextExtension = immunizationResource?.extension?.find(
+    (ext) => ext.url === FHIR_MINSA_PROGRAM_CONTEXT_EXTENSION_URL,
+  );
+  const programContext = programContextExtension?.valueString?.toString();
+
   const expirationDate = immunizationResource?.expirationDate?.toString();
   const note = immunizationResource?.note?.length > 0 && immunizationResource?.note[0]?.text;
   return {
@@ -37,6 +46,9 @@ const mapToImmunizationDoseFromResource = (immunizationResource: FHIRImmunizatio
     note: note ? [{ text: note }] : [],
     occurrenceDateTime,
     expirationDate,
+    programContext,
+    status: immunizationResource.status === 'not-done' ? 'not-done' : 'completed',
+    statusReason: immunizationResource.statusReason?.text,
     visitUuid: fromReference(immunizationResource?.encounter),
   };
 };
@@ -81,7 +93,7 @@ export const mapFromFHIRImmunizationBundle = (
 
   const validGroups = Object.entries(groupByImmunization).filter(([key]) => key);
 
-  const groups = validGroups.map(([key, immunizationsForOneVaccine]) => {
+  const groups = validGroups.map(([_key, immunizationsForOneVaccine]) => {
     const existingDoses: Array<ExistingDoses> = immunizationsForOneVaccine
       .map(mapToImmunizationDoseFromResource)
       .filter((dose) => dose !== null);
@@ -122,26 +134,48 @@ export const mapToFHIRImmunizationResource = (
 ): FHIRImmunizationResource => {
   const resource: FHIRImmunizationResource = {
     resourceType: 'Immunization',
-    status: 'completed',
+    status: immunizationFormData.status ?? 'completed',
     id: immunizationFormData.immunizationId,
     vaccineCode: {
-      coding: [{ code: immunizationFormData.vaccineUuid, display: immunizationFormData.vaccineName }],
+      coding: [
+        {
+          code: immunizationFormData.vaccineUuid,
+          display: immunizationFormData.vaccineName,
+        },
+      ],
     },
     patient: toReferenceOfType('Patient', immunizationFormData.patientUuid),
     encounter: toReferenceOfType('Encounter', visitUuid),
     occurrenceDateTime: immunizationFormData.vaccinationDate,
     expirationDate: immunizationFormData.expirationDate || undefined,
-    extension: immunizationFormData.nextDoseDate
-      ? [
-          {
-            url: FHIR_NEXT_DOSE_DATE_EXTENSION_URL,
-            valueDateTime: immunizationFormData.nextDoseDate,
-          },
-        ]
-      : [],
+    extension: [
+      ...(immunizationFormData.nextDoseDate
+        ? [
+            {
+              url: FHIR_NEXT_DOSE_DATE_EXTENSION_URL,
+              valueDateTime: immunizationFormData.nextDoseDate,
+            },
+          ]
+        : []),
+      // Routine schedule is the default and is intentionally omitted to avoid
+      // storing redundant extensions in FHIR resources.
+      ...(immunizationFormData.programContext && immunizationFormData.programContext !== 'routine'
+        ? [
+            {
+              url: FHIR_MINSA_PROGRAM_CONTEXT_EXTENSION_URL,
+              valueString: immunizationFormData.programContext,
+            },
+          ]
+        : []),
+    ],
     note: immunizationFormData.note?.trim() ? [{ text: immunizationFormData.note.trim() }] : [],
     location: toReferenceOfType('Location', locationUuid),
   };
+
+  const statusReason = immunizationFormData.statusReason?.trim();
+  if (statusReason) {
+    resource.statusReason = { text: statusReason };
+  }
 
   // performer: only when provider is present
   if (providerUuid) {

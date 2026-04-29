@@ -1,8 +1,7 @@
-import React from 'react';
+import { ExtensionSlot, useConfig } from '@openmrs/esm-framework';
 import { render } from '@testing-library/react';
-import { useConfig, ExtensionSlot } from '@openmrs/esm-framework';
-import { computeMedicationRequestStatus, getMostRecentMedicationDispenseStatus } from '../utils';
 import { MedicationDispenseStatus, type MedicationRequest, MedicationRequestStatus } from '../types';
+import { computeMedicationRequestStatus, getMostRecentMedicationDispenseStatus } from '../utils';
 import ActionButtons from './action-buttons.component';
 import CloseActionButton from './prescription-actions/close-action-button.component';
 import DispenseActionButton from './prescription-actions/dispense-action-button.component';
@@ -156,7 +155,7 @@ describe('Action Buttons Component tests', () => {
       </div>
     ));
 
-    const { getByText, container } = render(
+    const { getByText } = render(
       <ActionButtons
         patientUuid={mockPatientUuid}
         encounterUuid={mockEncounterUuid}

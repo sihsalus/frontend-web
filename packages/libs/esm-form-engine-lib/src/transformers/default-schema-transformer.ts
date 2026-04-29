@@ -1,10 +1,10 @@
 import {
   type FormField,
+  type FormPage,
   type FormSchema,
   type FormSchemaTransformer,
-  type RenderType,
-  type FormPage,
   type PreFilledQuestions,
+  type RenderType,
 } from '../types';
 import { isTrue } from '../utils/boolean-utils';
 import { hasRendering, isDateValue, isPlainObject, isStringValue } from '../utils/common-utils';
@@ -24,7 +24,9 @@ export const DefaultFormSchemaTransformer: FormSchemaTransformer = {
           section.questions = handleQuestionsWithObsComments(section.questions);
           parseBooleanTokenIfPresent(section, 'readonly');
           parseBooleanTokenIfPresent(section, 'isExpanded');
-          section?.questions?.forEach((question) => handleQuestion(question, page, form));
+          section?.questions?.forEach((question) => {
+            handleQuestion(question, page, form);
+          });
         });
       }
     });
@@ -54,9 +56,13 @@ function handleQuestion(question: FormField, page: FormPage, form: FormSchema): 
 
     if (question.questions?.length) {
       if (question.type === 'obsGroup' && question.questions.length) {
-        question.questions.forEach((nestedQuestion) => handleQuestion(nestedQuestion, page, form));
+        question.questions.forEach((nestedQuestion) => {
+          handleQuestion(nestedQuestion, page, form);
+        });
       } else {
-        question.questions.forEach((nestedQuestion) => handleQuestion(nestedQuestion, page, form));
+        question.questions.forEach((nestedQuestion) => {
+          handleQuestion(nestedQuestion, page, form);
+        });
       }
     }
     question.meta.pageId = page.id;

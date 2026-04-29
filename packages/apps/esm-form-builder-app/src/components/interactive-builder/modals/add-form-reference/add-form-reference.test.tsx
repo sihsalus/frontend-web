@@ -1,10 +1,9 @@
-import React from 'react';
+import { type FetchResponse, openmrsFetch } from '@openmrs/esm-framework';
 import { screen, waitFor } from '@testing-library/react';
-import AddFormReferenceModal from './add-form-reference.modal';
+import userEvent from '@testing-library/user-event';
 import { type Schema } from '@types';
 import { renderWithSwr } from 'test-utils';
-import { type FetchResponse, openmrsFetch } from '@openmrs/esm-framework';
-import userEvent from '@testing-library/user-event';
+import AddFormReferenceModal from './add-form-reference.modal';
 
 type OpenmrsFetchResponse = Promise<
   FetchResponse<{
@@ -344,3 +343,7 @@ const renderAddFormReferenceModal = () => {
     />,
   );
 };
+
+import React from 'react';
+
+void React;

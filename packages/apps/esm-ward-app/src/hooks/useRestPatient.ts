@@ -1,5 +1,4 @@
-import { openmrsFetch, restBaseUrl, type FetchResponse, type Patient } from '@openmrs/esm-framework';
-import { useMemo } from 'react';
+import { type FetchResponse, openmrsFetch, type Patient, restBaseUrl } from '@openmrs/esm-framework';
 import useSWRImmutable from 'swr/immutable';
 
 // prettier-ignore
@@ -15,12 +14,9 @@ export default function useRestPatient(patientUuid: string, rep = defaultRep) {
     patientUuid ? `${restBaseUrl}/patient/${patientUuid}?v=${rep}` : null,
     openmrsFetch,
   );
-  const results = useMemo(
-    () => ({
-      patient: data?.data,
-      ...rest,
-    }),
-    [data, rest],
-  );
-  return results;
+
+  return {
+    patient: data?.data,
+    ...rest,
+  };
 }

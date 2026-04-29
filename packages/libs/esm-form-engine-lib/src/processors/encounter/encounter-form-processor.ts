@@ -1,5 +1,28 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type OpenmrsResource, showSnackbar, translateFrom } from '@openmrs/esm-framework';
+import { type TOptions } from 'i18next';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getPreviousEncounter, saveEncounter } from '../../api';
+import { formEngineAppName } from '../../globals';
+import { useEncounter } from '../../hooks/useEncounter';
+import { useEncounterRole } from '../../hooks/useEncounterRole';
+import { usePatientPrograms } from '../../hooks/usePatientPrograms';
+import { type FormContextProps } from '../../provider/form-provider';
+import {
+  type FormField,
+  type FormPage,
+  type FormProcessorContextProps,
+  type FormSchema,
+  type FormSection,
+  type OpenmrsEncounter,
+  type PatientProgram,
+  type ValueAndDisplay,
+} from '../../types';
+import { hasRendering, isPlainObject, isStringValue } from '../../utils/common-utils';
+import { extractErrorMessagesFromResponse, FormSubmissionError } from '../../utils/error-utils';
+import { evaluateAsyncExpression, type FormNode } from '../../utils/expression-runner';
+import { extractObsValueAndDisplay } from '../../utils/form-helper';
+import { isEmpty } from '../../validators/form-validator';
+import { FormProcessor, type GetCustomHooksResponse } from '../form-processor';
 import {
   getMutableSessionProps,
   hasDuplicatePatientIdentifiers,
@@ -12,29 +35,6 @@ import {
   savePatientIdentifiers,
   savePatientPrograms,
 } from './encounter-processor-helper';
-import {
-  type FormField,
-  type FormPage,
-  type FormProcessorContextProps,
-  type FormSchema,
-  type FormSection,
-  type OpenmrsEncounter,
-  type PatientProgram,
-  type ValueAndDisplay,
-} from '../../types';
-import { evaluateAsyncExpression, type FormNode } from '../../utils/expression-runner';
-import { extractErrorMessagesFromResponse, FormSubmissionError } from '../../utils/error-utils';
-import { extractObsValueAndDisplay } from '../../utils/form-helper';
-import { FormProcessor, type GetCustomHooksResponse } from '../form-processor';
-import { getPreviousEncounter, saveEncounter } from '../../api';
-import { hasRendering, isPlainObject, isStringValue } from '../../utils/common-utils';
-import { isEmpty } from '../../validators/form-validator';
-import { formEngineAppName } from '../../globals';
-import { type FormContextProps } from '../../provider/form-provider';
-import { useEncounter } from '../../hooks/useEncounter';
-import { useEncounterRole } from '../../hooks/useEncounterRole';
-import { usePatientPrograms } from '../../hooks/usePatientPrograms';
-import { type TOptions } from 'i18next';
 
 type FormValues = Record<string, unknown>;
 
@@ -144,14 +144,14 @@ export class EncounterFormProcessor extends FormProcessor {
       field.inlineRendering =
         field.inlineRendering ?? section.inlineRendering ?? page.inlineRendering ?? schema.inlineRendering;
       field.readonly = field.readonly ?? section.readonly ?? page.readonly ?? schema.readonly;
-      if (field.questionOptions?.rendering == 'fixed-value' && !field.meta.fixedValue) {
+      if (field.questionOptions?.rendering === 'fixed-value' && !field.meta.fixedValue) {
         field.meta.fixedValue = field.value;
         delete field.value;
       }
-      if (field.questionOptions?.rendering == 'group' || field.type === 'obsGroup') {
+      if (field.questionOptions?.rendering === 'group' || field.type === 'obsGroup') {
         field.questions?.forEach((child) => {
           child.readonly = child.readonly ?? field.readonly;
-          return prepareFormField(child, section, page, schema);
+          prepareFormField(child, section, page, schema);
         });
       }
     }

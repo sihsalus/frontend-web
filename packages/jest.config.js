@@ -15,7 +15,18 @@ const resolvedSharedTestAliases = Object.fromEntries(
 module.exports = {
   clearMocks: true,
   transform: {
-    '^.+\\.m?[jt]sx?$': ['@swc/jest'],
+    '^.+\\.m?[jt]sx?$': [
+      '@swc/jest',
+      {
+        jsc: {
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
+        },
+      },
+    ],
   },
   transformIgnorePatterns: ['/node_modules/(?!@openmrs|.+\\.pnp\\.[^\\/]+$)'],
   moduleDirectories: ['node_modules', __dirname],

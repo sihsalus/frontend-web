@@ -1,15 +1,13 @@
 import {
-  updateVisit,
-  showSnackbar,
-  useVisit,
-  type VisitReturnType,
   type FetchResponse,
+  showSnackbar,
+  updateVisit,
+  useVisit,
   type Visit,
+  type VisitReturnType,
 } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
-
 import { changeAppointmentStatus } from '../../patient-appointments/patient-appointments.resource';
 
 import EndAppointmentModal from './end-appointment.modal';

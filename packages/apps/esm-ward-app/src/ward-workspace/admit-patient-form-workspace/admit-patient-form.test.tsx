@@ -7,10 +7,9 @@ import {
 } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice, renderWithSwr } from 'test-utils';
-import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../mock';
+import { mockWardPatientGroupDetails, mockWardViewContext } from '../../../test-utils/mock';
 import { useAssignedBedByPatient } from '../../hooks/useAssignedBedByPatient';
 import useWardLocation from '../../hooks/useWardLocation';
 import type { WardPatient, WardViewContext } from '../../types';
@@ -111,14 +110,13 @@ describe('Testing AdmitPatientForm', () => {
       errorFetchingLocation: null,
     });
 
-    // @ts-ignore - we don't need to mock the entire object
     mockedUseAssignedBedByPatient.mockReturnValue({
       data: {
         data: {
           results: [
             {
               bedId: 1,
-              bedNumber: 1,
+              bedNumber: '1',
               bedType: null,
               patients: [mockPatientAlice],
               physicalLocation: mockLocationInpatientWard,
@@ -126,25 +124,22 @@ describe('Testing AdmitPatientForm', () => {
           ],
         },
       },
-    });
+    } as ReturnType<typeof useAssignedBedByPatient>);
 
-    // @ts-ignore - we only need these two keys for now
     mockedAdmitPatient.mockResolvedValue({
       ok: true,
       data: {
         uuid: 'encounter-uuid',
       },
-    });
+    } as Awaited<ReturnType<typeof mockedAdmitPatient>>);
 
-    // @ts-ignore - we only need the ok key for now
     mockedAssignPatientToBed.mockResolvedValue({
       ok: true,
-    });
+    } as Awaited<ReturnType<typeof assignPatientToBed>>);
 
-    // @ts-ignore - we only need the ok key for now
     mockedRemovePatientFromBed.mockResolvedValue({
       ok: true,
-    });
+    } as Awaited<ReturnType<typeof removePatientFromBed>>);
   });
 
   it('should render admit patient form', async () => {
@@ -194,7 +189,7 @@ describe('Testing AdmitPatientForm', () => {
     const admitButton = screen.getByRole('button', { name: 'Admit' });
     expect(admitButton).toBeEnabled();
     await user.click(admitButton);
-    expect(mockedAdmitPatient).toHaveBeenCalledWith(mockPatientAlice, 'ADMIT');
+    expect(mockedAdmitPatient).toHaveBeenCalledWith(mockPatientAlice, 'ADMIT', mockWardPatientAliceProps.visit.uuid);
     expect(mockedAssignPatientToBed).toHaveBeenCalledWith(3, mockPatientAlice.uuid, 'encounter-uuid');
     expect(mockedShowSnackbar).toHaveBeenCalledWith({
       kind: 'success',
@@ -242,7 +237,7 @@ describe('Testing AdmitPatientForm', () => {
     const admitButton = screen.getByRole('button', { name: 'Admit' });
     expect(admitButton).toBeEnabled();
     await user.click(admitButton);
-    expect(mockedAdmitPatient).toHaveBeenCalledWith(mockPatientAlice, 'ADMIT');
+    expect(mockedAdmitPatient).toHaveBeenCalledWith(mockPatientAlice, 'ADMIT', mockWardPatientAliceProps.visit.uuid);
     expect(mockedRemovePatientFromBed).toHaveBeenCalledWith(1, mockPatientAlice.uuid);
     expect(mockedShowSnackbar).toHaveBeenCalledWith({
       kind: 'success',

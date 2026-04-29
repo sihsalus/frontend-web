@@ -1,5 +1,4 @@
 import { NumberInput } from '@carbon/react';
-import React from 'react';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -8,6 +7,7 @@ import NoContent from '../../ui/NoContent/NoContent';
 import { type CostStructureFormValues } from '../schema/costructure-schema';
 
 import styles from './tabs.styles.scss';
+
 interface Props {
   form: UseFormReturn<CostStructureFormValues>;
 }

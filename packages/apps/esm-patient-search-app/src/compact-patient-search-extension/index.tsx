@@ -1,13 +1,13 @@
 import { Button, Search } from '@carbon/react';
-import { useConfig, navigate, interpolateString } from '@openmrs/esm-framework';
-import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react';
+import { interpolateString, navigate, useConfig } from '@openmrs/esm-framework';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import PatientSearch from '../compact-patient-search/patient-search.component';
 import { type PatientSearchConfig } from '../config-schema';
 import useArrowNavigation from '../hooks/useArrowNavigation';
-import { PatientSearchContext } from '../patient-search-context';
 import { useInfinitePatientSearch } from '../patient-search.resource';
+import { PatientSearchContext } from '../patient-search-context';
 
 import styles from './compact-patient-search.scss';
 
@@ -32,9 +32,9 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
   const patientSearchResponse = useInfinitePatientSearch(searchTerm, config.includeDead, showSearchResults);
   const { data: patients } = patientSearchResponse;
 
-  const handleChange = useCallback((val) => setSearchTerm(val), [setSearchTerm]);
+  const handleChange = useCallback((val) => setSearchTerm(val), []);
 
-  const handleClear = useCallback(() => setSearchTerm(''), [setSearchTerm]);
+  const handleClear = useCallback(() => setSearchTerm(''), []);
 
   /**
    * handlePatientSelection: Manually handles everything that needs to happen when a patient
@@ -62,7 +62,7 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
     const len = inputRef.current.value?.length ?? 0;
     inputRef.current.setSelectionRange(len, len);
     inputRef.current.focus();
-  }, [inputRef]);
+  }, []);
 
   const focusedResult = useArrowNavigation(patients?.length ?? 0, handlePatientSelection, handleFocusToInput, -1);
 
@@ -77,7 +77,7 @@ const CompactPatientSearchComponent: React.FC<CompactPatientSearchProps> = ({
     } else if (bannerContainerRef.current && inputRef.current && focusedResult === -1) {
       handleFocusToInput();
     }
-  }, [focusedResult, bannerContainerRef, handleFocusToInput]);
+  }, [focusedResult, handleFocusToInput]);
 
   return (
     <div className={styles.patientSearchBar}>

@@ -4,10 +4,10 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   isDesktop,
+  type Location,
   ResponsiveWrapper,
   useDebounce,
   useLayoutType,
-  type Location,
 } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -55,12 +55,9 @@ export default function LocationSelector({ paginationSize = 15, ...props }: Loca
     goToPrevious,
   } = useLocations(filterCriteria, paginationSize, !emrConfiguration);
 
-  const handleSearch = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
-    },
-    [setSearchTerm],
-  );
+  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, []);
   return (
     <div className={styles.locationSelector}>
       <ResponsiveWrapper>

@@ -24,7 +24,7 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { type ChangeEvent, useCallback, useEffect, useState, useMemo } from 'react';
+import React, { type ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type ConfigObject } from '../config-schema';
@@ -258,7 +258,9 @@ const OverviewComponent: React.FC = () => {
       try {
         const response = await downloadMultipleReports(reportRequestUuids);
         if (Array.isArray(response)) {
-          response.forEach((file) => processAndDownloadFile(file));
+          response.forEach((file) => {
+            processAndDownloadFile(file);
+          });
         }
         clearReportCheckboxes();
         showSnackbar({

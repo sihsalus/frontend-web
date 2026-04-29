@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { Column, Dropdown, TextInput } from '@carbon/react';
 import { showSnackbar } from '@openmrs/esm-framework';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type SearchByProps } from '../../types';
@@ -33,7 +33,7 @@ const SearchByPersonAttributes: React.FC<SearchByProps> = ({ onSubmit }) => {
   const submit = async () => {
     setIsLoading(true);
     const selectedPersonAttribute = personAttributes?.find(
-      (personAttribute) => personAttribute.value == selectedAttributeId,
+      (personAttribute) => personAttribute.value === selectedAttributeId,
     );
     await onSubmit(
       getQueryDetails(selectedAttributeId, selectedAttributeValues),

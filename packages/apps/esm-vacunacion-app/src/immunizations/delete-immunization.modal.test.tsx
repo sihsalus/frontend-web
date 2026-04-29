@@ -1,10 +1,9 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
 import { showSnackbar, useConfig } from '@openmrs/esm-framework';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockPatient } from 'test-utils';
-import { deletePatientImmunization } from '../hooks/useImmunizations';
 import { type ImmunizationConfigObject } from '../config-schema';
+import { deletePatientImmunization } from '../hooks/useImmunizations';
 import DeleteImmunizationModal from './delete-immunization.modal';
 
 const mockUseConfig = jest.mocked(useConfig<ImmunizationConfigObject>);

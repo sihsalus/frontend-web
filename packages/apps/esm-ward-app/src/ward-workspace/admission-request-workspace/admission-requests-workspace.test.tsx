@@ -1,21 +1,21 @@
 import { useAppContext } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
-import React from 'react';
 
 import { renderWithSwr } from 'test-utils';
-import { mockWardViewContext } from '../../../mock';
+import { mockWardViewContext } from '../../../test-utils/mock';
 import useEmrConfiguration from '../../hooks/useEmrConfiguration';
 import { type WardViewContext } from '../../types';
 import DefaultWardPendingPatients from '../../ward-view/default-ward/default-ward-pending-patients.component';
+import { type AdmissionRequestsWorkspaceContextProps } from './admission-requests-context';
 
-import AdmissionRequestsWorkspace, { type AdmissionRequestsWorkspaceProps } from './admission-requests.workspace';
+import AdmissionRequestsWorkspace from './admission-requests.workspace';
 
 jest.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
 
 jest.mock('../../hooks/useEmrConfiguration', () => jest.fn());
 const mockedUseEmrConfiguration = jest.mocked(useEmrConfiguration);
 
-const workspaceProps: AdmissionRequestsWorkspaceProps = {
+const workspaceProps: AdmissionRequestsWorkspaceContextProps = {
   closeWorkspace: jest.fn(),
   promptBeforeClosing: jest.fn(),
   closeWorkspaceWithSavedChanges: jest.fn(),
@@ -28,7 +28,7 @@ describe('Admission Requests Workspace', () => {
     mockedUseEmrConfiguration.mockReturnValue({
       isLoadingEmrConfiguration: false,
       errorFetchingEmrConfiguration: null,
-      // @ts-ignore - we only need these keys for now
+      // @ts-expect-error - we only need these keys for now
       emrConfiguration: {
         admissionEncounterType: {
           uuid: 'admission-encounter-type-uuid',

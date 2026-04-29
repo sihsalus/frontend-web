@@ -1,7 +1,6 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { openmrsFetch } from '@openmrs/esm-framework';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useLocations } from '../../cohort-builder.resources';
 import SearchByLocation from './search-by-location.component';
 

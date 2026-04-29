@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import { showModal, useLayoutType } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
-import { type Allergy } from '../types';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { patientAllergiesFormWorkspace } from '../constants';
+import { type Allergy } from '../types';
 import styles from './allergies-action-menu.scss';
 
 interface allergiesActionMenuProps {
@@ -15,6 +15,7 @@ interface allergiesActionMenuProps {
 export const AllergiesActionMenu = ({ allergy, patientUuid }: allergiesActionMenuProps) => {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
+  void React;
 
   const launchEditAllergiesForm = useCallback(() => {
     launchPatientWorkspace(patientAllergiesFormWorkspace, {

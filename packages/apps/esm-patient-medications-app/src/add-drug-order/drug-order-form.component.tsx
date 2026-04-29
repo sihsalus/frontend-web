@@ -7,11 +7,11 @@ import {
   ComboBox,
   DatePicker,
   DatePickerInput,
-  IconButton,
   Form,
   FormGroup,
   FormLabel,
   Grid,
+  IconButton,
   InlineNotification,
   Layer,
   NumberInput,
@@ -23,8 +23,8 @@ import { Subtract } from '@carbon/react/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   AddIcon,
-  age,
   ArrowLeftIcon,
+  age,
   ExtensionSlot,
   formatDate,
   getPatientName,
@@ -784,7 +784,7 @@ const CustomNumberInput = ({ setValue, control, name, labelText, isTablet, ...in
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value.replace(/[^\d]/g, '').slice(0, 2);
-      onChange(val ? parseInt(val) : 0);
+      onChange(val ? parseInt(val, 10) : 0);
     },
     [onChange],
   );

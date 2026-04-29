@@ -1,6 +1,6 @@
 import { FormLabel, NumberInput, TextArea } from '@carbon/react';
 import { Warning } from '@carbon/react/icons';
-import { useLayoutType, ResponsiveWrapper } from '@openmrs/esm-framework';
+import { ResponsiveWrapper, useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import React, { Fragment, useId, useState } from 'react';
 import { type Control, Controller } from 'react-hook-form';
@@ -76,8 +76,8 @@ const VitalsAndBiometricsInput: React.FC<VitalsAndBiometricsInputProps> = ({
   const abnormalValues: Array<AbnormalValue> = ['critically_low', 'critically_high', 'high', 'low'];
   const hasAbnormalValue = !isFocused && interpretation && abnormalValues.includes(interpretation as AbnormalValue);
 
-  function checkValidity(value, onChange) {
-    const isInvalid = !(Number(value) || value === '');
+  function checkValidity(value: string, onChange: (value: number | undefined) => void) {
+    const isInvalid = value !== '' && Number.isNaN(Number(value));
     setInvalid(isInvalid);
 
     if (!isInvalid) {
@@ -197,6 +197,8 @@ const VitalsAndBiometricsInput: React.FC<VitalsAndBiometricsInputProps> = ({
                   </ResponsiveWrapper>
                 );
               }
+
+              return null;
             })}
           </div>
           {Boolean(unitSymbol) && <p className={styles.unitName}>{unitSymbol}</p>}

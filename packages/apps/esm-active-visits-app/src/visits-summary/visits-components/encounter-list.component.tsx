@@ -16,21 +16,20 @@ import classNames from 'classnames';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type Observation } from '../../types';
 import styles from '../visit-detail-overview.scss';
 
 import EncounterObservations from './encounter-observations.component';
 
+type EncounterListRow = {
+  id: string;
+  time: string;
+  encounterType: string;
+  provider: string;
+  obs: React.ComponentProps<typeof EncounterObservations>['observations'];
+};
+
 interface EncounterListProps {
-  encounters: Array<{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    id: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    time: any;
-    encounterType: string;
-    provider: string;
-    obs: Array<Observation>;
-  }>;
+  encounters: Array<EncounterListRow>;
   visitUuid: string;
 }
 
@@ -38,7 +37,7 @@ const EncounterListDataTable: React.FC<EncounterListProps> = ({ encounters, visi
   const { t } = useTranslation();
   const layout = useLayoutType();
   const [headerWidth, setHeaderWidth] = useState(0);
-  const headerRef = useRef(null);
+  const headerRef = useRef<HTMLTableCellElement | null>(null);
 
   const headerData = useMemo(
     () => [
@@ -77,29 +76,37 @@ const EncounterListDataTable: React.FC<EncounterListProps> = ({ encounters, visi
               <TableHead>
                 <TableRow>
                   <TableExpandHeader />
-                  {headers.map((header, i) =>
-                    i === 0 ? (
-                      <TableHeader id={`header_${visitUuid}_${i}`} ref={headerRef} {...getHeaderProps({ header })}>
+                  {headers.map((header, i) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+
+                    return i === 0 ? (
+                      <TableHeader key={key} id={`header_${visitUuid}_${i}`} ref={headerRef} {...headerProps}>
                         {header.header}
                       </TableHeader>
                     ) : (
-                      <TableHeader id={`header_${visitUuid}_${i}`} {...getHeaderProps({ header })}>
+                      <TableHeader key={key} id={`header_${visitUuid}_${i}`} {...headerProps}>
                         {header.header}
                       </TableHeader>
-                    ),
-                  )}
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row, i) => (
                   <React.Fragment key={row.id}>
-                    <TableExpandRow {...getRowProps({ row })}>
-                      {row.cells.map((cell) => (
-                        <TableCell key={cell.id} data-testid={cell.id}>
-                          {cell.value}
-                        </TableCell>
-                      ))}
-                    </TableExpandRow>
+                    {(() => {
+                      const { key, ...rowProps } = getRowProps({ row });
+
+                      return (
+                        <TableExpandRow key={key} {...rowProps}>
+                          {row.cells.map((cell) => (
+                            <TableCell key={cell.id} data-testid={cell.id}>
+                              {cell.value}
+                            </TableCell>
+                          ))}
+                        </TableExpandRow>
+                      );
+                    })()}
                     {row.isExpanded && (
                       <TableExpandedRow
                         className={styles.expandedRow}

@@ -6,10 +6,13 @@ export interface Immunization {
   immunizationObsUuid?: string;
   manufacturer?: string;
   nextDoseDate?: string;
+  programContext?: string;
   expirationDate?: string;
   occurrenceDateTime?: string;
   lotNumber?: string;
   doseNumber?: number;
+  status?: 'completed' | 'not-done';
+  statusReason?: string;
 }
 
 export interface ImmunizationGrouped {
@@ -29,6 +32,9 @@ export interface ImmunizationFormState {
   lotNumber: string;
   nextDoseDate: string;
   manufacturer: string;
+  programContext?: string;
+  status?: 'completed' | 'not-done';
+  statusReason?: string;
   visitId?: string;
   locationId?: string;
   providers?: string[];
@@ -56,4 +62,7 @@ export interface ExistingDoses {
   manufacturer: string;
   occurrenceDateTime: string;
   doseNumber: number;
+  programContext?: string;
+  status?: 'completed' | 'not-done';
+  statusReason?: string;
 }

@@ -1,11 +1,11 @@
 import { TextInput } from '@carbon/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import useGetProcedures from '../../../hooks/use-get-procedures';
 import type { Procedure } from '../../../hooks/use-get-procedures';
+import useGetProcedures from '../../../hooks/use-get-procedures';
 
 import styles from './styles.scss';
+
 interface Props {
   value: Procedure;
   onChange: (value: Procedure) => void;
@@ -39,7 +39,8 @@ export const ProcedureAutocomplete: React.FC<Props> = ({ value, onChange, error 
 
           {!isLoading &&
             procedures.map((p) => (
-              <div
+              <button
+                type="button"
                 key={p.conceptId}
                 onClick={() => {
                   onChange(p);
@@ -53,7 +54,7 @@ export const ProcedureAutocomplete: React.FC<Props> = ({ value, onChange, error 
                     {t('code', 'Code')}: {p.code}
                   </p>
                 )}
-              </div>
+              </button>
             ))}
         </div>
       )}

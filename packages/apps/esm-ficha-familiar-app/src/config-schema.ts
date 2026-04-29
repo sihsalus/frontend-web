@@ -59,6 +59,7 @@ export const configSchema = {
       preferedPnsAproach: '59d1b886-90c8-4f7f-9212-08b20a9ee8cf',
       livingWithContact: '35a08d84-9f80-4991-92b4-c4ae5903536e',
       contactipvOutcome: '49c543c2-a72a-4b0a-8cca-39c375c0726f',
+      dataConsent: 'a7c3e2f1-9b4d-4e8a-b15c-2d6f8e3a1c90',
     },
   },
 
@@ -145,6 +146,7 @@ export interface ConfigObject {
     preferedPnsAproach: string;
     livingWithContact: string;
     contactipvOutcome: string;
+    dataConsent: string;
   };
   hivProgramUuid: string;
   encounterTypes: {

@@ -12,10 +12,9 @@ import { launchWorkspace } from '@openmrs/esm-framework';
 import { CardHeader } from '@openmrs/esm-patient-common-lib';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { useOdontogramHistory } from '../hooks/useOdontogramHistory';
 import OdontogramCanvas from '../odontogram/components/Odontogram';
 import { adultConfig } from '../odontogram/config/adultConfig';
-import { useOdontogramHistory } from '../hooks/useOdontogramHistory';
 import useOdontogramDataStore from '../store/odontogramDataStore';
 import type { OdontogramBaseGroup, OdontogramRecord } from '../types/odontogram-record';
 import DentalEmptyState from '../ui/dental-empty-state.component';
@@ -101,7 +100,9 @@ const RecordSelector: React.FC<RecordSelectorProps> = ({ groups, selectedEncount
     const map = new Map<string, { record: OdontogramRecord; parentBase: OdontogramRecord }>();
     for (const g of groups) {
       map.set(g.base.encounterUuid, { record: g.base, parentBase: g.base });
-      g.attentions.forEach((a) => map.set(a.encounterUuid, { record: a, parentBase: g.base }));
+      g.attentions.forEach((a) => {
+        map.set(a.encounterUuid, { record: a, parentBase: g.base });
+      });
     }
     return map;
   }, [groups]);

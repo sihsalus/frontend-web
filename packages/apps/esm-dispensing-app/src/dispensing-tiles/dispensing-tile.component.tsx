@@ -1,8 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Tile, Button } from '@carbon/react';
+import { Button, Tile } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { ResponsiveWrapper } from '@openmrs/esm-framework';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './dispensing-tile.scss';
 
 interface DispensingTileProps {
@@ -25,7 +25,7 @@ const DispensingTile: React.FC<DispensingTileProps> = ({ label, value, headerLab
           </div>
           <Button
             kind="ghost"
-            renderIcon={(props) => <ArrowRight size={16} className={styles.arrowIcon} />}
+            renderIcon={(_props) => <ArrowRight size={16} className={styles.arrowIcon} />}
             iconDescription={t('view', 'View')}
           >
             {t('view', 'View')}

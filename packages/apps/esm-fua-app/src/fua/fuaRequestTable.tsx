@@ -1,31 +1,31 @@
 import {
+  Button,
   DataTable,
   DataTableSkeleton,
+  Layer,
+  OverflowMenu,
+  OverflowMenuItem,
+  Pagination,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
-  Pagination,
-  Layer,
-  Tile,
-  Button,
-  OverflowMenu,
-  OverflowMenuItem,
   Tag,
+  Tile,
   Tooltip,
 } from '@carbon/react';
-import { View, Download, EventSchedule } from '@carbon/react/icons';
+import { Download, EventSchedule, View } from '@carbon/react/icons';
 import { formatDate, launchWorkspace, showModal, showSnackbar, usePagination } from '@openmrs/esm-framework';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import useFuaRequests, { setFuaEstado, type FuaRequest } from '../hooks/useFuaRequests';
+import useFuaRequests, { type FuaRequest, setFuaEstado } from '../hooks/useFuaRequests';
 import { useVisit } from '../hooks/useVisit';
 import { FUA_ESTADOS } from '../modals/change-fua-status.modal';
 import { exportFuasToExcel } from '../utils/fua-export';
@@ -291,7 +291,7 @@ const FuaRequestTable: React.FC<FuaRequestTableProps> = ({ statusFilter = 'all' 
                               {fuaRequest?.observacionesSetiSis && (
                                 <Tooltip align="bottom" label={fuaRequest.observacionesSetiSis}>
                                   <span
-                                    aria-label={t('setiSisObservation', 'Observación SETI-SIS')}
+                                    title={t('setiSisObservation', 'Observación SETI-SIS')}
                                     style={{
                                       marginLeft: '4px',
                                       fontSize: '0.75rem',

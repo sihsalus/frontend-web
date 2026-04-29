@@ -27,6 +27,27 @@ export default {
     _default: 'c75f120a-04ec-11e3-8780-2b40bef9a44b',
     _description: 'The UUID of the Visit Note form to be associated with visit note encounters',
   },
+  // NTS-139: Tipo de diagnóstico — concepto con respuestas Presuntivo, Definitivo, Repetitivo
+  diagnosisTypeConceptUuid: {
+    _type: Type.UUID,
+    _default: '2d53d39f-c93f-4128-8f7c-1bb45b498497',
+    _description: 'UUID del concepto Tipo de diagnóstico (NTS-139). Respuestas: Presuntivo, Definitivo, Repetitivo',
+  },
+  diagnosisTypePresuntivoUuid: {
+    _type: Type.UUID,
+    _default: '4f59cf03-f888-4d34-a5dc-f24269b1945d',
+    _description: 'UUID de la respuesta Presuntivo (P) del concepto Tipo de diagnóstico',
+  },
+  diagnosisTypeDefinitivoUuid: {
+    _type: Type.UUID,
+    _default: '2c60a8f6-1787-41be-8434-30ebeb5656ff',
+    _description: 'UUID de la respuesta Definitivo (D) del concepto Tipo de diagnóstico',
+  },
+  diagnosisTypeRepetitivoUuid: {
+    _type: Type.UUID,
+    _default: '6f653861-8469-4dfa-a0b5-2804f1cfc527',
+    _description: 'UUID de la respuesta Repetitivo (R) del concepto Tipo de diagnóstico',
+  },
 };
 
 export interface VisitNoteConfigObject {
@@ -35,4 +56,8 @@ export interface VisitNoteConfigObject {
   encounterTypeUuid: string;
   formConceptUuid: string;
   visitDiagnosesConceptUuid: string;
+  diagnosisTypeConceptUuid: string;
+  diagnosisTypePresuntivoUuid: string;
+  diagnosisTypeDefinitivoUuid: string;
+  diagnosisTypeRepetitivoUuid: string;
 }

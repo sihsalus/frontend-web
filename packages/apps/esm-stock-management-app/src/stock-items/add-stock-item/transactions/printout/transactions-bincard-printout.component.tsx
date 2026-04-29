@@ -1,18 +1,17 @@
-import React, { useMemo } from 'react';
 import {
   DataTable,
-  TableContainer,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@carbon/react';
-import { useStockItem } from '../../../stock-items.resource';
+import React from 'react';
 import PrintableBincardTransactionHeader from './printable-bincard-transaction-header.component';
-import PrintableTransactionFooter from './printable-transaction-footer.component';
 import styles from './printable-transaction.scss';
+import PrintableTransactionFooter from './printable-transaction-footer.component';
 
 type Props = {
   title: string;

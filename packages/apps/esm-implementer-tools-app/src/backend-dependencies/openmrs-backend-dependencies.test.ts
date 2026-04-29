@@ -1,25 +1,24 @@
-import { openmrsFetch, isVersionSatisfied } from '@openmrs/esm-framework';
-import { vi, describe, expect, it, beforeEach } from 'vitest';
+import { isVersionSatisfied, openmrsFetch } from '@openmrs/esm-framework';
 
 import {
   checkModules,
-  hasInvalidDependencies,
   clearCache,
+  hasInvalidDependencies,
   type ResolvedBackendModuleType,
 } from './openmrs-backend-dependencies';
 
-vi.mock('@openmrs/esm-framework', () => ({
-  openmrsFetch: vi.fn(),
-  isVersionSatisfied: vi.fn(),
+jest.mock('@openmrs/esm-framework', () => ({
+  openmrsFetch: jest.fn(),
+  isVersionSatisfied: jest.fn(),
   restBaseUrl: '/ws/rest/v1',
 }));
 
-const mockOpenmrsFetch = vi.mocked(openmrsFetch);
-const mockIsVersionSatisfied = vi.mocked(isVersionSatisfied);
+const mockOpenmrsFetch = jest.mocked(openmrsFetch);
+const mockIsVersionSatisfied = jest.mocked(isVersionSatisfied);
 
 describe('openmrs-backend-dependencies', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     clearCache();
     window.installedModules = [];
   });
@@ -277,7 +276,7 @@ describe('openmrs-backend-dependencies', () => {
     });
 
     it('should handle fetch errors gracefully by returning empty backend modules', async () => {
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
       mockOpenmrsFetch.mockRejectedValue(new Error('Network error'));
 
@@ -297,7 +296,7 @@ describe('openmrs-backend-dependencies', () => {
     });
 
     it('should warn when reaching pagination limit', async () => {
-      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
       mockOpenmrsFetch.mockResolvedValue({
         data: {

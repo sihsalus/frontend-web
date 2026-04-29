@@ -1,6 +1,6 @@
 import { InlineLoading } from '@carbon/react';
 import { showSnackbar } from '@openmrs/esm-framework';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStockOperationTypes } from '../stock-lookups/stock-lookups.resource';
 import { launchStockoperationAddOrEditWorkSpace } from './stock-operation.utils';
@@ -55,9 +55,13 @@ const StockOperationReference = ({ operationNumber, operationUuid }: StockOperat
   }
 
   return (
-    <a onClick={handleEdit} style={{ cursor: 'pointer' }}>
+    <button
+      onClick={handleEdit}
+      style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0, color: 'inherit' }}
+      type="button"
+    >
       {operationNumber}
-    </a>
+    </button>
   );
 };
 

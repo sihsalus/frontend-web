@@ -1,13 +1,9 @@
-import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import filter from 'lodash-es/filter';
-import includes from 'lodash-es/includes';
-import map from 'lodash-es/map';
-import uniqBy from 'lodash-es/uniqBy';
+import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 
-import type { ProgramWorkflowState, PatientProgram, Program, ProgramsFetchResponse } from '../types';
+import type { ConfigObject } from '../config-schema';
 
 export const customRepresentation = `custom:(uuid,display,program,dateEnrolled,dateCompleted,location:(uuid,display),states:(startDate,endDate,voided,state:(uuid,concept:(display))))`;
 
@@ -39,10 +35,12 @@ type ObsEncounter = {
 export const useInmmediatePostpartumPeriod = (
   patientUuid: string,
 ): { prenatalEncounters: ObsEncounter[]; error: Error | null; isValidating: boolean; mutate: () => void } => {
-  const atencionPrenatal = 'Control Postnatal'; //cambiar a postnatal
+  const config = useConfig<ConfigObject>();
+  const atencionPrenatal = config.encounterTypes.postnatalControl;
+  const formName = config.formsList.immediatePostpartumPeriod;
   const attentionssUrl = useMemo(() => {
     return `${restBaseUrl}/encounter?patient=${patientUuid}&encounterType=${atencionPrenatal}`;
-  }, [patientUuid]);
+  }, [atencionPrenatal, patientUuid]);
 
   const { data, error, isValidating, mutate } = useSWR<EncounterResponse>(
     patientUuid ? attentionssUrl : null,
@@ -75,9 +73,9 @@ export const useInmmediatePostpartumPeriod = (
     if (!detailedEncounters) return [];
 
     return detailedEncounters
-      .filter((encounter) => encounter?.form?.display === 'OBST-006-PUERPERIO INMEDIATO')
+      .filter((encounter) => encounter?.form?.display === formName || encounter?.form?.uuid === formName)
       .sort((a, b) => new Date(a.encounterDatetime).getTime() - new Date(b.encounterDatetime).getTime());
-  }, [detailedEncounters]);
+  }, [detailedEncounters, formName]);
 
   // Extract all observation UUIDs from all encounters
   const allObsUuids = useMemo(() => {

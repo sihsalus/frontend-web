@@ -1,7 +1,10 @@
-import { Tile, Tag } from '@carbon/react';
+import { Tag, Tile } from '@carbon/react';
+import { useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { ConfigObject } from '../../../../config-schema';
+import ConfiguredFormButton from '../../configured-form-button.component';
 import styles from './fp-counseling.scss';
 
 interface FpCounselingProps {
@@ -14,6 +17,7 @@ interface FpCounselingProps {
  */
 const FpCounseling: React.FC<FpCounselingProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
+  const config = useConfig<ConfigObject>();
 
   // TODO: Connect to SWR hook when concept UUIDs are configured
   const sessionsCompleted = null;
@@ -42,6 +46,10 @@ const FpCounseling: React.FC<FpCounselingProps> = ({ patientUuid }) => {
           <span className={styles.value}>{nextSession ?? t('pending', 'Pending')}</span>
         </div>
       </div>
+      <ConfiguredFormButton
+        formUuid={config.formsList.familyPlanningCounselingForm}
+        label={t('registerFpCounseling', 'Registrar consejería')}
+      />
     </Tile>
   );
 };

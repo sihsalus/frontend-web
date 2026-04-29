@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { Column, ContentSwitcher, DatePicker, DatePickerInput, NumberInput, Switch } from '@carbon/react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { Column, ContentSwitcher, DatePicker, DatePickerInput, NumberInput, Switch } from '@carbon/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type SearchByProps } from '../../types';
-import { getDescription, getQueryDetails } from './search-by-demographics.utils';
 import SearchButtonSet from '../search-button-set/search-button-set';
 import styles from './search-by-demographics.style.scss';
+import { getDescription, getQueryDetails } from './search-by-demographics.utils';
 
 const SearchByDemographics: React.FC<SearchByProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
@@ -111,7 +111,7 @@ const SearchByDemographics: React.FC<SearchByProps> = ({ onSubmit }) => {
               invalidText={t('minAgeIsNotValid', 'The age must be greater than 0')}
               label={t('ageBetween', 'Age between')}
               min={0}
-              onChange={(event, { value }) => setMinAge(Number(value))}
+              onChange={(_event, { value }) => setMinAge(Number(value))}
               value={minAge}
             />
           </Column>
@@ -124,7 +124,7 @@ const SearchByDemographics: React.FC<SearchByProps> = ({ onSubmit }) => {
               label={t('and', 'and')}
               max={200}
               min={0}
-              onChange={(event, { value }) => setMaxAge(Number(value))}
+              onChange={(_event, { value }) => setMaxAge(Number(value))}
               value={maxAge}
             />
           </Column>

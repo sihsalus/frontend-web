@@ -1,7 +1,7 @@
 import { Button, ButtonSet, InlineNotification } from '@carbon/react';
 import { Exit } from '@carbon/react/icons';
 import { ExtensionSlot, showSnackbar, useAppContext } from '@openmrs/esm-framework';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type WardPatientWorkspaceProps, type WardViewContext } from '../../types';
@@ -21,7 +21,7 @@ export default function PatientDischargeWorkspace(props: WardPatientWorkspacePro
   const submitDischarge = useCallback(() => {
     setIsSubmitting(true);
 
-    createEncounter(wardPatient?.patient, emrConfiguration.exitFromInpatientEncounterType)
+    createEncounter(wardPatient?.patient, emrConfiguration.exitFromInpatientEncounterType, wardPatient?.visit?.uuid)
       .then((response) => {
         if (response?.ok) {
           if (wardPatient?.bed?.id) {

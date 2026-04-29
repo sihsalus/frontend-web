@@ -42,7 +42,7 @@ export function obsArrayDateComparator(left: { obsDatetime?: string }, right: { 
 
 export function findObs(encounter: EncounterWithObservations, obsConcept: string): Observation | undefined {
   const allObs = encounter?.obs?.filter((observation) => observation.concept?.uuid === obsConcept) || [];
-  return allObs?.length == 1 ? allObs[0] : allObs?.sort(obsArrayDateComparator)[0];
+  return allObs?.length === 1 ? allObs[0] : allObs?.sort(obsArrayDateComparator)[0];
 }
 
 export function getObsFromEncounters(
@@ -55,7 +55,7 @@ export function getObsFromEncounters(
 
 export function getMultipleObsFromEncounter(encounter: EncounterWithObservations, obsConcepts: Array<string>): string {
   const observations: Array<string | number> = [];
-  obsConcepts.map((concept) => {
+  obsConcepts.forEach((concept) => {
     const obs = getObsFromEncounter(encounter, concept);
     if (obs !== '--') {
       observations.push(obs);

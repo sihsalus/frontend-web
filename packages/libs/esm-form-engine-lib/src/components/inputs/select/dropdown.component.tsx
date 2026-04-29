@@ -1,14 +1,14 @@
+import { Dropdown as DropdownInput, Layer } from '@carbon/react';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dropdown as DropdownInput, Layer } from '@carbon/react';
-import { shouldUseInlineLayout } from '../../../utils/form-helper';
-import { isTrue } from '../../../utils/boolean-utils';
-import { isEmpty } from '../../../validators/form-validator';
 import { NullSelectOption } from '../../../constants';
-import { type FormFieldInputProps, type FormFieldValue } from '../../../types';
 import { useFormProviderContext } from '../../../provider/form-provider';
-import FieldValueView from '../../value/view/field-value-view.component';
+import { type FormFieldInputProps, type FormFieldValue } from '../../../types';
+import { isTrue } from '../../../utils/boolean-utils';
+import { shouldUseInlineLayout } from '../../../utils/form-helper';
+import { isEmpty } from '../../../validators/form-validator';
 import FieldLabel from '../../field-label/field-label.component';
+import FieldValueView from '../../value/view/field-value-view.component';
 import styles from './dropdown.scss';
 
 const Dropdown: React.FC<FormFieldInputProps<string | number | null | undefined>> = ({
@@ -31,7 +31,7 @@ const Dropdown: React.FC<FormFieldInputProps<string | number | null | undefined>
   const itemToString = useCallback(
     (item: string | number | null) => {
       const answer = field.questionOptions.answers?.find((opt) => {
-        return opt.value ? opt.value == item : opt.concept == item;
+        return opt.value ? opt.value === item : opt.concept === item;
       });
       return answer ? t(answer.label) : '';
     },
@@ -59,7 +59,7 @@ const Dropdown: React.FC<FormFieldInputProps<string | number | null | undefined>
     return false;
   }, [sessionMode, field.readonly, field.inlineRendering, layoutType, workspaceLayout]);
 
-  return sessionMode == 'view' || sessionMode == 'embedded-view' ? (
+  return sessionMode === 'view' || sessionMode === 'embedded-view' ? (
     <FieldValueView
       label={t(field.label)}
       value={

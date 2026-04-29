@@ -1,12 +1,14 @@
-import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import PatientListDetailsTable from './patient-list-details-table.component';
 
 const defaultProps = {
   listMembers: [],
   isLoading: false,
 };
+
+void React;
 
 it('renders an empty state if there are no patients in the list', () => {
   renderPatientListDetailsTable();

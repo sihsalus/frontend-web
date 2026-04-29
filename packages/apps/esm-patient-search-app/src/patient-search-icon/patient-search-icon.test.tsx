@@ -1,14 +1,14 @@
-import { getDefaultsFromConfigSchema, isDesktop, useConfig } from '@openmrs/esm-framework';
+import { getDefaultsFromConfigSchema, isDesktop, useConfig, useSession } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
-import { type PatientSearchConfig, configSchema } from '../config-schema';
+import { configSchema, type PatientSearchConfig } from '../config-schema';
 
 import PatientSearchLaunch from './patient-search-icon.component';
 
 const mockIsDesktop = jest.mocked(isDesktop);
 const mockUseConfig = jest.mocked(useConfig<PatientSearchConfig>);
+const mockUseSession = jest.mocked(useSession);
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -21,6 +21,11 @@ jest.mock('react-router-dom', () => ({
 
 describe('PatientSearchLaunch', () => {
   beforeEach(() => {
+    mockIsDesktop.mockReturnValue(true);
+    mockUseSession.mockReturnValue({
+      user: { uuid: 'test-user-uuid' },
+      sessionLocation: { uuid: 'test-location-uuid' },
+    } as ReturnType<typeof useSession>);
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
       search: {
@@ -39,15 +44,15 @@ describe('PatientSearchLaunch', () => {
     const user = userEvent.setup();
     render(<PatientSearchLaunch />);
 
-    const searchButton = screen.getByTestId('searchPatientIcon');
+    const searchButton = screen.getByRole('button', { name: /search patient/i });
 
     await user.click(searchButton);
-    const searchInput = screen.getByText('Search results');
-    expect(searchInput).toBeInTheDocument();
+    const closeButton = await screen.findByTestId('closeSearchIcon');
+    expect(closeButton).toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
 
-    const closeButton = screen.getByTestId('closeSearchIcon');
     await user.click(closeButton);
-    expect(searchInput).not.toBeInTheDocument();
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
   });
 
   it('displays search input in overlay on mobile', async () => {
@@ -56,10 +61,10 @@ describe('PatientSearchLaunch', () => {
 
     render(<PatientSearchLaunch />);
 
-    const searchButton = screen.getByTestId('searchPatientIcon');
+    const searchButton = screen.getByRole('button', { name: /search patient/i });
 
     await user.click(searchButton);
-    const overlay = screen.getByText('Search results');
-    expect(overlay).toBeInTheDocument();
+    expect(await screen.findByTestId('closeSearchIcon')).toBeInTheDocument();
+    expect(screen.getByText(/search results/i)).toBeInTheDocument();
   });
 });

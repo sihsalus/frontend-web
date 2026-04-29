@@ -36,6 +36,8 @@ import { useActiveVisits, useActiveVisitsSorting, useObsConcepts, useTableHeader
 import styles from './active-visits.scss';
 import { EmptyDataIllustration } from './empty-data-illustration.component';
 
+type DisplayVisit = ActiveVisit & Record<string, string>;
+
 const ActiveVisitsTable = () => {
   const { t } = useTranslation();
   const config = useConfig<ActiveVisitsConfigSchema>();
@@ -49,7 +51,7 @@ const ActiveVisitsTable = () => {
 
   const transformVisitForDisplay = useCallback(
     (visit: ActiveVisit) => {
-      const displayData = { ...visit };
+      const displayData = { ...visit } as DisplayVisit;
 
       // Add observation values to the display data
       obsConcepts?.forEach((concept) => {
@@ -59,7 +61,9 @@ const ActiveVisitsTable = () => {
         if (latestObs) {
           // Handle both string and object values
           displayData[`obs-${concept.uuid}`] =
-            typeof latestObs.value === 'object' ? latestObs.value.display : latestObs.value;
+            typeof latestObs.value === 'object' && latestObs.value && 'display' in latestObs.value
+              ? String(latestObs.value.display ?? '--')
+              : String(latestObs.value ?? '--');
         } else {
           displayData[`obs-${concept.uuid}`] = '--';
         }
@@ -71,13 +75,14 @@ const ActiveVisitsTable = () => {
   );
 
   const searchResults = useMemo(() => {
-    if (!activeVisits?.length) return activeVisits.map(transformVisitForDisplay);
+    const displayRows = activeVisits.map(transformVisitForDisplay);
+    if (!displayRows.length) return displayRows;
 
     const trimmed = searchString?.trim();
-    if (!trimmed) return activeVisits.map(transformVisitForDisplay);
+    if (!trimmed) return displayRows;
 
     const search = trimmed.toLowerCase();
-    return activeVisits.filter((activeVisitRow) =>
+    return displayRows.filter((activeVisitRow) =>
       Object.entries(activeVisitRow).some(
         ([header, value]) => header !== 'patientUuid' && `${value}`.toLowerCase().includes(search),
       ),
@@ -92,7 +97,7 @@ const ActiveVisitsTable = () => {
       goTo(1);
       setSearchString(e.target.value);
     },
-    [goTo, setSearchString],
+    [goTo],
   );
 
   if (isLoading || isLoadingObsConcepts) {
@@ -184,9 +189,15 @@ const ActiveVisitsTable = () => {
               <TableHead>
                 <TableRow>
                   <TableExpandHeader enableToggle {...getExpandHeaderProps()} />
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {header.header}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -197,29 +208,33 @@ const ActiveVisitsTable = () => {
                     return null;
                   }
 
-                  const patientChartUrl = '${openmrsSpaBase}/patient/${patientUuid}/chart';
-
                   return (
                     <React.Fragment key={`active-visit-row-${index}`}>
-                      <TableExpandRow
-                        {...getRowProps({ row })}
-                        data-testid={`activeVisitRow${currentVisit.patientUuid || 'unknown'}`}
-                      >
-                        {row.cells.map((cell) => (
-                          <TableCell key={`active-visit-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
-                            {cell.info.header === 'name' && currentVisit.patientUuid ? (
-                              <ConfigurableLink
-                                to={patientChartUrl}
-                                templateParams={{ patientUuid: currentVisit.patientUuid }}
-                              >
-                                {cell.value}
-                              </ConfigurableLink>
-                            ) : (
-                              cell.value
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableExpandRow>
+                      {(() => {
+                        const { key, ...rowProps } = getRowProps({ row });
+
+                        return (
+                          <TableExpandRow
+                            key={key}
+                            {...rowProps}
+                            data-testid={`activeVisitRow${currentVisit.patientUuid || 'unknown'}`}
+                          >
+                            {row.cells.map((cell) => (
+                              <TableCell key={`active-visit-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
+                                {cell.info.header === 'name' && currentVisit.patientUuid ? (
+                                  <ConfigurableLink
+                                    to={`${globalThis.spaBase}/patient/${currentVisit.patientUuid}/chart`}
+                                  >
+                                    {cell.value}
+                                  </ConfigurableLink>
+                                ) : (
+                                  cell.value
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableExpandRow>
+                        );
+                      })()}
                       {row.isExpanded ? (
                         <TableRow className={styles.expandedActiveVisitRow}>
                           <th colSpan={headers.length + 2}>

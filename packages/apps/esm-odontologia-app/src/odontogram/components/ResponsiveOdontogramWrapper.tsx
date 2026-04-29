@@ -13,7 +13,7 @@
  *  - Modals (position: fixed) are unaffected by the transform.
  */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePinchZoom } from './usePinchZoom';
 import './ResponsiveOdontogramWrapper.css';
 
@@ -74,7 +74,7 @@ const ResponsiveOdontogramWrapper: React.FC<ResponsiveOdontogramWrapperProps> = 
       {isZoomed && (
         <div className="responsive-odontogram-zoom-badge">
           {Math.round(effectiveScale * 100)}%
-          <button onClick={reset} className="responsive-odontogram-zoom-reset">
+          <button type="button" onClick={reset} className="responsive-odontogram-zoom-reset">
             Reset
           </button>
         </div>

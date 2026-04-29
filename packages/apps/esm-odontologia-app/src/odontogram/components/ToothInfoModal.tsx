@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { FindingOptionConfig, ToothAnnotation, ToothFinding } from '../types/odontogram';
+import { COLOR_CSS, COLOR_LABEL, TOOTH_DESIGN_COMPONENT_MAP } from './constants';
 import Tooth from './Tooth';
 import ToothDesigns from './ToothDesigns';
-import type { ToothFinding, FindingOptionConfig, ToothAnnotation } from '../types/odontogram';
-import { COLOR_CSS, COLOR_LABEL, TOOTH_DESIGN_COMPONENT_MAP } from './constants';
 import './ToothInfoModal.css';
 
 interface ToothInfoModalProps {
@@ -125,8 +125,23 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
   }, [findings, getFindingName]);
 
   return (
-    <div className="tim-backdrop" onClick={onClose}>
-      <div className="tim-modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="tim-backdrop"
+      role="button"
+      tabIndex={0}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClose();
+        }
+      }}
+    >
+      <div className="tim-modal">
         {/* Header */}
         <div className="tim-header">
           <div className="tim-header-left">
@@ -135,7 +150,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
               {findings.length} hallazgo{findings.length !== 1 ? 's' : ''}
             </span>
           </div>
-          <button className="tim-close" onClick={onClose} aria-label="Cerrar">
+          <button type="button" className="tim-close" onClick={onClose} aria-label="Cerrar">
             ×
           </button>
         </div>
@@ -213,6 +228,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           {!readOnly && (
                             <div className="tim-finding-actions">
                               <button
+                                type="button"
                                 className="tim-btn tim-btn--remove"
                                 onClick={() => handleDelete(f)}
                                 title="Eliminar hallazgo"
@@ -245,7 +261,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           </div>
                           <div className="tim-finding-actions">
                             <span className="tim-ghost-label">Eliminado</span>
-                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
+                            <button type="button" className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
                               Deshacer
                             </button>
                           </div>
@@ -293,7 +309,7 @@ const ToothInfoModal: React.FC<ToothInfoModalProps> = ({
                           </div>
                           <div className="tim-finding-actions">
                             <span className="tim-ghost-label">Eliminado</span>
-                            <button className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
+                            <button type="button" className="tim-btn tim-btn--undo" onClick={() => handleUndo(f.id)}>
                               Deshacer
                             </button>
                           </div>

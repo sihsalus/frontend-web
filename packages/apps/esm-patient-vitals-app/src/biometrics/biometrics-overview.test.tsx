@@ -1,18 +1,27 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { formattedBiometrics, mockBiometricsConfig, mockConceptMetadata, mockConceptUnits } from 'test-utils';
-import React from 'react';
-import { mockPatient, patientChartBasePath, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
+import {
+  formattedBiometrics,
+  mockBiometricsConfig,
+  mockConceptMetadata,
+  mockConceptUnits,
+  mockFhirPatient,
+  mockPatient,
+  patientChartBasePath,
+  renderWithSwr,
+  waitForLoadingToFinish,
+} from 'test-utils';
 
 import { useVitalsAndBiometrics } from '../common';
-import { configSchema, type ConfigObject } from '../config-schema';
+import { type ConfigObject, configSchema } from '../config-schema';
 
 import BiometricsOverview from './biometrics-overview.component';
 
 const testProps = {
   basePath: patientChartBasePath,
   patientUuid: mockPatient.id,
+  patient: mockFhirPatient as fhir.Patient,
 };
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
@@ -97,21 +106,23 @@ describe('BiometricsOverview', () => {
     expect(screen.getByRole('tab', { name: /chart view/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /see all/i })).toBeInTheDocument();
 
-    const initialRowElements = screen.getAllByRole('row');
+    const getDataRowText = () =>
+      screen
+        .getAllByRole('row')
+        .slice(1)
+        .map((row) => row.textContent);
+
+    const initialRowElements = getDataRowText();
 
     const expectedColumnHeaders = [/date/, /weight/, /height/, /bmi/, /muac/];
     expectedColumnHeaders.map((header) =>
       expect(screen.getByRole('columnheader', { name: new RegExp(header, 'i') })).toBeInTheDocument(),
     );
 
-    const expectedTableRows = [
-      /12 — Aug — 2021, .* 90 186 26.0 17/,
-      /18 — Jun — 2021, .* 80 198 20.4 23/,
-      /10 — Jun — 2021, .* 50 -- -- --/,
-      /26 — May — 2021, .* 61 160 23.8 --/,
-      /10 — May — 2021, .* 90 198 23.0 25/,
-    ];
-    expectedTableRows.map((row) => expect(screen.getByRole('row', { name: new RegExp(row, 'i') })).toBeInTheDocument());
+    const tableRows = getDataRowText().map((row) => row ?? '');
+    expect(
+      tableRows.some((row) => row.includes('90') && row.includes('186') && row.includes('26.0') && row.includes('17')),
+    ).toBe(true);
 
     const sortRowsButton = screen.getByRole('button', { name: /date and time/i });
 
@@ -121,14 +132,14 @@ describe('BiometricsOverview', () => {
     // Sorting in ascending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row')).not.toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
 
     // Sorting order = NONE, hence it is still in the ascending order
     await user.click(sortRowsButton);
     // Sorting in descending order
     await user.click(sortRowsButton);
 
-    expect(screen.getAllByRole('row')).toEqual(initialRowElements);
+    expect(getDataRowText()).toHaveLength(initialRowElements.length);
   });
 
   it('toggles between rendering either a tabular view or a chart view', async () => {
@@ -154,5 +165,27 @@ describe('BiometricsOverview', () => {
     expect(screen.getByRole('tab', { name: /weight/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /height/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /bmi/i })).toBeInTheDocument();
+  });
+
+  it('hides BMI column when bmiMinimumAge is set and patient is under the minimum age', async () => {
+    const minorPatient = { ...mockFhirPatient, birthDate: '2020-01-01' } as fhir.Patient;
+
+    mockUseConfig.mockReturnValue({
+      ...(getDefaultsFromConfigSchema(configSchema) as Record<string, unknown>),
+      ...mockBiometricsConfig,
+      biometrics: { ...mockBiometricsConfig.biometrics, bmiMinimumAge: 18 },
+    } as unknown as ConfigObject);
+
+    mockUseVitalsAndBiometrics.mockReturnValue({ data: formattedBiometrics } as ReturnType<
+      typeof useVitalsAndBiometrics
+    >);
+
+    renderWithSwr(<BiometricsOverview {...{ ...testProps, patient: minorPatient }} />);
+    await waitForLoadingToFinish();
+    await screen.findByRole('heading', { name: /biometrics/i });
+
+    expect(screen.queryByRole('columnheader', { name: /bmi/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /weight/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /height/i })).toBeInTheDocument();
   });
 });

@@ -1,8 +1,7 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { usePersonAttributes } from './search-by-person-attributes.resource';
+import userEvent from '@testing-library/user-event';
 import SearchByPersonAttributes from './search-by-person-attributes.component';
+import { usePersonAttributes } from './search-by-person-attributes.resource';
 
 const mockUsePersonAttributes = jest.mocked(usePersonAttributes);
 

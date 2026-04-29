@@ -1,6 +1,5 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { showModal } from '@openmrs/esm-framework';
+import { useTranslation } from 'react-i18next';
 
 const Tutorial = () => {
   const { t } = useTranslation();

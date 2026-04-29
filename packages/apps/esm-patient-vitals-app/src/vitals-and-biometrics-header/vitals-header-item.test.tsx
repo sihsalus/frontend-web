@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import VitalsHeaderItem from './vitals-header-item.component';
 
@@ -28,5 +27,14 @@ describe('VitalsHeaderItem', () => {
 
     expect(screen.getByText('Temp')).toBeInTheDocument();
     expect(screen.getByText('36.5')).toBeInTheDocument();
+  });
+
+  it('renders zero as a valid value instead of not available', () => {
+    render(<VitalsHeaderItem unitName="Pulse" value={0} unitSymbol="beats/min" />);
+
+    expect(screen.getByText('Pulse')).toBeInTheDocument();
+    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('beats/min')).toBeInTheDocument();
+    expect(screen.queryByText(/not available/i)).not.toBeInTheDocument();
   });
 });

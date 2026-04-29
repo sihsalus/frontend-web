@@ -1,8 +1,7 @@
-import React from 'react';
 import { Button } from '@carbon/react';
 import { UserSettings } from '@carbon/react/icons';
-import { useTranslation } from 'react-i18next';
 import { navigate } from '@openmrs/esm-framework';
+import { useTranslation } from 'react-i18next';
 import styles from './stock-settings.scss';
 
 function StockSettings() {

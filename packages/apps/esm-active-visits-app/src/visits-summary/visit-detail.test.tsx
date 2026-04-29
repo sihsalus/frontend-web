@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-
-import VisitDetailComponent from './visit-detail.component';
 import { useVisit } from './visit.resource';
+import VisitDetailComponent from './visit-detail.component';
+
+void React;
 
 const mockUseVisit = jest.mocked(useVisit);
 const defaultProps = {
@@ -37,6 +38,7 @@ describe('VisitDetail', () => {
       visit: {
         encounters: [],
         startDatetime: mockVisitDate.toISOString(),
+        stopDatetime: null,
         uuid: defaultProps.visitUuid,
         visitType: { display: 'Some Visit Type', uuid: 'some-visit-type-uuid' },
       },
@@ -63,12 +65,13 @@ describe('VisitDetail', () => {
           {
             uuid: 'encounter-1',
             encounterDateTime: '2023-07-30T12:34:56Z',
-            encounterType: { display: 'Encounter Type' },
+            encounterType: { display: 'Encounter Type', uuid: 'encounter-type-uuid' },
             encounterProviders: [],
             obs: [],
           },
         ],
         startDatetime: '2023-07-30T12:34:56Z',
+        stopDatetime: null,
         visitType: { display: 'Some Visit Type', uuid: 'some-visit-type-uuid' },
         uuid: defaultProps.visitUuid,
       },
@@ -96,7 +99,7 @@ describe('VisitDetail', () => {
           {
             uuid: 'encounter-1',
             encounterDateTime: '2023-07-30T12:34:56Z',
-            encounterType: { display: 'Encounter Type 1' },
+            encounterType: { display: 'Encounter Type 1', uuid: 'encounter-type-1-uuid' },
             encounterProviders: [],
             obs: [],
             orders: [],
@@ -104,13 +107,14 @@ describe('VisitDetail', () => {
           {
             uuid: 'encounter-2',
             encounterDateTime: '2023-07-30T13:45:00Z',
-            encounterType: { display: 'Encounter Type 2' },
+            encounterType: { display: 'Encounter Type 2', uuid: 'encounter-type-2-uuid' },
             encounterProviders: [],
             obs: [],
             orders: [],
           },
         ],
         startDatetime: '2023-07-30T12:34:56Z',
+        stopDatetime: null,
         visitType: { display: 'Some Visit Type', uuid: 'some-visit-type-uuid' },
         uuid: defaultProps.visitUuid,
       },

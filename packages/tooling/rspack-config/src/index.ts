@@ -36,20 +36,20 @@
  * Telling Webpack to use `/a/b/c`? If the Webpack config is symlinked
  * from `/d/e/`, then it *might* in *some cases* try to import `/d/e/c`.
  */
-import { existsSync, statSync } from 'fs';
-import { basename, dirname, resolve } from 'path';
 
 import rspack, {
-  container,
   CopyRspackPlugin,
+  container,
   DefinePlugin,
   type ModuleOptions,
   type Plugin,
-  type RuleSetRule,
   type RspackOptionsNormalized as RspackConfiguration,
+  type RuleSetRule,
 } from '@rspack/core';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { existsSync, statSync } from 'fs';
 import { merge, mergeWith } from 'lodash';
+import { basename, dirname, resolve } from 'path';
 import { inc } from 'semver';
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -315,12 +315,17 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
             test: /\.m?(js|ts|tsx)$/,
             exclude: (path: string) =>
               path.includes('node_modules') && !path.includes('@openmrs') && !path.includes('@sihsalus'),
-            loader: 'builtin:swc-loader',
+            loader: require.resolve('swc-loader'),
             options: {
               jsc: {
                 parser: {
                   syntax: 'typescript',
                   tsx: true,
+                },
+                transform: {
+                  react: {
+                    runtime: 'automatic',
+                  },
                 },
                 target: 'es2020',
               },
@@ -418,6 +423,9 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
       }),
       new DefinePlugin({
         'process.env.FRAMEWORK_VERSION': JSON.stringify(frameworkVersion),
+      }),
+      new rspack.ProvidePlugin({
+        React: 'react',
       }),
       new ModuleFederationPlugin({
         // Look in the `esm-dynamic-loading` framework package for an explanation of how modules

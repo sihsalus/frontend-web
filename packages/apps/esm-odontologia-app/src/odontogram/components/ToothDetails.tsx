@@ -1,16 +1,16 @@
 import React from 'react';
 import './ToothDetails.css';
 import './spacing/SpaceBetweenStyles.css';
-import { COLOR_CSS } from './constants';
-import type { ToothFinding } from '../types/odontogram';
 import {
   EllipseDesignLeft,
-  EllipseDesignRight,
   EllipseDesignLeftAndRight,
+  EllipseDesignRight,
   Finding12Design1,
   Finding21Design1,
 } from '../designs/figuras';
 import { useOdontogramContext } from '../providers/OdontogramProvider';
+import type { ToothFinding } from '../types/odontogram';
+import { COLOR_CSS } from './constants';
 
 interface ToothDetailsProps {
   idTooth: number;
@@ -106,7 +106,7 @@ const ToothDetails: React.FC<ToothDetailsProps> = ({ idTooth, legend = 'Leyenda'
     <div className="tooth-details-container">
       {/* Annotations box — auto-generated abbreviations with color */}
       <div className="tooth-details-box">
-        <div className="tooth-details-annotations" aria-label="Tooth annotations">
+        <div className="tooth-details-annotations">
           {groupedAnnotations.map((group) => (
             <div key={group.findingId} className="tooth-annotation-group">
               {group.items.map((ann, i) => (

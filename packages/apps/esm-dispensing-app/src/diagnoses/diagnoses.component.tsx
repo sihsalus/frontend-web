@@ -1,5 +1,3 @@
-import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   DataTable,
   DataTableSkeleton,
@@ -13,6 +11,8 @@ import {
   TableRow,
 } from '@carbon/react';
 import { CardHeader, EmptyCard, ErrorState, usePagination } from '@openmrs/esm-framework';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePatientDiagnosis } from './diagnoses.resource';
 import styles from './diagnoses.scss';
 
@@ -21,11 +21,11 @@ type PatientDiagnosesProps = {
   encounterUuid: string;
 };
 
-const PatientDiagnoses: React.FC<PatientDiagnosesProps> = ({ encounterUuid, patientUuid }) => {
+const PatientDiagnoses: React.FC<PatientDiagnosesProps> = ({ encounterUuid, patientUuid: _patientUuid }) => {
   const { diagnoses, isLoading, error } = usePatientDiagnosis(encounterUuid);
   const [pageSize, setPageSize] = useState(3);
   const pageSizesOptions = useMemo(() => [3, 5, 10, 20, 50, 100], []);
-  const { results, totalPages, currentPage, goTo } = usePagination(diagnoses, pageSize);
+  const { results, currentPage, goTo } = usePagination(diagnoses, pageSize);
   const { t } = useTranslation();
   const title = t('diagnoses', 'Diagnoses');
   const headers = useMemo(
@@ -73,23 +73,29 @@ const PatientDiagnoses: React.FC<PatientDiagnosesProps> = ({ encounterUuid, pati
           <Table {...getTableProps()} className={styles.table}>
             <TableHead>
               <TableRow>
-                {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })} key={header.key} className={getColumnClass(header.key)}>
-                    {header.header}
-                  </TableHeader>
-                ))}
+                {headers.map((header) => {
+                  const { key, ...headerProps } = getHeaderProps({ header });
+                  return (
+                    <TableHeader key={key} {...headerProps} className={getColumnClass(header.key)}>
+                      {header.header}
+                    </TableHeader>
+                  );
+                })}
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow {...getRowProps({ row })} key={row.id}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell.id} className={getColumnClass(cell.info.header)}>
-                      {cell.value}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+              {rows.map((row) => {
+                const { key, ...rowProps } = getRowProps({ row });
+                return (
+                  <TableRow key={key} {...rowProps}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell.id} className={getColumnClass(cell.info.header)}>
+                        {cell.value}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         )}
