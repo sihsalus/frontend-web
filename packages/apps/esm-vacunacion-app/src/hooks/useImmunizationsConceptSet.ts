@@ -10,8 +10,28 @@ export function useImmunizationsConceptSet(config: ImmunizationWidgetConfigObjec
     `${restBaseUrl}/concept?references=${config.immunizationConceptSet}&v=${conceptRepresentation}`,
     openmrsFetch,
   );
+  const conceptSet = data?.data?.results?.[0];
+
+  // MINSA 2026 adds biologics such as VRS/Nirsevimab before every OpenMRS
+  // dictionary has them in the base immunization concept set. Keep them
+  // configurable here so the UI can expose them once the content package
+  // provides the local concepts.
+  const supplementalAnswers = config.supplementalVaccines?.map((vaccine) => ({
+    uuid: vaccine.uuid,
+    display: vaccine.display,
+  }));
+  const answersByUuid = new Map(
+    [...(conceptSet?.answers ?? []), ...(supplementalAnswers ?? [])].map((answer) => [answer.uuid, answer]),
+  );
+
   return {
-    immunizationsConceptSet: data?.data?.results?.[0],
+    immunizationsConceptSet: {
+      ...(conceptSet ?? {
+        uuid: config.immunizationConceptSet,
+        display: 'Configured immunizations',
+      }),
+      answers: Array.from(answersByUuid.values()),
+    },
     isLoading,
   };
 }

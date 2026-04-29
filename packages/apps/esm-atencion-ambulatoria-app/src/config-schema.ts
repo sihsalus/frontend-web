@@ -1,4 +1,5 @@
 import { Type } from '@openmrs/esm-framework';
+import { ANAMNESIS_DEFAULT_CONCEPT_UUIDS } from '@sihsalus/esm-sihsalus-shared';
 
 // ===============================
 // MAIN CONFIGURATION SCHEMA
@@ -97,6 +98,9 @@ export const configSchema = {
 
       // Consulta Externa Forms
       consultaExternaForm: 'CE-001-CONSULTA EXTERNA',
+      anamnesisForm: 'CE-ANAM-001-ANAMNESIS',
+      soapNoteForm: 'CE-SOAP-001-NOTA SOAP',
+      referralForm: 'CE-REF-001-REFERENCIA-CONTRARREFERENCIA',
 
       // Hospital Forms
       medicalProgress: 'HOSP-004-EVOLUCIÓN MÉDICA',
@@ -262,6 +266,58 @@ export const configSchema = {
       _default: '5219AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     },
 
+    // Anamnesis (CE-3.1) — NTS 139 / NTS 229
+    anamnesisUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Anamnesis / current illness narrative',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.anamnesisUuid,
+    },
+    illnessDurationUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Tiempo de enfermedad',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.illnessDurationUuid,
+    },
+    onsetTypeUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Forma de inicio',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.onsetTypeUuid,
+    },
+    courseUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Curso de la enfermedad actual',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.courseUuid,
+    },
+    appetiteUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: apetito',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.appetiteUuid,
+    },
+    thirstUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: sed',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.thirstUuid,
+    },
+    sleepUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: sueño',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.sleepUuid,
+    },
+    moodUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: estado de ánimo',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.moodUuid,
+    },
+    urineUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: orina',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.urineUuid,
+    },
+    bowelMovementsUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Función biológica: deposiciones',
+      _default: ANAMNESIS_DEFAULT_CONCEPT_UUIDS.bowelMovementsUuid,
+    },
+
     // SOAP Notes (CE-5)
     soapSubjectiveUuid: {
       _type: Type.ConceptUuid,
@@ -335,6 +391,28 @@ export const configSchema = {
       _type: Type.ConceptUuid,
       _description: 'Ethnic self-identification concept for HIS reporting (Pertenencia Étnica)',
       _default: '160581AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
+
+    // Referencia y Contrarreferencia (CE-8) — NTS 102
+    referralTypeUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Tipo de referencia: Emergencia, Urgencia, Electiva (f0000170)',
+      _default: 'f0000170-0000-4000-8000-000000000170',
+    },
+    referralReasonUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Motivo de referencia (CIEL 160481 — Referral reason)',
+      _default: '160481AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    },
+    referralDestinationUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Establecimiento destino de la referencia (proyecto: establecimiento-destino-referencia)',
+      _default: '6a1e18c1-8874-45fe-92dd-26758d5d6ba7',
+    },
+    counterReferralResponseUuid: {
+      _type: Type.ConceptUuid,
+      _description: 'Respuesta de contrarreferencia del establecimiento destino (f0000174)',
+      _default: 'f0000174-0000-4000-8000-000000000174',
     },
   },
 
@@ -556,6 +634,9 @@ export interface ConfigObject {
     clinicalEncounterFormUuid: string;
     // Consulta Externa Forms
     consultaExternaForm: string;
+    anamnesisForm: string;
+    soapNoteForm: string;
+    referralForm: string;
     // HIV/HTS Forms
     defaulterTracingFormUuid: string;
     htsScreening: string;

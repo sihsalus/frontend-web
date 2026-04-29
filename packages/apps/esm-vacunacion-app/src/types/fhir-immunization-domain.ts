@@ -18,7 +18,8 @@ export type Reference = {
 
 export interface FHIRImmunizationResource {
   resourceType: 'Immunization';
-  status: 'completed';
+  status: 'completed' | 'not-done' | 'entered-in-error';
+  statusReason?: { text?: string };
   id?: string;
   vaccineCode: { coding: Array<Code> };
   patient: Reference | null;
@@ -27,7 +28,8 @@ export interface FHIRImmunizationResource {
   expirationDate?: string;
   extension?: Array<{
     url: string;
-    valueDateTime: string;
+    valueDateTime?: string;
+    valueString?: string;
   }>;
   note?: Array<{ text: string }>;
   location?: Reference | null;
@@ -51,6 +53,10 @@ export type ImmunizationSequence = {
   sequenceLabel: string;
   sequenceNumber: number;
   intervalInDaysAfterPreviousDose?: number;
+  minAgeInDays?: number;
+  maxAgeInDays?: number;
+  minsaLabel?: string;
+  minsaPopulation?: string;
 };
 
 export type ImmunizationSequenceDefinition = {
@@ -59,6 +65,19 @@ export type ImmunizationSequenceDefinition = {
 };
 
 export type ImmunizationWidgetConfigObject = {
+  minsaReference?: {
+    nts: string;
+    approvedBy: string;
+    latestModification: string;
+    vaccineCount: number;
+    protectedDiseaseCount: number;
+    notes?: string;
+  };
   immunizationConceptSet: string;
+  supplementalVaccines?: Array<{
+    uuid: string;
+    display: string;
+    minsaCategory?: string;
+  }>;
   sequenceDefinitions: Array<ImmunizationSequenceDefinition>;
 };

@@ -1,11 +1,13 @@
 import {
   Button,
   ButtonSet,
+  Checkbox,
   Column,
   DatePicker,
   DatePickerInput,
   Dropdown,
   Form,
+  InlineNotification,
   RadioButton,
   RadioButtonGroup,
   Stack,
@@ -137,6 +139,16 @@ const ContactListForm: React.FC<ContactListFormProps> = ({
     <FormProvider {...form}>
       <Form onSubmit={form.handleSubmit(onSubmit)} className={styles.form}>
         <Stack gap={4} className={styles.grid}>
+          <InlineNotification
+            kind="info"
+            lowContrast
+            hideCloseButton
+            title={t('privacyNoticeTitle', 'Protección de datos personales')}
+            subtitle={t(
+              'privacyNoticeSubtitle',
+              'Los datos de salud registrados son datos sensibles según la Ley N° 29733 y su reglamento (D.S. 003-2013-JUS). Solo pueden ser tratados con consentimiento expreso del titular.',
+            )}
+          />
           <PatientSearchCreate />
           <span className={styles.sectionHeader}>{t('relationship', 'Relationship')}</span>
           <Column>
@@ -380,6 +392,30 @@ const ContactListForm: React.FC<ContactListFormProps> = ({
             </>
           )}
         </Stack>
+
+        <span className={styles.sectionHeader}>{t('dataProtection', 'Consentimiento (Ley 29733)')}</span>
+        <Column>
+          <Controller
+            control={form.control}
+            name="dataConsent"
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Checkbox
+                  id="dataConsent"
+                  labelText={t(
+                    'dataConsentLabel',
+                    'El titular autoriza el registro y tratamiento de sus datos personales de salud para fines de atención sanitaria, según la Ley N° 29733 — Protección de Datos Personales.',
+                  )}
+                  checked={field.value ?? false}
+                  onChange={(_, { checked }) => field.onChange(checked)}
+                />
+                {error && (
+                  <p style={{ color: '#da1e28', fontSize: '0.75rem', marginTop: '0.25rem' }}>{error.message}</p>
+                )}
+              </>
+            )}
+          />
+        </Column>
 
         <ButtonSet className={styles.buttonSet}>
           <Button className={styles.button} kind="secondary" onClick={() => closeWorkspace()}>
