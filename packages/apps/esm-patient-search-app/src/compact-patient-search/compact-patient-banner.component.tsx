@@ -112,7 +112,7 @@ const CompactPatientBanner = forwardRef<HTMLDivElement, CompactPatientBannerProp
     [patients],
   );
 
-  return <div ref={ref}>{fhirMappedPatients.map(renderPatient)}</div>;
+  return <div ref={ref}>{fhirMappedPatients.map((patient, index) => renderPatient(patient, index))}</div>;
 });
 
 const ClickablePatientContainer = ({ patient, children }: ClickablePatientContainerProps) => {

@@ -14,7 +14,7 @@ export interface PatientRegistrationContextProps {
   setInitialFormValues?: React.Dispatch<SetStateAction<FormValues>>;
   validationSchema: any;
   values: FormValues;
-  setCapturePhotoProps(value: SetStateAction<CapturePhotoProps>): void;
+  setCapturePhotoProps(value: SetStateAction<CapturePhotoProps | null>): void;
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched(field: string, isTouched?: any, shouldValidate?: boolean): void;
 }

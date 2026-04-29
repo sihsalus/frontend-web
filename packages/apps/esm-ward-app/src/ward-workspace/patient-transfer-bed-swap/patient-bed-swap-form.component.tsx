@@ -71,7 +71,7 @@ export default function PatientBedSwapForm({
                 return removePatientFromBed(bedAssignedToPatient.bedId, patient.uuid);
               } else {
                 // no-op
-                return Promise.resolve({ ok: true });
+                return { ok: true };
               }
             }
           }

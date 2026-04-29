@@ -67,6 +67,7 @@ function withSharedDependencies(args) {
 }
 
 function ensureOpenmrsCli() {
+  // NOSONAR: this resolver intentionally returns the same CLI path after ensuring it exists.
   const workspaceRoot = resolve(__dirname, '..', '..', '..');
   const rspackConfigEntry = resolve(workspaceRoot, 'node_modules', '@openmrs', 'rspack-config', 'dist', 'index.js');
   const openmrsBin = resolve(workspaceRoot, 'node_modules', 'openmrs', 'dist', 'cli.js');

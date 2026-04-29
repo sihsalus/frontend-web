@@ -375,7 +375,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
                     isLowContrast: false,
                     subtitle: err?.message,
                   });
-                  return Promise.reject(err); // short-circuit promise chain
+                  throw err; // short-circuit promise chain
                 }),
               );
             } else {
@@ -390,7 +390,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
                     isLowContrast: false,
                     subtitle: err?.message,
                   });
-                  return Promise.reject(err); // short-circuit promise chain
+                  throw err; // short-circuit promise chain
                 }),
               );
             }
@@ -407,7 +407,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
                   isLowContrast: false,
                   subtitle: err?.message,
                 });
-                return Promise.reject(err); // short-circuit promise chain
+                throw err; // short-circuit promise chain
               }),
             );
           }
@@ -522,7 +522,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
               isLowContrast: false,
               subtitle: error?.message,
             });
-            return Promise.reject(error); // short-circuit promise chain
+            throw error; // short-circuit promise chain
           })
           .then((response) => {
             // now that visit is created / updated, we run post-submit actions

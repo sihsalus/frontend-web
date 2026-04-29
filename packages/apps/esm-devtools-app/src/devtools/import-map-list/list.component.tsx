@@ -167,7 +167,7 @@ const ImportMapList = forwardRef<HTMLDivElement>((props, ref) => {
   const disabledModules = importMapOverrides.getDisabledOverrides();
 
   const searchableKeys = [...new Set([...notOverriddenKeys, ...Object.keys(overrideMap)])];
-  searchableKeys.sort();
+  searchableKeys.sort((a, b) => a.localeCompare(b));
 
   const searchResults = fuzzy.filter(searchVal, searchableKeys) as Array<{ original: string; score: number }>;
   searchResults.forEach((searchResult) => {
