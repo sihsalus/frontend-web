@@ -322,6 +322,11 @@ export default (env: Record<string, string>, argv: Record<string, string> = {}) 
                   syntax: 'typescript',
                   tsx: true,
                 },
+                transform: {
+                  react: {
+                    runtime: 'automatic',
+                  },
+                },
                 target: 'es2020',
               },
             },
