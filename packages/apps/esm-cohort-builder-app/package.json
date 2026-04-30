@@ -60,7 +60,7 @@
   "devDependencies": {
     "@carbon/react": "^1.83.0",
     "@openmrs/esm-framework": "*",
-    "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch",
+    "@openmrs/esm-styleguide": "workspace:*",
     "@playwright/test": "^1.52.0",
     "@swc/cli": "^0.1.61",
     "@swc/core": "1.15.21",

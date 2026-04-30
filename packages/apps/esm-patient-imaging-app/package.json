@@ -65,7 +65,7 @@
   "devDependencies": {
     "@openmrs/esm-framework": "9.0.2",
     "@openmrs/esm-patient-common-lib": "workspace:*",
-    "@openmrs/esm-styleguide": "patch:@openmrs/esm-styleguide@npm%3A9.0.2#~/.yarn/patches/@openmrs-esm-styleguide-npm-9.0.2-fc8ffda76a.patch",
+    "@openmrs/esm-styleguide": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@rspack/cli": "1.7.11",
     "@swc/cli": "^0.3.12",
