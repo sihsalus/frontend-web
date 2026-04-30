@@ -42,13 +42,15 @@ export interface CohortMember {
   endDate: string | null;
   patient: {
     uuid: string;
-    identifiers: [
-      {
-        display: string;
-        uuid: string;
-        identifier: string;
-      },
-    ];
+    identifiers: Array<{
+      display: string;
+      uuid: string;
+      identifier: string;
+      identifierType?: {
+        display?: string;
+        name?: string;
+      };
+    }>;
     person: {
       uuid: string;
       display: string;
@@ -108,6 +110,22 @@ interface PatientListResponse {
   results: CohortResponse<OpenmrsCohort>;
   links: Array<{ rel: 'prev' | 'next' }>;
   totalCount: number;
+}
+
+const preferredIdentifierNames = ['DNI', 'CE', 'Pasaporte', 'PASS', 'DIE', 'CNV', 'N° Historia Clínica'];
+
+function getPreferredIdentifier(identifiers: CohortMember['patient']['identifiers'] = []) {
+  return (
+    preferredIdentifierNames
+      .map((identifierName) =>
+        identifiers.find(
+          (identifier) =>
+            identifier?.identifierType?.display?.toLowerCase() === identifierName.toLowerCase() ||
+            identifier?.identifierType?.name?.toLowerCase() === identifierName.toLowerCase(),
+        ),
+      )
+      .find(Boolean) ?? identifiers[0]
+  );
 }
 
 /**
@@ -202,7 +220,7 @@ export function usePatientListMembers(listUuid: string, searchQuery = '', startI
 
   // Map the properties of the fetched members to a simpler object.
   const mapProperties = (listMember) => ({
-    identifier: listMember?.patient?.identifiers[0]?.identifier ?? null,
+    identifier: getPreferredIdentifier(listMember?.patient?.identifiers)?.identifier ?? null,
     membershipUuid: listMember?.uuid,
     name: listMember?.patient?.person?.display,
     sex: listMember?.patient?.person?.gender,

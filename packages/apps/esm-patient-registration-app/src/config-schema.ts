@@ -77,6 +77,9 @@ export interface RegistrationConfig {
       };
     };
   };
+  relationshipOptions?: {
+    minorResponsibleRelationshipTypes?: Array<string>;
+  };
   links: {
     submitButton: string;
   };
@@ -375,6 +378,17 @@ export const esmPatientRegistrationSchema = {
           _default: null,
           _description: 'Optional RegEx for testing the validity of the input.',
         },
+      },
+    },
+  },
+  relationshipOptions: {
+    minorResponsibleRelationshipTypes: {
+      _type: Type.Array,
+      _default: [],
+      _description:
+        'Relationship type UUID/direction values that satisfy the responsible family member or guardian requirement for minors.',
+      _elements: {
+        _type: Type.String,
       },
     },
   },

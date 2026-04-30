@@ -21,6 +21,22 @@ import { type ActiveVisit, type VisitResponse } from '../types';
 
 dayjs.extend(isToday);
 
+type VisitIdentifier = NonNullable<Visit['patient']>['identifiers'][number];
+
+const preferredIdentifierNames = ['DNI', 'CE', 'Pasaporte', 'PASS', 'DIE', 'CNV', 'N° Historia Clínica'];
+
+function getPreferredIdentifier(identifiers: Array<VisitIdentifier> = []) {
+  return (
+    preferredIdentifierNames
+      .map((identifierName) =>
+        identifiers.find(
+          (identifier) => identifier?.identifierType?.name?.toLowerCase() === identifierName.toLowerCase(),
+        ),
+      )
+      .find(Boolean) ?? identifiers[0]
+  );
+}
+
 export function useActiveVisits() {
   const session = useSession();
   const config = useConfig();
@@ -84,7 +100,7 @@ export function useActiveVisits() {
 
     // in case no configuration is given the previous behavior remains the same
     if (!config?.activeVisits?.identifiers) {
-      activeVisits.idNumber = visit?.patient?.identifiers[0]?.identifier ?? '--';
+      activeVisits.idNumber = getPreferredIdentifier(visit?.patient?.identifiers)?.identifier ?? '--';
     } else {
       // map identifiers on config
       config?.activeVisits?.identifiers?.forEach((configIdentifier) => {

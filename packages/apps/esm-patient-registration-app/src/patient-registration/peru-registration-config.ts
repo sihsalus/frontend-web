@@ -3,6 +3,11 @@ import { type FieldDefinition, type RegistrationConfig, type SectionDefinition }
 const dniIdentifierTypeUuid = '550e8400-e29b-41d4-a716-446655440001';
 
 const peruSections = ['filiation', 'responsiblePerson'];
+const minorResponsibleRelationshipTypes = [
+  '8d91a210-c2cc-11de-8d13-0010c6dffdff/aIsToB',
+  '8d91a210-c2cc-11de-8d13-0010c6dffd0f/aIsToB',
+  '057de23f-3d9c-4314-9391-4452970739c6/aIsToB',
+];
 
 const peruSectionDefinitions: Array<SectionDefinition> = [
   {
@@ -20,7 +25,6 @@ const peruSectionDefinitions: Array<SectionDefinition> = [
       'insuranceCode',
       'bloodType',
       'mothersName',
-      'fathersName',
     ],
   },
   {
@@ -115,13 +119,6 @@ const peruFieldDefinitions: Array<FieldDefinition> = [
     showHeading: false,
   },
   {
-    id: 'fathersName',
-    type: 'person attribute',
-    uuid: '2f43955c-3205-47ef-96e8-df2f0b89c001',
-    label: 'Nombre del padre',
-    showHeading: false,
-  },
-  {
     id: 'companionName',
     type: 'person attribute',
     uuid: '4697d0e6-5b24-416b-aee6-708cd9a3a1db',
@@ -149,6 +146,26 @@ function appendMissingById<T extends { id: string }>(configured: Array<T>, defau
   return [...configured, ...defaults.filter((item) => !configuredIds.has(item.id))];
 }
 
+function mergeSectionDefinitions(configured: Array<SectionDefinition>, defaults: Array<SectionDefinition>) {
+  const defaultsById = new Map(defaults.map((section) => [section.id, section]));
+
+  return appendMissingById(
+    configured.map((section) => {
+      const defaultSection = defaultsById.get(section.id);
+      if (!defaultSection) {
+        return section;
+      }
+
+      return {
+        ...defaultSection,
+        ...section,
+        fields: [...section.fields, ...defaultSection.fields.filter((field) => !section.fields.includes(field))],
+      };
+    }),
+    defaults,
+  );
+}
+
 export function getEffectiveRegistrationConfig(config: RegistrationConfig): RegistrationConfig {
   const sections = [...config.sections];
 
@@ -171,7 +188,7 @@ export function getEffectiveRegistrationConfig(config: RegistrationConfig): Regi
   return {
     ...config,
     sections,
-    sectionDefinitions: appendMissingById(config.sectionDefinitions, peruSectionDefinitions),
+    sectionDefinitions: mergeSectionDefinitions(config.sectionDefinitions, peruSectionDefinitions),
     fieldDefinitions: appendMissingById(config.fieldDefinitions, peruFieldDefinitions),
     fieldConfigurations: {
       ...config.fieldConfigurations,
@@ -179,6 +196,10 @@ export function getEffectiveRegistrationConfig(config: RegistrationConfig): Regi
         ...config.fieldConfigurations.name,
         requireFamilyName2: true,
       },
+    },
+    relationshipOptions: {
+      ...config.relationshipOptions,
+      minorResponsibleRelationshipTypes,
     },
     defaultPatientIdentifierTypes,
   };

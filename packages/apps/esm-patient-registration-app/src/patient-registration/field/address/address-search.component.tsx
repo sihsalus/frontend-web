@@ -49,22 +49,20 @@ const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({ address
     }
   };
 
-  const handleClickOutsideComponent = (e) => {
-    if (wrapper.current && !wrapper.current.contains(e.target)) {
-      setSearchString('');
-    }
-  };
-
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutsideComponent);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutsideComponent);
+    const handleClickOutside = (e) => {
+      if (wrapper.current && !wrapper.current.contains(e.target)) {
+        setSearchString('');
+      }
     };
-  }, [wrapper]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className={styles.autocomplete} ref={wrapper} style={{ marginBottom: '1rem' }}>
+    <div className={styles.autocomplete} ref={wrapper}>
       <Search
         onChange={handleInputChange}
         onKeyDown={(e) => {
