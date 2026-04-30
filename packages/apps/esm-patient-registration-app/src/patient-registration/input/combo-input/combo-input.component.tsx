@@ -2,9 +2,8 @@ import { Layer, TextInput } from '@carbon/react';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import styles from '../input.scss';
-
 import SelectionTick from './selection-tick.component';
 
 interface ComboInputProps {
@@ -29,7 +28,7 @@ const ComboInput: React.FC<ComboInputProps> = ({
   handleInputChange,
   handleSelection,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const [highlightedEntry, setHighlightedEntry] = useState(-1);
   const { value = '' } = fieldProps;
   const [showEntries, setShowEntries] = useState(false);

@@ -4,10 +4,9 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import { type PersonAttributeTypeResponse } from '../../patient-registration.types';
 import { useConceptAnswers } from '../field.resource';
-
 import styles from './../field.scss';
 
 export interface CodedPersonAttributeFieldProps {
@@ -31,7 +30,7 @@ export function CodedPersonAttributeField({
     customConceptAnswers.length ? '' : answerConceptSetUuid,
   );
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const fieldName = `attributes.${personAttributeType.uuid}`;
   const [error, setError] = useState(false);
 

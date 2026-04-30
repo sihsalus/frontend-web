@@ -11,14 +11,13 @@ import { TrashCan } from '@carbon/react/icons';
 import { FieldArray } from 'formik';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import { ResourcesContext } from '../../../offline.resources';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { fetchPerson } from '../../patient-registration.resource';
 import { type RelationshipValue } from '../../patient-registration.types';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import sectionStyles from '../section.scss';
-
 import styles from './relationships.scss';
 
 interface RelationshipType {
@@ -40,7 +39,7 @@ const RelationshipView: React.FC<RelationshipViewProps> = ({
   displayRelationshipTypes,
   remove,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
   const [isInvalid, setIsInvalid] = useState(false);
   const newRelationship = !relationship.uuid;
@@ -163,7 +162,7 @@ const RelationshipView: React.FC<RelationshipViewProps> = ({
 export const RelationshipsSection = () => {
   const { relationshipTypes } = useContext(ResourcesContext);
   const [displayRelationshipTypes, setDisplayRelationshipTypes] = useState<RelationshipType[]>([]);
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
 
   useEffect(() => {
     if (relationshipTypes) {

@@ -2,7 +2,7 @@ import { Search } from '@carbon/react';
 import { useFormikContext } from 'formik';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import { useAddressHierarchy } from './address-hierarchy.resource';
 import styles from './address-search.scss';
 
@@ -11,7 +11,7 @@ interface AddressSearchComponentProps {
 }
 
 const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({ addressLayout }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const separator = ' > ';
   const searchBox = useRef(null);
   const wrapper = useRef(null);

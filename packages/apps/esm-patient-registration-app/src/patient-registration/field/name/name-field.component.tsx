@@ -5,6 +5,7 @@ import React, { useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type RegistrationConfig } from '../../../config-schema';
+import { moduleName } from '../../../constants';
 import { Input } from '../../input/basic-input/input/input.component';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import styles from '../field.scss';
@@ -21,7 +22,7 @@ function checkNumber(value: string) {
 }
 
 export const NameField = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const { setCapturePhotoProps, currentPhoto, setFieldValue, setFieldTouched } = useContext(PatientRegistrationContext);
   const {
     fieldConfigurations: {

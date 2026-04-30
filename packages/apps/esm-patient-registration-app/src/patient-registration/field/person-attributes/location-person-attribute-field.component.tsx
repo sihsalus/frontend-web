@@ -3,9 +3,8 @@ import classNames from 'classnames';
 import { Field, useField } from 'formik';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import { type PersonAttributeTypeResponse } from '../../patient-registration.types';
-
 import styles from './../field.scss';
 import { useLocations } from './location-person-attribute-field.resource';
 
@@ -24,7 +23,7 @@ export function LocationPersonAttributeField({
   locationTag,
   required,
 }: LocationPersonAttributeFieldProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const fieldName = `attributes.${personAttributeType.uuid}`;
   const [field, meta, { setValue }] = useField(`attributes.${personAttributeType.uuid}`);
   const [searchQuery, setSearchQuery] = useState('');

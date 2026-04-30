@@ -3,7 +3,7 @@ import { ArrowRight, TrashCan } from '@carbon/react/icons';
 import { isDesktop, UserHasAccess, useConfig, useLayoutType } from '@openmrs/esm-framework';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import { ResourcesContext } from '../../../offline.resources';
 import IdentifierInput from '../../input/custom-input/identifier/identifier-input.component';
 import type {
@@ -14,7 +14,6 @@ import type {
 } from '../../patient-registration.types';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 import styles from '../field.scss';
-
 import IdentifierSelectionOverlay from './identifier-selection-overlay.component';
 
 export function setIdentifierSource(
@@ -64,7 +63,7 @@ export const Identifiers: React.FC = () => {
   const { identifierTypes } = useContext(ResourcesContext);
   const isLoading = !identifierTypes?.length;
   const { values, setFieldValue, initialFormValues, isOffline } = useContext(PatientRegistrationContext);
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const layout = useLayoutType();
   const [showIdentifierOverlay, setShowIdentifierOverlay] = useState(false);
   const config = useConfig();

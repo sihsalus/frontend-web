@@ -15,8 +15,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { builtInSections, type RegistrationConfig, type SectionDefinition } from '../config-schema';
+import { moduleName } from '../constants';
 import { ResourcesContext } from '../offline.resources';
-
 import BeforeSavePrompt from './before-save-prompt';
 import { type SavePatientForm, SavePatientTransactionManager } from './form-manager';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
@@ -56,7 +56,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   const { patientUuid: uuidOfPatientToEdit } = useParams();
   const patientUuidToEdit = uuidOfPatientToEdit ?? '';
   const { isLoading: isLoadingPatientToEdit, patient: patientToEdit } = usePatient(patientUuidToEdit);
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps | null>(null);
   const [initialFormValuesState, setInitialFormValues] = useInitialFormValues(patientUuidToEdit);
   const [initialAddressFieldValues] = useInitialAddressFieldValues(patientUuidToEdit);

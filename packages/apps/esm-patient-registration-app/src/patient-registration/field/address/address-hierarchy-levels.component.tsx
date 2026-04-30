@@ -1,9 +1,8 @@
 import { useField } from 'formik';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { moduleName } from '../../../constants';
 import ComboInput from '../../input/combo-input/combo-input.component';
-
 import { useAddressEntries, useAddressEntryFetchConfig } from './address-hierarchy.resource';
 
 interface AddressComboBoxProps {
@@ -21,7 +20,7 @@ interface AddressHierarchyLevelsProps {
 }
 
 const AddressComboBox: React.FC<AddressComboBoxProps> = ({ attribute }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(moduleName);
   const [field, meta, { setValue }] = useField(`address.${attribute.name}`);
   const { fetchEntriesForField, searchString, updateChildElements } = useAddressEntryFetchConfig(attribute.name);
   const { entries, isLoadingAddressEntries, errorFetchingAddressEntries } = useAddressEntries(
