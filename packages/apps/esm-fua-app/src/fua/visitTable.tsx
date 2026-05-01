@@ -16,7 +16,7 @@ import {
   TableToolbarSearch,
   Tile,
 } from '@carbon/react';
-import { Add } from '@carbon/react/icons';
+import { Add, Renew } from '@carbon/react/icons';
 import { showSnackbar, usePagination } from '@openmrs/esm-framework';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -45,7 +45,7 @@ function getArea(visit: VisitSummary) {
 
 const VisitTable: React.FC = () => {
   const { t } = useTranslation();
-  const { visits, isLoading } = useVisits();
+  const { visits, isLoading, isValidating, mutate } = useVisits();
   const [searchString, setSearchString] = useState('');
   const [generatingVisitUuid, setGeneratingVisitUuid] = useState<string | null>(null);
 
@@ -80,6 +80,10 @@ const VisitTable: React.FC = () => {
     fechaCreacion: formatVisitDate(visit.startDatetime),
     actions: visit.uuid ?? '',
   }));
+
+  const handleRefresh = useCallback(() => {
+    mutate();
+  }, [mutate]);
 
   const handleGenerateFua = useCallback(
     async (visitUuid: string) => {
@@ -130,6 +134,9 @@ const VisitTable: React.FC = () => {
                     size="sm"
                   />
                 </Layer>
+                <Button kind="ghost" size="sm" renderIcon={Renew} onClick={handleRefresh} disabled={isValidating}>
+                  {isValidating ? t('refreshing', 'Actualizando...') : t('refresh', 'Actualizar')}
+                </Button>
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()} className={styles.table} aria-label={t('visits', 'Visitas')}>
