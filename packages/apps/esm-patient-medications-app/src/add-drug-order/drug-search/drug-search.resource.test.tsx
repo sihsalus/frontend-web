@@ -128,6 +128,7 @@ describe('useDrugsByConcepts', () => {
   });
 
   test('collects errors from failed batches while returning successful results', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     // Generate 21 concept UUIDs to trigger two batches (max 20 per batch)
     const concepts = Array.from({ length: 21 }, (_, i) => `concept-${i}`);
 
@@ -145,6 +146,11 @@ describe('useDrugsByConcepts', () => {
     expect(result.current.drugs[0].display).toBe('Aspirin 81mg');
     expect(result.current.errors).toHaveLength(1);
     expect(result.current.errors[0].message).toBe('Batch failed');
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Failed to fetch drugs for concepts'),
+      expect.any(Error),
+    );
+    consoleErrorSpy.mockRestore();
   });
 
   test('paginates when results fill the page size', async () => {

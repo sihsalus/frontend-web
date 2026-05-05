@@ -111,7 +111,7 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
       content: (
         <div className={styles.medicationRecord}>
           <div>
-            <p className={styles.bodyLong01}>
+            <div className={styles.bodyLong01}>
               <strong>{capitalize(medication.drug?.display)}</strong>{' '}
               {medication.drug?.strength && <>&mdash; {medication.drug?.strength.toLowerCase()}</>}{' '}
               {medication.drug?.dosageForm?.display && <>&mdash; {medication.drug.dosageForm.display.toLowerCase()}</>}
@@ -122,7 +122,7 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
                   </Tag>
                 </Tooltip>
               )}
-            </p>
+            </div>
             <p className={styles.bodyLong01}>
               {medication.dose != null && (
                 <>
@@ -314,15 +314,16 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
               <Table aria-label="medications" className={styles.table} {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader
-                        {...getHeaderProps({
-                          header,
-                        })}
-                      >
-                        {header.header}
-                      </TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({
+                        header,
+                      });
+                      return (
+                        <TableHeader key={key} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                     {!isPrinting && <TableHeader aria-label={t('actions', 'Actions')} />}
                   </TableRow>
                 </TableHead>
@@ -330,8 +331,10 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
                   {rows.map((row) => {
                     const medication = medicationsByUuid.get(row.id);
 
+                    const { key, ...rowProps } = getRowProps({ row });
+
                     return (
-                      <TableRow className={styles.row} {...getRowProps({ row })}>
+                      <TableRow key={key} className={styles.row} {...rowProps}>
                         {row.cells.map((cell) => (
                           <TableCell className={styles.tableCell} key={cell.id}>
                             {cell.value?.content ?? cell.value}
@@ -373,7 +376,7 @@ const MedicationsDetailsTable: React.FC<MedicationsDetailsTableProps> = ({
 
 function InfoTooltip({ orderer }: { orderer: string }) {
   return (
-    <IconButton className={styles.tooltip} align="top-left" label={orderer} kind="ghost" size="sm">
+    <IconButton className={styles.tooltip} align="top-start" label={orderer} kind="ghost" size="sm">
       <UserIcon size={16} />
     </IconButton>
   );

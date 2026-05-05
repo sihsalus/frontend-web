@@ -8,6 +8,19 @@ import { type ConfigObject, configSchema } from '../config-schema';
 import DrugOrderForm from './drug-order-form.component';
 import { getTemplateOrderBasketItem } from './drug-search/drug-search.resource';
 
+jest.mock('@openmrs/esm-framework', () => {
+  const actual = jest.requireActual('@openmrs/esm-framework');
+  const React = jest.requireActual('react');
+
+  return {
+    ...actual,
+    OpenmrsDatePicker: React.forwardRef(
+      (_props: Record<string, unknown>, ref: import('react').ForwardedRef<HTMLSpanElement>) =>
+        React.createElement('span', { ref }, 'OpenmrsDatePicker'),
+    ),
+  };
+});
+
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
 const mockUseSession = jest.mocked(useSession);
 

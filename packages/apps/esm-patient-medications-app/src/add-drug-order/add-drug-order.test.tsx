@@ -16,6 +16,19 @@ import {
 import AddDrugOrderWorkspace from './add-drug-order.workspace';
 import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './drug-search/drug-search.resource';
 
+jest.mock('@openmrs/esm-framework', () => {
+  const actual = jest.requireActual('@openmrs/esm-framework');
+  const React = jest.requireActual('react');
+
+  return {
+    ...actual,
+    OpenmrsDatePicker: React.forwardRef(
+      (_props: Record<string, unknown>, ref: import('react').ForwardedRef<HTMLSpanElement>) =>
+        React.createElement('span', { ref }, 'OpenmrsDatePicker'),
+    ),
+  };
+});
+
 const mockCloseWorkspace = jest.fn();
 const mockUseSession = jest.mocked(useSession);
 const mockUseDrugSearch = jest.mocked(useDrugSearch);
