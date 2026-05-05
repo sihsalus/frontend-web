@@ -33,6 +33,7 @@ import { TestTypeSearch } from './test-type-search.component';
 export interface AddLabOrderWorkspaceAdditionalProps {
   order?: OrderBasketItem;
   orderTypeUuid: string;
+  orderBasketWorkspaceName?: string;
 }
 
 export interface AddLabOrderWorkspaceProps extends DefaultPatientWorkspaceProps, AddLabOrderWorkspaceAdditionalProps {}
@@ -51,6 +52,9 @@ function isWorkspace2Props(props: AddLabOrderWorkspaceComponentProps): props is 
 export default function AddLabOrderWorkspace(props: AddLabOrderWorkspaceComponentProps) {
   const initialOrder = isWorkspace2Props(props) ? props.workspaceProps?.order : props.order;
   const orderTypeUuid = isWorkspace2Props(props) ? props.workspaceProps.orderTypeUuid : props.orderTypeUuid;
+  const orderBasketWorkspaceName = isWorkspace2Props(props)
+    ? (props.workspaceProps.orderBasketWorkspaceName ?? 'order-basket')
+    : (props.orderBasketWorkspaceName ?? 'order-basket');
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const { patientUuid } = usePatientChartStore(isWorkspace2Props(props) ? props.groupProps.patientUuid : undefined);
@@ -98,10 +102,10 @@ export default function AddLabOrderWorkspace(props: AddLabOrderWorkspaceComponen
 
     props.closeWorkspace({
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchPatientWorkspace(orderBasketWorkspaceName),
       closeWorkspaceGroup: false,
     });
-  }, [props]);
+  }, [orderBasketWorkspaceName, props]);
 
   const content = (
     <div className={styles.container}>
@@ -154,6 +158,8 @@ export default function AddLabOrderWorkspace(props: AddLabOrderWorkspaceComponen
           setTitle={() => {}}
           orderTypeUuid={orderTypeUuid}
           orderableConceptSets={orderableConceptSets}
+          orderBasketWorkspaceName={orderBasketWorkspaceName}
+          returnToOrderBasketOnClose={!isWorkspace2Props(props)}
         />
       ) : (
         <TestTypeSearch

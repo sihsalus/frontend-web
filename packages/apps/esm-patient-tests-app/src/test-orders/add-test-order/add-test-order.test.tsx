@@ -10,6 +10,7 @@ import { type PostDataPrepFunction, useOrderBasket, useOrderType } from '@openmr
 import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
 import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { type ComponentProps } from 'react';
 import { mockFhirPatient, mockSessionDataResponse } from 'test-utils';
 
 import { type ConfigObject, configSchema } from '../../config-schema';
@@ -73,7 +74,7 @@ jest.mock('@openmrs/esm-patient-common-lib/src/store/patient-chart-store', () =>
   })),
 }));
 
-function renderAddLabOrderWorkspace() {
+function renderAddLabOrderWorkspace(props: Partial<ComponentProps<typeof AddLabOrderWorkspace>> = {}) {
   const mockCloseWorkspace = jest.fn().mockImplementation(({ onWorkspaceClose }) => {
     onWorkspaceClose();
   });
@@ -89,6 +90,7 @@ function renderAddLabOrderWorkspace() {
       patientUuid={ptUuid}
       setTitle={jest.fn()}
       orderTypeUuid="test-lab-order-type-uuid"
+      {...props}
     />,
   );
   return { mockCloseWorkspace, mockPromptBeforeClosing, mockCloseWorkspaceWithSavedChanges, ...view };
@@ -212,6 +214,19 @@ describe('AddLabOrder', () => {
     await user.click(back);
     expect(mockCloseWorkspace).toHaveBeenCalled();
     expect(mockLaunchPatientWorkspace).toHaveBeenCalledWith('order-basket');
+  });
+
+  test('uses custom order basket workspace name when returning from legacy workspace', async () => {
+    const user = userEvent.setup();
+    const { mockCloseWorkspace } = renderAddLabOrderWorkspace({
+      orderBasketWorkspaceName: 'add-test-order-basket-workspace',
+    });
+    const back = screen.getByText('Back to order basket');
+
+    await user.click(back);
+
+    expect(mockCloseWorkspace).toHaveBeenCalled();
+    expect(mockLaunchPatientWorkspace).toHaveBeenCalledWith('add-test-order-basket-workspace');
   });
 
   test('should display a patient header on tablet', () => {
