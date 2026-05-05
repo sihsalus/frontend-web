@@ -208,7 +208,7 @@ export function DrugOrderForm({
       return null;
     }
     const result = Math.ceil(watchedDosage * watchedFrequency.frequencyPerDay * durationDays);
-    return result > 0 && isFinite(result) ? result : null;
+    return result > 0 && Number.isFinite(result) ? result : null;
   }, [
     watchedIsFreeText,
     watchedAsNeeded,
@@ -238,7 +238,6 @@ export function DrugOrderForm({
     requireOutpatientQuantity,
     isManualOverride,
     calculatedQuantity,
-    watchedFrequency?.frequencyPerDay,
     watchedUnit,
     watchedQuantityUnits,
     getValues,
@@ -376,7 +375,7 @@ export function DrugOrderForm({
   const { data: activeOrders } = useActivePatientOrders(patient.id);
   const drugAlreadyPrescribedForNewOrder = useMemo(
     () =>
-      (initialOrderBasketItem == null || initialOrderBasketItem?.action == 'NEW') &&
+      (initialOrderBasketItem == null || initialOrderBasketItem?.action === 'NEW') &&
       activeOrders?.some((order) => order?.drug?.uuid === drug?.uuid),
     [activeOrders, drug, initialOrderBasketItem],
   );
@@ -836,8 +835,11 @@ interface BaseControlledFieldInputProps {
   control: Control<MedicationOrderFormData>;
   name: keyof MedicationOrderFormData;
   type: 'number' | 'toggle' | 'checkbox' | 'textArea' | 'textInput' | 'comboBox';
-  getValues?: (name: keyof MedicationOrderFormData) => any;
-  handleAfterChange?: (newValue: any, prevValue: any) => void;
+  getValues?: (name: keyof MedicationOrderFormData) => MedicationOrderFormData[keyof MedicationOrderFormData];
+  handleAfterChange?: (
+    newValue: MedicationOrderFormData[keyof MedicationOrderFormData],
+    prevValue: MedicationOrderFormData[keyof MedicationOrderFormData],
+  ) => void;
 }
 
 type ControlledFieldInputProps = BaseControlledFieldInputProps &
@@ -872,7 +874,7 @@ const ControlledFieldInput = ({
   });
 
   const handleChange = useCallback(
-    (newValue: any) => {
+    (newValue: MedicationOrderFormData[keyof MedicationOrderFormData]) => {
       const prevValue = getValues?.(name);
       onChange(newValue);
       handleAfterChange?.(newValue, prevValue);
@@ -880,13 +882,12 @@ const ControlledFieldInput = ({
     [getValues, onChange, handleAfterChange, name],
   );
 
-  const component = useMemo(() => {
+  const component = (() => {
     if (type === 'toggle') {
       return (
         <Toggle
           toggled={Boolean(value)}
           onToggle={handleChange}
-          ref={ref}
           // @ts-expect-error
           size={isTablet ? 'md' : 'sm'}
           labelA={t('on', 'On')}
@@ -975,7 +976,7 @@ const ControlledFieldInput = ({
     }
 
     return null;
-  }, [type, value, restProps, handleChange, fieldErrorStyles, onBlur, ref, isTablet, t]);
+  })();
 
   return (
     <>

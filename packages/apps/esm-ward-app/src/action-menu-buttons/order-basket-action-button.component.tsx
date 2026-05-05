@@ -24,6 +24,7 @@ function WardPatientOrderBasketActionButton({ groupProps: { wardPatient } }: War
           generalOrderWorkspaceName: 'ward-patient-order-basket-add-general-order-workspace',
         },
       }}
+      onBeforeWorkspaceLaunch={async () => Boolean(fhirPatient)}
     />
   );
 }

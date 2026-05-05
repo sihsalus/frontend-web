@@ -171,7 +171,7 @@ export const DrugSearchResultItem: React.FC<DrugSearchResultItemProps> = ({
       // Directly adding the order to basket should be marked as incomplete
       searchResult.isOrderIncomplete = true;
       setOrders([...orders, searchResult]);
-      closeWorkspace();
+      closeWorkspace({ discardUnsavedChanges: true });
     },
     [orders, setOrders, closeWorkspace],
   );
