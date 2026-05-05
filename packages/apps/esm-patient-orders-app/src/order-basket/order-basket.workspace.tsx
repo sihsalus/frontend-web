@@ -30,7 +30,13 @@ import { type ConfigObject } from '../config-schema';
 import GeneralOrderType from './general-order-type/general-order-type.component';
 import styles from './order-basket.scss';
 
-type Workspace2OrderBasketProps = PatientWorkspace2DefinitionProps<object, object>;
+interface OrderBasketWindowProps {
+  drugOrderWorkspaceName?: string;
+  labOrderWorkspaceName?: string;
+  generalOrderWorkspaceName?: string;
+}
+
+type Workspace2OrderBasketProps = PatientWorkspace2DefinitionProps<object, OrderBasketWindowProps>;
 type OrderBasketProps = DefaultPatientWorkspaceProps | Workspace2OrderBasketProps;
 
 function isWorkspace2Props(props: OrderBasketProps): props is Workspace2OrderBasketProps {
@@ -57,6 +63,13 @@ const OrderBasket: React.FC<OrderBasketProps> = (props) => {
   const [creatingEncounterError, setCreatingEncounterError] = useState('');
   const { mutate: mutateOrders } = useMutatePatientOrders(patientUuid);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const orderWorkspaceNames = {
+    drug: isWorkspace2Props(props) ? (props.windowProps?.drugOrderWorkspaceName ?? 'add-drug-order') : 'add-drug-order',
+    lab: isWorkspace2Props(props) ? (props.windowProps?.labOrderWorkspaceName ?? 'add-lab-order') : 'add-lab-order',
+    general: isWorkspace2Props(props)
+      ? (props.windowProps?.generalOrderWorkspaceName ?? 'orderable-concept-workspace')
+      : 'orderable-concept-workspace',
+  };
 
   const closeCurrentWorkspace = useCallback(
     async (
@@ -193,9 +206,9 @@ const OrderBasket: React.FC<OrderBasketProps> = (props) => {
             name="order-basket-slot"
             state={{
               launchAddDrugOrder: (order?: OrderBasketItem) =>
-                openOrderWorkspace('add-drug-order', order ? { order } : {}),
+                openOrderWorkspace(orderWorkspaceNames.drug, order ? { order } : {}),
               launchAddLabOrder: (orderTypeUuid: string, order?: OrderBasketItem) =>
-                openOrderWorkspace('add-lab-order', {
+                openOrderWorkspace(orderWorkspaceNames.lab, {
                   orderTypeUuid,
                   ...(order ? { order } : {}),
                 }),
@@ -210,7 +223,7 @@ const OrderBasket: React.FC<OrderBasketProps> = (props) => {
                   label={orderType.label}
                   orderableConceptSets={orderType.orderableConceptSets}
                   launchOrderableConceptWorkspace={(orderTypeUuid, order) =>
-                    void openOrderWorkspace('orderable-concept-workspace', {
+                    void openOrderWorkspace(orderWorkspaceNames.general, {
                       orderTypeUuid,
                       ...(order ? { order } : {}),
                     })

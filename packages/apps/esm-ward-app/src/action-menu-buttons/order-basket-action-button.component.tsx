@@ -1,5 +1,4 @@
 import { ActionMenuButton2, ShoppingCartIcon, usePatient } from '@openmrs/esm-framework';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { type WardPatientWorkspaceDefinition } from '../types';
 

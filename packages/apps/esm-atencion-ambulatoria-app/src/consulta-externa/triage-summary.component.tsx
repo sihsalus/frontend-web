@@ -88,7 +88,7 @@ const TriageSummary: React.FC<TriageSummaryProps> = ({ patientUuid }) => {
   const handleLaunchForm = () => {
     launchWorkspace('patient-form-entry-workspace', {
       formInfo: {
-        formUuid: config.formsList?.consultaExternaForm,
+        formUuid: config.vitals?.formUuid,
       },
     });
   };

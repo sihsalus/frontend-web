@@ -1,4 +1,4 @@
-import { type Concept, type OpenmrsResource } from '@openmrs/esm-framework';
+import { type Concept, type Obs, type OpenmrsResource } from '@openmrs/esm-framework';
 
 export interface RESTPatientNote extends OpenmrsResource {
   uuid: string;
@@ -12,20 +12,17 @@ export interface RESTPatientNote extends OpenmrsResource {
 }
 
 export interface PatientNote {
-  id: string;
-  diagnoses: string;
-  encounterDate: string;
+  encounterUuid: string;
+  obsUuid: string;
   encounterNote: string;
   encounterNoteRecordedAt: string;
   encounterProvider: string;
-  encounterProviderRole: string;
-  // Fields used by note history and delete modals (ported from upstream)
-  encounterUuid?: string;
-  obsUuid?: string;
-  isEdited?: boolean;
-  lastEditedBy?: string;
-  lastEditedAt?: string;
-  editHistory?: Array<{
+  conceptUuid: string;
+  encounterTypeUuid: string;
+  isEdited: boolean;
+  lastEditedBy: string;
+  lastEditedAt: string;
+  editHistory: Array<{
     note: string;
     recordedAt: string;
     recordedBy: string;
@@ -41,6 +38,7 @@ export interface UsePatientNotes {
 }
 
 export interface ObsData {
+  uuid: string;
   concept: Concept;
   value?: string | number | boolean | OpenmrsResource;
   groupMembers?: Array<{
@@ -48,4 +46,15 @@ export interface ObsData {
     value?: string | number | boolean | OpenmrsResource;
   }>;
   obsDatetime: string;
+  creator?: { display: string; person?: { display: string } };
+  previousVersions?: Array<
+    Obs & {
+      creator: { display: string; person?: { display: string } };
+    }
+  >;
+  dateCreated: string;
+}
+
+export interface NoteObsData extends Omit<ObsData, 'value'> {
+  value: string;
 }

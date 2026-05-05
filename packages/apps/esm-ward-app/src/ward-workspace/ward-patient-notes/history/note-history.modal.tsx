@@ -19,7 +19,7 @@ const NoteHistoryModal: React.FC<NoteHistoryModalProps> = ({ close, note }) => {
 
   const versions = [
     { note: note.encounterNote, recordedAt: note.lastEditedAt, recordedBy: note.lastEditedBy },
-    ...(note.editHistory ?? []).map((v) => ({ note: v.note, recordedAt: v.recordedAt, recordedBy: v.recordedBy })),
+    ...note.editHistory.map((v) => ({ note: v.note, recordedAt: v.recordedAt, recordedBy: v.recordedBy })),
   ];
 
   return (
@@ -33,7 +33,7 @@ const NoteHistoryModal: React.FC<NoteHistoryModalProps> = ({ close, note }) => {
               <div className={styles.noteProviderName}>
                 {t('writtenBy', 'Written by: {{name}}, {{date}}', {
                   name: v.recordedBy,
-                  date: v.recordedAt ? formatDate(v.recordedAt) : '',
+                  date: formatDate(v.recordedAt),
                 })}
               </div>
             </div>
