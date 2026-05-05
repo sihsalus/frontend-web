@@ -180,6 +180,7 @@
   "visitEndedAndFUAGenerated": "Visit ended and FUA Generated",
   "visitEndSuccessfully": "Ended current visit successfully",
   "visitLocation": "Visit location",
+  "visitLocationRequired": "Visit location is required",
   "visitNotRestored": "Visit couldn't be restored",
   "visitRestored": "Visit restored",
   "visitRestoredSuccessfully": "{{visit}} restored successfully",

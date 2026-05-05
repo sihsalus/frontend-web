@@ -187,8 +187,12 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
         programType: z.string().optional(),
         visitType: z.string().refine((value) => !!value, t('visitTypeRequired', 'Visit type is required')),
         visitLocation: z.object({
-          display: z.string(),
-          uuid: z.string(),
+          display: z.string().optional(),
+          uuid: z
+            .string({
+              required_error: t('visitLocationRequired', 'Visit location is required'),
+            })
+            .min(1, t('visitLocationRequired', 'Visit location is required')),
         }),
         visitAttributes: z.object(visitAttributes),
       })

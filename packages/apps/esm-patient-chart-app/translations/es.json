@@ -182,6 +182,7 @@
   "visitEndedAndFUAGenerated": "La consulta finalizó y se generó el FUA",
   "visitEndSuccessfully": "Consulta actual finalizada exitosamente",
   "visitLocation": "Ubicación de la consulta",
+  "visitLocationRequired": "La ubicación de la consulta es obligatoria",
   "visitNotRestored": "No se pudo restaurar la consulta",
   "visitRestored": "Consulta restaurada",
   "visitRestoredSuccessfully": "{{visit}} restaurada exitosamente",
