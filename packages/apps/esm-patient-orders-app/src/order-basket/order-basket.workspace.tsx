@@ -166,7 +166,7 @@ const OrderBasket: React.FC<OrderBasketProps> = (props) => {
       const erroredItems = await postOrders(orderEncounterUuid, abortController);
       clearOrders({ exceptThoseMatching: (item) => erroredItems.map((e) => e.display).includes(item.display) });
       await mutateOrders();
-      if (erroredItems.length == 0) {
+      if (erroredItems.length === 0) {
         await closeWorkspaceWithSavedChanges();
         showOrderSuccessToast(t, orders);
       } else {
@@ -188,7 +188,6 @@ const OrderBasket: React.FC<OrderBasketProps> = (props) => {
     patientUuid,
     session,
     t,
-    closeWorkspaceWithSavedChanges,
   ]);
 
   const handleCancel = useCallback(() => {
