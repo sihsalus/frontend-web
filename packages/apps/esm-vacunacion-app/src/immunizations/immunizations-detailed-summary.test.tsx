@@ -36,6 +36,9 @@ mockLaunchWorkspace.mockImplementation(jest.fn());
 
 mockUseConfig.mockReturnValue({
   immunizationConceptSet: 'CIEL:984',
+  fhirConceptMappings: {
+    immunizationResourceConcept: 'CIEL:1421',
+  },
   sequenceDefinitions: [
     {
       vaccineConceptUuid: 'polio-uuid',
@@ -73,6 +76,9 @@ describe('ImmunizationsDetailedSummary', () => {
   beforeEach(() => {
     mockUseConfig.mockReturnValue({
       immunizationConceptSet: 'CIEL:984',
+      fhirConceptMappings: {
+        immunizationResourceConcept: 'CIEL:1421',
+      },
       sequenceDefinitions: [
         {
           vaccineConceptUuid: 'polio-uuid',

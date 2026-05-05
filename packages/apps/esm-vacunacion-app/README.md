@@ -17,3 +17,8 @@ Estado de alineamiento:
 - Modificatorias consideradas en configuracion: RM 218-2024, RM 474-2025, RM 709-2025 y RM 403-2026-MINSA.
 - RM 403-2026-MINSA incorpora VRS/Nirsevimab de forma progresiva. Antes de habilitarlo como vacuna seleccionable, deben existir los conceptos/medicamentos correspondientes en el content package.
 - El formulario muestra advertencias cuando una dosis configurada se registra fuera de la ventana de edad MINSA. No bloquea el guardado porque pueden existir rescates, campañas o indicaciones especiales.
+
+Configuracion de conceptos:
+
+- `immunizationConceptSet`: default `CIEL:984`. Debe resolver a un set/concepto con las vacunas seleccionables como respuestas.
+- `fhirConceptMappings.immunizationResourceConcept`: default `CIEL:1421`. Debe existir como mapping unico en el content package para que el recurso FHIR2 `Immunization` pueda leer y guardar.
