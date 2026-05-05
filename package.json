@@ -17,6 +17,8 @@
     "build:apps": "turbo run build --filter='./packages/apps/*'",
     "generate-config": "node packages/tooling/scripts/generate-assemble-config.js",
     "assemble": "node packages/tooling/scripts/generate-assemble-config.js && node packages/tooling/scripts/assemble-importmap.js",
+    "validate:spa": "node packages/tooling/scripts/validate-spa-artifact.js",
+    "package:spa": "yarn build:apps && yarn assemble && yarn validate:spa",
     "dev": "turbo run dev",
     "start": "node packages/tooling/scripts/start-dev.js",
     "serve": "turbo run build --filter=openmrs --filter='./packages/apps/*' && openmrs start",
