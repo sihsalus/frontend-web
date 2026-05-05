@@ -179,6 +179,21 @@ export const configSchema = {
     },
   },
 
+  adverseReactionReporting: {
+    _type: Type.Object,
+    _description: 'Configuration for ESAVI/adverse vaccine reaction reporting as a normal OpenMRS encounter.',
+    _default: {
+      vaccineNameConceptUuid: 'f0000017-0000-4000-8000-000000000017',
+      severityConceptUuid: 'f0000019-0000-4000-8000-000000000019',
+      reactionDescriptionConceptUuid: 'f0000002-0000-4000-8000-000000000002',
+      severityAnswers: {
+        mild: 'f0000161-0000-4000-8000-000000000161',
+        moderate: 'f0000162-0000-4000-8000-000000000162',
+        severe: 'f0000163-0000-4000-8000-000000000163',
+      },
+    },
+  },
+
   // 5. VITALS CONFIGURATION
   vitals: {
     useFormEngine: {
@@ -1416,6 +1431,16 @@ export interface ConfigObject {
     autismScreeningForm: string;
     childMentalHealthForm: string;
     adverseReactionForm: string;
+  };
+  adverseReactionReporting: {
+    vaccineNameConceptUuid: string;
+    severityConceptUuid: string;
+    reactionDescriptionConceptUuid: string;
+    severityAnswers: {
+      mild: string;
+      moderate: string;
+      severe: string;
+    };
   };
   clinicalEncounterUuid: string;
   concepts: Record<string, string>;

@@ -67,6 +67,7 @@ import {
   deleteVisitAttribute,
   updateVisitAttribute,
   useConditionalVisitTypes,
+  usePersonAttributesForVisitDefaults,
   useVisitFormCallbacks,
   type VisitFormCallbacks,
   type VisitFormData,
@@ -118,6 +119,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
   const { mutate: mutateCurrentVisit } = useVisit(patientUuid);
   const { mutateVisits: mutateInfiniteVisits } = useInfiniteVisits(patientUuid);
   const allVisitTypes = useConditionalVisitTypes();
+  const { attributes: personAttributesForVisitDefaults } = usePersonAttributesForVisitDefaults(patientUuid);
 
   const [errorFetchingResources, setErrorFetchingResources] = useState<{
     blockSavingForm: boolean;
@@ -228,7 +230,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
         visitToEdit?.attributes.reduce<Record<string, string>>((acc, curr) => {
           acc[curr.attributeType.uuid] = typeof curr.value === 'object' ? curr?.value?.uuid : `${curr.value ?? ''}`;
           return acc;
-        }, {}) ?? {},
+        }, {}) ?? getDefaultVisitAttributesFromPersonAttributes(),
     };
 
     if (visitStopDate) {
@@ -240,8 +242,40 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
       };
     }
 
+    function getDefaultVisitAttributesFromPersonAttributes() {
+      const configuredVisitAttributeUuids = new Set(config.visitAttributeTypes?.map(({ uuid }) => uuid));
+
+      return (config.defaultVisitAttributesFromPersonAttributes ?? []).reduce<Record<string, string>>(
+        (defaults, { personAttributeTypeUuid, visitAttributeTypeUuid }) => {
+          if (!configuredVisitAttributeUuids.has(visitAttributeTypeUuid)) {
+            return defaults;
+          }
+
+          const personAttribute = personAttributesForVisitDefaults.find(
+            (attribute) => attribute.attributeType.uuid === personAttributeTypeUuid,
+          );
+          const value = personAttribute?.value;
+          const normalizedValue = typeof value === 'object' ? value?.uuid : value;
+
+          if (normalizedValue) {
+            defaults[visitAttributeTypeUuid] = normalizedValue;
+          }
+
+          return defaults;
+        },
+        {},
+      );
+    }
+
     return defaultValues;
-  }, [visitToEdit, defaultVisitLocation, emrConfiguration]);
+  }, [
+    visitToEdit,
+    defaultVisitLocation,
+    emrConfiguration,
+    config.visitAttributeTypes,
+    config.defaultVisitAttributesFromPersonAttributes,
+    personAttributesForVisitDefaults,
+  ]);
 
   const methods = useForm<VisitFormData>({
     mode: 'all',
@@ -260,7 +294,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
 
   // default values are cached so form needs to be reset when they change (e.g. when default visit location finishes loading)
   useEffect(() => {
-    reset(defaultValues);
+    reset(defaultValues, { keepDirtyValues: true });
   }, [defaultValues, reset]);
 
   useEffect(() => {
