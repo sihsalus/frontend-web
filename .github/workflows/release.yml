@@ -41,7 +41,7 @@ jobs:
       - uses: docker/metadata-action@v6
         id: meta
         with:
-          images: ghcr.io/sihsalus/sihsalus-esm
+          images: ghcr.io/sihsalus/sihsalus-frontend
           tags: |
             type=sha,prefix=sha-
             type=raw,value=latest,enable={{is_default_branch}}
@@ -51,7 +51,7 @@ jobs:
       - uses: docker/build-push-action@v7
         with:
           context: .
-          target: init
+          target: secure-init
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
