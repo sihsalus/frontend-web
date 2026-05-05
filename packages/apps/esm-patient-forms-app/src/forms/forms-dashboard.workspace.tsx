@@ -52,6 +52,9 @@ export default function FormsWorkspace(props: FormsWorkspaceProps) {
                 form,
                 encounterUuid,
                 handlePostResponse,
+                additionalProps: {
+                  openClinicalFormsWorkspaceOnFormClose: false,
+                },
               });
             } else {
               launchPatientWorkspace('patient-form-entry-workspace', {
