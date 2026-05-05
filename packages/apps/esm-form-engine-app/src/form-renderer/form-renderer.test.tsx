@@ -7,11 +7,15 @@ import FormRenderer from './form-renderer.component';
 
 const mockUseFormSchema = jest.mocked(useFormSchema);
 
-jest.mock('@sihsalus/esm-form-engine-lib', () => ({
-  FormEngine: jest
-    .fn()
-    .mockImplementation(() => React.createElement('div', { 'data-testid': 'openmrs form' }, 'FORM ENGINE LIB')),
-}));
+jest.mock(
+  '@sihsalus/esm-form-engine-lib',
+  () => ({
+    FormEngine: jest
+      .fn()
+      .mockImplementation(() => React.createElement('div', { 'data-testid': 'openmrs form' }, 'FORM ENGINE LIB')),
+  }),
+  { virtual: true },
+);
 
 jest.mock('../hooks/useFormSchema', () => ({
   __esModule: true,
