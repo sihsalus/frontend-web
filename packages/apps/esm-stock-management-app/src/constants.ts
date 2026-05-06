@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { formatDisplayDate } from './core/utils/datetimeUtils';
 
-export const moduleName = '@sihsalus/esm-stock-management-app';
+export const moduleName = '@openmrs/esm-stock-management-app';
 export const spaRoot = `${window['getOpenmrsSpaBase']}`;
 export const omrsDateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
 export const startOfDay = dayjs(new Date().setUTCHours(0, 0, 0, 0)).format(omrsDateFormat);
@@ -165,7 +165,10 @@ export const URL_BATCH_JOB_ARTIFACT = (uuid: string, download: boolean): string 
 export function extractErrorMessagesFromResponse(errorObject) {
   const fieldErrors = errorObject?.responseBody?.error?.fieldErrors;
   if (!fieldErrors) {
-    return [errorObject?.responseBody?.error?.message ?? errorObject?.message];
+    const message = errorObject?.responseBody?.error?.message ?? errorObject?.message;
+    return [typeof message === 'string' ? message : JSON.stringify(message ?? errorObject)];
   }
-  return Object.values(fieldErrors).flatMap((errors: Array<Error>) => errors.map((error) => error.message));
+  return Object.values(fieldErrors).flatMap((errors: Array<Error>) =>
+    errors.map((error) => (typeof error.message === 'string' ? error.message : JSON.stringify(error.message))),
+  );
 }

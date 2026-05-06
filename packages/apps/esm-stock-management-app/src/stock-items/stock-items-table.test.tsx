@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
 import { type StockItemDTO } from '../core/api/types/stockItem/StockItem';
 import { handleMutate } from '../utils';
 import { launchAddOrEditStockItemWorkspace } from './stock-item.utils';
-import StockItemsTableComponent from './stock-items-table.component';
 import { useStockItemsPages } from './stock-items-table.resource';
+import StockItemsTableComponent from './stock-items-table.component';
 
 const mockUseStockItemsPages = jest.mocked(useStockItemsPages);
 
@@ -93,17 +93,17 @@ describe('StockItemsTableComponent', () => {
       totalCount: 0,
       currentPageSize: 0,
       currentPage: 0,
-      setCurrentPage: function (_value: React.SetStateAction<number>): void {
+      setCurrentPage: function (value: React.SetStateAction<number>): void {
         throw new Error('Function not implemented.');
       },
-      setPageSize: function (_value: React.SetStateAction<number>): void {
+      setPageSize: function (value: React.SetStateAction<number>): void {
         throw new Error('Function not implemented.');
       },
       pageSizes: [],
       error: undefined,
       isDrug: '',
       setDrug: undefined,
-      setSearchString: function (_value: any): void {
+      setSearchString: function (value: any): void {
         throw new Error('Function not implemented.');
       },
     });

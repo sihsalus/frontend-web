@@ -56,12 +56,12 @@ export const ParseDate = (value: string | null | undefined) => {
     let strMonth;
     if (value!.substring(3, 5).indexOf('0') === 0) strMonth = value!.substring(4, 5);
     else strMonth = value!.substring(3, 5);
-    const month = parseInt(strMonth, 10) - 1;
+    const month = parseInt(strMonth) - 1;
 
     if (value) {
-      date = new Date(parseInt(value!.substring(6, 10), 10), month, parseInt(value!.substring(0, 2), 10), 0, 0);
+      date = new Date(parseInt(value!.substring(6, 10)), month, parseInt(value!.substring(0, 2)), 0, 0);
     }
-  } catch (_e) {
+  } catch (e) {
     // Err
   }
   return date;

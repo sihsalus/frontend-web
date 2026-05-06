@@ -1,11 +1,11 @@
-import { type FetchResponse, openmrsFetch, restBaseUrl, usePagination } from '@openmrs/esm-framework';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
-import { useStockTagLocations } from '../stock-lookups/stock-lookups.resource';
+import { type FetchResponse, openmrsFetch, restBaseUrl, usePagination } from '@openmrs/esm-framework';
+import { useTranslation } from 'react-i18next';
 import { type StockOperationFilter } from '../stock-operations/stock-operations.resource';
+import { useStockTagLocations } from '../stock-lookups/stock-lookups.resource';
 
-export function useStockLocationPages(_filter: StockOperationFilter) {
+export function useStockLocationPages(filter: StockOperationFilter) {
   const { stockLocations, error, isLoading } = useStockTagLocations();
 
   const pageSizes = [10, 20, 30, 40, 50];
@@ -43,16 +43,16 @@ export function useStockLocationPages(_filter: StockOperationFilter) {
 
   const tableRows = useMemo(() => {
     return stockLocations.map((location) => ({
-      id: location?.id,
-      key: `key-${location?.id}`,
-      uuid: `${location?.id}`,
+      id: location?.uuid,
+      key: `key-${location?.uuid}`,
+      uuid: `${location?.uuid}`,
       name: `${location?.name}`,
       tags:
         location?.meta.tag
           ?.filter((tag) => tag.code !== 'SUBSETTED')
           .map((p) => p.code)
           ?.join(', ') ?? '',
-      childLocations: '',
+      childLocations: location?.childLocations?.map((p) => p.display)?.join(', ') ?? '',
     }));
   }, [stockLocations]);
   return {

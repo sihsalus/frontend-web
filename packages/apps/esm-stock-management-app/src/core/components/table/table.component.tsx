@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { saveAs } from 'file-saver';
 import {
   DataTable,
   OverflowMenu,
@@ -17,11 +20,8 @@ import {
 } from '@carbon/react';
 import { DocumentDownload } from '@carbon/react/icons';
 import { isDesktop, useLayoutType, usePagination } from '@openmrs/esm-framework';
-import { saveAs } from 'file-saver';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import styles from './table.scss';
 import { type DataTableRenderProps } from './types';
+import styles from './table.scss';
 
 type FilterProps = {
   rowIds: Array<string>;
@@ -57,7 +57,7 @@ const DataList: React.FC<ListProps> = ({ columns, data, children, totalItems, go
       return rows.push({ ...item, id: index++ });
     });
     setAllRows(rows);
-  }, [paginatedList]);
+  }, [paginatedList, allRows]);
 
   const handleFilter = ({ rowIds, headers, cellsById, inputValue, getCellId }: FilterProps): Array<string> => {
     return rowIds.filter((rowId) =>
@@ -183,6 +183,14 @@ const DataList: React.FC<ListProps> = ({ columns, data, children, totalItems, go
               <Pagination
                 forwardText={t('nextPage', 'Next page')}
                 backwardText={t('previousPage', 'Previous page')}
+                itemsPerPageText={t('itemsPerPage', 'Elementos por pagina:')}
+                itemRangeText={(min, max, total) =>
+                  `${min}-${max} ${t('of', 'de')} ${total} ${t('items', 'elementos')}`
+                }
+                pageNumberText={t('pageNumber', 'Numero de pagina')}
+                pageRangeText={(current, total) =>
+                  `${t('of', 'de')} ${total} ${total === 1 ? t('page', 'pagina') : t('pages', 'paginas')}`
+                }
                 page={currentPage}
                 pageSize={currentPageSize}
                 pageSizes={pageSizes}
