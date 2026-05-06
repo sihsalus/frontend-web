@@ -16,6 +16,8 @@ jobs:
       contents: write
       packages: write
       security-events: write
+    env:
+      HAS_DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -83,7 +85,7 @@ jobs:
           sarif_file: trivy-release-results.sarif
 
       - name: Notify sihsalus deployment
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && env.HAS_DEPLOY_TOKEN == 'true'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
