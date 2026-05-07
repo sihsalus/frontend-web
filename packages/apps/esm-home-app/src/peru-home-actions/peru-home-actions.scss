@@ -22,12 +22,13 @@
   border: 1px solid colors.$gray-20;
 
   &:hover {
-    color: colors.$blue-70;
-    background: colors.$gray-10;
+    color: var(--brand-01);
+    background: #f7faf8;
+    border-color: var(--brand-03);
   }
 
   &:focus {
-    outline: 2px solid colors.$blue-60;
+    outline: 2px solid var(--brand-03);
     outline-offset: -2px;
   }
 }

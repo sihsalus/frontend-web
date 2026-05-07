@@ -109,7 +109,7 @@
   position: relative;
   min-height: 36rem;
   overflow: hidden;
-  background: #27348b;
+  background: var(--brand-02);
 }
 
 .imagePanel::after {
