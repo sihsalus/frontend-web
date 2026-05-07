@@ -347,7 +347,7 @@ describe('ImmunizationsDetailedSummary', () => {
     await waitForLoadingToFinish();
 
     // Should show pagination controls
-    expect(screen.getByText(/items per page/i)).toBeInTheDocument();
+    expect(screen.getByText(/elementos por página/i)).toBeInTheDocument();
     // Check that we have multiple pages (15 items should create multiple pages)
     expect(screen.getAllByText(/of 2 pages/i).length).toBeGreaterThan(0);
   });

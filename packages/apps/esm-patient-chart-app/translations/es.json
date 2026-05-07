@@ -125,8 +125,6 @@
   "paginationItemsCount_one": "{{pageItemsCount}} / {{count}} elemento",
   "paginationItemsCount_many": "{{pageItemsCount}} / {{count}} elementos",
   "paginationItemsCount_other": "{{pageItemsCount}} / {{count}} elementos",
-  "paginationItemsPerPageText": "Elementos por página",
-  "paginationPageNumberText": "Página",
   "paginationPageText_one": "de {{count}} página",
   "paginationPageText_many": "de {{count}} páginas",
   "paginationPageText_other": "de {{count}} páginas",
