@@ -39,3 +39,28 @@
 .dashboardView {
   background-color: colors.$white-0;
 }
+
+:global(.sihsalus-side-nav__item) {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+:global(.sihsalus-side-nav__icon) {
+  flex: 0 0 auto;
+  color: colors.$gray-70;
+}
+
+:global(.sihsalus-side-nav__text) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.active-left-nav-link .sihsalus-side-nav__icon),
+:global(.cds--side-nav__link:hover .sihsalus-side-nav__icon),
+:global(.cds--side-nav__link:focus .sihsalus-side-nav__icon) {
+  color: var(--brand-01);
+}
