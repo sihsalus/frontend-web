@@ -1,6 +1,6 @@
 import { useAppContext, useWorkspace2Context, type Workspace2DefinitionProps } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 import { mockWardViewContext } from '../../../mock';
 import useEmrConfiguration from '../../hooks/useEmrConfiguration';
 import { type WardViewContext } from '../../types';
