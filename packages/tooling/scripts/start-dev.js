@@ -157,6 +157,13 @@ async function startWithProxy(cliArgs) {
   const staticHandler = express.static(distSpa, { index: false });
 
   app.get(sessionPath, async (req, res, next) => {
+    const authorization = req.get('authorization');
+
+    if (!authorization) {
+      res.status(200).json({ authenticated: false, sessionId: '' });
+      return;
+    }
+
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), sessionFallbackTimeoutMs);
 
@@ -164,6 +171,7 @@ async function startWithProxy(cliArgs) {
       const backendResponse = await fetch(`${backend}${sessionPath}`, {
         headers: {
           accept: req.get('accept') || 'application/json',
+          authorization,
           cookie: req.get('cookie') || '',
         },
         signal: controller.signal,
@@ -183,7 +191,7 @@ async function startWithProxy(cliArgs) {
     } catch (error) {
       clearTimeout(timeout);
       logWarn(
-        `Backend session did not respond within ${sessionFallbackTimeoutMs}ms; returning unauthenticated local session.`,
+        `Backend login session did not respond within ${sessionFallbackTimeoutMs}ms; returning unauthenticated local session.`,
       );
       res.status(200).json({ authenticated: false, sessionId: '' });
     }
