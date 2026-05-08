@@ -1,7 +1,8 @@
-import { Search } from '@carbon/react';
-import { AssignedExtension, Extension, ExtensionSlot, useConnectedExtensions } from '@openmrs/esm-framework';
+import { Button, Search } from '@carbon/react';
+import { Logout } from '@carbon/react/icons';
+import { AssignedExtension, Extension, navigate, useConnectedExtensions } from '@openmrs/esm-framework';
 import { ComponentContext } from '@openmrs/esm-framework/src/internal';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './app-module-switcher.scss';
@@ -10,6 +11,10 @@ const AppModuleSwitcher: React.FC = () => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const extensions = useConnectedExtensions('app-menu-item-slot') as AssignedExtension[];
+
+  const handleLogout = useCallback(() => {
+    navigate({ to: `${globalThis.getOpenmrsSpaBase()}logout` });
+  }, []);
 
   const filtered = searchTerm
     ? extensions.filter((ext) => ext.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -33,6 +38,7 @@ const AppModuleSwitcher: React.FC = () => {
           <ComponentContext.Provider
             key={ext.id}
             value={{
+              featureName: ext.name,
               moduleName: ext.moduleName,
               extension: {
                 extensionId: ext.id,
@@ -45,7 +51,11 @@ const AppModuleSwitcher: React.FC = () => {
           </ComponentContext.Provider>
         ))}
       </div>
-      <ExtensionSlot className={styles.textLinks} name="app-menu-slot" />
+      <div className={styles.footer}>
+        <Button className={styles.logoutButton} kind="ghost" onClick={handleLogout} renderIcon={Logout} size="md">
+          {t('logout', 'Cerrar sesión')}
+        </Button>
+      </div>
     </div>
   );
 };

@@ -5,42 +5,70 @@
   position: absolute;
   top: layout.$spacing-09;
   right: 0;
-  width: 34rem;
-  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  width: min(34rem, calc(100vw - #{layout.$spacing-05}));
+  max-height: calc(
+    100dvh - var(--omrs-topnav-height) - var(
+        --omrs-offline-banner-height,
+        0px
+      ) -
+      #{layout.$spacing-05}
+  );
   background-color: #fff;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  overflow-y: auto;
+  overflow: hidden;
   z-index: 9000;
 }
 
 .searchInput {
+  flex: 0 0 auto;
   border: none;
 }
 
 .cardGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
   gap: 0.75rem;
+  justify-items: center;
   padding: 0.75rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-.textLinks {
+.footer {
+  flex: 0 0 auto;
   border-top: 1px solid #e0e0e0;
-  margin-top: 0.25rem;
+  padding: layout.$spacing-03 layout.$spacing-04;
+  background-color: #fff;
+}
 
-  a {
-    display: flex;
-    padding: layout.$spacing-04 layout.$spacing-05;
-    height: layout.$spacing-09;
-    width: 100%;
-    text-decoration: none;
-    color: $ui-05;
-    background-color: transparent;
+.logoutButton {
+  width: 100%;
+  justify-content: flex-start;
+}
 
-    &:hover {
-      @include brand-01(background-color);
-      color: $ui-02;
-    }
+@media (max-width: 42rem) {
+  .overlay {
+    position: fixed;
+    top: calc(
+      var(--omrs-topnav-height) + var(--omrs-offline-banner-height, 0px)
+    );
+    right: layout.$spacing-03;
+    left: layout.$spacing-03;
+    width: auto;
+    max-height: calc(
+      100dvh - var(--omrs-topnav-height) - var(
+          --omrs-offline-banner-height,
+          0px
+        ) -
+        #{layout.$spacing-06}
+    );
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    padding: layout.$spacing-03;
   }
 }
