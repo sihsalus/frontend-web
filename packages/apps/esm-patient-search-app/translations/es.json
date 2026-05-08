@@ -46,7 +46,7 @@
   "searchResultsCount_other": "{{count}} resultados de búsqueda",
   "selectOption": "Seleccione una opción",
   "sex": "Sexo",
-  "startVisit": "Start visit",
+  "startVisit": "Iniciar consulta",
   "trySearchWithPatientUniqueID": "Intente buscar nuevamente usando un dato de identificación del paciente",
   "unknown": "Desconocido",
   "unsupportedAttributeFormat": "Formato de atributo no soportado: {{format}}",

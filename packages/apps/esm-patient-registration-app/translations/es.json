@@ -77,7 +77,7 @@
   "negativeYears": "Los años estimados no pueden ser negativos",
   "no": "No",
   "noAddressResults": "No se encontraron direcciones coincidentes",
-  "noMatchingResults": "No matching results",
+  "noMatchingResults": "No se encontraron resultados coincidentes",
   "nonCodedCauseOfDeath": "Causa de muerte no codificada",
   "nonCodedCauseOfDeathRequired": "La causa de muerte es obligatoria",
   "nonsensicalYears": "Los años estimados no pueden ser mayores a 140",
