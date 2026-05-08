@@ -1,7 +1,7 @@
 import { ListChecked } from '@carbon/react/icons';
-import { ConfigurableLink } from '@openmrs/esm-framework';
+import { ConfigurableLink, launchWorkspace2 } from '@openmrs/esm-framework';
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 
@@ -16,6 +16,11 @@ function DashboardExtension({ dashboardLinkConfig }: { dashboardLinkConfig: Dash
   const { name } = dashboardLinkConfig;
   const location = useLocation();
   const spaBasePath = `${globalThis.spaBase}/home`;
+  const openPatientListsWorkspace = useCallback(() => {
+    void launchWorkspace2('home-patient-lists', {
+      detailsWorkspaceName: 'home-patient-list-details',
+    });
+  }, []);
 
   const navLink = useMemo(() => {
     const pathArray = location.pathname.split('/home');
@@ -28,6 +33,7 @@ function DashboardExtension({ dashboardLinkConfig }: { dashboardLinkConfig: Dash
       className={classNames('cds--side-nav__link', {
         'active-left-nav-link': navLink.match(name),
       })}
+      onClick={openPatientListsWorkspace}
       to={`${spaBasePath}/${name}`}
     >
       <span className="sihsalus-side-nav__item">

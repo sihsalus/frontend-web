@@ -23,18 +23,26 @@ import { useTranslation } from 'react-i18next';
 import { usePatientLists } from '../patient-lists.resource';
 import styles from './patient-lists.scss';
 
-function PatientListsWorkspace({ launchChildWorkspace }: PatientWorkspace2DefinitionProps<object, object>) {
+interface PatientListsWorkspaceProps {
+  detailsWorkspaceName?: string;
+}
+
+function PatientListsWorkspace({
+  launchChildWorkspace,
+  workspaceProps,
+}: PatientWorkspace2DefinitionProps<PatientListsWorkspaceProps, object>) {
   const { t } = useTranslation();
   const layout = useLayoutType();
   const responsiveSize = layout === 'tablet' ? 'lg' : 'sm';
   const [searchTerm, setSearchTerm] = useState('');
   const { patientLists, isLoading } = usePatientLists();
+  const detailsWorkspaceName = workspaceProps?.detailsWorkspaceName ?? 'patient-list-details';
 
   const launchListDetailsWorkspace = useCallback(
     (list) => {
-      launchChildWorkspace('patient-list-details', { list });
+      launchChildWorkspace(detailsWorkspaceName, { list });
     },
-    [launchChildWorkspace],
+    [detailsWorkspaceName, launchChildWorkspace],
   );
 
   const tableHeaders = [

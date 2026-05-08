@@ -55,6 +55,7 @@
   "patientListMemberCount_one": "Esta lista tiene {{count}} paciente",
   "patientListMemberCount_many": "Esta lista tiene {{count}} pacientes",
   "patientListMemberCount_other": "Esta lista tiene {{count}} pacientes",
+  "openPatientLists": "Abrir listas de pacientes",
   "patientLists": "Listas de pacientes",
   "patientRemovedFromList": "Paciente removido de lista",
   "patients": "pacientes",
