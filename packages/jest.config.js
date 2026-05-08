@@ -33,7 +33,15 @@ module.exports = {
   moduleNameMapper: {
     '\\.(s?css)$': 'identity-obj-proxy',
     '^@openmrs/esm-framework$': path.resolve(__dirname, 'tooling', 'scripts', 'esm-framework-jest-mock.tsx'),
+    '^@openmrs/esm-expression-evaluator/src/public$': path.resolve(
+      __dirname,
+      'libs',
+      'esm-expression-evaluator',
+      'src',
+      'public.ts',
+    ),
     '^@openmrs/esm-utils$': path.resolve(__dirname, 'libs', 'esm-utils', 'src', 'index.ts'),
+    '^@openmrs/esm-utils/mock$': path.resolve(__dirname, 'libs', 'esm-utils', 'mock-jest.ts'),
     '@openmrs/esm-translations': '@openmrs/esm-translations/mock',
     '^dexie$': require.resolve('dexie'),
     '^lodash-es/(.*)$': 'lodash/$1',
