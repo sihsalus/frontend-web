@@ -20,9 +20,7 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title, i
   useEffect(() => {
     if (typeof title === 'function') {
       Promise.resolve(title())
-        .then((resolvedValue) => {
-          setResolvedTitle(resolvedValue);
-        })
+        .then(setResolvedTitle)
         .catch((e: Error) => {
           throw e;
         });
@@ -31,23 +29,22 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title, i
     }
   }, [title]);
 
-  const activeClassName = path === navLink ? 'active-left-nav-link' : 'non-active';
+  if (!resolvedTitle) {
+    return null;
+  }
 
   return (
-    title &&
-    resolvedTitle && (
-      <div key={path} className={activeClassName}>
-        <ConfigurableLink
-          className={classNames('cds--side-nav__link', activeClassName)}
-          to={`${basePath}/${encodeURIComponent(path)}`}
-        >
-          <span className={styles.menu}>
-            {icon && <MaybeIcon icon={icon} className={styles.icon} size={16} />}
-            <span>{resolvedTitle}</span>
-          </span>
-        </ConfigurableLink>
-      </div>
-    )
+    <div key={path}>
+      <ConfigurableLink
+        className={classNames('cds--side-nav__link', { 'active-left-nav-link': path === navLink })}
+        to={`${basePath}/${encodeURIComponent(path)}`}
+      >
+        <span className={styles.menu}>
+          {icon && <MaybeIcon icon={icon} className={styles.icon} size={16} />}
+          <span>{resolvedTitle}</span>
+        </span>
+      </ConfigurableLink>
+    </div>
   );
 };
 
