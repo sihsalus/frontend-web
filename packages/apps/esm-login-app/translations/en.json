@@ -37,6 +37,7 @@
   "selectLanguage": "Select language",
   "selectYourLocation": "Select your location from the list below. Use the search bar to find your location.",
   "serverUnavailable": "The authentication server is not responding. Please try again later.",
+  "sessionEndpointNotFound": "The login service is not available at this backend address. Please contact support or try a different environment.",
   "showPassword": "Show password",
   "submitting": "Submitting",
   "username": "Username",

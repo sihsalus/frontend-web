@@ -22,6 +22,37 @@ export interface LoginReferrer {
   referrer?: string;
 }
 
+type LoginErrorKey = 'invalidCredentials' | 'serverUnavailable' | 'sessionEndpointNotFound';
+
+const loginErrorFallbacks = {
+  invalidCredentials: 'Invalid username or password',
+  serverUnavailable: 'The authentication server is not responding. Please try again later.',
+  sessionEndpointNotFound:
+    'The login service is not available at this backend address. Please contact support or try a different environment.',
+} satisfies Record<LoginErrorKey, string>;
+
+function getLoginErrorKey(error: unknown): LoginErrorKey {
+  const session = (error as { session?: { backendUnavailable?: boolean } })?.session;
+  const nestedError = (error as { error?: unknown })?.error;
+  const errorToInspect = nestedError ?? error;
+  const status = (errorToInspect as { response?: { status?: number } })?.response?.status;
+  const message = errorToInspect instanceof Error ? errorToInspect.message : String(errorToInspect ?? '');
+
+  if (session?.backendUnavailable) {
+    return 'serverUnavailable';
+  }
+
+  if (status === 404 || /404|not found/i.test(message)) {
+    return 'sessionEndpointNotFound';
+  }
+
+  if (status >= 500 || /failed to fetch|gateway timeout|status of 0|load failed|network/i.test(message)) {
+    return 'serverUnavailable';
+  }
+
+  return 'invalidCredentials';
+}
+
 const Login: React.FC = () => {
   const {
     languageSwitcher,
@@ -127,11 +158,7 @@ const Login: React.FC = () => {
             navigate('/login/location');
           }
         } else {
-          setErrorMessage(
-            (session as { backendUnavailable?: boolean })?.backendUnavailable
-              ? t('serverUnavailable', 'The authentication server is not responding. Please try again later.')
-              : t('invalidCredentials', 'Invalid username or password'),
-          );
+          setErrorMessage(getLoginErrorKey({ session }));
           setUsername('');
           setPassword('');
           if (showPasswordOnSeparateScreen) {
@@ -141,16 +168,7 @@ const Login: React.FC = () => {
 
         return true;
       } catch (error: unknown) {
-        if (
-          error instanceof Error &&
-          /failed to fetch|gateway timeout|status of 0|load failed|network/i.test(error.message)
-        ) {
-          setErrorMessage(
-            t('serverUnavailable', 'The authentication server is not responding. Please try again later.'),
-          );
-        } else {
-          setErrorMessage(t('invalidCredentials', 'Invalid username or password'));
-        }
+        setErrorMessage(getLoginErrorKey(error));
         setUsername('');
         setPassword('');
         if (showPasswordOnSeparateScreen) {
@@ -168,7 +186,6 @@ const Login: React.FC = () => {
       showPasswordField,
       loginLinks,
       location,
-      t,
       continueLogin,
     ],
   );
@@ -288,7 +305,7 @@ const Login: React.FC = () => {
                   <div className={styles.errorMessage}>
                     <InlineNotification
                       kind="error"
-                      subtitle={t(errorMessage)}
+                      subtitle={t(errorMessage, loginErrorFallbacks[errorMessage as LoginErrorKey])}
                       title={getCoreTranslation('error')}
                       onClick={() => setErrorMessage('')}
                     />

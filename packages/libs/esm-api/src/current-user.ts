@@ -16,6 +16,7 @@ export type LoadedSessionStore = {
 export type UnloadedSessionStore = {
   loaded: false;
   session: null;
+  error?: unknown;
 };
 
 /** @internal */
@@ -422,10 +423,24 @@ function handleSessionResponse(result: Promise<FetchResponse<Session>>) {
         }
       })
       .catch((err) => {
-        reportError(`Failed to fetch new session information: ${err}`);
-        const nextState: SessionStore = { loaded: false, session: null };
+        reportError(getSessionFetchErrorMessage(err));
+        const nextState: SessionStore = { loaded: false, session: null, error: err };
         sessionStore.setState(nextState);
         reject(nextState);
       });
   });
+}
+
+function getSessionFetchErrorMessage(err: unknown) {
+  const status = (err as { response?: { status?: number } })?.response?.status;
+
+  if (status === 404) {
+    return 'Unable to reach the OpenMRS session endpoint. Check that the backend is published at /openmrs.';
+  }
+
+  if (status === 502 || status === 503 || status === 504) {
+    return 'The OpenMRS backend is temporarily unavailable. Please try again later.';
+  }
+
+  return `Unable to refresh the OpenMRS session: ${err}`;
 }
