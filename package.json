@@ -106,6 +106,22 @@
     "@openmrs/esm-offline": "workspace:*",
     "workbox-window@npm:^6.1.5": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch",
     "workbox-window@npm:6.6.0": "patch:workbox-window@npm%3A6.6.0#~/.yarn/patches/workbox-window-npm-6.6.0-e9667fec2c.patch",
-    "@openmrs/esm-styleguide": "workspace:*"
+    "@openmrs/esm-styleguide": "workspace:*",
+    "@openmrs/esm-api": "workspace:*",
+    "@openmrs/esm-config": "workspace:*",
+    "@openmrs/esm-dynamic-loading": "workspace:*",
+    "@openmrs/esm-emr-api": "workspace:*",
+    "@openmrs/esm-error-handling": "workspace:*",
+    "@openmrs/esm-expression-evaluator": "workspace:*",
+    "@openmrs/esm-extensions": "workspace:*",
+    "@openmrs/esm-feature-flags": "workspace:*",
+    "@openmrs/esm-framework": "workspace:*",
+    "@openmrs/esm-globals": "workspace:*",
+    "@openmrs/esm-navigation": "workspace:*",
+    "@openmrs/esm-react-utils": "workspace:*",
+    "@openmrs/esm-routes": "workspace:*",
+    "@openmrs/esm-state": "workspace:*",
+    "@openmrs/esm-translations": "workspace:*",
+    "@openmrs/esm-utils": "workspace:*"
   }
 }
