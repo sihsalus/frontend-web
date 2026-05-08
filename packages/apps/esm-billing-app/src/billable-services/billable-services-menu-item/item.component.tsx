@@ -10,8 +10,8 @@ const Item = () => {
 
   return (
     <ClickableTile className={styles.customTile} id="menu-item" href={`${openmrsSpaBase}billable-services`}>
-      <div className="customTileTitle">{<Receipt size={24} />}</div>
-      <div>{t('billableServices', 'Billable services')}</div>
+      <Receipt size={32} className={styles.customTileTitle} />
+      <div className={styles.customTileLabel}>{t('billableServices', 'Billable services')}</div>
     </ClickableTile>
   );
 };

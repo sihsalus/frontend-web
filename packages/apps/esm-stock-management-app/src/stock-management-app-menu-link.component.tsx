@@ -12,7 +12,7 @@ export default function StockManagementAppMenuLink() {
   return (
     <ClickableTile className={styles.customTile} href={`${openmrsSpaBase}stock-management`}>
       <InventoryManagement size={32} className={styles.customTileTitle} />
-      <span>{t('stockManagement', 'Gestión de Inventario')}</span>
+      <span className={styles.customTileLabel}>{t('stockManagement', 'Gestión de Inventario')}</span>
     </ClickableTile>
   );
 }
