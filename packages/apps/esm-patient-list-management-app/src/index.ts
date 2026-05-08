@@ -19,7 +19,7 @@ export function startupApp() {
   defineConfigSchema(moduleName, configSchema);
 }
 
-export const root = getAsyncLifecycle(() => import('./home-patient-lists-workspace-launcher.component'), options);
+export const root = getAsyncLifecycle(() => import('./root.component'), options);
 
 export const addPatientToListModal = getAsyncLifecycle(() => import('./add-patient/add-patient.modal'), {
   featureName: 'patient-actions-modal',

@@ -14,16 +14,6 @@
       "name": "patient-list-details",
       "component": "patientListDetailsWorkspace",
       "window": "patient-lists"
-    },
-    {
-      "name": "home-patient-lists",
-      "component": "patientListsWorkspace",
-      "window": "home-patient-lists"
-    },
-    {
-      "name": "home-patient-list-details",
-      "component": "patientListDetailsWorkspace",
-      "window": "home-patient-lists"
     }
   ],
   "workspaceWindows2": [
@@ -33,11 +23,6 @@
       "icon": "patientListsActionMenu",
       "width": "wider",
       "order": 5
-    },
-    {
-      "name": "home-patient-lists",
-      "group": "home",
-      "width": "wider"
     }
   ]
 }

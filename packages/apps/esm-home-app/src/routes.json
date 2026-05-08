@@ -58,12 +58,5 @@
       "online": true,
       "offline": true
     }
-  ],
-  "workspaceGroups2": [
-    {
-      "name": "home",
-      "scopePattern": "/home",
-      "overlay": true
-    }
   ]
 }
