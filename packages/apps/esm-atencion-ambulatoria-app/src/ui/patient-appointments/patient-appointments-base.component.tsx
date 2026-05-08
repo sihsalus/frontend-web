@@ -78,7 +78,7 @@ const PatientAppointmentsBase: React.FC<PatientAppointmentsBaseProps> = ({ patie
             <Button
               kind="ghost"
               renderIcon={(props) => <Add size={16} {...props} />}
-              iconDescription="Add Appointments"
+              iconDescription={t('addAppointments', 'Add Appointments')}
               onClick={launchAppointmentsForm}
             >
               {t('add', 'Add')}

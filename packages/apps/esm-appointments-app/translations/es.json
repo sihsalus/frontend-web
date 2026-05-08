@@ -96,7 +96,7 @@
   "endTime": "Hora de finalización",
   "errorCreatingAppointmentService": "Error al crear el servicio de cita",
   "expected": "Esperado",
-  "failedToEndActiveVisit": "Failed to end active visit for {{patient}}",
+  "failedToEndActiveVisit": "No se pudo finalizar la consulta activa para {{patient}}",
   "failedToUpdateVisit": "Failed to update visit",
   "filterAppointmentsByServiceType": "Filtrar citas por tipo de servicio",
   "filterTable": "Filtrar tabla",

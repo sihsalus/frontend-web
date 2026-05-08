@@ -128,7 +128,7 @@ function ConditionsDetailedSummary({ patient }) {
             <Button
               kind="ghost"
               renderIcon={(props: ComponentProps<typeof AddIcon>) => <AddIcon size={16} {...props} />}
-              iconDescription="Add conditions"
+              iconDescription={t('addConditions', 'Add conditions')}
               onClick={launchConditionsForm}
             >
               {t('add', 'Add')}
@@ -147,7 +147,11 @@ function ConditionsDetailedSummary({ patient }) {
           {({ rows, headers, getHeaderProps, getTableProps, getRowProps }) => (
             <>
               <TableContainer>
-                <Table {...getTableProps()} aria-label="conditions summary" className={styles.table}>
+                <Table
+                  {...getTableProps()}
+                  aria-label={t('conditionsSummary', 'Conditions summary')}
+                  className={styles.table}
+                >
                   <TableHead>
                     <TableRow>
                       {headers.map((header) => (

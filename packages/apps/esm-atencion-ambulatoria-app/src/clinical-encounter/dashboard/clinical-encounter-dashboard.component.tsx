@@ -73,7 +73,7 @@ const ClinicalEncounterDashboard: React.FC<ClinicalEncounterDashboardProps> = ({
 
       <Layer style={{ backgroundColor: 'white', padding: '0 1rem' }}>
         <Tabs>
-          <TabList contained activation="manual" aria-label="List of tabs">
+          <TabList contained activation="manual" aria-label={t('listOfTabs', 'List of tabs')}>
             <Tab renderIcon={Friendship}>{t('socialHistory', 'Social History')}</Tab>
             <Tab renderIcon={ReminderMedical}>{t('medicalHistory', 'Medical History')}</Tab>
             {isInPatient && <Tab renderIcon={CloudMonitoring}>{t('encounterDetails', 'Encounter details')}</Tab>}

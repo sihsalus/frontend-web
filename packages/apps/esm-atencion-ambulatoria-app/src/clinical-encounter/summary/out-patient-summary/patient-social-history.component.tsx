@@ -56,7 +56,7 @@ const OutPatientSocialHistory: React.FC<OutPatientSocialHistoryProps> = ({
   const headerTitle = t('socialHistory', 'Social History');
   const handleOpenOrEditClinicalEncounterForm = (encounterUUID = clinicalEncounterUuid) => {
     launchWorkspace(patientFormEntryWorkspace, {
-      workspaceTitle: 'Historia Social',
+      workspaceTitle: t('socialHistory', 'Social History'),
       mutateForm: mutate(
         (key) => typeof key === 'string' && key.startsWith('/openmrs/ws/rest/v1/kenyaemr/flags'),
         undefined,
@@ -123,7 +123,7 @@ const OutPatientSocialHistory: React.FC<OutPatientSocialHistoryProps> = ({
         smokingDuration: getObsFromEncounter(encounter, Smoking_Duration_UUID),
         otherSubstanceAbuse: getObsFromEncounter(encounter, Other_Substance_Abuse_UUID),
         actions: (
-          <OverflowMenu aria-label="overflow-menu" flipped={false}>
+          <OverflowMenu aria-label={t('actions', 'Actions')} flipped={false}>
             <OverflowMenuItem
               onClick={() => handleOpenOrEditClinicalEncounterForm(encounter.uuid)}
               itemText={t('edit', 'Edit')}
@@ -163,7 +163,7 @@ const OutPatientSocialHistory: React.FC<OutPatientSocialHistoryProps> = ({
           kind="ghost"
           onClick={() => handleOpenOrEditClinicalEncounterForm()}
           renderIcon={(props) => <Add size={24} {...props} />}
-          iconDescription="Add"
+          iconDescription={t('add', 'Add')}
         >
           {t('add', 'Add')}
         </Button>
@@ -174,7 +174,7 @@ const OutPatientSocialHistory: React.FC<OutPatientSocialHistoryProps> = ({
         headers={tableHeader}
         render={({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
           <TableContainer {...getTableContainerProps()}>
-            <Table size="sm" {...getTableProps()} aria-label="sample table">
+            <Table size="sm" {...getTableProps()} aria-label={t('socialHistory', 'Social History')}>
               <TableHead>
                 <TableRow>
                   {headers.map((header, i) => (
