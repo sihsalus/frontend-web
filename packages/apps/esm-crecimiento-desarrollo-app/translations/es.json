@@ -381,7 +381,7 @@
   "testPeruanoMissingConcepts": "No hay conceptos configurados para guardar el Test Peruano. Revise la configuración del módulo.",
   "testPeruanoSaved": "Test Peruano de Desarrollo Guardado",
   "testPeruanoSaveError": "Hubo un error al guardar el Test Peruano",
-  "testPeruanoSaveErrorRetry": "Please check the form and try again.",
+  "testPeruanoSaveErrorRetry": "Por favor, revise el formulario e intente nuevamente.",
   "testPeruanoSubtitle": "Evaluación del desarrollo infantil adaptada al contexto cultural peruano",
   "testPeruanoTitle": "Test Peruano de Desarrollo Infantil",
   "thorax": "Tórax",

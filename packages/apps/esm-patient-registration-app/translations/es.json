@@ -76,7 +76,7 @@
   "negativeMonths": "Los meses estimados no pueden ser negativos",
   "negativeYears": "Los años estimados no pueden ser negativos",
   "no": "No",
-  "noAddressResults": "No matching addresses found",
+  "noAddressResults": "No se encontraron direcciones coincidentes",
   "noMatchingResults": "No matching results",
   "nonCodedCauseOfDeath": "Causa de muerte no codificada",
   "nonCodedCauseOfDeathRequired": "La causa de muerte es obligatoria",
