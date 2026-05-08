@@ -45,6 +45,7 @@
   "noInActiveCasesToDisplay": "No hay casos de suspensión para mostrar.",
   "noObservationsFound": "No se encontraron observaciones",
   "populationType": "Tipo de población",
+  "patientTracking": "Seguimiento de pacientes",
   "relationship": "Relación",
   "relationshipConfirmationText": "Esto terminará con la relación.¿Estás seguro de que quieres continuar?",
   "relationshipError": "Error de relación",

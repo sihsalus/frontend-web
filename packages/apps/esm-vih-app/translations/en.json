@@ -45,6 +45,7 @@
   "noInActiveCasesToDisplay": "There is no inactive cases data to display.",
   "noObservationsFound": "No observations found",
   "populationType": "Population type",
+  "patientTracking": "Patient Tracking",
   "relationship": "Relationship",
   "relationshipConfirmationText": "This will end the relationship. Are you sure you want to proceed?",
   "relationshipError": "Relationship Error",

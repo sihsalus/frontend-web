@@ -55,6 +55,7 @@
   "freeBeds": "Free beds",
   "hours_one": "{{count}} hour",
   "hours_other": "{{count}} hours",
+  "Hospitalization": "Hospitalization",
   "infants": "Infants",
   "inpatientNotesWorkspaceTitle": "In-patient notes",
   "invalidLocationSpecified": "Invalid location specified",

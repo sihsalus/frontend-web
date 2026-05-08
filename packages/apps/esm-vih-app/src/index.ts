@@ -39,7 +39,7 @@ export function startupApp(): void {
 export const caseManagementDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'case-management',
-    title: 'Patient Tracking',
+    title: 'patientTracking',
   }),
   options,
 );

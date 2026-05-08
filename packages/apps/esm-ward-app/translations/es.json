@@ -59,6 +59,7 @@
   "hours_one": "{{count}} hora",
   "hours_many": "{{count}} horas",
   "hours_other": "{{count}} horas",
+  "Hospitalization": "Hospitalización",
   "infants": "Infantes",
   "inpatientNotesWorkspaceTitle": "Notas de pacientes hospitalizados",
   "invalidLocationSpecified": "Ubicación especificada inválida",

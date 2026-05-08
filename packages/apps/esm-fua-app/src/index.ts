@@ -32,7 +32,7 @@ export const root = getSyncLifecycle(rootComponent, options);
 export const fuaDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'fua-request',
-    title: 'Single Care Form',
+    title: 'fua',
   }),
   options,
 );
