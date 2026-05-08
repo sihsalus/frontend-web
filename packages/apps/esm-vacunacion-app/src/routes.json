@@ -45,7 +45,15 @@
       "order": 9
     }
   ],
-  "pages": [],
+  "pages": [
+    {
+      "name": "vaccine-scheduling-builder-page",
+      "component": "vaccineSchedulingBuilderPage",
+      "route": "vaccine-scheduling-builder",
+      "online": true,
+      "offline": false
+    }
+  ],
   "modals": [
     {
       "name": "vacunacion-delete-confirmation-modal",

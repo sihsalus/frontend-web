@@ -77,9 +77,9 @@ const Login: React.FC = () => {
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const loginImageSrc = `${globalThis.getOpenmrsSpaBase()}login.png`;
   const loginVideoSrc = `${globalThis.getOpenmrsSpaBase()}videos/login-hero.mp4`;
-  const githubLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-github.svg`;
   const openmrsLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-openmrs.svg`;
   const pucpLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-pucp.svg`;
+  const santaClotildeLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-santa-clotilde.png`;
 
   useEffect(() => {
     if (!user) {
@@ -314,6 +314,7 @@ const Login: React.FC = () => {
               </form>
             </Tile>
             <div className={styles.partnerSection}>
+              <p className={styles.partnerSubtitle}>{t('madeInCollaboration', 'Hecho en colaboración')}</p>
               <div className={styles.partnerLinks}>
                 <a href="https://openmrs.org" target="_blank" rel="noopener noreferrer" aria-label="OpenMRS">
                   <img src={openmrsLogoSrc} alt={t('openmrsLogo', 'OpenMRS Logo')} />
@@ -322,17 +323,22 @@ const Login: React.FC = () => {
                   href="https://inform.pucp.edu.pe/santaclotilde/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Proyecto Santa Clotilde PUCP"
+                  aria-label="Santa Clotilde"
                 >
-                  <img src={pucpLogoSrc} alt="" />
+                  <img
+                    className={styles.santaClotildeLogo}
+                    src={santaClotildeLogoSrc}
+                    alt={t('santaClotildeLogo', 'Logo de Santa Clotilde')}
+                  />
                 </a>
                 <a
-                  href="https://github.com/sihsalus"
+                  className={styles.pucpLogoLink}
+                  href="https://www.pucp.edu.pe/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="SIH Salus en GitHub"
+                  aria-label="PUCP"
                 >
-                  <img src={githubLogoSrc} alt="" />
+                  <img src={pucpLogoSrc} alt={t('pucpLogo', 'Logo de la PUCP')} />
                 </a>
               </div>
             </div>

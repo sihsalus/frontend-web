@@ -157,6 +157,13 @@
   max-width: 26rem;
 }
 
+.partnerSubtitle {
+  @extend .caption01;
+  margin: 0 0 layout.$spacing-04;
+  color: $text-02;
+  text-align: center;
+}
+
 .partnerLinks {
   display: flex;
   justify-content: center;
@@ -172,12 +179,13 @@
     justify-content: center;
     min-width: layout.$spacing-08;
     min-height: layout.$spacing-08;
+    border-radius: 0.25rem;
   }
 
   img {
     display: block;
-    max-height: layout.$spacing-07;
-    max-width: 7.5rem;
+    max-height: layout.$spacing-08;
+    max-width: 8.5rem;
     object-fit: contain;
     transition: transform 300ms ease;
   }
@@ -185,6 +193,19 @@
   a:hover img,
   a:focus-visible img {
     transform: scale(1.08);
+  }
+}
+
+.santaClotildeLogo {
+  border-radius: 50%;
+}
+
+.pucpLogoLink {
+  padding: layout.$spacing-02 layout.$spacing-04;
+  background: #042354;
+
+  img {
+    max-width: 9.25rem;
   }
 }
 

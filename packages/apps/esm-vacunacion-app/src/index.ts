@@ -52,3 +52,8 @@ export const schedulingAdminPageCardLink = getAsyncLifecycle(
   () => import('./immunization-plan/scheduling-admin-link.component'),
   options,
 );
+
+export const vaccineSchedulingBuilderPage = getAsyncLifecycle(
+  () => import('./vaccine-scheduling-builder/vaccine-scheduling-builder.component'),
+  options,
+);
