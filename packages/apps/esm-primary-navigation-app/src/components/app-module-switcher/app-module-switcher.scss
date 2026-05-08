@@ -59,20 +59,13 @@
 @media (max-width: 42rem) {
   .overlay {
     position: fixed;
-    top: calc(
-      var(--omrs-topnav-height) + var(--omrs-offline-banner-height, 0px)
-    );
+    top: var(--omrs-topnav-height);
     right: 0;
     bottom: 0;
     left: 0;
     width: auto;
     max-height: none;
-    height: calc(
-      100dvh - var(--omrs-topnav-height) - var(
-          --omrs-offline-banner-height,
-          0px
-        )
-    );
+    height: calc(100dvh - var(--omrs-topnav-height));
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
