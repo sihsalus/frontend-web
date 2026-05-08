@@ -1,16 +1,18 @@
-import { ConfigurableLink } from '@openmrs/esm-framework';
+import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import last from 'lodash-es/last';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import styles from './createDashboardLink.scss';
 
 interface DashboardLinkConfig {
   basePath?: string;
   path: string;
   title: string | (() => string | Promise<string>);
+  icon?: string;
 }
 
-const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title }) => {
+const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title, icon }) => {
   const location = useLocation();
   const navLink = useMemo(() => decodeURIComponent(last(location.pathname.split('/'))), [location.pathname]);
   const [resolvedTitle, setResolvedTitle] = useState<string | undefined>();
@@ -39,7 +41,10 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title })
           className={classNames('cds--side-nav__link', activeClassName)}
           to={`${basePath}/${encodeURIComponent(path)}`}
         >
-          {resolvedTitle}
+          <span className={styles.menu}>
+            {icon && <MaybeIcon icon={icon} className={styles.icon} size={16} />}
+            <span>{resolvedTitle}</span>
+          </span>
         </ConfigurableLink>
       </div>
     )
@@ -49,7 +54,7 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title })
 export const createDashboardLink = (db: DashboardLinkConfig) => {
   return ({ basePath }: { basePath: string }) => (
     <BrowserRouter>
-      <DashboardLink basePath={basePath} path={db.path} title={db.title} />
+      <DashboardLink basePath={basePath} path={db.path} title={db.title} icon={db.icon} />
     </BrowserRouter>
   );
 };

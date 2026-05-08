@@ -122,7 +122,8 @@
         "columns": 1,
         "title": "Acciones sin internet",
         "path": "Offline Actions",
-        "slot": "patient-chart-offline-actions-dashboard-slot"
+        "slot": "patient-chart-offline-actions-dashboard-slot",
+        "icon": "omrs-icon-renew"
       },
       "order": 12,
       "online": true,

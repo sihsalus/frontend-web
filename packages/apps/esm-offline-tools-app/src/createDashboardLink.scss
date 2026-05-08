@@ -1,0 +1,12 @@
+@use "@carbon/colors";
+@use "@carbon/layout";
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: layout.$spacing-03;
+  fill: colors.$gray-70;
+}
