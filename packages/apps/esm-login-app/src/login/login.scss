@@ -342,6 +342,16 @@
   }
 }
 
+@media (max-width: 40rem) {
+  .imagePanel {
+    display: none;
+  }
+
+  .formPanel {
+    min-height: 100vh;
+  }
+}
+
 @media (max-width: 30rem) {
   .loginCard,
   .errorMessage,

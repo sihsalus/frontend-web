@@ -59,13 +59,13 @@
 @media (max-width: 42rem) {
   .overlay {
     position: fixed;
-    top: var(--omrs-topnav-height);
+    top: layout.$spacing-09;
     right: 0;
     bottom: 0;
     left: 0;
     width: auto;
     max-height: none;
-    height: calc(100dvh - var(--omrs-topnav-height));
+    height: calc(100dvh - #{layout.$spacing-09});
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
