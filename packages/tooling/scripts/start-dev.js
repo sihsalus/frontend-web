@@ -14,7 +14,7 @@ const logInfo = (msg) => console.log(`${chalk.green.bold('[start-dev]')} ${msg}`
 const logWarn = (msg) => console.warn(`${chalk.yellow.bold('[start-dev]')} ${chalk.yellow(msg)}`);
 const logFail = (msg) => console.error(`${chalk.red.bold('[start-dev]')} ${chalk.red(msg)}`);
 
-const defaultBackend = 'http://hii1sc-dev.inf.pucp.edu.pe';
+const defaultBackend = 'http://gidis-hsc-dev.inf.pucp.edu.pe';
 const backend = process.env.SIHSALUS_BACKEND_URL || defaultBackend;
 const backendSource = hadBackendBeforeDotenv ? 'shell' : dotenvResult.parsed?.SIHSALUS_BACKEND_URL ? '.env' : 'default';
 const authMode = process.env.SIHSALUS_AUTH_MODE || 'openmrs';
@@ -156,7 +156,7 @@ async function startWithProxy(cliArgs) {
   const app = express();
   const staticHandler = express.static(distSpa, { index: false });
 
-  app.get(sessionPath, async (req, res, next) => {
+  app.get(sessionPath, async (req, res) => {
     const authorization = req.get('authorization');
 
     if (!authorization) {
@@ -188,7 +188,7 @@ async function startWithProxy(cliArgs) {
         res.setHeader('set-cookie', setCookie);
       }
       res.send(await backendResponse.text());
-    } catch (error) {
+    } catch {
       clearTimeout(timeout);
       logWarn(
         `Backend login session did not respond within ${sessionFallbackTimeoutMs}ms; returning unauthenticated local session.`,
