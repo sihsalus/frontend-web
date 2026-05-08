@@ -158,8 +158,9 @@ async function startWithProxy(cliArgs) {
 
   app.get(sessionPath, async (req, res) => {
     const authorization = req.get('authorization');
+    const cookie = req.get('cookie') || '';
 
-    if (!authorization) {
+    if (!authorization && !cookie) {
       res.status(200).json({ authenticated: false, sessionId: '' });
       return;
     }
@@ -171,8 +172,8 @@ async function startWithProxy(cliArgs) {
       const backendResponse = await fetch(`${backend}${sessionPath}`, {
         headers: {
           accept: req.get('accept') || 'application/json',
-          authorization,
-          cookie: req.get('cookie') || '',
+          ...(authorization ? { authorization } : {}),
+          cookie,
         },
         signal: controller.signal,
       });
