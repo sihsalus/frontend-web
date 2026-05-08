@@ -32,6 +32,9 @@ module.exports = {
   moduleDirectories: ['node_modules', __dirname],
   moduleNameMapper: {
     '\\.(s?css)$': 'identity-obj-proxy',
+    '^@openmrs/esm-api$': path.resolve(__dirname, 'libs', 'esm-api', 'src', 'index.ts'),
+    '^@openmrs/esm-api/mock$': path.resolve(__dirname, 'libs', 'esm-api', 'mock-jest.ts'),
+    '^@openmrs/esm-api/src/public$': path.resolve(__dirname, 'libs', 'esm-api', 'src', 'public.ts'),
     '^@openmrs/esm-framework$': path.resolve(__dirname, 'tooling', 'scripts', 'esm-framework-jest-mock.tsx'),
     '^@openmrs/esm-expression-evaluator/src/public$': path.resolve(
       __dirname,
