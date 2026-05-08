@@ -4,6 +4,10 @@ export interface ConnectivityChangedEvent {
 
 const connectivityChangedEventName = 'openmrs:connectivity-changed';
 
+function createCustomEventListener<T>(cb: (data: T) => void): EventListener {
+  return (ev: Event) => cb((ev as CustomEvent<T>).detail);
+}
+
 /** @internal */
 export function dispatchConnectivityChanged(online: boolean) {
   window.dispatchEvent(new CustomEvent(connectivityChangedEventName, { detail: { online } }));
@@ -15,7 +19,7 @@ export function subscribeConnectivityChanged(cb: (ev: ConnectivityChangedEvent) 
     return () => {};
   }
 
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(connectivityChangedEventName, handler);
   return () => window.removeEventListener(connectivityChangedEventName, handler);
 }
@@ -37,7 +41,7 @@ export function dispatchPrecacheStaticDependencies(data: PrecacheStaticDependenc
 
 /** @category Offline */
 export function subscribePrecacheStaticDependencies(cb: (data: PrecacheStaticDependenciesEvent) => void) {
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(precacheStaticDependenciesEventName, handler);
   return () => window.removeEventListener(precacheStaticDependenciesEventName, handler);
 }
@@ -107,28 +111,28 @@ export function dispatchToastShown(data: ShowToastEvent) {
 
 /** @category UI */
 export function subscribeNotificationShown(cb: (data: ShowNotificationEvent) => void) {
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(notificationShownName, handler);
   return () => window.removeEventListener(notificationShownName, handler);
 }
 
 /** @category UI */
 export function subscribeActionableNotificationShown(cb: (data: ShowActionableNotificationEvent) => void) {
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(actionableNotificationShownName, handler);
   return () => window.removeEventListener(actionableNotificationShownName, handler);
 }
 
 /** @category UI */
 export function subscribeToastShown(cb: (data: ShowToastEvent) => void) {
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(toastShownName, handler);
   return () => window.removeEventListener(toastShownName, handler);
 }
 
 /** @category UI */
 export function subscribeSnackbarShown(cb: (data: ShowSnackbarEvent) => void) {
-  const handler = (ev: CustomEvent) => cb(ev.detail);
+  const handler = createCustomEventListener(cb);
   window.addEventListener(snackbarShownName, handler);
   return () => window.removeEventListener(snackbarShownName, handler);
 }

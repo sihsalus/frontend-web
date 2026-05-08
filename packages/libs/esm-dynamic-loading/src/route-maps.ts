@@ -257,6 +257,15 @@ export function resetRouteMapOverrides() {
   }
 }
 
+/** @deprecated Use addRouteMapOverride instead. */
+export const addRoutesOverride = addRouteMapOverride;
+
+/** @deprecated Use removeRouteMapOverride instead. */
+export const removeRoutesOverride = removeRouteMapOverride;
+
+/** @deprecated Use resetRouteMapOverrides instead. */
+export const resetAllRoutesOverrides = resetRouteMapOverrides;
+
 /**
  * Initializes the route map override system with mode-aware behavior.
  *

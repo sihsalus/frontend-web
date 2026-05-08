@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@carbon/react';
-import { type ImportMap, resetAllRoutesOverrides, showModal, useDebounce } from '@openmrs/esm-framework/src/internal';
+import { type ImportMap, resetRouteMapOverrides, showModal, useDebounce } from '@openmrs/esm-framework/src/internal';
 import classNames from 'classnames';
 import fuzzy from 'fuzzy';
 import React, { type Dispatch, forwardRef, useEffect, useReducer, useRef, useState } from 'react';
@@ -108,7 +108,7 @@ function reducer(state: ImportMapListState, action: ImportMapDispatchAction): Im
       };
     case 'reset_all_overrides':
       importMapOverrides.resetOverrides();
-      resetAllRoutesOverrides();
+      resetRouteMapOverrides();
       return state;
   }
 }
