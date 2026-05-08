@@ -100,17 +100,19 @@ const VisitTable: React.FC = () => {
           title: t('success', 'Exito'),
           subtitle: t('fuaGeneratedSuccessfully', 'El FUA se genero correctamente'),
         });
+        mutate();
       } catch (error) {
         showSnackbar({
           kind: 'error',
           title: t('error', 'Error'),
-          subtitle: error instanceof Error ? error.message : t('errorGeneratingFua', 'Ocurrio un error al generar el FUA'),
+          subtitle:
+            error instanceof Error ? error.message : t('errorGeneratingFua', 'Ocurrio un error al generar el FUA'),
         });
       } finally {
         setGeneratingVisitUuid(null);
       }
     },
-    [t],
+    [mutate, t],
   );
 
   if (isLoading) {
