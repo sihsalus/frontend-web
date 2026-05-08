@@ -193,7 +193,7 @@ async function startWithProxy(cliArgs) {
       logWarn(
         `Backend login session did not respond within ${sessionFallbackTimeoutMs}ms; returning unauthenticated local session.`,
       );
-      res.status(200).json({ authenticated: false, sessionId: '' });
+      res.status(200).json({ authenticated: false, sessionId: '', backendUnavailable: true });
     }
   });
 

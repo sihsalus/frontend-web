@@ -19,6 +19,12 @@ export const mockConfig: ConfigSchema = {
   links: {
     loginSuccess: '${openmrsSpaBase}/home',
   },
+  languageSwitcher: {
+    locales: [
+      { locale: 'es', label: 'Español' },
+      { locale: 'en', label: 'English' },
+    ],
+  },
   footer: {
     additionalLogos: [],
   },

@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { type ConfigSchema } from '../config-schema';
 import Logo from '../logo.component';
 
+import { LanguageSwitcher } from './language-switcher.component';
 import styles from './login.scss';
 
 export interface LoginReferrer {
@@ -22,7 +23,12 @@ export interface LoginReferrer {
 }
 
 const Login: React.FC = () => {
-  const { showPasswordOnSeparateScreen, provider: loginProvider, links: loginLinks } = useConfig<ConfigSchema>();
+  const {
+    languageSwitcher,
+    showPasswordOnSeparateScreen,
+    provider: loginProvider,
+    links: loginLinks,
+  } = useConfig<ConfigSchema>();
   const isLoginEnabled = useConnectivity();
   const { t } = useTranslation();
   const { user } = useSession();
@@ -121,7 +127,11 @@ const Login: React.FC = () => {
             navigate('/login/location');
           }
         } else {
-          setErrorMessage(t('invalidCredentials', 'Invalid username or password'));
+          setErrorMessage(
+            (session as { backendUnavailable?: boolean })?.backendUnavailable
+              ? t('serverUnavailable', 'The authentication server is not responding. Please try again later.')
+              : t('invalidCredentials', 'Invalid username or password'),
+          );
           setUsername('');
           setPassword('');
           if (showPasswordOnSeparateScreen) {
@@ -131,8 +141,13 @@ const Login: React.FC = () => {
 
         return true;
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          setErrorMessage(error.message);
+        if (
+          error instanceof Error &&
+          /failed to fetch|gateway timeout|status of 0|load failed|network/i.test(error.message)
+        ) {
+          setErrorMessage(
+            t('serverUnavailable', 'The authentication server is not responding. Please try again later.'),
+          );
         } else {
           setErrorMessage(t('invalidCredentials', 'Invalid username or password'));
         }
@@ -168,6 +183,7 @@ const Login: React.FC = () => {
             </video>
           </div>
           <div className={styles.formPanel}>
+            <LanguageSwitcher locales={languageSwitcher.locales} />
             <Tile className={styles.loginCard}>
               <div className={styles.center}>
                 <Logo t={t} />
