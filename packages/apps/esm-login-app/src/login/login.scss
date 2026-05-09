@@ -154,7 +154,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 26rem;
+  max-width: 30rem;
 }
 
 .partnerSubtitle {
@@ -166,11 +166,12 @@
 
 .partnerLinks {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: layout.$spacing-07;
+  gap: layout.$spacing-05;
   width: 100%;
-  max-width: 26rem;
+  max-width: 30rem;
   min-height: layout.$spacing-08;
 
   a {
@@ -201,11 +202,8 @@
 }
 
 .pucpLogoLink {
-  padding: layout.$spacing-02 layout.$spacing-04;
-  background: #042354;
-
   img {
-    max-width: 9.25rem;
+    max-width: 8.5rem;
   }
 }
 

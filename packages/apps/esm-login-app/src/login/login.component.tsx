@@ -320,7 +320,7 @@ const Login: React.FC = () => {
                   <img src={openmrsLogoSrc} alt={t('openmrsLogo', 'OpenMRS Logo')} />
                 </a>
                 <a
-                  href="https://inform.pucp.edu.pe/santaclotilde/"
+                  href="https://sanjosedelamazonas.org/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Santa Clotilde"
@@ -333,7 +333,7 @@ const Login: React.FC = () => {
                 </a>
                 <a
                   className={styles.pucpLogoLink}
-                  href="https://www.pucp.edu.pe/"
+                  href="https://inform.pucp.edu.pe/santaclotilde/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="PUCP"
