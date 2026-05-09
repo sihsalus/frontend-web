@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const EmptyDataIllustration = ({ width = '64', height = '64' }) => {
