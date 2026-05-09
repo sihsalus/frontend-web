@@ -1,7 +1,5 @@
 import { Type } from '@openmrs/esm-framework';
 
-const alternativeLogoPath = ['${openmrsSpaBase}', '/logo-horizontal.svg'].join('');
-
 export const esmPatientChartSchema = {
   defaultFacilityUrl: {
     _type: Type.String,
@@ -39,17 +37,17 @@ export const esmPatientChartSchema = {
   logo: {
     alt: {
       _type: Type.String,
-      _default: '',
+      _default: 'Logo',
       _description: 'Alt text, shown on hover',
     },
     name: {
       _type: Type.String,
-      _default: null,
+      _default: '',
       _description: 'The organization name displayed when image is absent',
     },
     src: {
       _type: Type.String,
-      _default: alternativeLogoPath,
+      _default: '',
       _description: 'A path or URL to an image. Defaults to the OpenMRS SVG sprite.',
     },
   },

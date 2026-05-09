@@ -1,5 +1,4 @@
 import { render, waitFor } from '@testing-library/react';
-import React from 'react';
 
 import PatientChart from './patient-chart.component';
 
@@ -52,7 +51,6 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../loader/loader.component', () => () => <div>Loading</div>);
 jest.mock('../patient-chart/chart-review/chart-review.component', () => () => <div>Chart review</div>);
 jest.mock('../side-nav/side-menu.component', () => () => <div>Side menu</div>);
-jest.mock('../visit-header/visit-header.component', () => () => <div>Visit header</div>);
 
 describe('PatientChart', () => {
   beforeEach(() => {
