@@ -50,7 +50,7 @@ export const caseEncounterDashboardLink = getSyncLifecycle(
       slot: 'patient-chart-case-encounter-slot',
       columns: 1,
       title: 'Case management encounters',
-      path: 'case-encounter-dashboard',
+      path: 'vih-case-management-encounters',
       config: {},
     },
     moduleName,

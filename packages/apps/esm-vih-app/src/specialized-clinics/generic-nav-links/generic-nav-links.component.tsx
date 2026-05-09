@@ -1,18 +1,21 @@
-import { ConfigurableLink, useConfig, usePatient } from '@openmrs/esm-framework';
+import { ConfigurableLink, useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 
 import type { ConfigObject } from '../../config-schema';
 
-export const basePath = '${openmrsSpaBase}/patient/';
+const specialClinicsDashboardPath = 'vih-special-clinics-dashboard';
 
-const GenericNavLinks: React.FC = () => {
+interface GenericNavLinksProps {
+  basePath: string;
+}
+
+const GenericNavLinks: React.FC<GenericNavLinksProps> = ({ basePath }) => {
   const { specialClinics } = useConfig<ConfigObject>();
-  const { patientUuid } = usePatient();
 
   return (
     <>
       {specialClinics.map((clinic) => (
-        <GenericLink key={clinic.id} title={clinic.title} path={clinic.id} patientUuid={patientUuid} />
+        <GenericLink key={clinic.id} title={clinic.title} path={clinic.id} basePath={basePath} />
       ))}
     </>
   );
@@ -20,12 +23,12 @@ const GenericNavLinks: React.FC = () => {
 
 export default GenericNavLinks;
 
-const GenericLink: React.FC<{ title: string; path: string; patientUuid: string }> = ({ title, path, patientUuid }) => {
+const GenericLink: React.FC<{ title: string; path: string; basePath: string }> = ({ title, path, basePath }) => {
   return (
     <ConfigurableLink
       style={{ paddingLeft: '2rem' }}
       className={`cds--side-nav__link`}
-      to={`${basePath}${patientUuid}/chart/${encodeURIComponent('special-clinics-dashboard')}?clinic=${path}`}
+      to={`${basePath}/${encodeURIComponent(specialClinicsDashboardPath)}?clinic=${path}`}
     >
       {title}
     </ConfigurableLink>
