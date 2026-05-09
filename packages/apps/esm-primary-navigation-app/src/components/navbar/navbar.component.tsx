@@ -8,7 +8,7 @@ import {
   useLeftNavStore,
   useSession,
 } from '@openmrs/esm-framework';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { isDesktop } from '../../utils';
@@ -21,20 +21,10 @@ import styles from './navbar.scss';
 const HeaderItems: React.FC = () => {
   const config = useConfig();
   const [activeHeaderPanel, setActiveHeaderPanel] = useState<string>(null);
-  const [isLeftNavCollapsed, setIsLeftNavCollapsed] = useState(() => {
-    return globalThis.localStorage?.getItem('sihsalus-left-nav-collapsed') === 'true';
-  });
   const layout = useLayoutType();
   const { slotName, mode } = useLeftNavStore();
   const navMenuItems = useAssignedExtensions(slotName);
   const isActivePanel = useCallback((panelName: string) => activeHeaderPanel === panelName, [activeHeaderPanel]);
-  const showDesktopRailToggle = isDesktop(layout) && mode === 'normal' && navMenuItems.length > 0;
-
-  useEffect(() => {
-    globalThis.document.documentElement.classList.toggle('sihsalus-left-nav-collapsed', isLeftNavCollapsed);
-    globalThis.document.body.classList.toggle('sihsalus-left-nav-collapsed', isLeftNavCollapsed);
-    globalThis.localStorage?.setItem('sihsalus-left-nav-collapsed', String(isLeftNavCollapsed));
-  }, [isLeftNavCollapsed]);
 
   const togglePanel = useCallback((panelName: string) => {
     setActiveHeaderPanel((activeHeaderPanel) => (activeHeaderPanel === panelName ? null : panelName));
@@ -48,11 +38,8 @@ const HeaderItems: React.FC = () => {
   );
 
   const showHamburger = useMemo(
-    () =>
-      mode !== 'hidden' &&
-      navMenuItems.length > 0 &&
-      (showDesktopRailToggle || !isDesktop(layout) || mode === 'collapsed'),
-    [navMenuItems.length, layout, mode, showDesktopRailToggle],
+    () => (!isDesktop(layout) || mode === 'collapsed') && mode !== 'hidden' && navMenuItems.length > 0,
+    [navMenuItems.length, layout, mode],
   );
 
   return (
@@ -60,19 +47,15 @@ const HeaderItems: React.FC = () => {
       <Header aria-label="OpenMRS" className={styles.topNavHeader}>
         {showHamburger && (
           <HeaderMenuButton
-            aria-label={showDesktopRailToggle ? 'Alternar menú' : 'Open menu'}
+            aria-label="Open menu"
             isCollapsible
             className={styles.headerMenuButton}
             onClick={() => {
-              if (showDesktopRailToggle) {
-                setIsLeftNavCollapsed((value) => !value);
-              } else {
-                togglePanel('sideMenu');
-              }
+              togglePanel('sideMenu');
             }}
             onMouseDown={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
-            isActive={!showDesktopRailToggle && isActivePanel('sideMenu')}
+            isActive={isActivePanel('sideMenu')}
           />
         )}
         <div className={styles.logoWrapper}>
