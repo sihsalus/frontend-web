@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import React, { Component } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -68,7 +69,7 @@ function CompWithConfig() {
 }
 
 class UnsafeComponent extends Component<any, any> {
-  UNSAFE_componentWillMount() {}
+  UNSAFE_componentWillMount() {} // NOSONAR
 
   render() {
     return <h1>This is Unsafe Component</h1>;
