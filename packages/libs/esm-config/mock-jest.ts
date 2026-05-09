@@ -25,7 +25,9 @@ export let configSchema: ConfigSchema = {}; // NOSONAR
 
 export const getConfig = jest
   .fn()
-  .mockImplementation(() => Promise.resolve(utils.getDefaultsFromConfigSchema(configSchema)));
+  .mockImplementation(() =>
+    Promise.resolve(utils.getDefaultsFromConfigSchema(configSchema as unknown as Record<PropertyKey, unknown>)),
+  );
 
 export function defineConfigSchema(_moduleName: string, schema: ConfigSchema) {
   configSchema = schema;

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import React, { Component } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -16,7 +15,7 @@ describe.skip('openmrs-component-decorator', () => {
     const DecoratedComp = openmrsComponentDecorator(opts)(CompThatWorks);
     render(<DecoratedComp />);
 
-    expect(await screen.findByText('The button')).toBeInTheDocument();
+    expect(await screen.findByText('The button')).toBeDefined();
   });
 
   it('catches any errors in the component tree and renders a ui explaining something bad happened', () => {

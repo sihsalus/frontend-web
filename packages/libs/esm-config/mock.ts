@@ -23,7 +23,9 @@ export enum Type {
 
 export let configSchema: ConfigSchema = {}; // NOSONAR
 
-export const getConfig = vi.fn(() => Promise.resolve(getDefaultsFromConfigSchema(configSchema)));
+export const getConfig = vi.fn(() =>
+  Promise.resolve(getDefaultsFromConfigSchema(configSchema as unknown as Record<PropertyKey, unknown>)),
+);
 
 export function defineConfigSchema(_moduleName: string, schema: ConfigSchema) {
   configSchema = schema;
