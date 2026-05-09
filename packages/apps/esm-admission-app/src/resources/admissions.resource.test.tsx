@@ -3,7 +3,13 @@ import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { SWRConfig } from 'swr';
 
-import { useActiveVisitSummary, useAdmissions, usePatientDetail, usePatientVisitHistory } from './admissions.resource';
+import {
+  useActiveVisitSummary,
+  useAdmissions,
+  usePatientDetail,
+  usePatientUpcomingAppointments,
+  usePatientVisitHistory,
+} from './admissions.resource';
 
 const mockOpenmrsFetch = jest.mocked(openmrsFetch);
 
@@ -162,5 +168,70 @@ describe('admissions resources', () => {
       location: '-',
       status: 'Finalizada',
     });
+  });
+
+  it('loads and maps upcoming patient appointments for admission scheduling', async () => {
+    mockOpenmrsFetch.mockResolvedValueOnce({
+      data: [
+        {
+          uuid: 'appointment-2',
+          startDateTime: '2099-05-11T11:00:00.000-05:00',
+          status: 'Scheduled',
+          service: { name: 'Pediatria' },
+          providers: [{ display: 'Dr. Smith' }],
+          location: { display: 'Consultorio 2' },
+        },
+        {
+          uuid: 'appointment-cancelled',
+          startDateTime: '2099-05-12T11:00:00.000-05:00',
+          status: 'Cancelled',
+          service: { name: 'Traumatologia' },
+        },
+        {
+          uuid: 'appointment-1',
+          startDateTime: '2099-05-10T10:00:00.000-05:00',
+          endDateTime: '2099-05-10T10:30:00.000-05:00',
+          status: 'CheckedIn',
+          service: { name: 'Medicina general' },
+          providers: [{ name: 'Dra. Torres' }],
+          location: { name: 'Consultorio 1' },
+        },
+      ],
+    } as Awaited<ReturnType<typeof openmrsFetch>>);
+
+    const { result } = renderHook(() => usePatientUpcomingAppointments('patient-uuid'), { wrapper });
+
+    await waitFor(() => expect(result.current.appointments).toHaveLength(2));
+    expect(mockOpenmrsFetch).toHaveBeenCalledWith(
+      `${restBaseUrl}/appointments/search`,
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: expect.objectContaining({
+          patientUuid: 'patient-uuid',
+          startDate: expect.any(String),
+        }),
+      }),
+    );
+    expect(result.current.appointments[0]).toMatchObject({
+      uuid: 'appointment-1',
+      service: 'Medicina general',
+      provider: 'Dra. Torres',
+      location: 'Consultorio 1',
+      status: 'CheckedIn',
+    });
+    expect(result.current.appointments[1]).toMatchObject({
+      uuid: 'appointment-2',
+      service: 'Pediatria',
+      provider: 'Dr. Smith',
+      location: 'Consultorio 2',
+      status: 'Scheduled',
+    });
+  });
+
+  it('does not request upcoming appointments without a patient uuid', () => {
+    renderHook(() => usePatientUpcomingAppointments(), { wrapper });
+
+    expect(mockOpenmrsFetch).not.toHaveBeenCalled();
   });
 });

@@ -6,6 +6,7 @@ Microfrontend de admision para concentrar flujos y evidencia funcional del perfi
 
 - Reporte de admisiones por UPS/servicio en `/admission`.
 - Fusion de historias clinicas duplicadas en `/admission/merge`, delegando al flujo legacy de OpenMRS `mergePatients.form`.
+- Programacion de turnos desde `/admission/patient/:uuid`, mostrando turnos proximos y abriendo el workspace real de Appointments para registrar citas con prestadores.
 - Resumen de identificacion minima del paciente para pantallas clinicas que consumen `patient-info-slot`.
 - Accesos desde menu de aplicaciones, dashboard de inicio y acciones superiores.
 
@@ -17,7 +18,7 @@ Los documentos usados para la auditoria de admision viven en `accreditation/`:
 - [`accreditation/requerimientos_admision_SIHCE_MINSA_373-2025.csv`](accreditation/requerimientos_admision_SIHCE_MINSA_373-2025.csv): subconjunto del perfil de admision.
 - [`accreditation/validacion_admision_SIHCE_MINSA_373-2025.md`](accreditation/validacion_admision_SIHCE_MINSA_373-2025.md): validacion funcional, brechas y puntaje proyectado.
 
-Puntaje proyectado actual: `16/24` al desplegar la app y el content package asociado.
+Puntaje proyectado actual: `18/24` al desplegar la app y el content package asociado.
 
 ## Desarrollo
 

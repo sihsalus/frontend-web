@@ -7,6 +7,12 @@ const peruDefaultPatientIdentifierTypeUuids = [
   '8d793bee-c2cc-11de-8d13-0010c6dffd0f', // Documento de Identidad Extranjero
 ];
 
+export const peruForeignPatientIdentifierTypeUuids = [
+  '550e8400-e29b-41d4-a716-446655440002', // Carné de Extranjería
+  '550e8400-e29b-41d4-a716-446655440003', // Pasaporte
+  '8d793bee-c2cc-11de-8d13-0010c6dffd0f', // Documento de Identidad Extranjero
+];
+
 const peruSections = ['filiation', 'medicalRecord', 'insurance', 'responsiblePerson'];
 const minorResponsibleRelationshipTypes = [
   '8d91a210-c2cc-11de-8d13-0010c6dffdff/aIsToB',
@@ -20,6 +26,7 @@ const peruSectionDefinitions: Array<SectionDefinition> = [
     name: 'Datos de filiación',
     fields: [
       'birthplace',
+      'nationality',
       'civilStatus',
       'ethnicity',
       'nativeLanguage',
@@ -54,6 +61,16 @@ const peruFieldDefinitions: Array<FieldDefinition> = [
     uuid: '8d8718c2-c2cc-11de-8d13-0010c6dffd0f',
     label: 'Lugar de nacimiento',
     showHeading: false,
+  },
+  {
+    id: 'nationality',
+    type: 'person attribute',
+    uuid: '9b3df0a1-0c58-4f55-9868-9c38f1db1007',
+    label: 'Nacionalidad',
+    showHeading: false,
+    showIf: {
+      foreignIdentifierPresent: true,
+    },
   },
   {
     id: 'civilStatus',

@@ -14,18 +14,20 @@ Fuente de requisitos: [`requerimientos_admision_SIHCE_MINSA_373-2025.csv`](reque
 - Se agrego seccion `Historia clinica` con `Estado de historia clinica` y `Tipo de archivo de historia clinica`.
 - Se agrego acreditacion manual de seguro: `Estado de acreditacion de seguro` y `Fecha/hora de acreditacion`.
 - Se agregaron como identificadores visibles por defecto: DNI, CE, pasaporte y documento de identidad extranjero.
+- Se agrego `Nacionalidad` como dato de filiacion condicionado a identificadores extranjeros con valor (CE, pasaporte o documento extranjero), para reforzar continuidad manual ante no disponibilidad de consulta a Migraciones.
 - Se agrego app separada `@sihsalus/esm-admission-app` para concentrar evidencia funcional de admision.
 - Se movio la entrada SPA de fusion de historias duplicadas a `/admission/merge`, usando el flujo legacy de OpenMRS `mergePatients.form`.
 - Se agrego vista/reporte `/admission` de admisiones por UPS/servicio con fecha, hora, paciente, HC, ubicacion y estado.
+- En `/admission/patient/:uuid` se agrego seccion `Programacion de turnos`: lista turnos proximos del paciente y abre el workspace real `appointments-form-workspace` para consultar disponibilidad, seleccionar cupo y registrar citas con prestadores.
 - Se agrego extension de identificacion minima del paciente para pantallas clinicas que exponen `patient-info-slot`: nombre, HC/documento, edad/nacimiento/sexo y servicio/ubicacion activa.
 - En el content package se agregaron los `personattributetypes` y conceptos requeridos para los nuevos campos.
 
 ## Puntaje estimado tras estos cambios
 
-- Cumple proyectado al desplegar metadata y la app de admision: 16/24.
-- Parcial proyectado: 4/24.
+- Cumple proyectado al desplegar metadata y la app de admision: 18/24.
+- Parcial proyectado: 2/24.
 - No encontrado proyectado: 5/24.
-- Aun no alcanza 20. Para llegar a 20 faltan al menos 4 criterios adicionales, principalmente integraciones externas RENIEC/Migraciones/IAFAS-SIS/RENHICE o evidencia funcional nueva de turnos/referencias.
+- Aun no alcanza 20. Para llegar a 20 faltan al menos 2 criterios adicionales, principalmente integraciones externas RENIEC/IAFAS-SIS/RENHICE o evidencia funcional adicional de referencias/codigo estandar MINSA.
 
 ## Prueba en ambiente
 
@@ -46,13 +48,13 @@ Fuente de requisitos: [`requerimientos_admision_SIHCE_MINSA_373-2025.csv`](reque
 - Parcial: 8.
 - No encontrado: 8.
 - Lectura estricta para acreditacion: 8/24; no alcanza 20.
-- Lectura optimista contando parciales como avance: 16/24; tampoco alcanza 20.
+- Lectura optimista contando cambios proyectados como avance: 18/24; tampoco alcanza 20.
 
 ## Matriz
 
 | Codigo | Estado | Evidencia / brecha |
 | --- | --- | --- |
-| N1.ADM.01.01 | Parcial | Registro guarda datos estructurados del paciente y atributos configurables. Evidencia: `FormManager.getPatientToCreate` mapea nombres, genero, nacimiento, atributos y direccion. Falta evidencia especifica de historial de ingresos/referencias. |
+| N1.ADM.01.01 | Cumple proyectado | Registro guarda datos estructurados del paciente y atributos configurables. En `/admission/patient/:uuid` se muestra historial de ingresos por UPS/servicio desde visitas, separando evidencia de filiacion e ingresos. |
 | N1.ADM.01.02 | Cumple proyectado | Hay campos de seguro en registro (`insuranceType`, `insuranceCode`) y atributos de visita en billing (`insuranceScheme`, `policyNumber`). Se agrego registro manual de estado y fecha/hora de acreditacion de seguro; sigue pendiente integracion automatica IAFAS/SIS para N1.ADM.01.03. |
 | N1.ADM.01.03 | No encontrado | No se encontro integracion/consulta a servicios de IAFAS, SIS o aseguradores. |
 | N1.ADM.02.01 | Cumple | Colas registran servicio, ubicacion, prioridad, estado y origen/destino mediante `visit-queue-entry`; `queueComingFrom` se conserva al transferir. |
@@ -66,7 +68,7 @@ Fuente de requisitos: [`requerimientos_admision_SIHCE_MINSA_373-2025.csv`](reque
 | N1.ADM.03.01 | Parcial | Datos demograficos/personales se guardan en `patient.person`; la separacion fisica respecto a datos clinicos depende del modelo OpenMRS/backend, no esta demostrada en frontend. |
 | N1.ADM.03.02 | No encontrado | No se encontro consulta RENIEC para DNI. |
 | N1.ADM.03.03 | Cumple | Captura manual de identidad: nombres, genero, fecha de nacimiento, direccion, telefono e identificadores. |
-| N1.ADM.03.04 | Cumple proyectado | CE, pasaporte y documento de identidad extranjero quedan como tipos de identificador por defecto junto con DNI. No incluye validacion automatica con Migraciones. |
+| N1.ADM.03.04 | Cumple proyectado | CE, pasaporte y documento de identidad extranjero quedan como tipos de identificador por defecto junto con DNI. Al registrar un identificador extranjero se habilita `Nacionalidad` como dato discreto de filiacion, cubriendo captura manual ante no disponibilidad de consulta a Migraciones. |
 | N1.ADM.03.05 | Cumple | Config Peru agrega filiacion complementaria: lugar de nacimiento, estado civil, etnia, idioma, ocupacion, educacion, religion, grupo sanguineo, seguro y responsable. |
 | N1.ADM.03.06 | Cumple proyectado | Se agrego extension `clinicalIdentitySummary` en `patient-info-slot` con nombre, HC/documento, edad/nacimiento/sexo y servicio/ubicacion activa. Falta evidencia visual final en cada pantalla clinica objetivo si alguna no consume ese slot. |
 | N1.ADM.03.07 | Cumple | Edad se calcula desde fecha de nacimiento; el formulario tambien calcula fecha a partir de edad estimada. |
@@ -75,11 +77,10 @@ Fuente de requisitos: [`requerimientos_admision_SIHCE_MINSA_373-2025.csv`](reque
 | N1.ADM.04.02 | Cumple proyectado | Se agrego atributo de persona `Tipo de archivo de historia clinica` con valores comun y especial. |
 | N1.ADM.05.01 | Cumple | La cola/admisión operativa captura ubicacion y servicio/UPS mediante `queueLocation` y `service`. |
 | N1.ADM.05.02 | Cumple | Citas, visitas y entradas de cola manejan fecha/hora en campos discretos (`startDateTime`, `startedAt`, `endedAt`). |
-| N1.ADM.05.03 | Parcial | Appointments permite crear citas y consultar conflictos/disponibilidad basica; falta evidencia de programacion completa de turnos con prestadores desde admision. |
+| N1.ADM.05.03 | Cumple proyectado | Desde `/admission/patient/:uuid` se listan turnos proximos del paciente y el boton `Programar turno` abre `appointments-form-workspace`. Ese flujo de Appointments consulta servicios/prestadores, disponibilidad/conflictos, selecciona cupo y registra la cita. |
 
 ## Brechas principales
 
-1. Integracion externa: RENIEC, Migraciones, IAFAS/SIS y RENHICE no aparecen implementados en frontend.
-2. Programacion completa de turnos/prestadores desde admision aun queda parcial.
-3. Referencias/historial de ingresos requieren evidencia funcional adicional.
-4. Algunos criterios dependen del backend OpenMRS o configuracion de metadata; falta validar contra ambiente real despues de desplegar content package.
+1. Integracion externa: RENIEC, IAFAS/SIS y RENHICE no aparecen implementados en frontend. Para Migraciones, la brecha principal queda como evidencia documental/convenio si el servicio externo esta disponible para el sector.
+2. Referencias funcionales y codigo estandar MINSA/RENHICE siguen siendo las oportunidades mas cercanas para subir puntaje.
+3. Algunos criterios dependen del backend OpenMRS o configuracion de metadata; falta validar contra ambiente real despues de desplegar content package.

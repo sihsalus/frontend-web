@@ -1,5 +1,7 @@
-import { InlineLoading, InlineNotification, Tag } from '@carbon/react';
-import { ArrowLeft } from '@carbon/react/icons';
+import { Button, InlineLoading, InlineNotification, Tag } from '@carbon/react';
+import { Add, ArrowLeft } from '@carbon/react/icons';
+import { launchWorkspace2 } from '@openmrs/esm-framework';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
@@ -8,6 +10,7 @@ import {
   type PatientIdentifier,
   type PersonAttribute,
   usePatientDetail,
+  usePatientUpcomingAppointments,
   usePatientVisitHistory,
 } from '../resources/admissions.resource';
 import styles from './patient-admission-detail.scss';
@@ -63,6 +66,18 @@ export default function PatientAdmissionDetail() {
   const { t } = useTranslation(moduleName);
   const { patient, isLoading: loadingPatient, error: patientError } = usePatientDetail(patientUuid);
   const { visits, isLoading: loadingVisits, error: visitsError } = usePatientVisitHistory(patientUuid);
+  const {
+    appointments,
+    isLoading: loadingAppointments,
+    error: appointmentsError,
+  } = usePatientUpcomingAppointments(patientUuid);
+  const launchAppointmentScheduling = useCallback(() => {
+    launchWorkspace2('appointments-form-workspace', {
+      context: 'creating',
+      patientUuid,
+      workspaceTitle: t('scheduleAppointment', 'Programar turno'),
+    });
+  }, [patientUuid, t]);
 
   return (
     <main className={styles.page}>
@@ -170,6 +185,68 @@ export default function PatientAdmissionDetail() {
                         <td>{v.service}</td>
                         <td>{v.location}</td>
                         <td>{v.status}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+
+          <section
+            className={styles.section}
+            aria-labelledby="appointments-heading"
+            data-testid="appointment-scheduling-section"
+          >
+            <div className={styles.sectionHeader}>
+              <h2 id="appointments-heading" className={styles.sectionHeading}>
+                {t('appointmentScheduling', 'Programación de turnos')}
+              </h2>
+              <Tag type="purple" size="sm">
+                {t('appointmentSchedulingTag', 'solicitudes/cupos/prestadores')}
+              </Tag>
+              <Button kind="primary" size="sm" renderIcon={Add} onClick={launchAppointmentScheduling}>
+                {t('scheduleAppointment', 'Programar turno')}
+              </Button>
+            </div>
+            <p className={styles.sectionNote}>
+              {t(
+                'appointmentSchedulingNote',
+                'Permite consultar disponibilidad, seleccionar cupo y registrar citas con prestadores mediante el flujo de programación de turnos.',
+              )}
+            </p>
+            {loadingAppointments ? (
+              <InlineLoading description={t('loadingAppointments', 'Cargando turnos')} />
+            ) : appointmentsError ? (
+              <InlineNotification
+                kind="error"
+                lowContrast
+                title={t('appointmentsLoadError', 'No se pudo cargar la programación de turnos')}
+              />
+            ) : appointments.length === 0 ? (
+              <p className={styles.empty}>{t('noUpcomingAppointments', 'Sin turnos próximos registrados.')}</p>
+            ) : (
+              <div className={styles.tableWrap}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>{t('date', 'Fecha')}</th>
+                      <th>{t('time', 'Hora')}</th>
+                      <th>{t('upsService', 'UPS/servicio')}</th>
+                      <th>{t('provider', 'Prestador')}</th>
+                      <th>{t('location', 'Ubicación')}</th>
+                      <th>{t('status', 'Estado')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.map((appointment) => (
+                      <tr key={appointment.uuid}>
+                        <td>{formatDate(appointment.startDateTime)}</td>
+                        <td>{formatTime(appointment.startDateTime)}</td>
+                        <td>{appointment.service}</td>
+                        <td>{appointment.provider}</td>
+                        <td>{appointment.location}</td>
+                        <td>{appointment.status}</td>
                       </tr>
                     ))}
                   </tbody>

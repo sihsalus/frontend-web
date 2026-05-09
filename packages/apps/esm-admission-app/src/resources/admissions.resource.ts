@@ -1,4 +1,5 @@
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
 import useSWR from 'swr';
 
 interface Identifier {
@@ -180,6 +181,84 @@ export function usePatientVisitHistory(patientUuid?: string) {
           status: v.stopDatetime ? 'Finalizada' : 'Activa',
         }),
       ) ?? [],
+    error,
+    isLoading,
+  };
+}
+
+export interface PatientAppointmentRow {
+  uuid: string;
+  startDateTime?: string;
+  endDateTime?: string;
+  service: string;
+  provider: string;
+  location: string;
+  status: string;
+}
+
+interface AppointmentSearchResult {
+  uuid: string;
+  startDateTime?: string;
+  endDateTime?: string;
+  status?: string;
+  service?: {
+    name?: string;
+  };
+  providers?: Array<{
+    name?: string;
+    display?: string;
+  }>;
+  location?: {
+    name?: string;
+    display?: string;
+  };
+}
+
+const appointmentsSearchUrl = `${restBaseUrl}/appointments/search`;
+
+function mapAppointment(appointment: AppointmentSearchResult): PatientAppointmentRow {
+  const provider = appointment.providers
+    ?.map((appointmentProvider) => appointmentProvider.name ?? appointmentProvider.display)
+    .filter(Boolean)
+    .join(', ');
+
+  return {
+    uuid: appointment.uuid,
+    startDateTime: appointment.startDateTime,
+    endDateTime: appointment.endDateTime,
+    service: appointment.service?.name ?? '-',
+    provider: provider || '-',
+    location: appointment.location?.name ?? appointment.location?.display ?? '-',
+    status: appointment.status ?? '-',
+  };
+}
+
+export function usePatientUpcomingAppointments(patientUuid?: string) {
+  const startDate = dayjs(new Date().toISOString()).subtract(6, 'month').toISOString();
+  const fetcher = () =>
+    openmrsFetch(appointmentsSearchUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {
+        patientUuid,
+        startDate,
+      },
+    });
+
+  const { data, error, isLoading } = useSWR<{ data: AppointmentSearchResult[] }, Error>(
+    patientUuid ? [appointmentsSearchUrl, patientUuid] : null,
+    fetcher,
+  );
+
+  return {
+    appointments:
+      data?.data
+        ?.filter((appointment) => appointment.status !== 'Cancelled')
+        .filter((appointment) => appointment.startDateTime && dayjs(appointment.startDateTime).isAfter(new Date()))
+        .sort((a, b) => ((a.startDateTime ?? '') > (b.startDateTime ?? '') ? 1 : -1))
+        .map(mapAppointment) ?? [],
     error,
     isLoading,
   };

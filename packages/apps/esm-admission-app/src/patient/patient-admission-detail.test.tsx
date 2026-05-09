@@ -1,15 +1,28 @@
+import { launchWorkspace2 } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { usePatientDetail, usePatientVisitHistory } from '../resources/admissions.resource';
+import {
+  usePatientDetail,
+  usePatientUpcomingAppointments,
+  usePatientVisitHistory,
+} from '../resources/admissions.resource';
 import PatientAdmissionDetail from './patient-admission-detail.component';
+
+jest.mock('@openmrs/esm-framework', () => ({
+  launchWorkspace2: jest.fn(),
+}));
 
 jest.mock('../resources/admissions.resource', () => ({
   usePatientDetail: jest.fn(),
+  usePatientUpcomingAppointments: jest.fn(),
   usePatientVisitHistory: jest.fn(),
 }));
 
+const mockLaunchWorkspace2 = jest.mocked(launchWorkspace2);
 const mockUsePatientDetail = jest.mocked(usePatientDetail);
+const mockUsePatientUpcomingAppointments = jest.mocked(usePatientUpcomingAppointments);
 const mockUsePatientVisitHistory = jest.mocked(usePatientVisitHistory);
 
 function renderPatientAdmissionDetail(route = '/patient/patient-uuid') {
@@ -61,9 +74,24 @@ describe('PatientAdmissionDetail', () => {
       error: undefined,
       isLoading: false,
     });
+    mockUsePatientUpcomingAppointments.mockReturnValue({
+      appointments: [
+        {
+          uuid: 'appointment-1',
+          startDateTime: '2099-05-10T10:00:00.000-05:00',
+          endDateTime: '2099-05-10T10:30:00.000-05:00',
+          service: 'Medicina general',
+          provider: 'Dra. Torres',
+          location: 'Consultorio 1',
+          status: 'Scheduled',
+        },
+      ],
+      error: undefined,
+      isLoading: false,
+    });
   });
 
-  it('renders filiation data separated from visit/admission history', () => {
+  it('renders filiation data separated from visit/admission history and appointment scheduling', () => {
     renderPatientAdmissionDetail();
 
     expect(screen.getByRole('link', { name: /volver a admisiones/i })).toHaveAttribute('href', '/');
@@ -83,17 +111,41 @@ describe('PatientAdmissionDetail', () => {
 
     expect(screen.getByTestId('admission-history-section')).toBeInTheDocument();
     expect(screen.getByText(/visit\/encounter — datos clínicos/i)).toBeInTheDocument();
-    expect(screen.getByRole('columnheader', { name: 'UPS/servicio' })).toBeInTheDocument();
+    expect(screen.getAllByRole('columnheader', { name: 'UPS/servicio' })).toHaveLength(2);
     expect(screen.getByRole('cell', { name: 'Consulta externa' })).toBeInTheDocument();
     expect(screen.getByRole('cell', { name: 'Admision Central' })).toBeInTheDocument();
     expect(screen.getByRole('cell', { name: 'Activa' })).toBeInTheDocument();
+
+    expect(screen.getByTestId('appointment-scheduling-section')).toBeInTheDocument();
+    expect(screen.getByText(/solicitudes\/cupos\/prestadores/i)).toBeInTheDocument();
+    expect(screen.getByText(/consultar disponibilidad, seleccionar cupo y registrar citas/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /programar turno/i })).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: 'Medicina general' })).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: 'Dra. Torres' })).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: 'Consultorio 1' })).toBeInTheDocument();
+
     expect(mockUsePatientDetail).toHaveBeenCalledWith('patient-uuid');
     expect(mockUsePatientVisitHistory).toHaveBeenCalledWith('patient-uuid');
+    expect(mockUsePatientUpcomingAppointments).toHaveBeenCalledWith('patient-uuid');
+  });
+
+  it('launches the real appointments workspace with the selected patient', async () => {
+    const user = userEvent.setup();
+    renderPatientAdmissionDetail();
+
+    await user.click(screen.getByRole('button', { name: /programar turno/i }));
+
+    expect(mockLaunchWorkspace2).toHaveBeenCalledWith('appointments-form-workspace', {
+      context: 'creating',
+      patientUuid: 'patient-uuid',
+      workspaceTitle: 'Programar turno',
+    });
   });
 
   it('shows loading and patient error states', () => {
     mockUsePatientDetail.mockReturnValue({ patient: null, error: new Error('boom'), isLoading: true });
     mockUsePatientVisitHistory.mockReturnValue({ visits: [], error: undefined, isLoading: false });
+    mockUsePatientUpcomingAppointments.mockReturnValue({ appointments: [], error: undefined, isLoading: false });
 
     renderPatientAdmissionDetail();
 
@@ -125,5 +177,43 @@ describe('PatientAdmissionDetail', () => {
       </MemoryRouter>,
     );
     expect(screen.getByText(/sin historial de ingresos registrado/i)).toBeInTheDocument();
+  });
+
+  it('shows appointment loading, error, and empty states', () => {
+    mockUsePatientUpcomingAppointments.mockReturnValueOnce({
+      appointments: [],
+      error: undefined,
+      isLoading: true,
+    });
+    const { rerender } = renderPatientAdmissionDetail();
+    expect(screen.getByText(/cargando turnos/i)).toBeInTheDocument();
+
+    mockUsePatientUpcomingAppointments.mockReturnValueOnce({
+      appointments: [],
+      error: new Error('boom'),
+      isLoading: false,
+    });
+    rerender(
+      <MemoryRouter initialEntries={['/patient/patient-uuid']}>
+        <Routes>
+          <Route path="/patient/:patientUuid" element={<PatientAdmissionDetail />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByText(/no se pudo cargar la programación de turnos/i)).toBeInTheDocument();
+
+    mockUsePatientUpcomingAppointments.mockReturnValueOnce({
+      appointments: [],
+      error: undefined,
+      isLoading: false,
+    });
+    rerender(
+      <MemoryRouter initialEntries={['/patient/patient-uuid']}>
+        <Routes>
+          <Route path="/patient/:patientUuid" element={<PatientAdmissionDetail />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByText(/sin turnos próximos registrados/i)).toBeInTheDocument();
   });
 });

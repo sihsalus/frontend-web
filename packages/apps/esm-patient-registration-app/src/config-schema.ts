@@ -22,6 +22,9 @@ export interface FieldDefinition {
   locationTag?: string;
   answerConceptSetUuid?: string;
   customConceptAnswers?: Array<CustomConceptAnswer>;
+  showIf?: {
+    foreignIdentifierPresent?: boolean;
+  };
 }
 
 export interface CustomConceptAnswer {
@@ -228,6 +231,14 @@ export const esmPatientRegistrationSchema = {
         _default: [],
         _description:
           'For coded questions only (obs or person attrbute). A list of custom concept answers. Overrides answers that come from the obs concept or from `answerSetConceptUuid`.',
+      },
+      showIf: {
+        foreignIdentifierPresent: {
+          _type: Type.Boolean,
+          _default: false,
+          _description:
+            'Only show this field when the patient has a foreign identifier selected, such as Carné de Extranjería, passport, or foreign identity document.',
+        },
       },
     },
     // Do not add fields here. If you want to add a field in code, add it to built-in fields above.
