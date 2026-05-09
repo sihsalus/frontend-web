@@ -62,6 +62,7 @@
   "studyInstanceUID": "UID del estudio",
   "time": "Hora",
   "upload": "Subir",
+  "Medical Imaging": "Imágenes médicas",
   "worklist": "Lista de trabajo",
   "worklistNoFoundMessage": "No se encontró lista de trabajo"
 }

@@ -11,6 +11,10 @@ const mockOpenmrsFetch = jest.mocked(openmrsFetch);
 const mockUseLocation = jest.mocked(useLocation);
 const mockUseSession = jest.mocked(useSession);
 
+jest.mock('@sihsalus/esm-rbac', () => ({
+  AppErrorBoundary: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useLocation: jest.fn(),

@@ -17,7 +17,6 @@ import { spaBasePath } from '../constants';
 import Loader from '../loader/loader.component';
 import ChartReview from '../patient-chart/chart-review/chart-review.component';
 import SideMenuPanel from '../side-nav/side-menu.component';
-import VisitHeader from '../visit-header/visit-header.component';
 
 import { type LayoutMode } from './chart-review/dashboard-view.component';
 import styles from './patient-chart.scss';
@@ -95,7 +94,6 @@ const PatientChart: React.FC = () => {
 
   return (
     <>
-      <VisitHeader patient={patient} />
       <SideMenuPanel />
       <main className={classNames('omrs-main-content', styles.chartContainer)}>
         <div
@@ -116,7 +114,7 @@ const PatientChart: React.FC = () => {
               <div className={styles.grid}>
                 <div
                   className={classNames(styles.chartReview, {
-                    [styles.widthContained]: layoutMode == 'contained',
+                    [styles.widthContained]: layoutMode === 'contained',
                   })}
                 >
                   <ChartReview {...state} view={view} setDashboardLayoutMode={setLayoutMode} />

@@ -122,6 +122,35 @@ describe('Login', () => {
     await waitFor(() => expect(refetchCurrentUser).toHaveBeenCalledWith('yoshi', 'no-tax-fraud'));
   });
 
+  it('shows a backend configuration error when the session endpoint is missing', async () => {
+    mockLogin.mockRejectedValue({
+      loaded: false,
+      session: null,
+      error: {
+        response: {
+          status: 404,
+        },
+      },
+    });
+
+    renderWithRouter(
+      Login,
+      {},
+      {
+        route: '/login',
+      },
+    );
+    const user = userEvent.setup();
+
+    await user.type(screen.getByRole('textbox', { name: /Username/i }), 'yoshi');
+    await user.click(screen.getByRole('button', { name: /Continue/i }));
+    await screen.findByLabelText(/^password$/i);
+    await user.type(screen.getByLabelText(/^password$/i), 'no-tax-fraud');
+    await user.click(screen.getByRole('button', { name: /log in/i }));
+
+    expect(await screen.findByText(/The login service is not available at this backend address/i)).toBeInTheDocument();
+  });
+
   // TODO: Complete the test
   it('sends the user to the location select page on login if there is more than one location', async () => {
     let refreshUser = (_user: unknown) => {};

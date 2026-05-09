@@ -2,6 +2,7 @@
   "actions": "Acciones",
   "at": "en",
   "availableColumns": "Columnas disponibles",
+  "back": "Back",
   "cancel": "Cancelar",
   "cancelling": "Cancelando",
   "cancelReport": "Cancelar reporte",
@@ -30,6 +31,7 @@
   "exportCSV": "Exportar a CSV",
   "failed": "Fallido",
   "fetchReport": "Obtener reporte",
+  "manageReports": "Gestionar reportes",
   "invalidWebPreviewUrl": "La URL de vista previa web configurada no es válida.",
   "missingParameters": "Por favor, proporcione los siguientes parámetros: {parameters}",
   "missingPlaceholder": "La URL de vista previa web debe incluir el marcador {reportRequestUuid}.",
@@ -88,5 +90,6 @@
   "unknownParameterType": "Tipo de parámetro desconocido: {type} para el parámetro: {label}",
   "view": "Ver",
   "viewReports": "Vista web de reportes",
-  "yes": "Sí"
+  "yes": "Sí",
+  "reportsAppMenuLink": "Informes y Estadísticas"
 }

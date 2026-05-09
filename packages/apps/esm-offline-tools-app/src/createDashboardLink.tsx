@@ -1,16 +1,18 @@
-import { ConfigurableLink } from '@openmrs/esm-framework';
+import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import last from 'lodash-es/last';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import styles from './createDashboardLink.scss';
 
 interface DashboardLinkConfig {
   basePath?: string;
   path: string;
   title: string | (() => string | Promise<string>);
+  icon?: string;
 }
 
-const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title }) => {
+const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title, icon }) => {
   const location = useLocation();
   const navLink = useMemo(() => decodeURIComponent(last(location.pathname.split('/'))), [location.pathname]);
   const [resolvedTitle, setResolvedTitle] = useState<string | undefined>();
@@ -18,9 +20,7 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title })
   useEffect(() => {
     if (typeof title === 'function') {
       Promise.resolve(title())
-        .then((resolvedValue) => {
-          setResolvedTitle(resolvedValue);
-        })
+        .then(setResolvedTitle)
         .catch((e: Error) => {
           throw e;
         });
@@ -29,27 +29,29 @@ const DashboardLink: React.FC<DashboardLinkConfig> = ({ basePath, path, title })
     }
   }, [title]);
 
-  const activeClassName = path === navLink ? 'active-left-nav-link' : 'non-active';
+  if (!resolvedTitle) {
+    return null;
+  }
 
   return (
-    title &&
-    resolvedTitle && (
-      <div key={path} className={activeClassName}>
-        <ConfigurableLink
-          className={classNames('cds--side-nav__link', activeClassName)}
-          to={`${basePath}/${encodeURIComponent(path)}`}
-        >
-          {resolvedTitle}
-        </ConfigurableLink>
-      </div>
-    )
+    <div key={path}>
+      <ConfigurableLink
+        className={classNames('cds--side-nav__link', { 'active-left-nav-link': path === navLink })}
+        to={`${basePath}/${encodeURIComponent(path)}`}
+      >
+        <span className={styles.menu}>
+          {icon && <MaybeIcon icon={icon} className={styles.icon} size={16} />}
+          <span>{resolvedTitle}</span>
+        </span>
+      </ConfigurableLink>
+    </div>
   );
 };
 
 export const createDashboardLink = (db: DashboardLinkConfig) => {
   return ({ basePath }: { basePath: string }) => (
     <BrowserRouter>
-      <DashboardLink basePath={basePath} path={db.path} title={db.title} />
+      <DashboardLink basePath={basePath} path={db.path} title={db.title} icon={db.icon} />
     </BrowserRouter>
   );
 };

@@ -14,7 +14,7 @@ const logInfo = (msg) => console.log(`${chalk.green.bold('[start-dev]')} ${msg}`
 const logWarn = (msg) => console.warn(`${chalk.yellow.bold('[start-dev]')} ${chalk.yellow(msg)}`);
 const logFail = (msg) => console.error(`${chalk.red.bold('[start-dev]')} ${chalk.red(msg)}`);
 
-const defaultBackend = 'http://hii1sc-dev.inf.pucp.edu.pe';
+const defaultBackend = 'http://gidis-hsc-dev.inf.pucp.edu.pe';
 const backend = process.env.SIHSALUS_BACKEND_URL || defaultBackend;
 const backendSource = hadBackendBeforeDotenv ? 'shell' : dotenvResult.parsed?.SIHSALUS_BACKEND_URL ? '.env' : 'default';
 const authMode = process.env.SIHSALUS_AUTH_MODE || 'openmrs';
@@ -30,6 +30,8 @@ const assembledRoutes = resolve(__dirname, '..', '..', '..', 'dist', 'spa', 'rou
 const distSpa = resolve(__dirname, '..', '..', '..', 'dist', 'spa');
 const frontendConfig = resolve(__dirname, '..', '..', '..', 'config', 'frontend.json');
 const spaPath = '/openmrs/spa';
+const sessionPath = '/openmrs/ws/rest/v1/session';
+const sessionFallbackTimeoutMs = Number(process.env.SIHSALUS_SESSION_FALLBACK_TIMEOUT_MS) || 3000;
 
 function logStartupSummary({ mode, apps = [] }) {
   console.log();
@@ -154,6 +156,48 @@ async function startWithProxy(cliArgs) {
   const app = express();
   const staticHandler = express.static(distSpa, { index: false });
 
+  app.get(sessionPath, async (req, res) => {
+    const authorization = req.get('authorization');
+    const cookie = req.get('cookie') || '';
+
+    if (!authorization && !cookie) {
+      res.status(200).json({ authenticated: false, sessionId: '' });
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), sessionFallbackTimeoutMs);
+
+    try {
+      const backendResponse = await fetch(`${backend}${sessionPath}`, {
+        headers: {
+          accept: req.get('accept') || 'application/json',
+          ...(authorization ? { authorization } : {}),
+          cookie,
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      res.status(backendResponse.status);
+      const contentType = backendResponse.headers.get('content-type');
+      if (contentType) {
+        res.type(contentType);
+      }
+      const setCookie = backendResponse.headers.get('set-cookie');
+      if (setCookie) {
+        res.setHeader('set-cookie', setCookie);
+      }
+      res.send(await backendResponse.text());
+    } catch {
+      clearTimeout(timeout);
+      logWarn(
+        `Backend login session did not respond within ${sessionFallbackTimeoutMs}ms; returning unauthenticated local session.`,
+      );
+      res.status(200).json({ authenticated: false, sessionId: '', backendUnavailable: true });
+    }
+  });
+
   // Serve pre-built assets from dist/spa/, skip CLI-managed files
   app.use(spaPath, (req, res, next) => {
     if (cliManagedPaths.has(req.path)) {
@@ -248,10 +292,10 @@ if (devAppsEnv) {
   }
   logStartupSummary({ mode: 'pre-assembled SPA' });
   logInfo('Serving pre-assembled SPA (no hot-reload). Set SIHSALUS_DEV_APPS for development.');
-  // The OpenMRS CLI still requires at least one --sources workspace even when
-  // the proxy serves a fully assembled importmap. Use a neutral tooling
-  // workspace so we don't inject app-specific dev-server clients into the SPA.
-  const cliShimSource = resolve(__dirname, '..', 'openmrs');
+  // Avoid the CLI defaulting to "." as a dev source. In pre-assembled mode the
+  // proxy serves all application bundles from dist/spa, so no dynamic dev-server
+  // import should be added to the import map.
+  const noDevSourcesPattern = '__sihsalus_no_dev_sources__';
 
   startWithProxy(
     withSharedDependencies([
@@ -262,7 +306,7 @@ if (devAppsEnv) {
       '--config-file',
       frontendConfig,
       '--sources',
-      cliShimSource,
+      noDevSourcesPattern,
     ]),
   );
 }

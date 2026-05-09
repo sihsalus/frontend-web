@@ -12,6 +12,7 @@ import StockItems from './stock-items/stock-items.component';
 import StockLocations from './stock-locations/stock-locations.component';
 import stockManagementComponent from './stock-management.component';
 import stockManagementAdminCardLinkComponent from './stock-management-admin-card-link.component';
+import StockManagementAppMenuLinkComponent from './stock-management-app-menu-link.component';
 import StockOperationsComponent from './stock-operations/stock-operations.component';
 import StockReports from './stock-reports/report-list/stock-reports.component';
 import StockSettings from './stock-settings/stock-settings.component';
@@ -44,6 +45,14 @@ export const deletePackagingUnitModal = getAsyncLifecycle(
   () => import('./stock-items/add-stock-item/packaging-units/packaging-units-delete.modal'),
   {
     featureName: 'delete-packaging-unit-modal',
+    moduleName,
+  },
+);
+
+export const deleteStockRuleModal = getAsyncLifecycle(
+  () => import('./stock-items/add-stock-item/stock-item-rules/delete-stock-rule.modal'),
+  {
+    featureName: 'delete-stock-rule-modal',
     moduleName,
   },
 );
@@ -141,6 +150,8 @@ export const stockOperationsModal = getAsyncLifecycle(
 );
 
 export const stockManagementAppMenuItem = getSyncLifecycle(appMenu, options);
+
+export const stockManagementAppMenuLink = getSyncLifecycle(StockManagementAppMenuLinkComponent, options);
 
 export const stockOperationFormWorkspace = getAsyncLifecycle(
   () => import('./stock-operations/stock-operations-forms/stock-operation-form.component'),

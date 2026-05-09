@@ -15,14 +15,51 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { type ConfigSchema } from '../config-schema';
 import Logo from '../logo.component';
 
+import { LanguageSwitcher } from './language-switcher.component';
 import styles from './login.scss';
 
 export interface LoginReferrer {
   referrer?: string;
 }
 
+type LoginErrorKey = 'invalidCredentials' | 'serverUnavailable' | 'sessionEndpointNotFound';
+
+const loginErrorFallbacks = {
+  invalidCredentials: 'Invalid username or password',
+  serverUnavailable: 'The authentication server is not responding. Please try again later.',
+  sessionEndpointNotFound:
+    'The login service is not available at this backend address. Please contact support or try a different environment.',
+} satisfies Record<LoginErrorKey, string>;
+
+function getLoginErrorKey(error: unknown): LoginErrorKey {
+  const session = (error as { session?: { backendUnavailable?: boolean } })?.session;
+  const nestedError = (error as { error?: unknown })?.error;
+  const errorToInspect = nestedError ?? error;
+  const status = (errorToInspect as { response?: { status?: number } })?.response?.status;
+  const message = errorToInspect instanceof Error ? errorToInspect.message : String(errorToInspect ?? '');
+
+  if (session?.backendUnavailable) {
+    return 'serverUnavailable';
+  }
+
+  if (status === 404 || /404|not found/i.test(message)) {
+    return 'sessionEndpointNotFound';
+  }
+
+  if (status >= 500 || /failed to fetch|gateway timeout|status of 0|load failed|network/i.test(message)) {
+    return 'serverUnavailable';
+  }
+
+  return 'invalidCredentials';
+}
+
 const Login: React.FC = () => {
-  const { showPasswordOnSeparateScreen, provider: loginProvider, links: loginLinks } = useConfig<ConfigSchema>();
+  const {
+    languageSwitcher,
+    showPasswordOnSeparateScreen,
+    provider: loginProvider,
+    links: loginLinks,
+  } = useConfig<ConfigSchema>();
   const isLoginEnabled = useConnectivity();
   const { t } = useTranslation();
   const { user } = useSession();
@@ -40,9 +77,9 @@ const Login: React.FC = () => {
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const loginImageSrc = `${globalThis.getOpenmrsSpaBase()}login.png`;
   const loginVideoSrc = `${globalThis.getOpenmrsSpaBase()}videos/login-hero.mp4`;
-  const githubLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-github.svg`;
   const openmrsLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-openmrs.svg`;
   const pucpLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-pucp.svg`;
+  const santaClotildeLogoSrc = `${globalThis.getOpenmrsSpaBase()}logos/logo-santa-clotilde.png`;
 
   useEffect(() => {
     if (!user) {
@@ -121,7 +158,7 @@ const Login: React.FC = () => {
             navigate('/login/location');
           }
         } else {
-          setErrorMessage(t('invalidCredentials', 'Invalid username or password'));
+          setErrorMessage(getLoginErrorKey({ session }));
           setUsername('');
           setPassword('');
           if (showPasswordOnSeparateScreen) {
@@ -131,11 +168,7 @@ const Login: React.FC = () => {
 
         return true;
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          setErrorMessage(error.message);
-        } else {
-          setErrorMessage(t('invalidCredentials', 'Invalid username or password'));
-        }
+        setErrorMessage(getLoginErrorKey(error));
         setUsername('');
         setPassword('');
         if (showPasswordOnSeparateScreen) {
@@ -153,7 +186,6 @@ const Login: React.FC = () => {
       showPasswordField,
       loginLinks,
       location,
-      t,
       continueLogin,
     ],
   );
@@ -161,13 +193,15 @@ const Login: React.FC = () => {
   if (!loginProvider || loginProvider.type === 'basic') {
     return (
       <div className={styles.container}>
-        <div className={styles.loginLayout}>
+        <main className={styles.loginLayout}>
+          <h1 className={styles.srOnly}>{t('login', 'Log in')}</h1>
           <div className={styles.imagePanel} aria-hidden="true">
             <video className={styles.loginMedia} poster={loginImageSrc} autoPlay muted loop playsInline>
               <source src={loginVideoSrc} type="video/mp4" />
             </video>
           </div>
           <div className={styles.formPanel}>
+            <LanguageSwitcher locales={languageSwitcher.locales} />
             <Tile className={styles.loginCard}>
               <div className={styles.center}>
                 <Logo t={t} />
@@ -271,7 +305,7 @@ const Login: React.FC = () => {
                   <div className={styles.errorMessage}>
                     <InlineNotification
                       kind="error"
-                      subtitle={t(errorMessage)}
+                      subtitle={t(errorMessage, loginErrorFallbacks[errorMessage as LoginErrorKey])}
                       title={getCoreTranslation('error')}
                       onClick={() => setErrorMessage('')}
                     />
@@ -280,30 +314,36 @@ const Login: React.FC = () => {
               </form>
             </Tile>
             <div className={styles.partnerSection}>
+              <p className={styles.partnerSubtitle}>{t('madeInCollaboration', 'Hecho en colaboración')}</p>
               <div className={styles.partnerLinks}>
                 <a href="https://openmrs.org" target="_blank" rel="noopener noreferrer" aria-label="OpenMRS">
                   <img src={openmrsLogoSrc} alt={t('openmrsLogo', 'OpenMRS Logo')} />
                 </a>
                 <a
+                  href="https://sanjosedelamazonas.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Santa Clotilde"
+                >
+                  <img
+                    className={styles.santaClotildeLogo}
+                    src={santaClotildeLogoSrc}
+                    alt={t('santaClotildeLogo', 'Logo de Santa Clotilde')}
+                  />
+                </a>
+                <a
+                  className={styles.pucpLogoLink}
                   href="https://inform.pucp.edu.pe/santaclotilde/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Proyecto Santa Clotilde PUCP"
+                  aria-label="PUCP"
                 >
-                  <img src={pucpLogoSrc} alt="" />
-                </a>
-                <a
-                  href="https://github.com/sihsalus"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="SIH Salus en GitHub"
-                >
-                  <img src={githubLogoSrc} alt="" />
+                  <img src={pucpLogoSrc} alt={t('pucpLogo', 'Logo de la PUCP')} />
                 </a>
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }

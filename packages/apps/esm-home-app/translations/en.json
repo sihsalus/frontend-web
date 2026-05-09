@@ -6,16 +6,16 @@
   "appointmentsDescription": "Daily schedule",
   "careQueues": "Care queues",
   "careQueuesDescription": "Admission and consultation",
-  "fua": "FUA",
-  "fuaDescription": "Peru care claim form",
+  "fua": "Single Care Form",
+  "fuaDescription": "FUA registration and follow-up",
   "home": "Home",
   "homeDashboardTitle": "Admission and care",
   "laboratory": "Laboratory",
   "laboratoryDescription": "Orders and results",
+  "pageNotFound": "Page not found",
   "peruHomeActions": "Admission shortcuts",
   "registerPatient": "Register patient",
-  "registerPatientDescription": "Prefer DNI; use CE/CNV when applicable",
+  "registerPatientDescription": "Prefer DNI; CE/CNV when applicable",
   "searchPatient": "Search patient",
-  "searchPatientDescription": "DNI, CE, CNV, or HCE",
-  "pageNotFound": "Page not found"
+  "searchPatientDescription": "DNI, CE, CNV or HCE"
 }

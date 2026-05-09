@@ -193,7 +193,7 @@ Crea un archivo `.env` en la raíz del repo (ver [.env.example](.env.example)):
 
 | Variable               | Default                             | Descripción                                                            |
 | ---------------------- | ----------------------------------- | ---------------------------------------------------------------------- |
-| `SIHSALUS_BACKEND_URL` | `http://hii1sc-dev.inf.pucp.edu.pe` | Backend OpenMRS al que se hace proxy en dev y se descarga el importmap |
+| `SIHSALUS_BACKEND_URL` | `http://gidis-hsc-dev.inf.pucp.edu.pe` | Backend OpenMRS al que se hace proxy en dev y se descarga el importmap |
 | `SIHSALUS_AUTH_MODE`   | `openmrs`                           | Modo de auth: `openmrs` (básico) o `keycloak` (OIDC)                   |
 | `SIHSALUS_FHIR_BASE`   | *(derivado del backend)*            | URL base de FHIR R4                                                    |
 | `SPA_PATH`             | `/openmrs/spa`                      | Base path para los assets del SPA                                      |

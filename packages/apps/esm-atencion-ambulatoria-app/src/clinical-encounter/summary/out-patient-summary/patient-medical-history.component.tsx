@@ -50,7 +50,7 @@ const OutPatientMedicalHistory: React.FC<OutPatientMedicalHistoryProps> = ({
   const headerTitle = t('medicalHistory', 'Medical History');
   const handleOpenOrEditClinicalEncounterForm = (encounterUUID = '') => {
     launchWorkspace(patientFormEntryWorkspace, {
-      workspaceTitle: 'Medical History',
+      workspaceTitle: t('medicalHistory', 'Medical History'),
       mutateForm: mutate(
         (key) => typeof key === 'string' && key.startsWith('/openmrs/ws/rest/v1/kenyaemr/flags'),
         undefined,
@@ -111,7 +111,7 @@ const OutPatientMedicalHistory: React.FC<OutPatientMedicalHistoryProps> = ({
         accidentOrTrauma: getObsFromEncounter(encounter, ACCIDENT_TRAUMA_UUID),
         finalDiagnosis: encounter.diagnoses.length > 0 ? encounter.diagnoses[0].diagnosis.coded.display : '--',
         actions: (
-          <OverflowMenu aria-label="overflow-menu" flipped={false}>
+          <OverflowMenu aria-label={t('actions', 'Actions')} flipped={false}>
             <OverflowMenuItem
               onClick={() => handleOpenOrEditClinicalEncounterForm(encounter.uuid)}
               itemText={t('edit', 'Edit')}
@@ -151,7 +151,7 @@ const OutPatientMedicalHistory: React.FC<OutPatientMedicalHistoryProps> = ({
           kind="ghost"
           onClick={() => handleOpenOrEditClinicalEncounterForm()}
           renderIcon={(props) => <Add size={24} {...props} />}
-          iconDescription="Add"
+          iconDescription={t('add', 'Add')}
         >
           {t('add', 'Add')}
         </Button>
@@ -162,7 +162,7 @@ const OutPatientMedicalHistory: React.FC<OutPatientMedicalHistoryProps> = ({
         headers={tableHeader}
         render={({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
           <TableContainer {...getTableContainerProps()}>
-            <Table size="sm" {...getTableProps()} aria-label="sample table">
+            <Table size="sm" {...getTableProps()} aria-label={t('medicalHistory', 'Medical History')}>
               <TableHead>
                 <TableRow>
                   {headers.map((header, i) => (

@@ -5,17 +5,17 @@
   "appointments": "Citas",
   "appointmentsDescription": "Agenda diaria",
   "careQueues": "Colas de atención",
-  "careQueuesDescription": "Admisión y consultorio",
-  "fua": "FUA",
-  "fuaDescription": "Formato Único de Atención",
+  "careQueuesDescription": "Admisión y consulta",
+  "fua": "Formato Único de Atención",
+  "fuaDescription": "Registro y seguimiento FUA",
   "home": "Inicio",
   "homeDashboardTitle": "Admisión y atención",
   "laboratory": "Laboratorio",
-  "laboratoryDescription": "Solicitudes y resultados",
+  "laboratoryDescription": "Órdenes y resultados",
+  "pageNotFound": "Página no encontrada",
   "peruHomeActions": "Accesos de admisión",
   "registerPatient": "Registrar paciente",
   "registerPatientDescription": "DNI preferente; CE/CNV si aplica",
   "searchPatient": "Buscar paciente",
-  "searchPatientDescription": "DNI, CE, CNV o HCE",
-  "pageNotFound": "Página no encontrada"
+  "searchPatientDescription": "DNI, CE, CNV o HCE"
 }

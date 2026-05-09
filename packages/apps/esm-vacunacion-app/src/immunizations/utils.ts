@@ -1,4 +1,3 @@
-import { find, map } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { type ExistingDoses, type ImmunizationFormState, type ImmunizationGrouped } from '../types';
 import { type ImmunizationSequenceDefinition } from '../types/fhir-immunization-domain';
@@ -9,9 +8,8 @@ export const linkConfiguredSequences = (
   existingImmunizations: Array<ImmunizationGrouped>,
   configuredSequences: Array<ImmunizationSequenceDefinition>,
 ): Array<ImmunizationGrouped> => {
-  return map(existingImmunizations, (immunization) => {
-    const matchingSequenceDef = find(
-      configuredSequences,
+  return existingImmunizations.map((immunization) => {
+    const matchingSequenceDef = configuredSequences.find(
       (sequencesDef) => sequencesDef.vaccineConceptUuid === immunization.vaccineUuid,
     );
     immunization.sequences = matchingSequenceDef?.sequences || [];

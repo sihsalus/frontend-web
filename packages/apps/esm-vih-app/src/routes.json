@@ -31,10 +31,11 @@
       "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "case-management",
-        "title": "Seguimiento de Pacientes VIH",
+        "title": "HIV Patient Tracking",
         "slot": "case-management-dashboard-slot",
         "path": "/vih/case-management"
-      }
+      },
+      "order": 70
     },
     {
       "name": "vih-wrap-component-view",
@@ -125,7 +126,7 @@
     {
       "name": "vih-case-management-form",
       "component": "caseManagementForm",
-      "title": "Formulario de Seguimiento de Pacientes VIH",
+      "title": "HIV Patient Tracking Form",
       "type": "form"
     },
     {

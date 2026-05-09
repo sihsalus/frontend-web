@@ -180,7 +180,7 @@ const ConditionsOverview: React.FC<ConditionsOverviewProps> = ({ patientUuid }) 
             <Button
               kind="ghost"
               renderIcon={(props: ComponentProps<typeof AddIcon>) => <AddIcon size={16} {...props} />}
-              iconDescription="Add conditions"
+              iconDescription={t('addConditions', 'Add conditions')}
               onClick={launchConditionsForm}
             >
               {t('add', 'Add')}
@@ -188,7 +188,7 @@ const ConditionsOverview: React.FC<ConditionsOverviewProps> = ({ patientUuid }) 
           </div>
         </CardHeader>
         <DataTable
-          aria-label="conditions overview"
+          aria-label={t('conditionsOverview', 'Conditions overview')}
           rows={paginatedConditions}
           headers={headers}
           isSortable

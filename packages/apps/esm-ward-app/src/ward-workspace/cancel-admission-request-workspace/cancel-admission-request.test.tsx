@@ -2,7 +2,7 @@ import { useAppContext } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockInpatientRequestAlice, mockLocationInpatientWard, mockPatientAlice } from '__mocks__';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 import { mockWardViewContext } from '../../../mock';
 import useWardLocation from '../../hooks/useWardLocation';
 import type { WardPatient, WardViewContext } from '../../types';

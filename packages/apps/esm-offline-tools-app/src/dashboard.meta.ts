@@ -3,4 +3,5 @@ export const dashboardMeta = {
   columns: 1,
   path: 'Offline Actions',
   title: 'Acciones sin internet',
+  icon: 'omrs-icon-renew',
 };

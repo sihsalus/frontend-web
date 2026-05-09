@@ -1,7 +1,7 @@
 import { Button, DataTableSkeleton } from '@carbon/react';
 import { ErrorState, launchWorkspace, showModal, showSnackbar, useConfig } from '@openmrs/esm-framework';
 import { CardHeader, EmptyState } from '@openmrs/esm-patient-common-lib';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash-es/capitalize';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

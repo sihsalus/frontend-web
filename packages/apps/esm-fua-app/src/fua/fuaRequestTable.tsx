@@ -395,7 +395,17 @@ const FuaRequestTable: React.FC<FuaRequestTableProps> = ({ statusFilter = 'all' 
       </DataTable>
       {filteredData.length > 0 && (
         <Pagination
+          backwardText={t('previousPage', 'Página anterior')}
+          forwardText={t('nextPage', 'Página siguiente')}
+          itemRangeText={(min, max, total) =>
+            t('paginationItemRange', '{{min}}–{{max}} de {{total}} elementos', { min, max, total })
+          }
+          itemText={(min, max) => t('paginationItems', '{{min}}–{{max}} elementos', { min, max })}
+          itemsPerPageText={t('itemsPerPage', 'Elementos por página:')}
           page={currentPage}
+          pageRangeText={(_current, total) => t('paginationPageRange', 'de {{total}} páginas', { total })}
+          pageSelectLabelText={(total) => t('paginationPageSelect', 'Página de {{total}} páginas', { total })}
+          pageText={(page) => t('paginationPage', 'página {{page}}', { page })}
           pageSize={currentPageSize}
           pageSizes={pageSizes}
           totalItems={filteredData.length}

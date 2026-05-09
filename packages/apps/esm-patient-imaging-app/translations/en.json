@@ -62,6 +62,7 @@
   "studyInstanceUID": "Study UID",
   "time": "Time",
   "upload": "Upload",
+  "Medical Imaging": "Medical Imaging",
   "worklist": "Worklist",
   "worklistNoFoundMessage": "No worklist found"
 }

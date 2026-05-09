@@ -17,6 +17,7 @@ export function startupApp() {
   defineConfigSchema(moduleName, configSchema);
 }
 
+// t('Medical Imaging', 'Medical Imaging')
 export const imagingDashboardLink = getSyncLifecycle(
   createDashboardLink({
     ...dashboardMeta,

@@ -1,7 +1,7 @@
 import { getDefaultsFromConfigSchema, useAppContext, useConfig, useFeatureFlag } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import { useParams } from 'react-router-dom';
-import { renderWithSwr } from 'tools';
+import { renderWithSwr } from 'test-utils';
 import { mockWardPatientGroupDetails, mockWardViewContext } from '../../mock';
 import { configSchema, type WardConfigObject } from '../config-schema';
 import { useObs } from '../hooks/useObs';

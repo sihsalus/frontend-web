@@ -58,6 +58,31 @@ export const configSchema = {
       _validators: [validators.isUrl],
     },
   },
+  languageSwitcher: {
+    locales: {
+      _type: Type.Array,
+      _elements: {
+        _type: Type.Object,
+        locale: {
+          _type: Type.String,
+          _required: true,
+          _description: 'The locale code to pass to i18next.',
+        },
+        label: {
+          _type: Type.String,
+          _required: true,
+          _description: 'The display label for the locale in the login language menu.',
+        },
+      },
+      _default: [
+        { locale: 'es', label: 'Español' },
+        { locale: 'en', label: 'English' },
+        { locale: 'pt', label: 'Português' },
+        { locale: 'fr', label: 'Français' },
+      ],
+      _description: 'Language options displayed on the login page before authentication.',
+    },
+  },
   logo: {
     src: {
       _type: Type.String,
@@ -116,6 +141,12 @@ export interface ConfigSchema {
   };
   links: {
     loginSuccess: string;
+  };
+  languageSwitcher: {
+    locales: Array<{
+      label: string;
+      locale: string;
+    }>;
   };
   logo: {
     alt: string;
