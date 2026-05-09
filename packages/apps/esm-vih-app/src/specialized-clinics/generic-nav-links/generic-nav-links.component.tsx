@@ -49,9 +49,11 @@ const GenericLink: React.FC<{ title: string; path: string; basePath: string; too
   );
 
   return (
-    <Tooltip align="right" label={tooltip} enterDelayMs={400} leaveDelayMs={100}>
-      {link}
-    </Tooltip>
+    <div>
+      <Tooltip align="right" label={tooltip} enterDelayMs={400} leaveDelayMs={100}>
+        {link}
+      </Tooltip>
+    </div>
   );
 };
 
