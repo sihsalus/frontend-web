@@ -1,5 +1,5 @@
-import { Button, ComboBox, ContentSwitcher, Modal, Switch } from '@carbon/react';
-import { Checkmark, Information } from '@carbon/react/icons';
+import { Button, Modal, Search } from '@carbon/react';
+import { Checkmark, ChevronDown, Close, Information } from '@carbon/react/icons';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useOdontogramContext } from '../providers/OdontogramProvider';
 import type { FindingColor, FindingOptionConfig, FindingSuboption } from '../types/odontogram';
@@ -180,12 +180,35 @@ const FormDentalClinicalFindings = () => {
   );
 
   const [showInfo, setShowInfo] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerQuery, setPickerQuery] = useState('');
+
+  const norm = useCallback(
+    (s: string) =>
+      s
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, ''),
+    [],
+  );
+
+  const filteredOpciones = useMemo(() => {
+    const q = norm(pickerQuery.trim());
+    if (!q) return opciones;
+    return opciones.filter((op) => norm(op.nombre).includes(q));
+  }, [opciones, pickerQuery, norm]);
+
+  const closePicker = useCallback(() => {
+    setPickerOpen(false);
+    setPickerQuery('');
+  }, []);
 
   const handleSelectFinding = useCallback(
     (item: FindingOptionConfig | null) => {
       formActions.selectFinding(item?.id ?? null);
+      closePicker();
     },
-    [formActions],
+    [formActions, closePicker],
   );
 
   const handleSelectColor = useCallback(
@@ -193,11 +216,11 @@ const FormDentalClinicalFindings = () => {
     [formActions],
   );
 
-  const subSelectedIndex = useMemo(() => {
-    if (!selectedItem?.subopciones || !selectedSuboption) return 0;
-    const idx = selectedItem.subopciones.findIndex((s) => s.id === selectedSuboption.id);
-    return idx >= 0 ? idx : 0;
-  }, [selectedItem, selectedSuboption]);
+  const handleSelectSuboption = useCallback(
+    (sub: FindingSuboption) =>
+      formActions.selectSuboption(selectedSuboption?.id === sub.id ? null : sub),
+    [formActions, selectedSuboption],
+  );
 
   const docsGroup = selectedOption != null ? SIGLAS_MAP[selectedOption] : null;
 
@@ -206,34 +229,63 @@ const FormDentalClinicalFindings = () => {
       <div className={styles.formGrid}>
         {/* Hallazgo */}
         <div className={`${styles.field} ${styles.fieldFinding}`}>
-          <ComboBox
-            id="odontogram-finding-combobox"
-            titleText="Hallazgo"
-            placeholder="Seleccionar hallazgo…"
-            items={opciones}
-            itemToString={(item: FindingOptionConfig | null) => (item ? item.nombre : '')}
-            selectedItem={selectedItem}
-            onChange={({ selectedItem: it }) => handleSelectFinding(it ?? null)}
-            size="md"
-          />
+          <span className={styles.fieldLabel}>Hallazgo</span>
+          <button
+            type="button"
+            className={`${styles.findingTrigger} ${selectedItem ? styles.findingTriggerFilled : ''}`}
+            onClick={() => setPickerOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={pickerOpen}
+          >
+            <span className={styles.findingTriggerText}>
+              {selectedItem ? selectedItem.nombre : 'Seleccionar hallazgo…'}
+            </span>
+            {selectedItem && (
+              <span
+                className={styles.findingTriggerClear}
+                role="button"
+                tabIndex={0}
+                aria-label="Limpiar hallazgo"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelectFinding(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleSelectFinding(null);
+                  }
+                }}
+              >
+                <Close size={16} />
+              </span>
+            )}
+            <ChevronDown size={16} className={styles.findingTriggerChevron} />
+          </button>
         </div>
 
         {/* Tipo */}
         {selectedItem && (selectedItem.subopciones?.length ?? 0) > 0 && (
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Tipo</span>
-            <ContentSwitcher
-              size="md"
-              selectedIndex={subSelectedIndex}
-              onChange={({ index }: { index: number }) => {
-                const sub = selectedItem.subopciones?.[index];
-                if (sub) formActions.selectSuboption(sub);
-              }}
-            >
-              {selectedItem.subopciones!.map((sub: FindingSuboption) => (
-                <Switch key={sub.id} name={String(sub.id)} text={sub.nombre} />
-              ))}
-            </ContentSwitcher>
+            <div className={styles.subOptionRow} role="group" aria-label="Tipo">
+              {selectedItem.subopciones!.map((sub: FindingSuboption) => {
+                const isActive = selectedSuboption?.id === sub.id;
+                return (
+                  <button
+                    key={sub.id}
+                    type="button"
+                    className={`${styles.subOptionChip} ${isActive ? styles.subOptionChipActive : ''}`}
+                    onClick={() => handleSelectSuboption(sub)}
+                    aria-pressed={isActive}
+                    title={sub.descripcion ?? sub.nombre}
+                  >
+                    {sub.nombre}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -283,6 +335,47 @@ const FormDentalClinicalFindings = () => {
           </div>
         )}
       </div>
+
+      <Modal
+        open={pickerOpen}
+        passiveModal
+        modalHeading="Seleccionar hallazgo"
+        onRequestClose={closePicker}
+        size="lg"
+        selectorPrimaryFocus="#finding-picker-search"
+      >
+        <div className={styles.pickerSearchWrap}>
+          <Search
+            id="finding-picker-search"
+            labelText="Buscar hallazgo"
+            placeholder="Buscar hallazgo por nombre…"
+            size="lg"
+            value={pickerQuery}
+            onChange={(e) => setPickerQuery(e.target.value)}
+            onClear={() => setPickerQuery('')}
+          />
+        </div>
+        <div className={styles.pickerGrid}>
+          {filteredOpciones.map((op) => {
+            const isSelected = op.id === selectedOption;
+            return (
+              <button
+                key={op.id}
+                type="button"
+                className={`${styles.pickerTile} ${isSelected ? styles.pickerTileSelected : ''}`}
+                onClick={() => handleSelectFinding(op)}
+                aria-pressed={isSelected}
+              >
+                <span className={styles.pickerTileName}>{op.nombre}</span>
+                {isSelected && <Checkmark size={16} className={styles.pickerTileCheck} />}
+              </button>
+            );
+          })}
+          {filteredOpciones.length === 0 && (
+            <p className={styles.pickerEmpty}>Sin coincidencias para «{pickerQuery}»</p>
+          )}
+        </div>
+      </Modal>
 
       {showInfo && docsGroup && (
         <Modal
