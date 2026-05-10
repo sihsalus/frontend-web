@@ -111,7 +111,6 @@ jobs:
     permissions:
       contents: read
     needs: build
-    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -146,7 +145,6 @@ jobs:
     permissions:
       contents: read
     needs: quality
-    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v6
         with:
