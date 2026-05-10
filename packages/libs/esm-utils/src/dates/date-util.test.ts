@@ -167,7 +167,7 @@ describe('Openmrs Dates', () => {
     expect(formatTime(testDate)).toMatch(/01:15\sPM/i);
     window.i18next.language = 'es-CO';
     expect(formatTime(testDate)).toMatch(/1:15\sp.\sm./); // it's not a normal space between the 'p.' and 'm.'
-    window.i18next.language = 'es-MX';
+    window.i18next.language = 'es-PE';
     // TODO: Figure out whether this test fails because of the timezone or the locale or daylight saving time
     // expect(formatTime(testDate)).toEqual('13:15');
   });
