@@ -1,7 +1,6 @@
 import { Modal, Tag } from '@carbon/react';
 import { CheckmarkFilled } from '@carbon/react/icons';
 import React from 'react';
-import styles from './DesignSelector.module.scss';
 import {
   Finding5Design1,
   Finding5Design2,
@@ -55,6 +54,7 @@ import {
 } from '../designs/figuras';
 import type { FindingColor, FindingDesign, ToothFinding } from '../types/odontogram';
 import { COLOR_CSS } from './constants';
+import styles from './DesignSelector.module.scss';
 import Tooth from './Tooth';
 import ToothDesigns from './ToothDesigns';
 
@@ -219,7 +219,7 @@ const DesignSelector: React.FC<DesignSelectorProps> = ({
             : undefined
         }
       >
-        <div className={styles.previewTooth} aria-label="Vista previa del hallazgo en el diente">
+        <div className={styles.previewTooth} role="img" aria-label="Vista previa del hallazgo en el diente">
           <svg width="60" height={TOOTH_SVG_HEIGHT}>
             <g transform={toothTransform}>
               <ToothDesigns design={rootDesignName} />

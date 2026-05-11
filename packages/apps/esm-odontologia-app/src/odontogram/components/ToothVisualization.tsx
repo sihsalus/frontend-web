@@ -28,6 +28,7 @@ const ToothVisualization = ({
   // Close the design picker if the finding changes or the form goes read-only.
   // Otherwise the modal stays mounted showing designs/preview that no longer
   // match what's selected in the form.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: The picker must close whenever these external selection values change.
   React.useEffect(() => {
     setShowDesignSelector(false);
   }, [selectedFindingId, readOnly]);

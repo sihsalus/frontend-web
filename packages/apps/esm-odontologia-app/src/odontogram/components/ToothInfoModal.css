@@ -366,7 +366,7 @@
 .tim-info-btn,
 .tim-badge,
 .tim-eye-btn {
-  display: none !important;
+  display: none;
 }
 
 /* Mobile modal adjustments */

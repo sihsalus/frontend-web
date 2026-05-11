@@ -23,6 +23,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ idTooth
   // Without this, switching from finding 13 to another finding leaves stale state
   // (showDesignSelector=true) that pops the modal back open the next time the
   // user re-selects finding 13.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: The picker must close whenever these external selection values change.
   useEffect(() => {
     setShowDesignSelector(false);
   }, [selectedFindingId, readOnly]);
@@ -125,9 +126,7 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ idTooth
     // Orientation-agnostic findings (e.g. 26 with the "S" glyph) are exempt:
     // mirroring them would flip the letter upside-down.
     if (isLowerTeeth && !isOrientationAgnosticFinding(optionId)) {
-      return (
-        <g transform={`scale(1,-1) translate(0,-${ODONTOGRAM_CONFIG.dimensions.toothHeight})`}>{designNode}</g>
-      );
+      return <g transform={`scale(1,-1) translate(0,-${ODONTOGRAM_CONFIG.dimensions.toothHeight})`}>{designNode}</g>;
     }
     return designNode;
   };

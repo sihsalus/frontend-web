@@ -1,3 +1,4 @@
+/* biome-ignore-all lint/correctness/noUnknownPseudoClass: :global() is required because the app processes CSS imports as CSS Modules. */
 /* =========================================================================
    Odontogram Widget — core styles
 
