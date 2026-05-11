@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ToothDetails.css';
 import './spacing/SpaceBetweenStyles.css';
-import { getDesignComponentByPosition } from '../config/designMapping';
+import { getDesignComponentByPosition, isOrientationAgnosticFinding } from '../config/designMapping';
 import { ODONTOGRAM_CONFIG } from '../config/odontogramConfig';
 import { useOdontogramContext } from '../providers/OdontogramProvider';
 import type { FindingDesign } from '../types/odontogram';
@@ -116,10 +116,20 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ idTooth
       return null;
     }
 
-    const DesignComponent = getDesignComponentByPosition(optionId, currentFinding.designNumber, isLowerTeeth ?? false);
+    const DesignComponent = getDesignComponentByPosition(optionId, currentFinding.designNumber);
     if (!DesignComponent) return null;
 
-    return <DesignComponent strokeColor={currentFinding.color.name} />;
+    const designNode = <DesignComponent strokeColor={currentFinding.color.name} />;
+    // Lower-arch designs are derived from the upper canon by mirroring
+    // vertically — keeps a single source of truth for design assets.
+    // Orientation-agnostic findings (e.g. 26 with the "S" glyph) are exempt:
+    // mirroring them would flip the letter upside-down.
+    if (isLowerTeeth && !isOrientationAgnosticFinding(optionId)) {
+      return (
+        <g transform={`scale(1,-1) translate(0,-${ODONTOGRAM_CONFIG.dimensions.toothHeight})`}>{designNode}</g>
+      );
+    }
+    return designNode;
   };
 
   return (
@@ -140,6 +150,8 @@ const MainSectionOnTheCanvas: React.FC<MainSectionOnTheCanvasProps> = ({ idTooth
           width={ODONTOGRAM_CONFIG.dimensions.toothWidth}
           height={ODONTOGRAM_CONFIG.dimensions.toothHeight}
           fill={isSelected && !isSpacingOnly ? ODONTOGRAM_CONFIG.colors.selected : ODONTOGRAM_CONFIG.colors.default}
+          stroke={isSelected && !isSpacingOnly ? '#a8a8a8' : 'none'}
+          strokeWidth={isSelected && !isSpacingOnly ? 0.3 : 0}
         />
         {renderDesign()}
       </svg>

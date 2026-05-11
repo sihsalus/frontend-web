@@ -79,7 +79,18 @@ const SpaceBetweenLegends: React.FC<SpaceBetweenLegendsProps> = ({
         style={{ cursor: readOnly || isDisabled ? 'default' : 'pointer' }}
         className={isSelected && !isDisabled && !readOnly ? 'interactive-svg' : ''}
       >
-        <rect width="20" height="30" fill={isDisabled || readOnly ? 'white' : isSelected ? 'lightgray' : 'white'} />
+        {(() => {
+        const showHighlight = !isDisabled && !readOnly && isSelected;
+        return (
+          <rect
+            width="20"
+            height="30"
+            fill={showHighlight ? 'lightgray' : 'white'}
+            stroke={showHighlight ? '#a8a8a8' : 'none'}
+            strokeWidth={showHighlight ? 0.3 : 0}
+          />
+        );
+      })()}
         {renderDesign()}
       </svg>
     </div>
