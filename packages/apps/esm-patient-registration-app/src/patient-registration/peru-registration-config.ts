@@ -124,7 +124,7 @@ const peruFieldDefinitions: Array<FieldDefinition> = [
     uuid: '56188294-b42c-481d-a987-4b495116c580',
     label: 'Tipo de seguro',
     showHeading: false,
-    answerConceptSetUuid: '355ee63a-a773-47ab-9841-2505b71dec13',
+    answerConceptSetUuid: '6b932638-242e-49ef-8ba7-0ae87199835c',
   },
   {
     id: 'insuranceCode',
@@ -147,7 +147,7 @@ const peruFieldDefinitions: Array<FieldDefinition> = [
     uuid: '9b3df0a1-0c58-4f55-9868-9c38f1db1002',
     label: 'Factor Rh',
     showHeading: false,
-    answerConceptSetUuid: '9b3df0a1-0c58-4f55-9868-9c38f1db2002',
+    answerConceptSetUuid: '54b52ca9-8168-4f63-b2a3-a18899bf0baa',
   },
   {
     id: 'medicalRecordStatus',
