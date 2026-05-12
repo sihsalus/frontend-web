@@ -107,7 +107,7 @@ const PeruHomeActions: React.FC = () => {
       {actions.map(({ key, descriptionKey, href, icon: Icon, illustrationId, toneClass }) => (
         <ConfigurableLink key={key} className={`${styles.actionLink} ${styles[toneClass]}`} to={`${spaBase}${href}`}>
           <span className={styles.actionHeader}>
-            <Icon className={styles.actionIcon} size={24} />
+            {/*<Icon className={styles.actionIcon} size={24} />*/}
             <span className={styles.actionText}>
               <strong>{t(key)}</strong>
               <span>{t(descriptionKey)}</span>

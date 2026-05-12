@@ -4,7 +4,7 @@
 
 .quickActions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
   gap: layout.$spacing-04;
   padding: layout.$spacing-05 layout.$spacing-05 0;
 }
@@ -18,9 +18,9 @@
 
   position: relative;
   display: grid;
-  grid-template-rows: auto minmax(8.75rem, 1fr);
-  gap: layout.$spacing-03;
-  min-height: 14rem;
+  grid-template-rows: 4.125rem minmax(7.5rem, 1fr);
+  gap: layout.$spacing-02;
+  min-height: 13.25rem;
   padding: layout.$spacing-05;
   color: colors.$gray-100;
   text-decoration: none;
@@ -58,7 +58,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: layout.$spacing-04;
+  gap: layout.$spacing-03;
+  min-height: 4.125rem;
   min-width: 0;
   z-index: 1;
 }
@@ -76,28 +77,38 @@
 
   strong {
     @include type.type-style("heading-compact-01");
+
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   span {
     @include type.type-style("body-compact-01");
     color: colors.$gray-70;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 }
 
 .illustrationArea {
   display: grid;
-  place-items: center;
-  min-height: 8.75rem;
+  place-items: start center;
+  min-height: 7.5rem;
+  padding-top: layout.$spacing-02;
   width: 100%;
   z-index: 0;
 }
 
 .actionIllustration {
   position: relative;
-  width: 8rem;
-  height: 8rem;
-  max-width: 88%;
-  max-height: 88%;
+  width: clamp(6.25rem, 58%, 8.75rem);
+  height: clamp(6.25rem, 58%, 8.75rem);
+  max-width: 96%;
+  max-height: 96%;
   opacity: 0.94;
   filter: var(--action-illustration-filter);
   overflow: visible;
@@ -138,28 +149,17 @@
   --action-illustration-filter: hue-rotate(-138deg) saturate(1.08);
 }
 
-@media (min-width: 42rem) {
-  .quickActions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 82rem) {
-  .quickActions {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 35rem) {
   .quickActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: layout.$spacing-03;
     padding-inline: layout.$spacing-03;
   }
 
   .actionLink {
-    min-height: 11.75rem;
+    min-height: 10.75rem;
     padding: layout.$spacing-04;
-    grid-template-rows: auto minmax(6.75rem, 1fr);
+    grid-template-rows: 3.25rem minmax(5.75rem, 1fr);
   }
 
   .actionHeader {
@@ -167,6 +167,7 @@
     justify-items: center;
     text-align: center;
     gap: layout.$spacing-02;
+    min-height: 3.25rem;
   }
 
   .actionText {
@@ -178,11 +179,18 @@
   }
 
   .illustrationArea {
-    min-height: 6.75rem;
+    min-height: 5.75rem;
+    padding-top: 0;
   }
 
   .actionIllustration {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: clamp(5rem, 62%, 6.25rem);
+    height: clamp(5rem, 62%, 6.25rem);
+  }
+}
+
+@media (max-width: 22rem) {
+  .quickActions {
+    grid-template-columns: 1fr;
   }
 }
