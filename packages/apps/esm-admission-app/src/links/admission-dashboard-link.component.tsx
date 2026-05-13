@@ -13,7 +13,11 @@ export default function AdmissionDashboardLink() {
   const isActive = useMemo(() => window.location.pathname.includes(basePath), []);
 
   return (
-    <ConfigurableLink className={classNames('cds--side-nav__link', { 'active-left-nav-link': isActive })} to={href}>
+    <ConfigurableLink
+      aria-label={`${t('admission', 'Admisión')} ${t('admissionReportByUps', 'Reporte de admisiones por UPS')}`}
+      className={classNames('cds--side-nav__link', { 'active-left-nav-link': isActive })}
+      to={href}
+    >
       <span className="sihsalus-side-nav__item">
         <ReportData aria-hidden="true" className="sihsalus-side-nav__icon" size={20} />
         <span className="sihsalus-side-nav__text">{t('admissionReportByUps', 'Reporte de admisiones por UPS')}</span>
