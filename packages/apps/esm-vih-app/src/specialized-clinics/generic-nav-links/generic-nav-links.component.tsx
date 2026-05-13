@@ -1,9 +1,10 @@
 import { Tooltip } from '@carbon/react';
-import { ConfigurableLink, useConfig } from '@openmrs/esm-framework';
+import { ConfigurableLink, MaybeIcon, useConfig } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ConfigObject } from '../../config-schema';
+import styles from './generic-nav-links.scss';
 
 const specialClinicsDashboardPath = 'vih-special-clinics-dashboard';
 
@@ -23,6 +24,7 @@ const GenericNavLinks: React.FC<GenericNavLinksProps> = ({ basePath }) => {
           title={clinic.title}
           path={clinic.id}
           basePath={basePath}
+          icon={getClinicIcon(clinic.id)}
           tooltip={t(`${clinic.id}Tooltip`, getDefaultTooltip(clinic.id))}
         />
       ))}
@@ -32,10 +34,11 @@ const GenericNavLinks: React.FC<GenericNavLinksProps> = ({ basePath }) => {
 
 export default GenericNavLinks;
 
-const GenericLink: React.FC<{ title: string; path: string; basePath: string; tooltip: string }> = ({
+const GenericLink: React.FC<{ title: string; path: string; basePath: string; icon: string; tooltip: string }> = ({
   title,
   path,
   basePath,
+  icon,
   tooltip,
 }) => {
   const link = (
@@ -44,7 +47,10 @@ const GenericLink: React.FC<{ title: string; path: string; basePath: string; too
       to={`${basePath}/${encodeURIComponent(specialClinicsDashboardPath)}?clinic=${path}`}
       title={tooltip}
     >
-      {title}
+      <span className={styles.menu}>
+        <MaybeIcon icon={icon} className={styles.icon} size={16} />
+        <span>{title}</span>
+      </span>
     </ConfigurableLink>
   );
 
@@ -56,6 +62,17 @@ const GenericLink: React.FC<{ title: string; path: string; basePath: string; too
     </div>
   );
 };
+
+function getClinicIcon(clinicId: string) {
+  switch (clinicId) {
+    case 'psicologia-clinic':
+      return 'omrs-icon-user-follow';
+    case 'physiotherapy-clinic':
+      return 'omrs-icon-movement';
+    default:
+      return 'omrs-icon-procedure-order';
+  }
+}
 
 function getDefaultTooltip(clinicId: string) {
   switch (clinicId) {
