@@ -1,7 +1,4 @@
-/* The project's rspack config processes ALL .css files as CSS Modules
-   (hashing class names). Components in this app reference classes by literal
-   string in JSX, so every selector below is wrapped in :global() to keep the
-   class names un-hashed and have the styles actually apply. */
+/* biome-ignore-all lint/correctness/noUnknownPseudoClass: :global() keeps literal odontogram class names compatible with CSS Modules. */
 
 :global(.tooth-details-container) {
   display: flex;

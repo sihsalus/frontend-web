@@ -93,6 +93,7 @@ type VersionedPackageJson = {
 };
 
 const alwaysHostSharedDependencies = new Set([
+  '@carbon/react',
   '@openmrs/esm-config',
   '@openmrs/esm-extensions',
   '@openmrs/esm-framework',

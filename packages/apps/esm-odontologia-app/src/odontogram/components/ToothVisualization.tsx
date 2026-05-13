@@ -1,7 +1,7 @@
 import React from 'react';
 import { isMultiDesignFinding } from '../logic/findingDesignLogic';
 import { useOdontogramContext } from '../providers/OdontogramProvider';
-import type { FindingDesign } from '../types/odontogram';
+import type { FindingDesign, ToothRootDesign } from '../types/odontogram';
 import { TOOTH_DESIGN_COMPONENT_MAP } from './constants';
 import DesignSelector from './DesignSelector';
 import Tooth from './Tooth';
@@ -10,7 +10,7 @@ import ToothDesigns from './ToothDesigns';
 interface ToothVisualizationProps {
   idTooth: number;
   zones?: number;
-  design?: string;
+  design?: ToothRootDesign;
   position?: 'upper' | 'lower';
 }
 
@@ -28,6 +28,7 @@ const ToothVisualization = ({
   // Close the design picker if the finding changes or the form goes read-only.
   // Otherwise the modal stays mounted showing designs/preview that no longer
   // match what's selected in the form.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: The picker must close whenever these external selection values change.
   React.useEffect(() => {
     setShowDesignSelector(false);
   }, [selectedFindingId, readOnly]);

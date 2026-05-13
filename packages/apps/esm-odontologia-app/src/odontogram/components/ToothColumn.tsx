@@ -20,13 +20,7 @@ const ToothColumn: React.FC<ToothColumnProps> = ({ toothId, children }) => {
   const { data, config, toothActions, readOnly } = useOdontogramContext();
 
   const tooth = data.teeth.find((t) => t.toothId === toothId);
-  const findingsCount = tooth?.findings?.length ?? 0;
   const toothConfig = [...config.teeth.upper, ...config.teeth.lower].find((t) => t.id === toothId);
-
-  const handleOpen = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowModal(true);
-  }, []);
 
   const handleClose = useCallback(() => {
     setShowModal(false);
