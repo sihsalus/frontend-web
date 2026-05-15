@@ -21,7 +21,10 @@ function BillableServicesMenuExtension({ config }: { config: BillableServicesMen
   const location = useLocation();
   const spaBasePath = `${globalThis.spaBase}/billable-services`;
 
-  const activePath = useMemo(() => location.pathname.replace(spaBasePath, '').replace(/^\//, ''), [location.pathname, spaBasePath]);
+  const activePath = useMemo(
+    () => location.pathname.replace(spaBasePath, '').replace(/^\//, ''),
+    [location.pathname, spaBasePath],
+  );
 
   const handleNavigation = (path: string) => {
     navigate({ to: `${spaBasePath}/${path}` });
@@ -30,7 +33,11 @@ function BillableServicesMenuExtension({ config }: { config: BillableServicesMen
   const menu = (
     <SideNavMenu defaultExpanded title={t(title)} renderIcon={Icon}>
       {items.map((item) => (
-        <SideNavMenuItem key={item.name} isActive={activePath === item.path} onClick={() => handleNavigation(item.path)}>
+        <SideNavMenuItem
+          key={item.name}
+          isActive={activePath === item.path}
+          onClick={() => handleNavigation(item.path)}
+        >
           <span className="sihsalus-side-nav__text">{t(item.title)}</span>
         </SideNavMenuItem>
       ))}

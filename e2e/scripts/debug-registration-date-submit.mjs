@@ -26,7 +26,9 @@ const info = await page.evaluate(() => {
       .filter(Boolean)
       .some((value) => /birth|date|fecha|dd\/mm/i.test(value)),
   );
-  const submit = [...document.querySelectorAll('button')].find((button) => /Registrar paciente|Register patient/i.test(button.textContent ?? ''));
+  const submit = [...document.querySelectorAll('button')].find((button) =>
+    /Registrar paciente|Register patient/i.test(button.textContent ?? ''),
+  );
   return {
     birthdateInputs: birthdateInputs.map((input) => ({
       outerHTML: input.outerHTML,
