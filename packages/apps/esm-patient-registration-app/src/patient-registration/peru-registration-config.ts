@@ -1,16 +1,17 @@
 import { type FieldDefinition, type RegistrationConfig, type SectionDefinition } from '../config-schema';
 
+export const peruDniPatientIdentifierTypeUuid = '550e8400-e29b-41d4-a716-446655440001';
+export const peruCarnetExtranjeriaPatientIdentifierTypeUuid = '550e8400-e29b-41d4-a716-446655440002';
+export const peruDiePatientIdentifierTypeUuid = '8d793bee-c2cc-11de-8d13-0010c6dffd0f';
+
 const peruDefaultPatientIdentifierTypeUuids = [
-  '550e8400-e29b-41d4-a716-446655440001', // DNI
-  '550e8400-e29b-41d4-a716-446655440002', // Carné de Extranjería
-  '550e8400-e29b-41d4-a716-446655440003', // Pasaporte
-  '8d793bee-c2cc-11de-8d13-0010c6dffd0f', // Documento de Identidad Extranjero
+  peruDniPatientIdentifierTypeUuid, // DNI
 ];
 
 export const peruForeignPatientIdentifierTypeUuids = [
-  '550e8400-e29b-41d4-a716-446655440002', // Carné de Extranjería
+  peruCarnetExtranjeriaPatientIdentifierTypeUuid, // Carné de Extranjería
   '550e8400-e29b-41d4-a716-446655440003', // Pasaporte
-  '8d793bee-c2cc-11de-8d13-0010c6dffd0f', // Documento de Identidad Extranjero
+  peruDiePatientIdentifierTypeUuid, // Documento de Identidad Extranjero
 ];
 
 const peruSections = ['filiation', 'medicalRecord', 'insurance', 'responsiblePerson'];
@@ -26,7 +27,6 @@ const peruSectionDefinitions: Array<SectionDefinition> = [
     name: 'Datos de filiación',
     fields: [
       'birthplace',
-      'nationality',
       'civilStatus',
       'ethnicity',
       'nativeLanguage',
@@ -68,9 +68,6 @@ const peruFieldDefinitions: Array<FieldDefinition> = [
     uuid: '9b3df0a1-0c58-4f55-9868-9c38f1db1007',
     label: 'Nacionalidad',
     showHeading: false,
-    showIf: {
-      foreignIdentifierPresent: true,
-    },
   },
   {
     id: 'civilStatus',
@@ -249,6 +246,42 @@ function mergeSectionDefinitions(configured: Array<SectionDefinition>, defaults:
   );
 }
 
+function insertAfter(fields: Array<string>, target: string, field: string) {
+  if (fields.includes(field)) {
+    return fields;
+  }
+
+  const targetIndex = fields.indexOf(target);
+  if (targetIndex < 0) {
+    return [...fields, field];
+  }
+
+  return [...fields.slice(0, targetIndex + 1), field, ...fields.slice(targetIndex + 1)];
+}
+
+function addNationalityToDemographics(sectionDefinitions: Array<SectionDefinition>) {
+  const demographics = sectionDefinitions.find((section) => section.id === 'demographics');
+  if (!demographics) {
+    return [
+      ...sectionDefinitions,
+      {
+        id: 'demographics',
+        name: 'Basic Info',
+        fields: ['name', 'gender', 'dob', 'id', 'nationality'],
+      },
+    ];
+  }
+
+  return sectionDefinitions.map((section) =>
+    section.id === 'demographics'
+      ? {
+          ...section,
+          fields: insertAfter(section.fields, 'id', 'nationality'),
+        }
+      : section,
+  );
+}
+
 export function getEffectiveRegistrationConfig(config: RegistrationConfig): RegistrationConfig {
   const sections = [...config.sections];
 
@@ -272,7 +305,9 @@ export function getEffectiveRegistrationConfig(config: RegistrationConfig): Regi
   return {
     ...config,
     sections,
-    sectionDefinitions: mergeSectionDefinitions(config.sectionDefinitions, peruSectionDefinitions),
+    sectionDefinitions: addNationalityToDemographics(
+      mergeSectionDefinitions(config.sectionDefinitions, peruSectionDefinitions),
+    ),
     fieldDefinitions: appendMissingById(config.fieldDefinitions, peruFieldDefinitions),
     fieldConfigurations: {
       ...config.fieldConfigurations,

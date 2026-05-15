@@ -40,7 +40,7 @@ export default function DashboardContainer() {
           state={{ dashboardTitle: activeDashboard?.name }}
         />
       </section>
-      <WorkspaceContainer overlay contextKey="home" />
+      {/\/home(\/|$)/.test(window.location.pathname) ? <WorkspaceContainer overlay contextKey="home" /> : null}
     </div>
   );
 }
