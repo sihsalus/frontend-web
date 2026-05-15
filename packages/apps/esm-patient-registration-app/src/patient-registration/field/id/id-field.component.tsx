@@ -62,7 +62,7 @@ export function isIdentityDocumentIdentifier(
   identifierFieldName: string,
   identifierTypes: Array<PatientIdentifierType> = [],
 ) {
-  const identifier = identifiers[identifierFieldName];
+  const identifier = identifiers?.[identifierFieldName];
   const identifierType = identifierTypes.find(
     (type) => type.fieldName === identifierFieldName || type.uuid === identifier?.identifierTypeUuid,
   );
@@ -74,7 +74,7 @@ export function countIdentityDocumentIdentifiers(
   identifiers: FormValues['identifiers'],
   identifierTypes: Array<PatientIdentifierType> = [],
 ) {
-  return Object.keys(identifiers).filter((fieldName) =>
+  return Object.keys(identifiers ?? {}).filter((fieldName) =>
     isIdentityDocumentIdentifier(identifiers, fieldName, identifierTypes),
   ).length;
 }
