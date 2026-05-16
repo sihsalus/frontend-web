@@ -18,8 +18,8 @@ vi.mock('@openmrs/esm-framework', async () => ({
   useDebounce: vi.fn((value) => value),
 }));
 
-vi.mock('./concept-search-results', () => {
-  return function MockConceptSearchResults({
+vi.mock('./concept-search-results', () => ({
+  default: function MockConceptSearchResults({
     searchTerm,
     onConceptSelect,
   }: {
@@ -39,8 +39,8 @@ vi.mock('./concept-search-results', () => {
         </button>
       </div>
     );
-  };
-});
+  },
+}));
 
 describe('ConceptSearchInput', () => {
   const mockOnConceptSelect = vi.fn();
