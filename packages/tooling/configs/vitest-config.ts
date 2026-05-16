@@ -63,6 +63,11 @@ export function defineWorkspaceVitestConfig(config: VitestConfigLike = {}) {
           environment: 'happy-dom',
           mockClear: true,
           globals: true,
+          css: {
+            modules: {
+              classNameStrategy: 'non-scoped',
+            },
+          },
         },
       },
       config,

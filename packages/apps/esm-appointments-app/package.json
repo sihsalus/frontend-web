@@ -42,7 +42,7 @@
     "@sihsalus/esm-rbac": "workspace:*",
     "classnames": "^2.3.2",
     "formik": "^2.2.9",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.23",
     "react-hook-form": "^7.54.0",
     "xlsx": "^0.18.5",
     "yup": "^0.32.11",
