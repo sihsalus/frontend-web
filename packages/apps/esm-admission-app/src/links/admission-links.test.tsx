@@ -6,21 +6,22 @@ import AdmissionAppMenuLink from './admission-app-menu-link.component';
 import AdmissionDashboardLink from './admission-dashboard-link.component';
 import AdmissionMergePatientsAction from './admission-merge-patients-action.component';
 
-jest.mock('@openmrs/esm-framework', () => {
+vi.mock('@openmrs/esm-framework', async () => {
   const React = require('react');
 
   return {
+    ...(await vi.importActual('@openmrs/esm-framework')),
     ConfigurableLink: ({ children, to, ...props }) => React.createElement('a', { href: to, ...props }, children),
-    navigate: jest.fn(),
+    navigate: vi.fn(),
   };
 });
 
-const mockNavigate = jest.mocked(navigate);
+const mockNavigate = vi.mocked(navigate);
 
 describe('admission navigation links', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    globalThis.getOpenmrsSpaBase = jest.fn(() => '/openmrs/spa/');
+    vi.clearAllMocks();
+    globalThis.getOpenmrsSpaBase = vi.fn(() => '/openmrs/spa/');
     globalThis.spaBase = '/openmrs/spa';
   });
 

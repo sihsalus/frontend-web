@@ -4,7 +4,9 @@
     "baseUrl": ".",
     "moduleResolution": "node",
     "target": "es2015",
-    "noImplicitAny": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "paths": {
       "@hooks/*": ["./src/hooks/*"],
       "@types": ["./src/types"],

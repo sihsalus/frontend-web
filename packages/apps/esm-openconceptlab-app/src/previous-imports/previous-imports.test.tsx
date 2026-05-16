@@ -6,8 +6,8 @@ import React from 'react';
 
 import PreviousImports from './previous-imports.component';
 
-const mockOpenmrsFetch = openmrsFetch as jest.Mock;
-const mockUsePagination = usePagination as jest.Mock;
+const mockOpenmrsFetch = openmrsFetch as vi.Mock;
+const mockUsePagination = usePagination as vi.Mock;
 
 describe('Previous imports', () => {
   it('renders the table', async () => {

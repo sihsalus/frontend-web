@@ -8,9 +8,9 @@ import { type ConfigObject, configSchema } from '../config-schema';
 
 import AppointmentsTable from './scheduled-appointments-table.component';
 
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
 
-jest.mock('./queue-linelist.resource', () => ({
+vi.mock('./queue-linelist.resource', () => ({
   useAppointments: () => ({
     appointmentQueueEntries: mockAppointmentsData.data,
     isLoading: false,

@@ -60,10 +60,15 @@ await page.waitForTimeout(2500);
 await page.screenshot({ path: screenshotPath, fullPage: true });
 
 const failedConceptResponses = conceptResponses.filter((entry) => entry.status >= 400);
-const bodyText = await page.locator('body').innerText().catch(() => '');
+const bodyText = await page
+  .locator('body')
+  .innerText()
+  .catch(() => '');
 const visibleWarnings = bodyText
   .split('\n')
-  .filter((line) => /invalid answer concept set|does not have any concept answers|answer concept set UUID|concept answers/i.test(line));
+  .filter((line) =>
+    /invalid answer concept set|does not have any concept answers|answer concept set UUID|concept answers/i.test(line),
+  );
 
 console.log(JSON.stringify({ screenshotPath, failedConceptResponses, visibleWarnings }, null, 2));
 

@@ -10,7 +10,7 @@ import { PatientRegistrationContext } from '../patient-registration-context';
 
 import { Field } from './field.component';
 
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
 
 const predefinedAddressTemplate = {
   uuid: 'test-address-template-uuid',
@@ -100,12 +100,12 @@ const initialContextValues = {
   inEditMode: false,
   initialFormValues: {} as FormValues,
   isOffline: false,
-  setCapturePhotoProps: jest.fn(),
-  setFieldValue: jest.fn(),
-  setInitialFormValues: jest.fn(),
+  setCapturePhotoProps: vi.fn(),
+  setFieldValue: vi.fn(),
+  setInitialFormValues: vi.fn(),
   validationSchema: null,
   values: {} as FormValues,
-  setFieldTouched: jest.fn(),
+  setFieldTouched: vi.fn(),
 };
 
 describe('Field', () => {
@@ -114,7 +114,7 @@ describe('Field', () => {
   beforeEach(() => {
     ContextWrapper = ({ children }) => (
       <ResourcesContext.Provider value={mockResourcesContextValue}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <Form>
             <PatientRegistrationContext.Provider value={initialContextValues}>
               {children}
@@ -170,9 +170,9 @@ describe('Field', () => {
   });
 
   it('should render AddressComponent component when name prop is "address"', () => {
-    jest.mock('./address/address-hierarchy.resource', () => ({
-      ...jest.requireActual('../address-hierarchy.resource'),
-      useOrderedAddressHierarchyLevels: jest.fn(),
+    vi.mock('./address/address-hierarchy.resource', async () => ({
+      ...(await vi.importActual('../address-hierarchy.resource')),
+      useOrderedAddressHierarchyLevels: vi.fn(),
     }));
 
     mockUseConfig.mockReturnValue({
@@ -246,17 +246,17 @@ describe('Field', () => {
       inEditMode: false,
       initialFormValues: { identifiers: { openmrsID } } as unknown as FormValues,
       isOffline: false,
-      setCapturePhotoProps: jest.fn(),
-      setFieldValue: jest.fn(),
-      setInitialFormValues: jest.fn(),
+      setCapturePhotoProps: vi.fn(),
+      setFieldValue: vi.fn(),
+      setInitialFormValues: vi.fn(),
       validationSchema: null,
       values: { identifiers: { openmrsID } } as unknown as FormValues,
-      setFieldTouched: jest.fn(),
+      setFieldTouched: vi.fn(),
     };
 
     render(
       <ResourcesContext.Provider value={mockResourcesContextValue}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <Form>
             <PatientRegistrationContext.Provider value={updatedContextValues}>
               <Field name="id" />
@@ -269,7 +269,7 @@ describe('Field', () => {
   });
 
   it('should return null and report an error for an invalid field name', () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(esmPatientRegistrationSchema),

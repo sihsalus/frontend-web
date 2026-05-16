@@ -6,14 +6,14 @@ import { mockVisitTypes } from 'test-utils';
 
 import QueueLinelistFilter from './queue-linelist-filter.workspace';
 
-const mockUseLayoutType = jest.mocked(useLayoutType);
-const mockUseVisitTypes = jest.mocked(useVisitTypes);
+const mockUseLayoutType = vi.mocked(useLayoutType);
+const mockUseVisitTypes = vi.mocked(useVisitTypes);
 
 const workspaceProps = {
-  closeWorkspace: jest.fn(),
-  promptBeforeClosing: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
-  setTitle: jest.fn(),
+  closeWorkspace: vi.fn(),
+  promptBeforeClosing: vi.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
+  setTitle: vi.fn(),
 };
 
 describe('QueueLinelistFilter', () => {
@@ -38,7 +38,7 @@ describe('QueueLinelistFilter', () => {
 
   it('calls closePanel function when cancel button is clicked', async () => {
     const user = userEvent.setup();
-    const closeWorkspace = jest.fn();
+    const closeWorkspace = vi.fn();
 
     render(<QueueLinelistFilter {...{ ...workspaceProps, closeWorkspace }} />);
 

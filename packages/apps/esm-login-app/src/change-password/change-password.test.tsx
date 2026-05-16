@@ -6,11 +6,11 @@ import React from 'react';
 import ChangePasswordModal from './change-password.modal';
 import { changeUserPassword } from './change-password.resource';
 
-const mockClose = jest.fn();
-const mockChangeUserPassword = jest.mocked(changeUserPassword);
+const mockClose = vi.fn();
+const mockChangeUserPassword = vi.mocked(changeUserPassword);
 
-jest.mock('./change-password.resource', () => ({
-  changeUserPassword: jest.fn().mockResolvedValue({}),
+vi.mock('./change-password.resource', () => ({
+  changeUserPassword: vi.fn().mockResolvedValue({}),
 }));
 
 describe('ChangePasswordModal', () => {

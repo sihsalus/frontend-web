@@ -13,10 +13,10 @@ const initialContextValues = {
   inEditMode: false,
   initialFormValues: {} as FormValues,
   isOffline: false,
-  setCapturePhotoProps: jest.fn(),
-  setFieldValue: jest.fn(),
-  setFieldTouched: jest.fn(),
-  setInitialFormValues: jest.fn(),
+  setCapturePhotoProps: vi.fn(),
+  setFieldValue: vi.fn(),
+  setFieldTouched: vi.fn(),
+  setInitialFormValues: vi.fn(),
   validationSchema: null,
   values: {
     isDead: true,
@@ -29,7 +29,7 @@ describe('Death info section', () => {
 
     render(
       <PatientRegistrationContext.Provider value={initialContextValues}>
-        <Formik initialValues={initialFormValues} onSubmit={jest.fn()}>
+        <Formik initialValues={initialFormValues} onSubmit={vi.fn()}>
           <Form>
             <DeathInfoSection fields={[]} />
           </Form>

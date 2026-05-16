@@ -5,17 +5,17 @@ import { useAnamnesis } from '../hooks/useAnamnesis';
 import { patientFormEntryWorkspace } from '../utils/constants';
 import Anamnesis from './anamnesis.component';
 
-jest.mock('../hooks/useAnamnesis', () => ({
-  useAnamnesis: jest.fn(),
+vi.mock('../hooks/useAnamnesis', () => ({
+  useAnamnesis: vi.fn(),
 }));
 
-const mockUseAnamnesis = jest.mocked(useAnamnesis);
-const mockLaunchWorkspace = jest.mocked(launchWorkspace);
-const mockUseConfig = jest.mocked(useConfig);
+const mockUseAnamnesis = vi.mocked(useAnamnesis);
+const mockLaunchWorkspace = vi.mocked(launchWorkspace);
+const mockUseConfig = vi.mocked(useConfig);
 
 describe('Anamnesis', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseConfig.mockReturnValue({
       encounterTypes: {
         externalConsultation: 'external-consultation',
@@ -36,7 +36,7 @@ describe('Anamnesis', () => {
       anamnesisEntries: [],
       isLoading: false,
       error: undefined,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<Anamnesis patientUuid="patient-uuid" />);
@@ -70,7 +70,7 @@ describe('Anamnesis', () => {
       ],
       isLoading: false,
       error: undefined,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<Anamnesis patientUuid="patient-uuid" />);

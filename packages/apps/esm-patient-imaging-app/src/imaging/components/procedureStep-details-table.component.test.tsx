@@ -1,32 +1,30 @@
+import { showModal } from '@openmrs/esm-framework';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import * as api from '../../api';
 import ProcedureStepTable, { type ProcedureStepTableProps } from './procedureStep-details-table.component';
 
-type MockedOpenmrsFramework = {
-  showModal: jest.Mock;
-};
-
-jest.mock('../../api');
-jest.mock('react-i18next', () => ({
+vi.mock('../../api');
+vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string, defaultValue: string) => defaultValue,
   }),
 }));
 
-jest.mock('@openmrs/esm-framework', () => ({
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
   useLayoutType: () => 'desktop',
   usePagination: (data: any[], pageSize: number) => ({
     results: data.slice(0, pageSize),
-    goTo: jest.fn(),
+    goTo: vi.fn(),
     currentPage: 1,
   }),
   TrashCanIcon: (props: any) => <span data-testid="trash-icon" {...props} />,
-  showModal: jest.fn(() => jest.fn()),
+  showModal: vi.fn(() => vi.fn()),
 }));
 
-jest.mock('@openmrs/esm-patient-common-lib', () => ({
-  compare: jest.fn((a, b) => (a > b ? 1 : a < b ? -1 : 0)),
+vi.mock('@openmrs/esm-patient-common-lib', () => ({
+  compare: vi.fn((a, b) => (a > b ? 1 : a < b ? -1 : 0)),
   PatientChartPagination: ({ pageNumber, totalItems }: any) => (
     <div data-testid="pagination">
       Page {pageNumber} of {totalItems}
@@ -43,7 +41,7 @@ describe('ProcedureStepTable', () => {
   };
 
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation((msg, ...args) => {
+    vi.spyOn(console, 'error').mockImplementation((msg, ...args) => {
       if (typeof msg === 'string' && (msg.includes('ResizeObserver') || msg.includes('act(...)'))) {
         return;
       }
@@ -56,11 +54,11 @@ describe('ProcedureStepTable', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders loading state', async () => {
-    (api.useProcedureStep as jest.Mock).mockReturnValue({
+    (api.useProcedureStep as vi.Mock).mockReturnValue({
       data: [],
       error: null,
       isLoading: true,
@@ -74,7 +72,7 @@ describe('ProcedureStepTable', () => {
   });
 
   it('renders empty state', async () => {
-    (api.useProcedureStep as jest.Mock).mockReturnValue({
+    (api.useProcedureStep as vi.Mock).mockReturnValue({
       data: [],
       error: null,
       isLoading: false,
@@ -88,7 +86,7 @@ describe('ProcedureStepTable', () => {
   });
 
   it('renders table rows with pagination', async () => {
-    (api.useProcedureStep as jest.Mock).mockReturnValue({
+    (api.useProcedureStep as vi.Mock).mockReturnValue({
       data: [
         {
           id: 1,
@@ -139,8 +137,8 @@ describe('ProcedureStepTable', () => {
   });
 
   it('triggers delete modal when TrashCanIcon clicked', async () => {
-    const mockShowModal = jest.fn(() => jest.fn());
-    (api.useProcedureStep as jest.Mock).mockReturnValue({
+    const mockShowModal = vi.mocked(showModal);
+    (api.useProcedureStep as vi.Mock).mockReturnValue({
       data: [
         {
           id: 1,
@@ -159,8 +157,6 @@ describe('ProcedureStepTable', () => {
       isLoading: false,
       isValidating: false,
     });
-
-    (require('@openmrs/esm-framework') as MockedOpenmrsFramework).showModal = mockShowModal;
 
     await act(async () => {
       render(<ProcedureStepTable {...defaultProps} />);

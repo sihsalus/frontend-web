@@ -15,25 +15,25 @@ import { type ConfigObject, configSchema } from '../config-schema';
 import { usePrograms } from './programs.resource';
 import ProgramsDetailedSummary from './programs-detailed-summary.component';
 
-const mockLaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
-const mockUsePrograms = jest.mocked(usePrograms);
+const mockLaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
+const mockUsePrograms = vi.mocked(usePrograms);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => {
-  const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
+vi.mock('@openmrs/esm-patient-common-lib', async () => {
+  const originalModule = await vi.importActual('@openmrs/esm-patient-common-lib');
 
   return {
     ...originalModule,
-    launchPatientWorkspace: jest.fn(),
+    launchPatientWorkspace: vi.fn(),
   };
 });
 
-jest.mock('./programs.resource', () => {
-  const originalModule = jest.requireActual('./programs.resource');
+vi.mock('./programs.resource', async () => {
+  const originalModule = await vi.importActual('./programs.resource');
 
   return {
     ...originalModule,
-    usePrograms: jest.fn(),
+    usePrograms: vi.fn(),
   };
 });
 

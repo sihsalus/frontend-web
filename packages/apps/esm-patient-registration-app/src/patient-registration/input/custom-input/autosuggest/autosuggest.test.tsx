@@ -29,7 +29,7 @@ const mockGetSearchResults = async (query: string) => {
   });
 };
 
-const mockHandleSuggestionSelected = jest.fn((field, value) => [field, value]);
+const mockHandleSuggestionSelected = vi.fn((field, value) => [field, value]);
 
 describe('Autosuggest', () => {
   it('renders a search box', () => {

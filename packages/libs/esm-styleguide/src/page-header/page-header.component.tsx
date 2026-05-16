@@ -92,7 +92,7 @@ export const PageHeaderContent: React.FC<PageHeaderContentProps> = ({ title, ill
   const [config, setConfig] = useState<StyleguideConfigObject | null>(null);
 
   useEffect(() => {
-    getConfig('@openmrs/esm-styleguide').then((fetchedConfig: StyleguideConfigObject) => {
+    getConfig<StyleguideConfigObject>('@openmrs/esm-styleguide').then((fetchedConfig) => {
       setConfig(fetchedConfig);
     });
   }, []);

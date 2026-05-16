@@ -87,13 +87,7 @@ const OdontogramTextFields: React.FC<OdontogramTextFieldsProps> = ({ data, onCha
       </div>
 
       {content && (
-        <Modal
-          open
-          passiveModal
-          modalHeading={content.heading}
-          onRequestClose={() => setHelpKey(null)}
-          size="sm"
-        >
+        <Modal open passiveModal modalHeading={content.heading} onRequestClose={() => setHelpKey(null)} size="sm">
           <p className={styles.helpIntro}>{content.intro}</p>
           <p className={styles.helpExamplesLabel}>Ejemplos</p>
           <ul className={styles.helpExamplesList}>

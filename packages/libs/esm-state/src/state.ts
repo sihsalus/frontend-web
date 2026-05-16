@@ -17,7 +17,7 @@ const availableStores: Record<string, StoreEntity> = {};
 // on window in development mode.
 globalThis.setTimeout?.(() => {
   if (typeof window !== 'undefined' && window.spaEnv === 'development') {
-    window['stores'] = availableStores;
+    (window as unknown as { stores: typeof availableStores }).stores = availableStores;
   }
 }, 1000);
 

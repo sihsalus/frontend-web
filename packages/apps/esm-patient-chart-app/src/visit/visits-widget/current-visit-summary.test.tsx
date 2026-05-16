@@ -5,8 +5,8 @@ import { waitForLoadingToFinish } from 'test-utils';
 
 import CurrentVisitSummary from './current-visit-summary.component';
 
-const mockGetConfig = jest.mocked(getConfig);
-const mockUseVisits = jest.mocked(useVisit);
+const mockGetConfig = vi.mocked(getConfig);
+const mockUseVisits = vi.mocked(useVisit);
 
 describe('CurrentVisitSummary', () => {
   test('renders an empty state when there is no active visit', () => {
@@ -17,7 +17,7 @@ describe('CurrentVisitSummary', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<CurrentVisitSummary patientUuid="some-uuid" />);
@@ -48,7 +48,7 @@ describe('CurrentVisitSummary', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<CurrentVisitSummary patientUuid="some-uuid" />);

@@ -38,15 +38,15 @@ const concepts: Array<Concept> = [
   },
 ];
 
-const mockUseConceptLookup = jest.mocked(useConceptLookup);
-jest.mock('@hooks/useConceptLookup', () => ({
-  ...jest.requireActual('@hooks/useConceptLookup'),
-  useConceptLookup: jest.fn(),
+const mockUseConceptLookup = vi.mocked(useConceptLookup);
+vi.mock('@hooks/useConceptLookup', async () => ({
+  ...(await vi.importActual('@hooks/useConceptLookup')),
+  useConceptLookup: vi.fn(),
 }));
-const mockUseConceptId = jest.mocked(useConceptId);
-jest.mock('@hooks/useConceptId', () => ({
-  ...jest.requireActual('@hooks/useConceptId'),
-  useConceptId: jest.fn(),
+const mockUseConceptId = vi.mocked(useConceptId);
+vi.mock('@hooks/useConceptId', async () => ({
+  ...(await vi.importActual('@hooks/useConceptId')),
+  useConceptId: vi.fn(),
 }));
 
 describe('Select answers component', () => {

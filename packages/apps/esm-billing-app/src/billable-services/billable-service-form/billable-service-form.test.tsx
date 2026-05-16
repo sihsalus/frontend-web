@@ -18,20 +18,20 @@ import BillableServiceFormWorkspace, {
   transformServiceToFormData,
 } from './billable-service-form.workspace';
 
-const mockUseBillableServices = jest.mocked(useBillableServices);
-const mockUsePaymentModes = jest.mocked(usePaymentModes);
-const mockUseServiceTypes = jest.mocked(useServiceTypes);
-const mockCreateBillableService = jest.mocked(createBillableService);
-const mockUpdateBillableService = jest.mocked(updateBillableService);
-const mockUseConceptsSearch = jest.mocked(useConceptsSearch);
+const mockUseBillableServices = vi.mocked(useBillableServices);
+const mockUsePaymentModes = vi.mocked(usePaymentModes);
+const mockUseServiceTypes = vi.mocked(useServiceTypes);
+const mockCreateBillableService = vi.mocked(createBillableService);
+const mockUpdateBillableService = vi.mocked(updateBillableService);
+const mockUseConceptsSearch = vi.mocked(useConceptsSearch);
 
-jest.mock('../billable-service.resource', () => ({
-  useBillableServices: jest.fn(),
-  usePaymentModes: jest.fn(),
-  useServiceTypes: jest.fn(),
-  createBillableService: jest.fn(),
-  updateBillableService: jest.fn(),
-  useConceptsSearch: jest.fn(),
+vi.mock('../billable-service.resource', () => ({
+  useBillableServices: vi.fn(),
+  usePaymentModes: vi.fn(),
+  useServiceTypes: vi.fn(),
+  createBillableService: vi.fn(),
+  updateBillableService: vi.fn(),
+  useConceptsSearch: vi.fn(),
 }));
 
 const mockPaymentModes = [
@@ -66,14 +66,14 @@ const setupMocks = () => {
     billableServices: [],
     isLoading: false,
     error: null,
-    mutate: jest.fn(),
+    mutate: vi.fn(),
     isValidating: false,
   });
   mockUsePaymentModes.mockReturnValue({
     paymentModes: mockPaymentModes,
     error: null,
     isLoadingPaymentModes: false,
-    mutate: jest.fn(),
+    mutate: vi.fn(),
   });
   mockUseServiceTypes.mockReturnValue({ serviceTypes: mockServiceTypes, error: false, isLoadingServiceTypes: false });
   mockUseConceptsSearch.mockReturnValue({ searchResults: [], isSearching: false, error: null });
@@ -82,7 +82,7 @@ const setupMocks = () => {
 const renderBillableServicesForm = (
   props: Partial<Workspace2DefinitionProps<Partial<BillableServiceFormWorkspaceProps>>> = {},
 ) => {
-  const closeWorkspace = props.closeWorkspace || jest.fn();
+  const closeWorkspace = props.closeWorkspace || vi.fn();
   const workspaceProps: BillableServiceFormWorkspaceProps = {
     serviceToEdit: props.workspaceProps?.serviceToEdit,
     closeWorkspaceWithSavedChanges: props.workspaceProps?.closeWorkspaceWithSavedChanges,
@@ -98,7 +98,7 @@ const renderBillableServicesForm = (
     groupProps: props.groupProps || {},
     windowProps: props.windowProps || {},
     workspaceName: props.workspaceName || 'billable-service-form-workspace',
-    launchChildWorkspace: jest.fn(),
+    launchChildWorkspace: vi.fn(),
     windowName: 'billable-service-form-window',
     isRootWorkspace: false,
     showActionMenu: true,
@@ -144,7 +144,7 @@ const submitForm = async () => {
 describe('BillableServiceFormWorkspace', () => {
   test('should render billable services form and generate correct payload', async () => {
     const user = userEvent.setup();
-    const mockCloseWorkspace = jest.fn();
+    const mockCloseWorkspace = vi.fn();
     renderBillableServicesForm({ closeWorkspace: mockCloseWorkspace });
 
     await fillRequiredFields(user);
@@ -172,7 +172,7 @@ describe('BillableServiceFormWorkspace', () => {
   describe('Workspace Interactions', () => {
     test('should call closeWorkspace when Cancel button is clicked', async () => {
       const user = userEvent.setup();
-      const mockCloseWorkspace = jest.fn();
+      const mockCloseWorkspace = vi.fn();
       renderBillableServicesForm({ closeWorkspace: mockCloseWorkspace });
 
       const cancelButton = screen.getByRole('button', { name: /cancel/i });
@@ -183,7 +183,7 @@ describe('BillableServiceFormWorkspace', () => {
 
     test('should call closeWorkspaceWithSavedChanges after successful save', async () => {
       const user = userEvent.setup();
-      const mockCloseWorkspaceWithSavedChanges = jest.fn();
+      const mockCloseWorkspaceWithSavedChanges = vi.fn();
       renderBillableServicesForm({
         workspaceProps: { closeWorkspaceWithSavedChanges: mockCloseWorkspaceWithSavedChanges },
       });
@@ -250,7 +250,7 @@ describe('BillableServiceFormWorkspace', () => {
     });
 
     test('should call onWorkspaceClose callback after successful edit', async () => {
-      const mockOnWorkspaceClose = jest.fn();
+      const mockOnWorkspaceClose = vi.fn();
       const mockServiceToEdit: BillableService = {
         uuid: 'test-uuid',
         name: 'Test Service',
@@ -539,7 +539,7 @@ describe('BillableServiceFormWorkspace', () => {
 
     test('should call updateBillableService instead of createBillableService', async () => {
       const user = userEvent.setup();
-      const mockCloseWorkspace = jest.fn();
+      const mockCloseWorkspace = vi.fn();
       renderBillableServicesForm({
         closeWorkspace: mockCloseWorkspace,
         workspaceProps: { serviceToEdit: mockServiceToEdit },
@@ -573,7 +573,7 @@ describe('BillableServiceFormWorkspace', () => {
 
     test('should trim whitespace from short name when updating service', async () => {
       const user = userEvent.setup();
-      const mockCloseWorkspace = jest.fn();
+      const mockCloseWorkspace = vi.fn();
       renderBillableServicesForm({
         closeWorkspace: mockCloseWorkspace,
         workspaceProps: { serviceToEdit: mockServiceToEdit },
@@ -597,7 +597,7 @@ describe('BillableServiceFormWorkspace', () => {
     });
 
     test('should call onWorkspaceClose callback after successful edit', async () => {
-      const mockOnWorkspaceClose = jest.fn();
+      const mockOnWorkspaceClose = vi.fn();
       renderBillableServicesForm({
         workspaceProps: { serviceToEdit: mockServiceToEdit, onWorkspaceClose: mockOnWorkspaceClose },
       });

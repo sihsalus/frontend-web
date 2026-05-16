@@ -93,7 +93,8 @@ const ActionIllustration: React.FC<{ illustrationId: string }> = ({ illustration
     viewBox="0 0 80 80"
     preserveAspectRatio="xMidYMid meet"
     focusable="false"
-    aria-hidden="true">
+    aria-hidden="true"
+  >
     <use href={`#${illustrationId}`} />
   </svg>
 );

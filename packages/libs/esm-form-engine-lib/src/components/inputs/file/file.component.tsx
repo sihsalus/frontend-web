@@ -1,6 +1,6 @@
 import { Button } from '@carbon/react';
 import { Add } from '@carbon/react/icons';
-import { showModal, type UploadedFile, useLayoutType } from '@openmrs/esm-framework/src/internal';
+import { showModal, type UploadedFile, useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';

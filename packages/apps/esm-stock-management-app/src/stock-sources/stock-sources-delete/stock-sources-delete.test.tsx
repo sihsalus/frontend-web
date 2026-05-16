@@ -7,17 +7,17 @@ import { handleMutate } from '../../utils';
 import { deleteStockSource } from '../stock-sources.resource';
 import StockSourcesDeleteActionMenu from './stock-sources-delete.component';
 
-const mockDeleteStockSource = jest.mocked(deleteStockSource);
-const mockHandleMutate = jest.mocked(handleMutate);
-const mockShowModal = jest.mocked(showModal);
-const mockShowSnackbar = jest.mocked(showSnackbar);
+const mockDeleteStockSource = vi.mocked(deleteStockSource);
+const mockHandleMutate = vi.mocked(handleMutate);
+const mockShowModal = vi.mocked(showModal);
+const mockShowSnackbar = vi.mocked(showSnackbar);
 
-jest.mock('../stock-sources.resource', () => ({
-  deleteStockSource: jest.fn(),
+vi.mock('../stock-sources.resource', () => ({
+  deleteStockSource: vi.fn(),
 }));
 
-jest.mock('../../utils', () => ({
-  handleMutate: jest.fn(),
+vi.mock('../../utils', () => ({
+  handleMutate: vi.fn(),
 }));
 
 describe('StockSourcesDeleteActionMenu', () => {
@@ -50,8 +50,8 @@ describe('StockSourcesDeleteActionMenu', () => {
 
   it('calls onConfirmation when delete is clicked', async () => {
     const user = userEvent.setup();
-    const mockOnConfirmation = jest.fn();
-    const mockClose = jest.fn();
+    const mockOnConfirmation = vi.fn();
+    const mockClose = vi.fn();
 
     render(<DeleteConfirmation close={mockClose} onConfirmation={mockOnConfirmation} />);
 
@@ -66,8 +66,8 @@ describe('StockSourcesDeleteActionMenu', () => {
 
   it('calls deleteStockSource with the correct UUID on confirmation', async () => {
     const user = userEvent.setup();
-    const mockOnConfirmation = jest.fn();
-    const mockClose = jest.fn();
+    const mockOnConfirmation = vi.fn();
+    const mockClose = vi.fn();
 
     render(
       <DeleteConfirmation
@@ -90,8 +90,8 @@ describe('StockSourcesDeleteActionMenu', () => {
     const user = userEvent.setup();
     mockDeleteStockSource.mockResolvedValueOnce({} as FetchResponse<any>);
 
-    const mockOnConfirmation = jest.fn();
-    const mockClose = jest.fn();
+    const mockOnConfirmation = vi.fn();
+    const mockClose = vi.fn();
 
     render(
       <DeleteConfirmation
@@ -114,7 +114,7 @@ describe('StockSourcesDeleteActionMenu', () => {
     const user = userEvent.setup();
     mockDeleteStockSource.mockRejectedValueOnce(new Error('Deletion failed'));
 
-    const mockClose = jest.fn();
+    const mockClose = vi.fn();
 
     render(
       <DeleteConfirmation
@@ -146,7 +146,7 @@ describe('StockSourcesDeleteActionMenu', () => {
     const user = userEvent.setup();
     mockDeleteStockSource.mockRejectedValueOnce(new Error('Deletion failed'));
 
-    const mockClose = jest.fn();
+    const mockClose = vi.fn();
 
     render(
       <DeleteConfirmation

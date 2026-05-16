@@ -3,7 +3,8 @@ import React from 'react';
 
 import SideMenu from './side-menu.component';
 
-jest.mock('@openmrs/esm-framework', () => ({
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
   LeftNavMenu: () => <div data-testid="left-nav-menu">Mocked LeftNavMenu</div>,
 }));
 

@@ -15,11 +15,11 @@ import renderWithRouter from '../test-helpers/render-with-router';
 
 import Login from './login.component';
 
-const mockGetSessionStore = jest.mocked(getSessionStore);
-const mockLogin = jest.mocked(refetchCurrentUser);
-const mockUseConfig = jest.mocked(useConfig);
-const mockUseConnectivity = jest.mocked(useConnectivity);
-const mockUseSession = jest.mocked(useSession);
+const mockGetSessionStore = vi.mocked(getSessionStore);
+const mockLogin = vi.mocked(refetchCurrentUser);
+const mockUseConfig = vi.mocked(useConfig);
+const mockUseConnectivity = vi.mocked(useConnectivity);
+const mockUseSession = vi.mocked(useSession);
 
 describe('Login', () => {
   beforeEach(() => {
@@ -27,16 +27,16 @@ describe('Login', () => {
     mockLogin.mockResolvedValue({} as SessionStore);
     mockGetSessionStore.mockImplementation(() => {
       return {
-        getState: jest.fn().mockReturnValue({
+        getState: vi.fn().mockReturnValue({
           loaded: true,
           session: {
             authenticated: true,
           },
         }),
-        setState: jest.fn(),
-        getInitialState: jest.fn(),
-        subscribe: jest.fn(),
-        destroy: jest.fn(),
+        setState: vi.fn(),
+        getInitialState: vi.fn(),
+        subscribe: vi.fn(),
+        destroy: vi.fn(),
       };
     });
     mockUseSession.mockReturnValue({ authenticated: false, sessionId: '123' });

@@ -6,15 +6,15 @@ import { mockPatient } from 'test-utils';
 import DeleteProgramModal from './delete-program.modal';
 import { deleteProgramEnrollment, useEnrollments } from './programs.resource';
 
-jest.mock('./programs.resource', () => ({
-  deleteProgramEnrollment: jest.fn(),
-  useEnrollments: jest.fn(),
+vi.mock('./programs.resource', () => ({
+  deleteProgramEnrollment: vi.fn(),
+  useEnrollments: vi.fn(),
 }));
 
-const mockDeleteProgramEnrollment = jest.mocked(deleteProgramEnrollment);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUseEnrollments = jest.mocked(useEnrollments);
-const mockMutateEnrollments = jest.fn();
+const mockDeleteProgramEnrollment = vi.mocked(deleteProgramEnrollment);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUseEnrollments = vi.mocked(useEnrollments);
+const mockMutateEnrollments = vi.fn();
 
 mockUseEnrollments.mockImplementation(
   () =>
@@ -28,7 +28,11 @@ const testProps = {
   patientUuid: mockPatient.id,
 };
 
-const closeDeleteModalMock = jest.fn();
+const closeDeleteModalMock = vi.fn();
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
 const renderDeleteProgramModal = () => {
   return render(

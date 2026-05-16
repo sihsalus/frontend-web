@@ -6,11 +6,11 @@ import { useBills } from '../billing.resource';
 import { type BillingConfig, configSchema } from '../config-schema';
 import BillHistory from './bill-history.component';
 
-const mockUseConfig = jest.mocked(useConfig<BillingConfig>);
-const mockUseBills = jest.mocked<typeof useBills>(useBills);
+const mockUseConfig = vi.mocked(useConfig<BillingConfig>);
+const mockUseBills = vi.mocked<typeof useBills>(useBills);
 
-jest.mock('../billing.resource', () => ({
-  useBills: jest.fn(() => ({
+vi.mock('../billing.resource', () => ({
+  useBills: vi.fn(() => ({
     bills: mockBillData,
     isLoading: false,
     isValidating: false,
@@ -52,7 +52,7 @@ describe('BillHistory', () => {
       isValidating: false,
       error: null,
       bills: [],
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
     render(<BillHistory {...testProps} />);
     const loadingSkeleton = screen.getByRole('table');
@@ -66,7 +66,7 @@ describe('BillHistory', () => {
       isValidating: false,
       error: new Error('some error'),
       bills: [],
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
     render(<BillHistory {...testProps} />);
     const errorState = screen.getByText(/Error/);
@@ -80,7 +80,7 @@ describe('BillHistory', () => {
       isValidating: false,
       error: null,
       bills: mockBillData as any,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
     render(<BillHistory {...testProps} />);
 
@@ -114,7 +114,7 @@ describe('BillHistory', () => {
       isValidating: false,
       error: null,
       bills: [],
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
     render(<BillHistory {...testProps} />);
     const emptyState = screen.getByText(/There are no bills to display./);

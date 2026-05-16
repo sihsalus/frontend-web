@@ -111,11 +111,7 @@ export default function AdmissionHome() {
           <h1>{t('admissionReportByUps', 'Reporte de admisiones por UPS')}</h1>
           <p>{t('admissionReportSummary', 'Admisiones recientes agrupables por servicio/UPS, ubicación y estado.')}</p>
         </div>
-        <Button
-          kind="secondary"
-          renderIcon={Launch}
-          onClick={() => navigate('/merge')}
-        >
+        <Button kind="secondary" renderIcon={Launch} onClick={() => navigate('/merge')}>
           {t('mergeDuplicatePatients', 'Fusionar historias duplicadas')}
         </Button>
       </header>

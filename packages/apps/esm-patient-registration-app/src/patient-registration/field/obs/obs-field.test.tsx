@@ -10,11 +10,11 @@ import { useConcept, useConceptAnswers } from '../field.resource';
 
 import { ObsField } from './obs-field.component';
 
-const mockUseConcept = jest.mocked(useConcept);
-const mockUseConceptAnswers = jest.mocked(useConceptAnswers);
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
+const mockUseConcept = vi.mocked(useConcept);
+const mockUseConceptAnswers = vi.mocked(useConceptAnswers);
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
 
-jest.mock('../field.resource');
+vi.mock('../field.resource');
 
 const useConceptMockImpl = (uuid: string) => {
   let data;
@@ -96,12 +96,12 @@ type FieldProps = {
   children: ({ field, form: { touched, errors }, meta }) => React.ReactNode;
 };
 
-jest.mock('formik', () => ({
-  ...(jest.requireActual('formik') as object),
-  Field: jest.fn(({ children }: FieldProps) => (
+vi.mock('formik', async () => ({
+  ...((await vi.importActual('formik')) as object),
+  Field: vi.fn(({ children }: FieldProps) => (
     <>{children({ field: {}, form: { touched: {}, errors: {} }, meta: { error: undefined } })}</>
   )),
-  useField: jest.fn(() => [{ value: null }, {}]),
+  useField: vi.fn(() => [{ value: null }, {}]),
 }));
 
 const textFieldDef: FieldDefinition = {
@@ -198,12 +198,12 @@ const initialContextValues: PatientRegistrationContextProps = {
   identifierTypes: [],
   initialFormValues: mockInitialFormValues,
   isOffline: false,
-  setCapturePhotoProps: jest.fn(),
-  setFieldValue: jest.fn(),
-  setInitialFormValues: jest.fn(),
+  setCapturePhotoProps: vi.fn(),
+  setFieldValue: vi.fn(),
+  setInitialFormValues: vi.fn(),
   validationSchema: null,
   values: mockInitialFormValues,
-  setFieldTouched: jest.fn(),
+  setFieldTouched: vi.fn(),
 };
 
 describe('ObsField', () => {
@@ -222,7 +222,7 @@ describe('ObsField', () => {
       registrationObs: { encounterTypeUuid: null },
     } as RegistrationConfig);
 
-    console.error = jest.fn();
+    console.error = vi.fn();
     render(<ObsField fieldDefinition={textFieldDef} />);
     expect(console.error).toHaveBeenCalledWith(
       expect.stringMatching(/no registration encounter type has been configured/i),

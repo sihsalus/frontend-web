@@ -11,7 +11,7 @@ import {
   usePatientVisitHistory,
 } from './admissions.resource';
 
-const mockOpenmrsFetch = jest.mocked(openmrsFetch);
+const mockOpenmrsFetch = vi.mocked(openmrsFetch);
 
 function wrapper({ children }: { children: React.ReactNode }) {
   return <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>{children}</SWRConfig>;
@@ -19,7 +19,7 @@ function wrapper({ children }: { children: React.ReactNode }) {
 
 describe('admissions resources', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('loads and maps the admission report rows from visits', async () => {

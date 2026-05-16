@@ -5,10 +5,10 @@ import { mockPastVisit, mockPatient, renderWithSwr } from 'test-utils';
 import { usePastVisits } from './past-visit.resource';
 import PastVisitSummary from './past-visit-details/past-visit-summary.component';
 
-const mockUsePastVisits = jest.mocked(usePastVisits);
+const mockUsePastVisits = vi.mocked(usePastVisits);
 
-jest.mock('./past-visit.resource', () => ({
-  usePastVisits: jest.fn(),
+vi.mock('./past-visit.resource', () => ({
+  usePastVisits: vi.fn(),
 }));
 
 describe('PastVisit', () => {

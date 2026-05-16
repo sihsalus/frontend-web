@@ -1,4 +1,6 @@
-export const globals = {
+type Globals = Record<string, unknown>;
+
+export const globals: Globals = {
   Array,
   Boolean,
   Symbol,
@@ -28,7 +30,7 @@ export const globals = {
   },
 };
 
-export const globalsAsync = {
+export const globalsAsync: Globals = {
   ...globals,
   Promise,
 };

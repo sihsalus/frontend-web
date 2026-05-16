@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { type MedicationRequest, MedicationRequestStatus } from '../types';
 import MedicationEvent from './medication-event.component';
 
-const mockUseConfig = jest.mocked(useConfig);
+const mockUseConfig = vi.mocked(useConfig);
 
 const baseMedicationRequest: MedicationRequest = {
   resourceType: 'MedicationRequest',

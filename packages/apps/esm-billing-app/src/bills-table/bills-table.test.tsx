@@ -4,17 +4,17 @@ import React from 'react';
 import { usePaginatedBills } from '../billing.resource';
 import BillsTable from './bills-table.component';
 
-jest.mock('../billing.resource', () => ({
-  usePaginatedBills: jest.fn(() => ({
+vi.mock('../billing.resource', () => ({
+  usePaginatedBills: vi.fn(() => ({
     bills: mockBillsData,
     isLoading: false,
     isValidating: false,
     error: null,
-    mutate: jest.fn(),
+    mutate: vi.fn(),
   })),
 }));
 
-const mockBills = jest.mocked(usePaginatedBills);
+const mockBills = vi.mocked(usePaginatedBills);
 
 const mockBillsData = [
   {
@@ -98,10 +98,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 10,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
   });
 
@@ -121,10 +121,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -141,10 +141,10 @@ describe('BillsTable', () => {
       isLoading: true,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -160,10 +160,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: new Error('Error in fetching data'),
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -176,14 +176,14 @@ describe('BillsTable', () => {
 
   test('should pass search term to backend API', async () => {
     const user = userEvent.setup();
-    const mockGoTo = jest.fn();
+    const mockGoTo = vi.fn();
 
     mockBills.mockImplementation((_pageSize, _status, patientName) => ({
       bills: patientName === 'John' ? [mockBillsData[0]] : mockBillsData,
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: patientName === 'John' ? 1 : 2,
       goTo: mockGoTo,
@@ -224,10 +224,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 2,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     // Second call: after filter changes to PAID, return empty bills
@@ -236,10 +236,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -263,10 +263,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: true,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -281,10 +281,10 @@ describe('BillsTable', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 1,
       totalCount: 0,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);
@@ -298,14 +298,14 @@ describe('BillsTable', () => {
 
   test('should reset to page 1 when page size changes', async () => {
     const user = userEvent.setup();
-    const mockGoTo = jest.fn();
+    const mockGoTo = vi.fn();
 
     mockBills.mockImplementation(() => ({
       bills: mockBillsData,
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 3,
       totalCount: 100,
       goTo: mockGoTo,
@@ -331,10 +331,10 @@ describe('BillsTable', () => {
       isLoading: true,
       isValidating: true,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
       currentPage: 2,
       totalCount: 50,
-      goTo: jest.fn(),
+      goTo: vi.fn(),
     }));
 
     render(<BillsTable />);

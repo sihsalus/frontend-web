@@ -9,7 +9,7 @@ import { PatientRegistrationContext } from '../../patient-registration-context';
 
 import { DobField } from './dob.component';
 
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
 
 describe('Dob', () => {
   beforeEach(() => {

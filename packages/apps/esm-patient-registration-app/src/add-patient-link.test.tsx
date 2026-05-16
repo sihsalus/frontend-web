@@ -5,7 +5,7 @@ import React from 'react';
 
 import Root from './add-patient-link.extension';
 
-const mockNavigate = jest.mocked(navigate);
+const mockNavigate = vi.mocked(navigate);
 
 describe('Add patient link component', () => {
   it('renders an "Add Patient" button and triggers navigation on click', async () => {

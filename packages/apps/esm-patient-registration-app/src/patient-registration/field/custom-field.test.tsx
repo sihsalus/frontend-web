@@ -7,17 +7,17 @@ import { type FormValues } from '../patient-registration.types';
 import { PatientRegistrationContext } from '../patient-registration-context';
 import { CustomField } from './custom-field.component';
 
-jest.mock('./person-attributes/person-attribute-field.component', () => ({
+vi.mock('./person-attributes/person-attribute-field.component', () => ({
   PersonAttributeField: ({ fieldDefinition }) => (
     <div data-testid="person-attribute-field">{fieldDefinition.label}</div>
   ),
 }));
 
-jest.mock('./person-attributes/nationality-field.component', () => ({
+vi.mock('./person-attributes/nationality-field.component', () => ({
   NationalityField: ({ fieldDefinition }) => <div data-testid="nationality-field">{fieldDefinition.label}</div>,
 }));
 
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
 
 const resources = {
   identifierTypes: [
@@ -40,10 +40,10 @@ const baseContext = {
   inEditMode: false,
   initialFormValues: { identifiers: {} } as FormValues,
   isOffline: false,
-  setCapturePhotoProps: jest.fn(),
-  setFieldValue: jest.fn(),
-  setInitialFormValues: jest.fn(),
-  setFieldTouched: jest.fn(),
+  setCapturePhotoProps: vi.fn(),
+  setFieldValue: vi.fn(),
+  setInitialFormValues: vi.fn(),
+  setFieldTouched: vi.fn(),
   validationSchema: null,
 };
 
@@ -64,7 +64,7 @@ function renderCustomField(identifiers: FormValues['identifiers']) {
 
 describe('CustomField', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseConfig.mockReturnValue(getDefaultsFromConfigSchema(esmPatientRegistrationSchema));
   });
 

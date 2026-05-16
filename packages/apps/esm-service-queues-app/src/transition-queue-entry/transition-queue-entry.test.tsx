@@ -13,20 +13,20 @@ import { type ConfigObject, configSchema } from '../config-schema';
 import TransitionQueueEntryModal from './transition-queue-entry.modal';
 import { requeueQueueEntry } from './transition-queue-entry.resource';
 
-const mockNavigate = jest.mocked(navigate);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
+const mockNavigate = vi.mocked(navigate);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
 
-jest.mock('../active-visits/active-visits-table.resource', () => ({
-  serveQueueEntry: jest.fn().mockResolvedValue({ status: 200 }),
-  updateQueueEntry: jest.fn().mockResolvedValue({ status: 201 }),
+vi.mock('../active-visits/active-visits-table.resource', () => ({
+  serveQueueEntry: vi.fn().mockResolvedValue({ status: 200 }),
+  updateQueueEntry: vi.fn().mockResolvedValue({ status: 201 }),
 }));
 
-jest.mock('../hooks/useQueueEntries', () => ({
-  useMutateQueueEntries: () => ({ mutateQueueEntries: jest.fn() }),
+vi.mock('../hooks/useQueueEntries', () => ({
+  useMutateQueueEntries: () => ({ mutateQueueEntries: vi.fn() }),
 }));
 
-jest.mock('./transition-queue-entry.resource', () => ({
-  requeueQueueEntry: jest.fn().mockResolvedValue({ status: 200 }),
+vi.mock('./transition-queue-entry.resource', () => ({
+  requeueQueueEntry: vi.fn().mockResolvedValue({ status: 200 }),
 }));
 
 describe('TransitionQueueEntryModal', () => {
@@ -60,7 +60,7 @@ describe('TransitionQueueEntryModal', () => {
   });
 
   it('renders modal content', () => {
-    const closeModal = jest.fn();
+    const closeModal = vi.fn();
     render(<TransitionQueueEntryModal queueEntry={queueEntry} closeModal={closeModal} />);
 
     expect(screen.getByText(/Serve patient/i)).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe('TransitionQueueEntryModal', () => {
   it('handles requeueing patient', async () => {
     const user = userEvent.setup();
 
-    const closeModal = jest.fn();
+    const closeModal = vi.fn();
     render(<TransitionQueueEntryModal queueEntry={queueEntry} closeModal={closeModal} />);
 
     await user.click(screen.getByText('Requeue'));
@@ -81,7 +81,7 @@ describe('TransitionQueueEntryModal', () => {
   it('handles serving patient', async () => {
     const user = userEvent.setup();
 
-    const closeModal = jest.fn();
+    const closeModal = vi.fn();
     render(<TransitionQueueEntryModal queueEntry={queueEntry} closeModal={closeModal} />);
 
     await user.click(screen.getByText('Serve'));

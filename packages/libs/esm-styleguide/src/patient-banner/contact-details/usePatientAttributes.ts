@@ -47,7 +47,10 @@ export const usePatientContactAttributes = (patientUuid: string) => {
 
   const { attributes, error, isLoading } = usePatientAttributes(patientUuid);
   const contactAttributes = useMemo(
-    () => attributes.filter(({ attributeType }) => contactAttributeTypes?.some((uuid) => attributeType.uuid === uuid)),
+    () =>
+      attributes.filter(({ attributeType }) =>
+        contactAttributeTypes?.some((uuid: string) => attributeType.uuid === uuid),
+      ),
     [attributes, contactAttributeTypes],
   );
 

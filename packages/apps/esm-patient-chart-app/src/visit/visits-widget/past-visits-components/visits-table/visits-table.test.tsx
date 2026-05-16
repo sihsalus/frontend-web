@@ -12,9 +12,9 @@ const defaultProps = {
   visits: mockEncounters,
 };
 
-const mockShowModal = jest.mocked(showModal);
-const mockGetConfig = getConfig as jest.Mock;
-const mockUserHasAccess = userHasAccess as jest.Mock;
+const mockShowModal = vi.mocked(showModal);
+const mockGetConfig = getConfig as vi.Mock;
+const mockUserHasAccess = userHasAccess as vi.Mock;
 
 describe('EncounterList', () => {
   it('renders an empty state when no encounters are available', async () => {

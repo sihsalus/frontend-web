@@ -6,11 +6,11 @@ import { type BillingConfig } from '../../config-schema';
 import { type MappedBill } from '../../types';
 import PrintableInvoiceHeader from './printable-invoice-header.component';
 
-const mockUseDefaultFacility = jest.mocked(useDefaultFacility);
-const mockUseConfig = jest.mocked(useConfig<BillingConfig>);
+const mockUseDefaultFacility = vi.mocked(useDefaultFacility);
+const mockUseConfig = vi.mocked(useConfig<BillingConfig>);
 
-jest.mock('../../billing.resource', () => ({
-  useDefaultFacility: jest.fn(),
+vi.mock('../../billing.resource', () => ({
+  useDefaultFacility: vi.fn(),
 }));
 
 const testProps = {

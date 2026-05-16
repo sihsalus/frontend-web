@@ -32,18 +32,20 @@ const fields = await page.evaluate(() => {
     const parentLabel = el.closest('.cds--form-item')?.querySelector('label')?.textContent?.trim();
     return explicit || wrapped || parentLabel || '';
   }
-  return [...document.querySelectorAll('input, textarea, button[aria-haspopup], [role="combobox"], select')].map((el) => ({
-    tag: el.tagName.toLowerCase(),
-    type: el.getAttribute('type'),
-    id: el.getAttribute('id'),
-    name: el.getAttribute('name'),
-    role: el.getAttribute('role'),
-    text: el.textContent?.trim().slice(0, 80),
-    label: labelFor(el),
-    placeholder: el.getAttribute('placeholder'),
-    value: el.getAttribute('value'),
-    ariaLabel: el.getAttribute('aria-label'),
-  }));
+  return [...document.querySelectorAll('input, textarea, button[aria-haspopup], [role="combobox"], select')].map(
+    (el) => ({
+      tag: el.tagName.toLowerCase(),
+      type: el.getAttribute('type'),
+      id: el.getAttribute('id'),
+      name: el.getAttribute('name'),
+      role: el.getAttribute('role'),
+      text: el.textContent?.trim().slice(0, 80),
+      label: labelFor(el),
+      placeholder: el.getAttribute('placeholder'),
+      value: el.getAttribute('value'),
+      ariaLabel: el.getAttribute('aria-label'),
+    }),
+  );
 });
 
 console.log(JSON.stringify(fields, null, 2));
