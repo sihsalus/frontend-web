@@ -20,10 +20,10 @@ describe('PrintReceipt', () => {
     });
 
     mockLink = document.createElement('a');
-    jest.spyOn(mockLink, 'click').mockImplementation(() => {});
+    vi.spyOn(mockLink, 'click').mockImplementation(() => {});
 
     const originalCreateElement = document.createElement.bind(document);
-    jest.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+    vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
       if (tagName === 'a') {
         mockLink.href = '';
         mockLink.download = '';
@@ -32,12 +32,12 @@ describe('PrintReceipt', () => {
       return originalCreateElement(tagName);
     });
 
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
-    jest.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
     Object.defineProperty(window, 'location', {
       value: originalLocation,
       writable: true,
@@ -73,7 +73,7 @@ describe('PrintReceipt', () => {
     await user.click(button);
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {
@@ -94,7 +94,7 @@ describe('PrintReceipt', () => {
     expect(button).toBeDisabled();
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {
@@ -118,7 +118,7 @@ describe('PrintReceipt', () => {
     expect(button).toBeDisabled();
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {
@@ -141,7 +141,7 @@ describe('PrintReceipt', () => {
     await user.click(button);
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {

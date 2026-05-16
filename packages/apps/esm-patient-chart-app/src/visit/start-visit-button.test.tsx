@@ -6,10 +6,11 @@ import { mockPatient } from 'test-utils';
 
 import StartVisitButton from './start-visit-button.component';
 
-const mockLaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
+const mockLaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => ({
-  launchPatientWorkspace: jest.fn(),
+vi.mock('@openmrs/esm-patient-common-lib', async () => ({
+  ...(await vi.importActual('@openmrs/esm-patient-common-lib')),
+  launchPatientWorkspace: vi.fn(),
 }));
 
 describe('StartVisitButton', () => {

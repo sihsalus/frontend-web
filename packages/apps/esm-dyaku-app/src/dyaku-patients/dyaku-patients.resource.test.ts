@@ -8,12 +8,13 @@ import {
 import { syncDyakuPatientsToOpenMRS, validateAndFixPeruvianDNI } from './dyaku-patients.resource';
 
 type MockedOpenmrsFramework = {
-  openmrsFetch: jest.Mock;
+  openmrsFetch: vi.Mock;
 };
 
-jest.mock('@openmrs/esm-framework', () => ({
-  openmrsFetch: jest.fn(),
-  useConfig: jest.fn(),
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
+  openmrsFetch: vi.fn(),
+  useConfig: vi.fn(),
   Type: {
     Boolean: 'boolean',
     Number: 'number',
@@ -72,10 +73,10 @@ describe('validateAndFixPeruvianDNI', () => {
 // syncDyakuPatientsToOpenMRS — chunked Promise.all + real progress
 // ---------------------------------------------------------------------------
 describe('syncDyakuPatientsToOpenMRS', () => {
-  const mockFetch = jest.fn();
+  const mockFetch = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     global.fetch = mockFetch;
   });
 

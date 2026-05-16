@@ -4,15 +4,15 @@ import userEvent from '@testing-library/user-event';
 import { FormFieldProvider } from '../../../../form-field-context';
 import Number from './number.component';
 
-const mockSetFormField = jest.fn();
+const mockSetFormField = vi.fn();
 const formField: FormField = {
   type: 'obs',
   questionOptions: { rendering: 'number', min: '1', max: '10' },
   id: '1',
 };
 
-jest.mock('../../../../form-field-context', () => ({
-  ...jest.requireActual('../../../../form-field-context'),
+vi.mock('../../../../form-field-context', async () => ({
+  ...(await vi.importActual('../../../../form-field-context')),
   useFormField: () => ({ formField, setFormField: mockSetFormField }),
 }));
 

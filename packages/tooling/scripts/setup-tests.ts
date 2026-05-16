@@ -10,6 +10,7 @@ declare global {
   interface Window {
     openmrsBase: string;
     spaBase: string;
+    getOpenmrsSpaBase: () => string;
   }
 }
 
@@ -19,7 +20,7 @@ window.getOpenmrsSpaBase = () => '/openmrs/spa/';
 
 // Ensure i18next locale is available for components that call getLocale()
 // (e.g. Carbon DatePicker via @openmrs/esm-styleguide) before the framework mock loads.
-globalThis.i18next = { ...globalThis.i18next, language: 'en' } as unknown;
+(globalThis as any).i18next = { ...(globalThis as any).i18next, language: 'en' } as unknown;
 globalThis.TextEncoder = globalThis.TextEncoder ?? TextEncoder;
 globalThis.TextDecoder = globalThis.TextDecoder ?? TextDecoder;
 window.URL.createObjectURL = vi.fn();
@@ -40,8 +41,14 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+(global as any).ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+(global as any).IntersectionObserver = class IntersectionObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};

@@ -4,8 +4,9 @@ import React from 'react';
 
 import PatientBanner from './patient-banner.component';
 
-jest.mock('@openmrs/esm-framework', () => ({
-  getPatientName: jest.fn(),
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
+  getPatientName: vi.fn(),
   PatientBannerActionsMenu: () => <div>actions</div>,
   PatientBannerContactDetails: () => <div>contact-details</div>,
   PatientBannerPatientInfo: () => <div>patient-info</div>,

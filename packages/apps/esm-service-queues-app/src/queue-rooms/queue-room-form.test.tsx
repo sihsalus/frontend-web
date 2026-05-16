@@ -5,24 +5,24 @@ import React from 'react';
 
 import QueueRoomForm from './queue-room-form.workspace';
 
-const mockUseLayoutType = jest.mocked(useLayoutType);
+const mockUseLayoutType = vi.mocked(useLayoutType);
 
-jest.mock('../create-queue-entry/hooks/useQueueLocations', () => ({
-  ...jest.requireActual('../create-queue-entry/hooks/useQueueLocations'),
-  useQueueLocations: jest.fn(() => ({
+vi.mock('../create-queue-entry/hooks/useQueueLocations', async () => ({
+  ...(await vi.importActual('../create-queue-entry/hooks/useQueueLocations')),
+  useQueueLocations: vi.fn(() => ({
     queueLocations: [{ uuid: 'e7786d9a-ab62-11ec-b909-0242ac120002', display: 'Location Test' }],
   })),
 }));
 
 const workspaceProps = {
-  closeWorkspace: jest.fn(),
-  promptBeforeClosing: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
-  setTitle: jest.fn(),
+  closeWorkspace: vi.fn(),
+  promptBeforeClosing: vi.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
+  setTitle: vi.fn(),
 };
 
-jest.mock('./queue-room.resource', () => ({
-  saveQueueRoom: jest.fn(() => Promise.resolve({ status: 201 })),
+vi.mock('./queue-room.resource', async () => ({
+  saveQueueRoom: vi.fn(() => Promise.resolve({ status: 201 })),
 }));
 
 describe('QueueRoomForm', () => {
@@ -64,7 +64,7 @@ describe('QueueRoomForm', () => {
   it('calls closePanel when Cancel button is clicked', async () => {
     const user = userEvent.setup();
 
-    const closeWorkspace = jest.fn();
+    const closeWorkspace = vi.fn();
     render(<QueueRoomForm {...{ ...workspaceProps, closeWorkspace }} />);
 
     await user.click(screen.getByText('Cancel'));

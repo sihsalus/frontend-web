@@ -5,11 +5,11 @@ import React from 'react';
 import { type ConfigObject, configSchema } from './config-schema';
 import Home from './home.component';
 
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
 
-jest.mock('./helpers/helpers', () => ({
-  ...jest.requireActual('./helpers/helpers'),
-  useSelectedQueueLocationName: jest.fn(() => 'Test Location'),
+vi.mock('./helpers/helpers', async () => ({
+  ...(await vi.importActual('./helpers/helpers')),
+  useSelectedQueueLocationName: vi.fn(() => 'Test Location'),
 }));
 
 mockUseConfig.mockReturnValue({

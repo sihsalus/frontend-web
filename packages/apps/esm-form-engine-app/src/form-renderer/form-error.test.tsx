@@ -5,15 +5,15 @@ import React from 'react';
 
 import FormError from './form-error.component';
 
-const mocklaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
+const mocklaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => ({
-  launchPatientWorkspace: jest.fn(),
+vi.mock('@openmrs/esm-patient-common-lib', () => ({
+  launchPatientWorkspace: vi.fn(),
 }));
 
 describe('FormError', () => {
   test('renders correctly', () => {
-    const closeWorkspace = jest.fn();
+    const closeWorkspace = vi.fn();
 
     render(<FormError closeWorkspace={closeWorkspace} />);
 
@@ -25,7 +25,7 @@ describe('FormError', () => {
 
   test('calls the closeWorkspace function when the button is clicked', async () => {
     const user = userEvent.setup();
-    const closeWorkspace = jest.fn();
+    const closeWorkspace = vi.fn();
 
     render(<FormError closeWorkspace={closeWorkspace} />);
 
@@ -38,7 +38,7 @@ describe('FormError', () => {
 
   test('calls the closeWorkspace and opens the form dashboard function when the this `list` is clicked', async () => {
     const user = userEvent.setup();
-    const closeWorkspace = jest.fn();
+    const closeWorkspace = vi.fn();
 
     render(<FormError closeWorkspace={closeWorkspace} />);
 

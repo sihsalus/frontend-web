@@ -31,10 +31,10 @@ import {
 } from './visit-form.resource';
 import StartVisitForm from './visit-form.workspace';
 
-jest.mock('@carbon/react', () => {
-  const actual = jest.requireActual('@carbon/react');
-  const React = jest.requireActual('react');
-  const dayjs = jest.requireActual('dayjs');
+vi.mock('@carbon/react', async () => {
+  const actual = await vi.importActual('@carbon/react');
+  const React = await vi.importActual('react');
+  const { default: dayjs } = await vi.importActual<typeof import('dayjs')>('dayjs');
 
   const MockDatePickerInput = React.forwardRef(function MockDatePickerInput(
     { id, labelText, invalid, invalidText, placeholder, style, value, onChange, ...props },
@@ -129,9 +129,9 @@ const visitAttributes = {
   },
 };
 
-const mockCloseWorkspace = jest.fn();
-const mockPromptBeforeClosing = jest.fn();
-const mockSetTitle = jest.fn();
+const mockCloseWorkspace = vi.fn();
+const mockPromptBeforeClosing = vi.fn();
+const mockSetTitle = vi.fn();
 
 const testProps = {
   openedFrom: 'test',
@@ -143,38 +143,38 @@ const testProps = {
   setTitle: mockSetTitle,
 };
 
-const mockSaveVisit = jest.mocked(saveVisit);
-const mockUpdateVisit = jest.mocked(updateVisit);
-const mockExtensionSlot = jest.mocked(ExtensionSlot);
-const mockUseConfig = jest.mocked(useConfig<ChartConfig>);
-const mockUseVisitAttributeType = jest.mocked(useVisitAttributeType);
-const mockUseVisitTypes = jest.mocked(useVisitTypes);
-const mockUsePatient = jest.mocked(usePatient);
-const mockUseLocations = jest.mocked(useLocations);
-const mockUseEmrConfiguration = jest.mocked(useEmrConfiguration);
+const mockSaveVisit = vi.mocked(saveVisit);
+const mockUpdateVisit = vi.mocked(updateVisit);
+const mockExtensionSlot = vi.mocked(ExtensionSlot);
+const mockUseConfig = vi.mocked(useConfig<ChartConfig>);
+const mockUseVisitAttributeType = vi.mocked(useVisitAttributeType);
+const mockUseVisitTypes = vi.mocked(useVisitTypes);
+const mockUsePatient = vi.mocked(usePatient);
+const mockUseLocations = vi.mocked(useLocations);
+const mockUseEmrConfiguration = vi.mocked(useEmrConfiguration);
 const mockFhirPatient = mockPatient as unknown as fhir.Patient;
 
 // from ./visit-form.resource
-const mockOnVisitCreatedOrUpdatedCallback = jest.fn();
-jest.mocked(useVisitFormCallbacks).mockReturnValue([
+const mockOnVisitCreatedOrUpdatedCallback = vi.fn();
+vi.mocked(useVisitFormCallbacks).mockReturnValue([
   new Map([['test-extension-id', { onVisitCreatedOrUpdated: mockOnVisitCreatedOrUpdatedCallback }]]), // visitFormCallbacks
-  jest.fn(), // setVisitFormCallbacks
+  vi.fn(), // setVisitFormCallbacks
 ]);
-const mockCreateVisitAttribute = jest.mocked(createVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
-const mockUpdateVisitAttribute = jest.mocked(updateVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
-const mockDeleteVisitAttribute = jest.mocked(deleteVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
-const mockUsePersonAttributesForVisitDefaults = jest.mocked(usePersonAttributesForVisitDefaults);
+const mockCreateVisitAttribute = vi.mocked(createVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
+const mockUpdateVisitAttribute = vi.mocked(updateVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
+const mockDeleteVisitAttribute = vi.mocked(deleteVisitAttribute).mockResolvedValue({} as unknown as FetchResponse);
+const mockUsePersonAttributesForVisitDefaults = vi.mocked(usePersonAttributesForVisitDefaults);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => ({
-  ...jest.requireActual('@openmrs/esm-patient-common-lib'),
-  useActivePatientEnrollment: jest.fn().mockReturnValue({
+vi.mock('@openmrs/esm-patient-common-lib', async () => ({
+  ...(await vi.importActual('@openmrs/esm-patient-common-lib')),
+  useActivePatientEnrollment: vi.fn().mockReturnValue({
     activePatientEnrollment: [],
     isLoading: false,
   }),
 }));
 
-jest.mock('../hooks/useVisitAttributeType', () => ({
-  useVisitAttributeType: jest.fn((attributeUuid) => {
+vi.mock('../hooks/useVisitAttributeType', async () => ({
+  useVisitAttributeType: vi.fn((attributeUuid) => {
     if (attributeUuid === visitAttributes.punctuality.uuid) {
       return {
         isLoading: false,
@@ -190,12 +190,12 @@ jest.mock('../hooks/useVisitAttributeType', () => ({
       };
     }
   }),
-  useVisitAttributeTypes: jest.fn(() => ({
+  useVisitAttributeTypes: vi.fn(() => ({
     isLoading: false,
     error: null,
     visitAttributeTypes: [visitAttributes.punctuality, visitAttributes.insurancePolicyNumber],
   })),
-  useConceptAnswersForVisitAttributeType: jest.fn(() => ({
+  useConceptAnswersForVisitAttributeType: vi.fn(() => ({
     isLoading: false,
     error: null,
     answers: [
@@ -225,31 +225,31 @@ jest.mock('../hooks/useVisitAttributeType', () => ({
   })),
 }));
 
-jest.mock('../hooks/useEmrConfiguration', () => ({
-  useEmrConfiguration: jest.fn(() => ({})),
+vi.mock('../hooks/useEmrConfiguration', async () => ({
+  useEmrConfiguration: vi.fn(() => ({})),
 }));
 
-jest.mock('../hooks/useDefaultFacilityLocation', () => {
-  const requireActual = jest.requireActual('../hooks/useDefaultFacilityLocation');
+vi.mock('../hooks/useDefaultFacilityLocation', async () => {
+  const requireActual = await vi.importActual('../hooks/useDefaultFacilityLocation');
 
   return {
     ...requireActual,
-    useDefaultLoginLocation: jest.fn(() => ({
+    useDefaultLoginLocation: vi.fn(() => ({
       defaultFacility: null,
       isLoading: false,
     })),
   };
 });
 
-jest.mock('./visit-form.resource', () => {
-  const requireActual = jest.requireActual('./visit-form.resource');
+vi.mock('./visit-form.resource', async () => {
+  const requireActual = await vi.importActual('./visit-form.resource');
   return {
     ...requireActual,
-    useVisitFormCallbacks: jest.fn(),
-    usePersonAttributesForVisitDefaults: jest.fn(),
-    createVisitAttribute: jest.fn(),
-    updateVisitAttribute: jest.fn(),
-    deleteVisitAttribute: jest.fn(),
+    useVisitFormCallbacks: vi.fn(),
+    usePersonAttributesForVisitDefaults: vi.fn(),
+    createVisitAttribute: vi.fn(),
+    updateVisitAttribute: vi.fn(),
+    deleteVisitAttribute: vi.fn(),
   };
 });
 
@@ -375,7 +375,7 @@ describe('Visit form', () => {
   });
 
   // TODO: Figure out why this test is failing
-  xit('displays an error message when the visit start time is in the future', async () => {
+  it.skip('displays an error message when the visit start time is in the future', async () => {
     const user = userEvent.setup();
 
     renderVisitForm();

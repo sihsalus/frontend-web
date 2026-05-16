@@ -87,7 +87,7 @@ function buildIdentifier(identifierType, identifierValue = '') {
   };
 }
 
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
 
 const mockResourcesContextValue = {
   addressTemplate: null as unknown as AddressTemplate,
@@ -130,9 +130,9 @@ const mockContextValues: PatientRegistrationContextProps = {
   identifierTypes: [],
   initialFormValues: mockInitialFormValues,
   isOffline: false,
-  setCapturePhotoProps: jest.fn(),
-  setFieldValue: jest.fn(),
-  setInitialFormValues: jest.fn(),
+  setCapturePhotoProps: vi.fn(),
+  setFieldValue: vi.fn(),
+  setInitialFormValues: vi.fn(),
   validationSchema: null,
   values: mockInitialFormValues,
 } as unknown as PatientRegistrationContextProps;
@@ -144,7 +144,7 @@ function renderIdentifiersWithState(initialIdentifiers = {}) {
       identifiers: initialIdentifiers,
     });
 
-    const setFieldValue = jest.fn((fieldName, value) => {
+    const setFieldValue = vi.fn((fieldName, value) => {
       if (fieldName === 'identifiers') {
         setValues((previousValues) => ({
           ...previousValues,

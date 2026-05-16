@@ -7,11 +7,11 @@ import { mockPatient, renderWithSwr, waitForLoadingToFinish } from 'test-utils';
 import PastVisitOverview from './past-visit-overview.component';
 
 const defaultProps = {
-  closeWorkspace: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
+  closeWorkspace: vi.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
   patientUuid: mockPatient.id,
-  promptBeforeClosing: jest.fn(),
-  setTitle: jest.fn,
+  promptBeforeClosing: vi.fn(),
+  setTitle: vi.fn,
 };
 
 const mockPastVisits = {
@@ -45,8 +45,8 @@ const mockPastVisits = {
   },
 };
 
-const mockOpenmrsFetch = openmrsFetch as jest.Mock;
-const mockSetCurrentVisit = setCurrentVisit as jest.Mock;
+const mockOpenmrsFetch = openmrsFetch as vi.Mock;
+const mockSetCurrentVisit = setCurrentVisit as vi.Mock;
 
 describe('PastVisitOverview', () => {
   it(`renders a tabular overview view of the patient's past visits data`, async () => {

@@ -7,8 +7,8 @@ import { type ConfigObject, configSchema } from '../config-schema';
 
 import QueueTable from './queue-table.component';
 
-const mockUseSession = jest.mocked(useSession);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
+const mockUseSession = vi.mocked(useSession);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
 const configDefaults = getDefaultsFromConfigSchema<ConfigObject>(configSchema);
 
 const configWithCustomColumns = {
@@ -67,12 +67,12 @@ const defaultProps = {
 };
 
 describe('QueueTable', () => {
-  let consoleSpy: jest.SpyInstance;
+  let consoleSpy: vi.SpyInstance;
 
   beforeEach(() => {
     mockUseSession.mockReturnValue(mockSession.data);
     mockUseConfig.mockReturnValue(configDefaults);
-    consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   it('renders an empty table with default columns when there are no queue entries', () => {

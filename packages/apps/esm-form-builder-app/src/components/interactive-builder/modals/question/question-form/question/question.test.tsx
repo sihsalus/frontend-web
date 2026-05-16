@@ -15,7 +15,7 @@ const initialFormField: FormField = {
   },
 };
 
-const checkIfQuestionIdExists = jest.fn(() => false);
+const checkIfQuestionIdExists = vi.fn(() => false);
 
 const renderWithFormFieldProvider = (
   component: React.ReactElement,
@@ -29,10 +29,10 @@ const renderWithFormFieldProvider = (
 };
 
 describe('Question Component', () => {
-  let consoleErrorSpy: jest.SpyInstance;
+  let consoleErrorSpy: vi.SpyInstance;
 
   beforeEach(() => {
-    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
   });
 
   afterEach(() => {
@@ -67,7 +67,7 @@ describe('Question Component', () => {
   });
 
   it('should validate duplicate question ids', () => {
-    const duplicateCheckFn = jest.fn().mockReturnValue(true);
+    const duplicateCheckFn = vi.fn().mockReturnValue(true);
 
     renderWithFormFieldProvider(<Question checkIfQuestionIdExists={duplicateCheckFn} />);
 

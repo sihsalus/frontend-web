@@ -5,15 +5,15 @@ import React from 'react';
 import ImportBulkStockItemsModal from './stock-items-bulk-import.modal';
 import { uploadStockItems } from './stock-items-bulk-import.resource';
 
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUploadStockItems = jest.mocked(uploadStockItems);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUploadStockItems = vi.mocked(uploadStockItems);
 
-jest.mock('./stock-items-bulk-import.resource', () => ({
-  uploadStockItems: jest.fn(),
+vi.mock('./stock-items-bulk-import.resource', () => ({
+  uploadStockItems: vi.fn(),
 }));
 
 describe('ImportBulkStockItemsModal', () => {
-  const mockCloseModal = jest.fn();
+  const mockCloseModal = vi.fn();
 
   it('renders with initial state and UI elements', () => {
     render(<ImportBulkStockItemsModal closeModal={mockCloseModal} />);

@@ -5,8 +5,8 @@ import React from 'react';
 
 import ChangeLocationLink from './change-location-link.extension';
 
-const mockNavigate = jest.mocked(navigate);
-const mockUseSession = jest.mocked(useSession);
+const mockNavigate = vi.mocked(navigate);
+const mockUseSession = vi.mocked(useSession);
 
 delete window.location;
 (window.location as Location) = new URL('https://dev3.openmrs.org/openmrs/spa/home') as unknown as Location;

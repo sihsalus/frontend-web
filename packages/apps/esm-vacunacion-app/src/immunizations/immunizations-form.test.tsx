@@ -17,15 +17,15 @@ import { savePatientImmunization } from './immunizations.resource';
 import ImmunizationsForm from './immunizations-form.workspace';
 import { immunizationFormSub } from './utils';
 
-const mockCloseWorkspace = jest.fn();
-const mockSavePatientImmunization = savePatientImmunization as jest.Mock;
-const mockUseConfig = jest.mocked<() => ImmunizationConfigObject>(useConfig);
-const mockUseSession = jest.mocked(useSession);
-const mockToOmrsIsoString = jest.mocked(toOmrsIsoString);
-const mockToDateObjectStrict = jest.mocked(toDateObjectStrict);
+const mockCloseWorkspace = vi.fn();
+const mockSavePatientImmunization = savePatientImmunization as vi.Mock;
+const mockUseConfig = vi.mocked<() => ImmunizationConfigObject>(useConfig);
+const mockUseSession = vi.mocked(useSession);
+const mockToOmrsIsoString = vi.mocked(toOmrsIsoString);
+const mockToDateObjectStrict = vi.mocked(toDateObjectStrict);
 
-jest.mock('../hooks/useImmunizationsConceptSet', () => ({
-  useImmunizationsConceptSet: jest.fn(() => ({
+vi.mock('../hooks/useImmunizationsConceptSet', () => ({
+  useImmunizationsConceptSet: vi.fn(() => ({
     immunizationsConceptSet: {
       uuid: '984AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
       display: 'Immunizations',
@@ -56,8 +56,8 @@ jest.mock('../hooks/useImmunizationsConceptSet', () => ({
   })),
 }));
 
-jest.mock('./immunizations.resource', () => ({
-  savePatientImmunization: jest.fn(),
+vi.mock('./immunizations.resource', () => ({
+  savePatientImmunization: vi.fn(),
 }));
 
 const testProps: PatientWorkspace2DefinitionProps<Record<string, never>, Record<string, never>> = {
@@ -69,7 +69,7 @@ const testProps: PatientWorkspace2DefinitionProps<Record<string, never>, Record<
     mutateVisitContext: null,
   },
   workspaceName: '',
-  launchChildWorkspace: jest.fn(),
+  launchChildWorkspace: vi.fn(),
   workspaceProps: {},
   windowProps: {},
   windowName: '',

@@ -1,6 +1,6 @@
-jest.mock('@carbon/react', () => {
-  const actual = jest.requireActual('@carbon/react');
-  const React = jest.requireActual('react');
+vi.mock('@carbon/react', async () => {
+  const actual = await vi.importActual('@carbon/react');
+  const React = await vi.importActual('react');
 
   return {
     ...actual,
@@ -22,13 +22,14 @@ import { mockCurrentVisit, mockPatient } from 'test-utils';
 
 import StopVisitOverflowMenuItem from './stop-visit.component';
 
-const mockUseVisit = jest.mocked(useVisit);
-const mockShowModal = jest.mocked(showModal);
+const mockUseVisit = vi.mocked(useVisit);
+const mockShowModal = vi.mocked(showModal);
 
-jest.mock('@openmrs/esm-framework', () => ({
-  useVisit: jest.fn(),
-  showModal: jest.fn(),
-  useConfig: jest.fn(),
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
+  useVisit: vi.fn(),
+  showModal: vi.fn(),
+  useConfig: vi.fn(),
 }));
 
 describe('StopVisitOverflowMenuItem', () => {

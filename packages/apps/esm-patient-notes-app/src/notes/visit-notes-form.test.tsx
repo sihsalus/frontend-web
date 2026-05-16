@@ -29,7 +29,7 @@ import {
 import VisitNotesForm, { type VisitNotesFormProps } from './visit-notes-form.workspace';
 
 const defaultProps: PatientWorkspace2DefinitionProps<VisitNotesFormProps, {}> = {
-  closeWorkspace: jest.fn(),
+  closeWorkspace: vi.fn(),
   workspaceProps: {
     formContext: 'creating' as const,
   },
@@ -39,7 +39,7 @@ const defaultProps: PatientWorkspace2DefinitionProps<VisitNotesFormProps, {}> = 
     visitContext: null,
     mutateVisitContext: null,
   },
-  launchChildWorkspace: jest.fn(),
+  launchChildWorkspace: vi.fn(),
   windowProps: {},
   workspaceName: '',
   windowName: '',
@@ -55,31 +55,31 @@ function renderVisitNotesForm(workspaceProps: Partial<VisitNotesFormProps> = {})
   render(<VisitNotesForm {...props} />);
 }
 
-const mockFetchDiagnosisConceptsByName = jest.mocked(fetchDiagnosisConceptsByName);
-const mockDeletePatientDiagnosis = jest.mocked(deletePatientDiagnosis);
-const mockSavePatientDiagnosis = jest.mocked(savePatientDiagnosis);
-const mockSaveVisitNote = jest.mocked(saveVisitNote);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUpdateVisitNote = jest.mocked(updateVisitNote);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
-const mockUseSession = jest.mocked(useSession);
+const mockFetchDiagnosisConceptsByName = vi.mocked(fetchDiagnosisConceptsByName);
+const mockDeletePatientDiagnosis = vi.mocked(deletePatientDiagnosis);
+const mockSavePatientDiagnosis = vi.mocked(savePatientDiagnosis);
+const mockSaveVisitNote = vi.mocked(saveVisitNote);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUpdateVisitNote = vi.mocked(updateVisitNote);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
+const mockUseSession = vi.mocked(useSession);
 
-jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
+vi.mock('lodash-es/debounce', () => ({ default: vi.fn((fn) => fn) }));
 
-jest.mock('./visit-notes.resource', () => ({
-  fetchDiagnosisConceptsByName: jest.fn(),
-  deletePatientDiagnosis: jest.fn(),
-  savePatientDiagnosis: jest.fn(),
-  updateVisitNote: jest.fn(),
-  useLocationUuid: jest.fn().mockImplementation(() => ({
+vi.mock('./visit-notes.resource', () => ({
+  fetchDiagnosisConceptsByName: vi.fn(),
+  deletePatientDiagnosis: vi.fn(),
+  savePatientDiagnosis: vi.fn(),
+  updateVisitNote: vi.fn(),
+  useLocationUuid: vi.fn().mockImplementation(() => ({
     data: mockFetchLocationByUuidResponse.data.uuid,
   })),
-  useProviderUuid: jest.fn().mockImplementation(() => ({
+  useProviderUuid: vi.fn().mockImplementation(() => ({
     data: mockFetchProviderByUuidResponse.data.uuid,
   })),
-  saveVisitNote: jest.fn(),
-  useVisitNotes: jest.fn().mockImplementation(() => ({
-    mutateVisitNotes: jest.fn(),
+  saveVisitNote: vi.fn(),
+  useVisitNotes: vi.fn().mockImplementation(() => ({
+    mutateVisitNotes: vi.fn(),
   })),
 }));
 
@@ -157,7 +157,7 @@ test('closes the form and the workspace when the cancel button is clicked', asyn
 
 test('renders a success snackbar upon successfully recording a visit note', async () => {
   const user = userEvent.setup();
-  const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+  const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
   const successPayload = {
     encounterProviders: expect.arrayContaining([

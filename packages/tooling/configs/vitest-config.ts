@@ -20,10 +20,8 @@ const sharedAppTestAliases = Object.fromEntries(
 const appBaseAliases: Record<string, string> = {
   '@openmrs/esm-framework': '@openmrs/esm-framework/mock',
   '@openmrs/esm-translations': '@openmrs/esm-translations/mock',
-  '@openmrs/esm-api': path.resolve(packagesRoot, 'libs/esm-api/src/index.ts'),
-  '@openmrs/esm-api/mock': path.resolve(packagesRoot, 'libs/esm-api/mock-jest.ts'),
-  '@openmrs/esm-utils': path.resolve(packagesRoot, 'libs/esm-utils/src/index.ts'),
-  '@openmrs/esm-utils/mock': path.resolve(packagesRoot, 'libs/esm-utils/mock-jest.ts'),
+  'test-utils': '../../test-utils/index.tsx',
+  'test-utils/*': '../../test-utils/*',
 };
 
 type TestOptions = {
@@ -63,7 +61,7 @@ export function defineWorkspaceVitestConfig(config: VitestConfigLike = {}) {
         },
         test: {
           environment: 'happy-dom',
-          mockReset: true,
+          mockClear: true,
           globals: true,
         },
       },

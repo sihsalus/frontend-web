@@ -14,13 +14,13 @@ import { type MappedBill } from '../../types';
 import { usePaymentModes } from './payment.resource';
 import Payments from './payments.component';
 
-const mockUseVisit = jest.mocked(useVisit);
-const mockUseConfig = jest.mocked(useConfig<BillingConfig>);
-const mockUseBillableServices = jest.mocked(useBillableServices);
-const mockUsePaymentModes = jest.mocked(usePaymentModes);
-const mockFormatToParts = jest.fn().mockReturnValue([{ type: 'integer', value: '1000' }]);
-const mockFormat = jest.fn().mockReturnValue('$1000.00');
-const mockResolvedOptions = jest.fn().mockReturnValue({
+const mockUseVisit = vi.mocked(useVisit);
+const mockUseConfig = vi.mocked(useConfig<BillingConfig>);
+const mockUseBillableServices = vi.mocked(useBillableServices);
+const mockUsePaymentModes = vi.mocked(usePaymentModes);
+const mockFormatToParts = vi.fn().mockReturnValue([{ type: 'integer', value: '1000' }]);
+const mockFormat = vi.fn().mockReturnValue('$1000.00');
+const mockResolvedOptions = vi.fn().mockReturnValue({
   locale: 'en-US',
   numberingSystem: 'latn',
   style: 'currency',
@@ -29,24 +29,24 @@ const mockResolvedOptions = jest.fn().mockReturnValue({
   maximumFractionDigits: 2,
 });
 
-global.Intl.NumberFormat.supportedLocalesOf = jest.fn().mockReturnValue(['en-US']);
-global.Intl.NumberFormat = jest.fn().mockImplementation(() => ({
+global.Intl.NumberFormat.supportedLocalesOf = vi.fn().mockReturnValue(['en-US']);
+global.Intl.NumberFormat = vi.fn().mockImplementation(() => ({
   formatToParts: mockFormatToParts,
   format: mockFormat,
   resolvedOptions: mockResolvedOptions,
 })) as any;
 
-jest.mock('../../billing.resource', () => ({
-  processBillPayment: jest.fn(),
+vi.mock('../../billing.resource', () => ({
+  processBillPayment: vi.fn(),
 }));
 
-jest.mock('./payment.resource', () => ({
-  updateBillVisitAttribute: jest.fn(),
-  usePaymentModes: jest.fn(),
+vi.mock('./payment.resource', () => ({
+  updateBillVisitAttribute: vi.fn(),
+  usePaymentModes: vi.fn(),
 }));
 
-jest.mock('../../billable-services/billable-service.resource', () => ({
-  useBillableServices: jest.fn(),
+vi.mock('../../billable-services/billable-service.resource', () => ({
+  useBillableServices: vi.fn(),
 }));
 
 describe('Payments', () => {
@@ -109,7 +109,7 @@ describe('Payments', () => {
     billingService: 'Billing Service',
   };
 
-  const mockMutate = jest.fn();
+  const mockMutate = vi.fn();
 
   beforeEach(() => {
     mockUseVisit.mockReturnValue({ currentVisit: null } as unknown as VisitReturnType);
@@ -119,7 +119,7 @@ describe('Payments', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
     mockUsePaymentModes.mockReturnValue({
       paymentModes: [
@@ -128,7 +128,7 @@ describe('Payments', () => {
       ],
       isLoading: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
   });
 

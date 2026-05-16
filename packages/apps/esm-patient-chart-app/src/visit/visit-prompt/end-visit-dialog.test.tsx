@@ -10,11 +10,11 @@ const endVisitPayload = {
   stopDatetime: expect.any(Date),
 };
 
-const mockCloseModal = jest.fn();
-const mockMutate = jest.fn();
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUseVisit = jest.mocked(useVisit);
-const mockUpdateVisit = jest.mocked(updateVisit);
+const mockCloseModal = vi.fn();
+const mockMutate = vi.fn();
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUseVisit = vi.mocked(useVisit);
+const mockUpdateVisit = vi.mocked(updateVisit);
 
 describe('End visit dialog', () => {
   beforeEach(() => {

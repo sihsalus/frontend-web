@@ -7,16 +7,16 @@ import { fetchStockItem } from '../../stock-items.resource';
 import DrugSelector from './drug-selector.component';
 import { useDrugsHook } from './drug-selector.resource';
 
-jest.mock('../../stock-items.resource', () => ({
-  fetchStockItem: jest.fn(),
+vi.mock('../../stock-items.resource', () => ({
+  fetchStockItem: vi.fn(),
 }));
 
-jest.mock('./drug-selector.resource', () => ({
-  useDrugsHook: jest.fn(),
+vi.mock('./drug-selector.resource', () => ({
+  useDrugsHook: vi.fn(),
 }));
 
-const mockUseDrugsHook = jest.mocked(useDrugsHook);
-const mockFetchStockItem = jest.mocked(fetchStockItem);
+const mockUseDrugsHook = vi.mocked(useDrugsHook);
+const mockFetchStockItem = vi.mocked(fetchStockItem);
 
 const mockDrugs: Array<Partial<Drug>> = [
   { uuid: 'drug-1', name: 'Aspirin', concept: { display: 'ASA' } },
@@ -33,7 +33,7 @@ function DrugSelectorWrapper({
   defaultDrugUuid?: string;
   initialDrugName?: string;
   readOnly?: boolean;
-  onDrugChanged?: jest.Mock;
+  onDrugChanged?: vi.Mock;
 }) {
   const methods = useForm<FieldValues>({ defaultValues: { drugUuid: defaultDrugUuid } });
   return (

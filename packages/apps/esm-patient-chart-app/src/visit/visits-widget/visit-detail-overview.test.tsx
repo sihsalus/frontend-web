@@ -8,9 +8,9 @@ import { type ChartConfig, esmPatientChartSchema } from '../../config-schema';
 
 import VisitDetailOverview from './visit-detail-overview.component';
 
-const mockGetConfig = getConfig as jest.Mock;
-const mockOpenmrsFetch = openmrsFetch as jest.Mock;
-const mockUseConfig = jest.mocked(useConfig<ChartConfig>);
+const mockGetConfig = getConfig as vi.Mock;
+const mockOpenmrsFetch = openmrsFetch as vi.Mock;
+const mockUseConfig = vi.mocked(useConfig<ChartConfig>);
 
 mockUseConfig.mockReturnValue({
   ...getDefaultsFromConfigSchema(esmPatientChartSchema),

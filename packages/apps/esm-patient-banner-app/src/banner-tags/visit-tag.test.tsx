@@ -4,7 +4,7 @@ import React from 'react';
 import { mockCurrentVisit, mockPatient } from 'test-utils';
 import VisitTag from './visit-tag.extension';
 
-const mockUseVisit = jest.mocked(useVisit);
+const mockUseVisit = vi.mocked(useVisit);
 
 describe('VisitBannerTag', () => {
   it('renders an active visit tag when an active visit is ongoing', () => {
@@ -15,7 +15,7 @@ describe('VisitBannerTag', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     const patient = { ...mockPatient, deceasedDateTime: null } as unknown as fhir.Patient;
@@ -43,7 +43,7 @@ describe('VisitBannerTag', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     const patient = { ...mockPatient, deceasedDateTime: '2002-04-04' } as unknown as fhir.Patient;

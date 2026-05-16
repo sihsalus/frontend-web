@@ -16,9 +16,9 @@ import {
 import AddDrugOrderWorkspace from './add-drug-order.workspace';
 import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './drug-search/drug-search.resource';
 
-jest.mock('@openmrs/esm-framework', () => {
-  const actual = jest.requireActual('@openmrs/esm-framework');
-  const React = jest.requireActual('react');
+vi.mock('@openmrs/esm-framework', async () => {
+  const actual = await vi.importActual('@openmrs/esm-framework');
+  const React = await vi.importActual('react');
 
   return {
     ...actual,
@@ -29,26 +29,26 @@ jest.mock('@openmrs/esm-framework', () => {
   };
 });
 
-const mockCloseWorkspace = jest.fn();
-const mockUseSession = jest.mocked(useSession);
-const mockUseDrugSearch = jest.mocked(useDrugSearch);
-const mockUseDrugTemplate = jest.mocked(useDrugTemplate);
-const mockExtensionSlot = jest.mocked(ExtensionSlot);
-const mockUserHasAccess = jest.mocked(UserHasAccess);
-const usePatientOrdersMock = jest.fn();
+const mockCloseWorkspace = vi.fn();
+const mockUseSession = vi.mocked(useSession);
+const mockUseDrugSearch = vi.mocked(useDrugSearch);
+const mockUseDrugTemplate = vi.mocked(useDrugTemplate);
+const mockExtensionSlot = vi.mocked(ExtensionSlot);
+const mockUserHasAccess = vi.mocked(UserHasAccess);
+const usePatientOrdersMock = vi.fn();
 
 mockUseSession.mockReturnValue(mockSessionDataResponse.data);
 mockExtensionSlot.mockImplementation(() => null);
 mockUserHasAccess.mockImplementation(({ children }) => <>{children}</>);
 
-jest.mock('./drug-search/drug-search.resource', () => ({
-  ...jest.requireActual('./drug-search/drug-search.resource'),
-  useDrugSearch: jest.fn(),
-  useDrugTemplate: jest.fn(),
+vi.mock('./drug-search/drug-search.resource', async () => ({
+  ...(await vi.importActual('./drug-search/drug-search.resource')),
+  useDrugSearch: vi.fn(),
+  useDrugTemplate: vi.fn(),
 }));
 
-jest.mock('../api/api', () => ({
-  ...jest.requireActual('../api/api'),
+vi.mock('../api/api', async () => ({
+  ...(await vi.importActual('../api/api')),
   useActivePatientOrders: () => usePatientOrdersMock(),
   useRequireOutpatientQuantity: jest
     .fn()
@@ -64,7 +64,7 @@ describe('AddDrugOrderWorkspace drug search', () => {
       drugs: mockDrugSearchResultApiData,
       error: null,
       isValidating: false,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     }));
 
     mockUseDrugTemplate.mockImplementation((drugUuid) => ({
@@ -256,7 +256,7 @@ function renderAddDrugOrderWorkspace() {
         mutateVisitContext: null,
       }}
       workspaceName={''}
-      launchChildWorkspace={jest.fn()}
+      launchChildWorkspace={vi.fn()}
       closeWorkspace={mockCloseWorkspace}
       windowProps={{
         encounterUuid: '',

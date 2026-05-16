@@ -3,13 +3,13 @@ import type { FuaRequest } from '../hooks/useFuaRequests';
 import { buildExportRows, exportFuasToExcel } from './fua-export';
 
 // Mock xlsx so it doesn't write real files in tests
-jest.mock('xlsx', () => ({
+vi.mock('xlsx', () => ({
   utils: {
-    json_to_sheet: jest.fn(() => ({})),
-    book_new: jest.fn(() => ({})),
-    book_append_sheet: jest.fn(),
+    json_to_sheet: vi.fn(() => ({})),
+    book_new: vi.fn(() => ({})),
+    book_append_sheet: vi.fn(),
   },
-  writeFile: jest.fn(),
+  writeFile: vi.fn(),
 }));
 
 const mockFua: FuaRequest = {

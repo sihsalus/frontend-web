@@ -5,11 +5,11 @@ import React from 'react';
 import { deleteBillItem } from '../billing.resource';
 import DeleteLineItem from './delete-line-item-confirmation.modal';
 
-const mockDeleteBillItem = jest.mocked(deleteBillItem);
-const mockShowSnackbar = jest.mocked(showSnackbar);
+const mockDeleteBillItem = vi.mocked(deleteBillItem);
+const mockShowSnackbar = vi.mocked(showSnackbar);
 
-jest.mock('../billing.resource', () => ({
-  deleteBillItem: jest.fn(),
+vi.mock('../billing.resource', () => ({
+  deleteBillItem: vi.fn(),
 }));
 
 const mockItem = {
@@ -29,11 +29,11 @@ const mockItem = {
 };
 
 describe('DeleteLineItem Modal', () => {
-  const mockCloseModal = jest.fn();
-  const mockMutate = jest.fn();
+  const mockCloseModal = vi.fn();
+  const mockMutate = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders delete confirmation modal', () => {

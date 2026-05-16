@@ -1,6 +1,6 @@
-jest.mock('@carbon/react', () => {
-  const actual = jest.requireActual('@carbon/react');
-  const React = jest.requireActual('react');
+vi.mock('@carbon/react', async () => {
+  const actual = await vi.importActual('@carbon/react');
+  const React = await vi.importActual('react');
 
   return {
     ...actual,
@@ -21,7 +21,7 @@ import React from 'react';
 
 import AddPastVisitOverflowMenuItem from './add-past-visit.component';
 
-const mockShowModal = jest.mocked(showModal);
+const mockShowModal = vi.mocked(showModal);
 
 describe('AddPastVisitOverflowMenuItem', () => {
   it('should launch the start past visit modal', async () => {

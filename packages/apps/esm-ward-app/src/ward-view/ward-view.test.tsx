@@ -10,18 +10,18 @@ import { type WardViewContext } from '../types';
 import DefaultWardView from './default-ward/default-ward-view.component';
 import WardView from './ward-view.component';
 
-const mockUseConfig = jest.mocked(useConfig<WardConfigObject>);
-const mockUseFeatureFlag = jest.mocked(useFeatureFlag);
-const mockUseWardLocation = jest.mocked(useWardLocation);
-const mockUseParams = jest.mocked(useParams);
+const mockUseConfig = vi.mocked(useConfig<WardConfigObject>);
+const mockUseFeatureFlag = vi.mocked(useFeatureFlag);
+const mockUseWardLocation = vi.mocked(useWardLocation);
+const mockUseParams = vi.mocked(useParams);
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({}),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn().mockReturnValue({}),
 }));
 
-jest.mock('../hooks/useWardLocation', () =>
-  jest.fn().mockReturnValue({
+vi.mock('../hooks/useWardLocation', async () =>
+  vi.fn().mockReturnValue({
     location: { uuid: 'abcd', display: 'mock location' },
     isLoadingLocation: false,
     errorFetchingLocation: null,
@@ -29,14 +29,14 @@ jest.mock('../hooks/useWardLocation', () =>
   }),
 );
 
-jest.mock('../hooks/useObs', () => ({
-  useObs: jest.fn(),
+vi.mock('../hooks/useObs', async () => ({
+  useObs: vi.fn(),
 }));
 
-jest.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
+vi.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
 
 //@ts-expect-error
-jest.mocked(useObs).mockReturnValue({
+vi.mocked(useObs).mockReturnValue({
   data: [],
 });
 
@@ -44,7 +44,7 @@ const intersectionObserverMock = () => ({
   observe: () => null,
 });
 
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMock);
 
 beforeEach(() => {
   const config = getDefaultsFromConfigSchema<WardConfigObject>(configSchema);
@@ -52,7 +52,7 @@ beforeEach(() => {
 });
 
 describe('WardView', () => {
-  let replacedProperty: ReturnType<typeof jest.replaceProperty> | null = null;
+  let replacedProperty: ReturnType<typeof vi.stubEnv> | null = null;
 
   it('renders the session location when no location provided in URL', () => {
     renderWithSwr(<DefaultWardView />);
@@ -103,7 +103,7 @@ describe('WardView', () => {
 
   it('should render warning if backend module installed and no beds configured', () => {
     // override the default response so that no beds are returned
-    replacedProperty = jest.replaceProperty(mockWardPatientGroupDetails(), 'bedLayouts', []);
+    replacedProperty = vi.stubEnv(mockWardPatientGroupDetails(), 'bedLayouts', []);
 
     mockUseFeatureFlag.mockReturnValue(true);
 
@@ -114,7 +114,7 @@ describe('WardView', () => {
 
   it('should not render warning if backend module installed and no beds configured', () => {
     // override the default response so that no beds are returned
-    replacedProperty = jest.replaceProperty(mockWardPatientGroupDetails(), 'bedLayouts', []);
+    replacedProperty = vi.stubEnv(mockWardPatientGroupDetails(), 'bedLayouts', []);
     mockUseFeatureFlag.mockReturnValue(false);
 
     renderWithSwr(<WardView />);

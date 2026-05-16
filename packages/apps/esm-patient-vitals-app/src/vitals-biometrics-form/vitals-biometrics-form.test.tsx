@@ -27,29 +27,29 @@ const temperatureValue = 37;
 
 const testProps = {
   closeWorkspace: () => {},
-  closeWorkspaceWithSavedChanges: jest.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
   patientUuid: mockPatient.id,
-  promptBeforeClosing: jest.fn(),
+  promptBeforeClosing: vi.fn(),
   formContext: 'creating' as 'creating' | 'editing',
-  setTitle: jest.fn(),
+  setTitle: vi.fn(),
 };
 
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockSavePatientVitals = jest.mocked(saveVitalsAndBiometrics);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
-const mockUsePatient = jest.mocked(usePatient);
-const mockUseSession = jest.mocked(useSession);
-const mockUseVisit = jest.mocked(useVisit);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockSavePatientVitals = vi.mocked(saveVitalsAndBiometrics);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
+const mockUsePatient = vi.mocked(usePatient);
+const mockUseSession = vi.mocked(useSession);
+const mockUseVisit = vi.mocked(useVisit);
 
-jest.mock('../common', () => ({
-  assessValue: jest.fn(),
-  getReferenceRangesForConcept: jest.fn(),
-  generatePlaceholder: jest.fn(),
-  interpretBloodPressure: jest.fn(),
-  invalidateCachedVitalsAndBiometrics: jest.fn(),
-  saveVitalsAndBiometrics: jest.fn(),
-  useVitalsAndBiometrics: jest.fn(),
-  useVitalsConceptMetadata: jest.fn().mockImplementation(() => ({
+vi.mock('../common', () => ({
+  assessValue: vi.fn(),
+  getReferenceRangesForConcept: vi.fn(),
+  generatePlaceholder: vi.fn(),
+  interpretBloodPressure: vi.fn(),
+  invalidateCachedVitalsAndBiometrics: vi.fn(),
+  saveVitalsAndBiometrics: vi.fn(),
+  useVitalsAndBiometrics: vi.fn(),
+  useVitalsConceptMetadata: vi.fn().mockImplementation(() => ({
     data: mockConceptUnits,
     conceptMetadata: mockConceptMetadata,
     conceptRanges: mockConceptRanges,
@@ -79,7 +79,7 @@ mockUseVisit.mockReturnValue({
 
 describe('VitalsBiometricsForm', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders the vitals and biometrics form', async () => {
@@ -281,12 +281,12 @@ describe('VitalsBiometricsForm', () => {
 
     render(<VitalsAndBiometricsForm {...testProps} />);
 
-    const initialGuard = jest.mocked(testProps.promptBeforeClosing).mock.calls.at(-1)?.[0];
+    const initialGuard = vi.mocked(testProps.promptBeforeClosing).mock.calls.at(-1)?.[0];
     expect(initialGuard?.()).toBe(false);
 
     await user.type(screen.getByRole('spinbutton', { name: /height/i }), '180');
 
-    const updatedGuard = jest.mocked(testProps.promptBeforeClosing).mock.calls.at(-1)?.[0];
+    const updatedGuard = vi.mocked(testProps.promptBeforeClosing).mock.calls.at(-1)?.[0];
     expect(updatedGuard?.()).toBe(true);
   });
 });

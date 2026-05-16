@@ -11,11 +11,11 @@ const defaultProps = {
   importUuid: mockPreviousImports[1].uuid,
 };
 
-const mockUseImportItems = useImportItems as jest.Mock;
-const mockUsePagination = usePagination as jest.Mock;
+const mockUseImportItems = useImportItems as vi.Mock;
+const mockUsePagination = usePagination as vi.Mock;
 
-jest.mock('./import-items.resource', () => ({
-  useImportItems: jest.fn(),
+vi.mock('./import-items.resource', () => ({
+  useImportItems: vi.fn(),
 }));
 
 describe('Import items', () => {

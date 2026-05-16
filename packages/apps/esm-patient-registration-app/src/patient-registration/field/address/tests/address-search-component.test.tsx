@@ -11,25 +11,25 @@ import { PatientRegistrationContext } from '../../../patient-registration-contex
 import { useAddressHierarchy, useOrderedAddressHierarchyLevels } from '../address-hierarchy.resource';
 import AddressSearchComponent from '../address-search.component';
 
-const mockUseConfig = jest.mocked(useConfig<RegistrationConfig>);
-const mockUseAddressHierarchy = jest.mocked(useAddressHierarchy);
-const mockUseOrderedAddressHierarchyLevels = jest.mocked(useOrderedAddressHierarchyLevels);
-const mockUseFormikContext = useFormikContext as jest.Mock;
+const mockUseConfig = vi.mocked(useConfig<RegistrationConfig>);
+const mockUseAddressHierarchy = vi.mocked(useAddressHierarchy);
+const mockUseOrderedAddressHierarchyLevels = vi.mocked(useOrderedAddressHierarchyLevels);
+const mockUseFormikContext = useFormikContext as vi.Mock;
 
-jest.mock('../address-hierarchy.resource', () => ({
-  ...(jest.requireActual('../address-hierarchy.resource') as jest.Mock),
-  useOrderedAddressHierarchyLevels: jest.fn(),
-  useAddressHierarchy: jest.fn(),
+vi.mock('../address-hierarchy.resource', async () => ({
+  ...((await vi.importActual('../address-hierarchy.resource')) as vi.Mock),
+  useOrderedAddressHierarchyLevels: vi.fn(),
+  useAddressHierarchy: vi.fn(),
 }));
 
-jest.mock('../../../patient-registration.resource', () => ({
-  ...(jest.requireActual('../../../../patient-registration.resource') as jest.Mock),
-  useAddressHierarchy: jest.fn(),
+vi.mock('../../../patient-registration.resource', async () => ({
+  ...((await vi.importActual('../../../../patient-registration.resource')) as vi.Mock),
+  useAddressHierarchy: vi.fn(),
 }));
 
-jest.mock('formik', () => ({
-  ...(jest.requireActual('formik') as jest.Mock),
-  useFormikContext: jest.fn(() => ({})),
+vi.mock('formik', async () => ({
+  ...((await vi.importActual('formik')) as vi.Mock),
+  useFormikContext: vi.fn(() => ({})),
 }));
 
 const allFields = mockedAddressTemplate.lines
@@ -48,7 +48,7 @@ async function renderAddressHierarchy(addressTemplate = mockedAddressTemplate) {
     <ResourcesContext.Provider value={{ addressTemplate } as Resources}>
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
-          <PatientRegistrationContext.Provider value={{ setFieldValue: jest.fn() } as any}>
+          <PatientRegistrationContext.Provider value={{ setFieldValue: vi.fn() } as any}>
             <AddressSearchComponent addressLayout={allFields} />
           </PatientRegistrationContext.Provider>
         </Form>
@@ -57,7 +57,7 @@ async function renderAddressHierarchy(addressTemplate = mockedAddressTemplate) {
   );
 }
 
-const setFieldValue = jest.fn();
+const setFieldValue = vi.fn();
 
 describe('Testing address search bar', () => {
   beforeEach(() => {

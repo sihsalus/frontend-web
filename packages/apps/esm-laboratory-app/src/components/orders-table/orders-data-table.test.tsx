@@ -5,12 +5,12 @@ import { type Config, configSchema } from '../../config-schema';
 import { useLabOrders } from '../../laboratory.resource';
 import OrdersDataTable from './orders-data-table.component';
 
-jest.mock('../../laboratory.resource', () => ({
-  useLabOrders: jest.fn(),
+vi.mock('../../laboratory.resource', () => ({
+  useLabOrders: vi.fn(),
 }));
 
-const mockUseConfig = jest.mocked(useConfig<Config>);
-const mockUseLabOrders = jest.mocked(useLabOrders);
+const mockUseConfig = vi.mocked(useConfig<Config>);
+const mockUseLabOrders = vi.mocked(useLabOrders);
 
 function mockUseLabOrdersImplementation(props: Parameters<typeof useLabOrders>[0]) {
   const mockPatient1: Partial<Patient> = {
@@ -130,7 +130,7 @@ function mockUseLabOrdersImplementation(props: Parameters<typeof useLabOrders>[0
     labOrders,
     isLoading: false,
     isError: false,
-    mutate: jest.fn(),
+    mutate: vi.fn(),
     isValidating: false,
   };
 }

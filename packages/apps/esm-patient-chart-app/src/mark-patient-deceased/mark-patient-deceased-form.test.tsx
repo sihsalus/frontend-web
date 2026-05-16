@@ -9,10 +9,10 @@ import { markPatientDeceased, useCausesOfDeath } from '../data.resource';
 
 import MarkPatientDeceasedForm from './mark-patient-deceased-form.workspace';
 
-jest.mock('@carbon/react', () => {
-  const actual = jest.requireActual('@carbon/react');
-  const React = jest.requireActual('react');
-  const dayjs = jest.requireActual('dayjs');
+vi.mock('@carbon/react', async () => {
+  const actual = await vi.importActual('@carbon/react');
+  const React = await vi.importActual('react');
+  const { default: dayjs } = await vi.importActual<typeof import('dayjs')>('dayjs');
 
   const MockDatePickerInput = React.forwardRef(function MockDatePickerInput(
     { id, labelText, placeholder, style, value, onChange, ...props },
@@ -57,18 +57,18 @@ jest.mock('@carbon/react', () => {
 const originalLocation = window.location;
 Object.defineProperty(window, 'location', {
   configurable: true,
-  value: { ...originalLocation, reload: jest.fn() } as Location,
+  value: { ...originalLocation, reload: vi.fn() } as Location,
 });
 
-const mockMarkPatientDeceased = jest.mocked(markPatientDeceased);
-const mockUseCausesOfDeath = jest.mocked(useCausesOfDeath);
-const mockUseConfig = jest.mocked(useConfig<ChartConfig>);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockCloseWorkspace = jest.fn();
+const mockMarkPatientDeceased = vi.mocked(markPatientDeceased);
+const mockUseCausesOfDeath = vi.mocked(useCausesOfDeath);
+const mockUseConfig = vi.mocked(useConfig<ChartConfig>);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockCloseWorkspace = vi.fn();
 
-jest.mock('../data.resource.ts', () => ({
-  markPatientDeceased: jest.fn().mockResolvedValue({}),
-  useCausesOfDeath: jest.fn(),
+vi.mock('../data.resource.ts', async () => ({
+  markPatientDeceased: vi.fn().mockResolvedValue({}),
+  useCausesOfDeath: vi.fn(),
 }));
 
 describe('MarkPatientDeceasedForm', () => {
@@ -77,9 +77,9 @@ describe('MarkPatientDeceasedForm', () => {
   const defaultProps = {
     patientUuid: mockPatient.uuid,
     closeWorkspace: mockCloseWorkspace,
-    closeWorkspaceWithSavedChanges: jest.fn(),
-    promptBeforeClosing: jest.fn(),
-    setTitle: jest.fn(),
+    closeWorkspaceWithSavedChanges: vi.fn(),
+    promptBeforeClosing: vi.fn(),
+    setTitle: vi.fn(),
   };
 
   const codedCausesOfDeath = [
@@ -160,7 +160,7 @@ describe('MarkPatientDeceasedForm', () => {
   });
 
   it('selecting "Other" as the cause of death requires the user to enter a non-coded cause of death', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
     const user = userEvent.setup();
 
     render(React.createElement(MarkPatientDeceasedForm, defaultProps));
@@ -206,7 +206,7 @@ describe('MarkPatientDeceasedForm', () => {
   });
 
   it('renders an error message when saving the cause of death fails', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
     const user = userEvent.setup();
     const mockError = new Error('API Error');
 

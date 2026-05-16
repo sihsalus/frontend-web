@@ -12,10 +12,10 @@ const testProps = {
   urlLabel: window.spaBase + patientChartBasePath + '/summary',
 };
 
-const mockUseVisitNotes = jest.mocked(useVisitNotes);
+const mockUseVisitNotes = vi.mocked(useVisitNotes);
 
-jest.mock('./visit-notes.resource', () => {
-  return { useVisitNotes: jest.fn().mockReturnValue([{}]) };
+vi.mock('./visit-notes.resource', () => {
+  return { useVisitNotes: vi.fn().mockReturnValue([{}]) };
 });
 
 describe('NotesMain', () => {
@@ -25,7 +25,7 @@ describe('NotesMain', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutateVisitNotes: jest.fn(),
+      mutateVisitNotes: vi.fn(),
     });
 
     renderWithSwr(<NotesMain {...testProps} />);
@@ -50,7 +50,7 @@ describe('NotesMain', () => {
       error: mockError,
       isLoading: false,
       isValidating: false,
-      mutateVisitNotes: jest.fn(),
+      mutateVisitNotes: vi.fn(),
     });
 
     renderWithSwr(<NotesMain {...testProps} />);
@@ -71,7 +71,7 @@ describe('NotesMain', () => {
       error: null,
       isLoading: false,
       isValidating: false,
-      mutateVisitNotes: jest.fn(),
+      mutateVisitNotes: vi.fn(),
     });
 
     renderWithSwr(<NotesMain {...testProps} />);

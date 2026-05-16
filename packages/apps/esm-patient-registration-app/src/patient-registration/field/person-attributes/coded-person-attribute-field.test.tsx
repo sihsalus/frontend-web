@@ -6,11 +6,11 @@ import { useConceptAnswers } from '../field.resource';
 
 import { CodedPersonAttributeField } from './coded-person-attribute-field.component';
 
-const mockUseConceptAnswers = jest.mocked(useConceptAnswers);
+const mockUseConceptAnswers = vi.mocked(useConceptAnswers);
 
-jest.mock('../field.resource', () => ({
-  ...jest.requireActual('../field.resource'),
-  useConceptAnswers: jest.fn(),
+vi.mock('../field.resource', async () => ({
+  ...(await vi.importActual('../field.resource')),
+  useConceptAnswers: vi.fn(),
 }));
 
 describe('CodedPersonAttributeField', () => {
@@ -28,7 +28,7 @@ describe('CodedPersonAttributeField', () => {
   };
 
   const answerConceptSetUuid = '6682d17f-0777-45e4-a39b-93f77eb3531c';
-  let consoleSpy: jest.SpyInstance;
+  let consoleSpy: vi.SpyInstance;
 
   beforeEach(() => {
     mockUseConceptAnswers.mockReturnValue({
@@ -37,7 +37,7 @@ describe('CodedPersonAttributeField', () => {
       error: null,
     });
 
-    consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {

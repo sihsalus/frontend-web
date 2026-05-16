@@ -6,16 +6,16 @@ import React from 'react';
 import { mockPatient } from 'test-utils';
 import { ProgramsActionMenu } from './programs-action-menu.component';
 
-const mockShowModal = jest.mocked(showModal);
-const mockUseLayoutType = jest.mocked(useLayoutType);
-const mockLaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
+const mockShowModal = vi.mocked(showModal);
+const mockUseLayoutType = vi.mocked(useLayoutType);
+const mockLaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => {
-  const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
+vi.mock('@openmrs/esm-patient-common-lib', async () => {
+  const originalModule = await vi.importActual('@openmrs/esm-patient-common-lib');
 
   return {
     ...originalModule,
-    launchPatientWorkspace: jest.fn(),
+    launchPatientWorkspace: vi.fn(),
   };
 });
 

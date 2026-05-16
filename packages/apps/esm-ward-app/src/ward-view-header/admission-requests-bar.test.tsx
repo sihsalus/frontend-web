@@ -6,8 +6,8 @@ import { mockWardViewContext } from '../../mock';
 import { type WardViewContext } from '../types';
 import AdmissionRequestsBar from './admission-requests-bar.component';
 
-jest.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
-const mockLaunchWorkspace = jest.mocked(launchWorkspace2);
+vi.mocked(useAppContext<WardViewContext>).mockReturnValue(mockWardViewContext);
+const mockLaunchWorkspace = vi.mocked(launchWorkspace2);
 describe('Admission Requests Button', () => {
   it('should launch workspace when clicked on manage button', async () => {
     const user = userEvent.setup();

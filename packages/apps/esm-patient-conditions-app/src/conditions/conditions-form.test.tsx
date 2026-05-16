@@ -12,7 +12,7 @@ import ConditionsForm, { type ConditionFormProps } from './conditions-form.works
 dayjs.extend(utc);
 
 const defaultProps: PatientWorkspace2DefinitionProps<ConditionFormProps, object> = {
-  closeWorkspace: jest.fn(),
+  closeWorkspace: vi.fn(),
   groupProps: {
     patientUuid: mockPatient.id,
     patient: mockPatient as unknown as fhir.Patient,
@@ -20,7 +20,7 @@ const defaultProps: PatientWorkspace2DefinitionProps<ConditionFormProps, object>
     mutateVisitContext: null,
   },
   workspaceName: '',
-  launchChildWorkspace: jest.fn(),
+  launchChildWorkspace: vi.fn(),
   workspaceProps: {
     condition: null,
     formContext: 'creating' as 'creating' | 'editing',
@@ -42,16 +42,16 @@ function renderConditionsForm(workspaceProps?: ConditionFormProps) {
   render(<ConditionsForm {...props} />);
 }
 
-const mockCreateCondition = jest.mocked(createCondition);
-const mockUseConditionsSearch = jest.mocked(useConditionsSearch);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockOpenmrsFetch = jest.mocked(openmrsFetch);
+const mockCreateCondition = vi.mocked(createCondition);
+const mockUseConditionsSearch = vi.mocked(useConditionsSearch);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockOpenmrsFetch = vi.mocked(openmrsFetch);
 
-jest.mock('./conditions.resource', () => ({
-  ...jest.requireActual('./conditions.resource'),
-  createCondition: jest.fn(),
-  editCondition: jest.fn(),
-  useConditionsSearch: jest.fn(),
+vi.mock('./conditions.resource', async () => ({
+  ...(await vi.importActual('./conditions.resource')),
+  createCondition: vi.fn(),
+  editCondition: vi.fn(),
+  useConditionsSearch: vi.fn(),
 }));
 
 mockOpenmrsFetch.mockResolvedValue({ data: [] } as FetchResponse);

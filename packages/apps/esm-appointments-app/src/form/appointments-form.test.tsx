@@ -27,38 +27,38 @@ import AppointmentForm from './appointments-form.workspace';
 
 const defaultProps = {
   context: 'creating',
-  closeWorkspace: jest.fn(),
+  closeWorkspace: vi.fn(),
   patientUuid: mockPatient.id,
-  promptBeforeClosing: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
-  setTitle: jest.fn(),
+  promptBeforeClosing: vi.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
+  setTitle: vi.fn(),
 };
 
-const mockOpenmrsFetch = jest.mocked(openmrsFetch);
-const mockSaveAppointment = jest.mocked(saveAppointment);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
-const mockUseLocations = jest.mocked(useLocations);
-const mockUseProviders = jest.mocked(useProviders);
-const mockUseSession = jest.mocked(useSession);
+const mockOpenmrsFetch = vi.mocked(openmrsFetch);
+const mockSaveAppointment = vi.mocked(saveAppointment);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
+const mockUseLocations = vi.mocked(useLocations);
+const mockUseProviders = vi.mocked(useProviders);
+const mockUseSession = vi.mocked(useSession);
 
-jest.mock('./appointments-form.resource', () => ({
-  ...jest.requireActual('./appointments-form.resource'),
-  saveAppointment: jest.fn(),
+vi.mock('./appointments-form.resource', async () => ({
+  ...(await vi.importActual('./appointments-form.resource')),
+  saveAppointment: vi.fn(),
 }));
 
-jest.mock('../hooks/useProviders', () => ({
-  ...jest.requireActual('../hooks/useProviders'),
-  useProviders: jest.fn(),
+vi.mock('../hooks/useProviders', async () => ({
+  ...(await vi.importActual('../hooks/useProviders')),
+  useProviders: vi.fn(),
 }));
 
-jest.mock('../workload/workload.resource', () => ({
-  ...jest.requireActual('../workload/workload.resource'),
-  getMonthlyCalendarDistribution: jest.fn(),
-  useAppointmentSummary: jest.fn(),
-  useCalendarDistribution: jest.fn(),
-  useMonthlyCalendarDistribution: jest.fn().mockReturnValue([]),
-  useMonthlyAppointmentSummary: jest.fn().mockReturnValue([]),
+vi.mock('../workload/workload.resource', async () => ({
+  ...(await vi.importActual('../workload/workload.resource')),
+  getMonthlyCalendarDistribution: vi.fn(),
+  useAppointmentSummary: vi.fn(),
+  useCalendarDistribution: vi.fn(),
+  useMonthlyCalendarDistribution: vi.fn().mockReturnValue([]),
+  useMonthlyAppointmentSummary: vi.fn().mockReturnValue([]),
 }));
 
 describe('AppointmentForm', () => {

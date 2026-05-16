@@ -6,13 +6,14 @@ import { mockLoggedInUser } from '../../../test-utils/mocks/mock-user';
 
 import UserPanelSwitcher from './user-panel-switcher.component';
 
-jest.mock('@openmrs/esm-framework', () => ({
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
   __esModule: true,
-  useSession: jest.fn(),
+  useSession: vi.fn(),
   UserAvatarIcon: () => null,
 }));
 
-const mockUseSession = jest.mocked(useSession);
+const mockUseSession = vi.mocked(useSession);
 
 describe('UserPanelSwitcher', () => {
   beforeEach(() => {

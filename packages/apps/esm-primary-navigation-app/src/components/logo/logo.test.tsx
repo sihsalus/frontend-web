@@ -6,13 +6,14 @@ import { type ConfigSchema } from '../../config-schema';
 
 import Logo from './logo.component';
 
-jest.mock('@openmrs/esm-framework', () => ({
+vi.mock('@openmrs/esm-framework', async () => ({
+  ...(await vi.importActual('@openmrs/esm-framework')),
   __esModule: true,
-  useConfig: jest.fn(),
-  interpolateUrl: jest.fn((url: string) => url),
+  useConfig: vi.fn(),
+  interpolateUrl: vi.fn((url: string) => url),
 }));
 
-const mockUseConfig = jest.mocked(useConfig);
+const mockUseConfig = vi.mocked(useConfig);
 
 describe('Logo', () => {
   it('should display the Sihsalus wordmark by default', () => {
@@ -57,7 +58,7 @@ describe('Logo', () => {
   });
 
   it('should handle image load errors', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const mockConfig = {
       logo: {
         src: 'invalid-image.png',

@@ -1,6 +1,6 @@
-jest.mock('@carbon/react', () => {
-  const actual = jest.requireActual('@carbon/react');
-  const React = jest.requireActual('react');
+vi.mock('@carbon/react', async () => {
+  const actual = await vi.importActual('@carbon/react');
+  const React = await vi.importActual('react');
 
   return {
     ...actual,
@@ -25,16 +25,16 @@ import { type ChartConfig, esmPatientChartSchema } from '../config-schema';
 
 import StartVisitOverflowMenuItem from './start-visit.component';
 
-const mockUseConfig = jest.mocked(useConfig<ChartConfig>);
-const mockUseVisit = jest.mocked(useVisit);
+const mockUseConfig = vi.mocked(useConfig<ChartConfig>);
+const mockUseVisit = vi.mocked(useVisit);
 const mockFhirPatient = mockPatient as unknown as fhir.Patient;
 
-jest.mock('@openmrs/esm-patient-common-lib', () => {
-  const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
+vi.mock('@openmrs/esm-patient-common-lib', async () => {
+  const originalModule = await vi.importActual('@openmrs/esm-patient-common-lib');
 
   return {
     ...originalModule,
-    launchPatientWorkspace: jest.fn(),
+    launchPatientWorkspace: vi.fn(),
   };
 });
 

@@ -9,11 +9,11 @@ import { defaultNationalityCountryCode } from './country-options';
 import { NationalityField } from './nationality-field.component';
 import { usePersonAttributeType } from './person-attributes.resource';
 
-jest.mock('./person-attributes.resource', () => ({
-  usePersonAttributeType: jest.fn(),
+vi.mock('./person-attributes.resource', () => ({
+  usePersonAttributeType: vi.fn(),
 }));
 
-const mockUsePersonAttributeType = jest.mocked(usePersonAttributeType);
+const mockUsePersonAttributeType = vi.mocked(usePersonAttributeType);
 
 const nationalityFieldDefinition = {
   id: 'nationality',
@@ -24,7 +24,7 @@ const nationalityFieldDefinition = {
 } as FieldDefinition;
 
 function renderNationalityField(values: Partial<FormValues> = {}) {
-  const setFieldValue = jest.fn();
+  const setFieldValue = vi.fn();
 
   render(
     <Formik initialValues={{ attributes: values.attributes ?? {} }} onSubmit={null}>

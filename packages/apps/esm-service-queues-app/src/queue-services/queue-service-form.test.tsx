@@ -6,27 +6,27 @@ import { saveQueue } from './queue-service.resource';
 import QueueServiceForm from './queue-service-form.workspace';
 
 const defaultProps = {
-  closeWorkspace: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
-  promptBeforeClosing: jest.fn(),
-  setTitle: jest.fn(),
+  closeWorkspace: vi.fn(),
+  closeWorkspaceWithSavedChanges: vi.fn(),
+  promptBeforeClosing: vi.fn(),
+  setTitle: vi.fn(),
 };
 
-const mockSaveQueue = jest.mocked(saveQueue);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUseLayoutType = jest.mocked(useLayoutType);
+const mockSaveQueue = vi.mocked(saveQueue);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUseLayoutType = vi.mocked(useLayoutType);
 
-jest.mock('./queue-service.resource', () => ({
+vi.mock('./queue-service.resource', () => ({
   useServiceConcepts: () => ({
     queueConcepts: [
       { uuid: '6f017eb0-b035-4acd-b284-da45f5067502', display: 'Concept 1' },
       { uuid: '5f017eb0-b035-4acd-b284-da45f5067502', display: 'Concept 2' },
     ],
   }),
-  saveQueue: jest.fn(() => Promise.resolve({ status: 201 })),
+  saveQueue: vi.fn(() => Promise.resolve({ status: 201 })),
 }));
 
-jest.mock('../create-queue-entry/hooks/useQueueLocations', () => ({
+vi.mock('../create-queue-entry/hooks/useQueueLocations', () => ({
   useQueueLocations: () => ({
     queueLocations: [
       { id: '34567eb0-b035-4acd-b284-da45f5067502', name: 'Location 1' },

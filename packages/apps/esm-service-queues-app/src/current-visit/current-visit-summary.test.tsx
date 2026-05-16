@@ -4,10 +4,10 @@ import { mockPastVisit } from 'test-utils';
 import { useVisit } from './current-visit.resource';
 import CurrentVisit from './current-visit-summary.component';
 
-const useVisitMock = jest.mocked(useVisit);
+const useVisitMock = vi.mocked(useVisit);
 
-jest.mock('./current-visit.resource', () => ({
-  useVisit: jest.fn().mockReturnValue({
+vi.mock('./current-visit.resource', () => ({
+  useVisit: vi.fn().mockReturnValue({
     visit: {
       visitType: { display: 'Visit Type' },
       encounters: [],

@@ -5,9 +5,9 @@ import useFormSchema from '../hooks/useFormSchema';
 
 import FormRenderer from './form-renderer.component';
 
-const mockUseFormSchema = jest.mocked(useFormSchema);
+const mockUseFormSchema = vi.mocked(useFormSchema);
 
-jest.mock(
+vi.mock(
   '@sihsalus/esm-form-engine-lib',
   () => ({
     FormEngine: jest
@@ -17,9 +17,9 @@ jest.mock(
   { virtual: true },
 );
 
-jest.mock('../hooks/useFormSchema', () => ({
+vi.mock('../hooks/useFormSchema', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
 
 describe('FormRenderer', () => {
@@ -27,10 +27,10 @@ describe('FormRenderer', () => {
     formUuid: 'test-form-uuid',
     patientUuid: 'test-patient-uuid',
     patient: { id: 'test-patient-uuid' } as fhir.Patient,
-    closeWorkspace: jest.fn(),
-    closeWorkspaceWithSavedChanges: jest.fn(),
-    promptBeforeClosing: jest.fn(),
-    setTitle: jest.fn(),
+    closeWorkspace: vi.fn(),
+    closeWorkspaceWithSavedChanges: vi.fn(),
+    promptBeforeClosing: vi.fn(),
+    setTitle: vi.fn(),
   };
 
   test('renders FormError component when there is an error', () => {
@@ -60,9 +60,9 @@ describe('FormRenderer', () => {
   });
 
   test('fallback submit closes only the current workspace', async () => {
-    const closeWorkspace = jest.fn();
-    const handlePostResponse = jest.fn();
-    const { FormEngine } = jest.requireMock('@sihsalus/esm-form-engine-lib');
+    const closeWorkspace = vi.fn();
+    const handlePostResponse = vi.fn();
+    const { FormEngine } = vi.importMock('@sihsalus/esm-form-engine-lib');
 
     mockUseFormSchema.mockReturnValue({ schema: { uuid: 'test-schema' }, isLoading: false, error: null } as ReturnType<
       typeof useFormSchema

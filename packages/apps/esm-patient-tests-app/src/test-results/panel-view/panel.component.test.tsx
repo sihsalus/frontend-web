@@ -7,8 +7,8 @@ import { type ObsRecord } from '../../types';
 
 import LabSetPanel from './panel.component';
 
-const mockUseLayoutType = jest.mocked(useLayoutType);
-const mockIsDesktop = jest.mocked(isDesktop);
+const mockUseLayoutType = vi.mocked(useLayoutType);
+const mockIsDesktop = vi.mocked(isDesktop);
 
 const conceptMeta = {
   display: 'Complete Blood Count',
@@ -19,7 +19,7 @@ const conceptMeta = {
   lowAbsolute: 0,
   lowCritical: 10,
   units: 'g/dL',
-  getInterpretation: jest.fn(),
+  getInterpretation: vi.fn(),
   range: '12-16',
 };
 
@@ -87,7 +87,7 @@ const mockObservationsWithInterpretations: Array<ObsRecord> = [
 
 describe('LabSetPanel', () => {
   const user = userEvent.setup();
-  const mockSetActivePanel = jest.fn();
+  const mockSetActivePanel = vi.fn();
 
   beforeEach(() => {
     mockUseLayoutType.mockReturnValue('large-desktop');

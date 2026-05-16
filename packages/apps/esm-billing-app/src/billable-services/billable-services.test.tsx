@@ -4,12 +4,12 @@ import React from 'react';
 import { useBillableServices } from './billable-service.resource';
 import BillableServices from './billable-services.component';
 
-jest.mock('./billable-service.resource', () => ({
-  useBillableServices: jest.fn(),
+vi.mock('./billable-service.resource', () => ({
+  useBillableServices: vi.fn(),
 }));
 
 describe('BillableService', () => {
-  const mockedUseBillableServices = useBillableServices as jest.Mock;
+  const mockedUseBillableServices = useBillableServices as vi.Mock;
 
   it('renders an empty state when there are no billable services', () => {
     mockedUseBillableServices.mockReturnValue({
@@ -17,7 +17,7 @@ describe('BillableService', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<BillableServices />);
@@ -51,7 +51,7 @@ describe('BillableService', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     render(<BillableServices />);
@@ -92,7 +92,7 @@ describe('BillableService', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     const user = userEvent.setup();
@@ -122,7 +122,7 @@ describe('BillableService', () => {
       isLoading: false,
       isValidating: false,
       error: null,
-      mutate: jest.fn(),
+      mutate: vi.fn(),
     });
 
     const user = userEvent.setup();

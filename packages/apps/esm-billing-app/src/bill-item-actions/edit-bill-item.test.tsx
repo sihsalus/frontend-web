@@ -7,9 +7,9 @@ import { type BillingConfig, configSchema } from '../config-schema';
 import { type MappedBill } from '../types';
 import EditBillLineItemModal from './edit-bill-item.modal';
 
-const mockUpdateBillItems = jest.mocked(updateBillItems);
-const mockShowSnackbar = jest.mocked(showSnackbar);
-const mockUseConfig = jest.mocked(useConfig<BillingConfig>);
+const mockUpdateBillItems = vi.mocked(updateBillItems);
+const mockShowSnackbar = vi.mocked(showSnackbar);
+const mockUseConfig = vi.mocked(useConfig<BillingConfig>);
 
 const mockBillableServices = [
   { name: 'X-Ray Service', uuid: 'xray-uuid-123' },
@@ -17,12 +17,12 @@ const mockBillableServices = [
   { name: 'Consultation Service', uuid: 'consult-uuid-789' },
 ];
 
-jest.mock('../billing.resource', () => ({
-  updateBillItems: jest.fn().mockResolvedValue({}),
+vi.mock('../billing.resource', () => ({
+  updateBillItems: vi.fn().mockResolvedValue({}),
 }));
 
-jest.mock('../billable-services/billable-service.resource', () => ({
-  useBillableServices: jest.fn(() => ({
+vi.mock('../billable-services/billable-service.resource', () => ({
+  useBillableServices: vi.fn(() => ({
     billableServices: mockBillableServices,
   })),
 }));
@@ -89,8 +89,8 @@ describe('EditBillItem', () => {
     });
   });
 
-  const mockCloseModal = jest.fn();
-  const mockOnMutate = jest.fn();
+  const mockCloseModal = vi.fn();
+  const mockOnMutate = vi.fn();
 
   test('renders the form with correct fields and default values', () => {
     render(

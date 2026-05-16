@@ -27,34 +27,34 @@ const testProps = {
   showRecordVitalsButton: true,
 };
 
-const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
-const mockLaunchPatientWorkspace = jest.mocked(launchPatientWorkspace);
-const mockUseVitalsAndBiometrics = jest.mocked(useVitalsAndBiometrics);
-const mockUseWorkspaces = jest.mocked(useWorkspaces);
+const mockUseConfig = vi.mocked(useConfig<ConfigObject>);
+const mockLaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
+const mockUseVitalsAndBiometrics = vi.mocked(useVitalsAndBiometrics);
+const mockUseWorkspaces = vi.mocked(useWorkspaces);
 
 mockUseWorkspaces.mockReturnValue({ workspaces: [] } as WorkspacesInfo);
 
-jest.mock('@openmrs/esm-patient-common-lib', () => {
-  const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
+vi.mock('@openmrs/esm-patient-common-lib', async () => {
+  const originalModule = await vi.importActual('@openmrs/esm-patient-common-lib');
 
   return {
     ...originalModule,
-    launchPatientWorkspace: jest.fn(),
-    useVisitOrOfflineVisit: jest.fn().mockImplementation(() => ({ currentVisit: mockCurrentVisit })),
+    launchPatientWorkspace: vi.fn(),
+    useVisitOrOfflineVisit: vi.fn().mockImplementation(() => ({ currentVisit: mockCurrentVisit })),
   };
 });
 
-jest.mock('../common', () => {
-  const originalModule = jest.requireActual('../common');
+vi.mock('../common', async () => {
+  const originalModule = await vi.importActual('../common');
 
   return {
     ...originalModule,
-    useVitalsConceptMetadata: jest.fn().mockImplementation(() => ({
+    useVitalsConceptMetadata: vi.fn().mockImplementation(() => ({
       data: mockConceptUnits,
       conceptMetadata: mockConceptMetadata,
       isLoading: false,
     })),
-    useVitalsAndBiometrics: jest.fn(),
+    useVitalsAndBiometrics: vi.fn(),
   };
 });
 
@@ -65,7 +65,7 @@ mockUseConfig.mockReturnValue({
 
 describe('VitalsHeader', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseWorkspaces.mockReturnValue({ workspaces: [] } as WorkspacesInfo);
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
@@ -261,7 +261,7 @@ describe('VitalsHeader', () => {
 
   it('uses custom vitals form launcher when provided by a workspace host', async () => {
     const user = userEvent.setup();
-    const launchCustomVitalsForm = jest.fn();
+    const launchCustomVitalsForm = vi.fn();
 
     renderWithSwr(<VitalsHeader {...testProps} launchCustomVitalsForm={launchCustomVitalsForm} />);
 
