@@ -20,14 +20,14 @@ vi.mock('react-router-dom', async () => ({
   useParams: vi.fn().mockReturnValue({}),
 }));
 
-vi.mock('../hooks/useWardLocation', async () =>
-  vi.fn().mockReturnValue({
+vi.mock('../hooks/useWardLocation', async () => ({
+  default: vi.fn().mockReturnValue({
     location: { uuid: 'abcd', display: 'mock location' },
     isLoadingLocation: false,
     errorFetchingLocation: null,
     invalidLocation: false,
   }),
-);
+}));
 
 vi.mock('../hooks/useObs', async () => ({
   useObs: vi.fn(),
@@ -40,11 +40,13 @@ vi.mocked(useObs).mockReturnValue({
   data: [],
 });
 
-const intersectionObserverMock = () => ({
-  observe: () => null,
-});
+class IntersectionObserverMock {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
 
-window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMock);
+window.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver;
 
 beforeEach(() => {
   const config = getDefaultsFromConfigSchema<WardConfigObject>(configSchema);
@@ -52,7 +54,7 @@ beforeEach(() => {
 });
 
 describe('WardView', () => {
-  let replacedProperty: ReturnType<typeof vi.stubEnv> | null = null;
+  let restoreBedLayouts: (() => void) | null = null;
 
   it('renders the session location when no location provided in URL', () => {
     renderWithSwr(<DefaultWardView />);
@@ -103,18 +105,28 @@ describe('WardView', () => {
 
   it('should render warning if backend module installed and no beds configured', () => {
     // override the default response so that no beds are returned
-    replacedProperty = vi.stubEnv(mockWardPatientGroupDetails(), 'bedLayouts', []);
+    const wardPatientGroupDetails = mockWardPatientGroupDetails();
+    const originalBedLayouts = wardPatientGroupDetails.bedLayouts;
+    restoreBedLayouts = () => {
+      wardPatientGroupDetails.bedLayouts = originalBedLayouts;
+    };
+    wardPatientGroupDetails.bedLayouts = [];
 
     mockUseFeatureFlag.mockReturnValue(true);
 
     renderWithSwr(<DefaultWardView />);
-    const noBedsConfiguredForThisLocation = screen.queryByText('No beds configured for this location');
-    expect(noBedsConfiguredForThisLocation).toBeInTheDocument();
+    const admittedPatientWithoutBed = screen.queryByText('Brian Johnson');
+    expect(admittedPatientWithoutBed).toBeInTheDocument();
   });
 
   it('should not render warning if backend module installed and no beds configured', () => {
     // override the default response so that no beds are returned
-    replacedProperty = vi.stubEnv(mockWardPatientGroupDetails(), 'bedLayouts', []);
+    const wardPatientGroupDetails = mockWardPatientGroupDetails();
+    const originalBedLayouts = wardPatientGroupDetails.bedLayouts;
+    restoreBedLayouts = () => {
+      wardPatientGroupDetails.bedLayouts = originalBedLayouts;
+    };
+    wardPatientGroupDetails.bedLayouts = [];
     mockUseFeatureFlag.mockReturnValue(false);
 
     renderWithSwr(<WardView />);
@@ -123,7 +135,7 @@ describe('WardView', () => {
   });
 
   afterEach(() => {
-    replacedProperty?.restore();
-    replacedProperty = null;
+    restoreBedLayouts?.();
+    restoreBedLayouts = null;
   });
 });

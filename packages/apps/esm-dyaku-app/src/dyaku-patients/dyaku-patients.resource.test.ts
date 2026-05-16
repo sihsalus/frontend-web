@@ -1,10 +1,12 @@
 let validateAndFixPeruvianDNI: (dni: string) => string | null;
 const mockOpenmrsFetch = vi.fn();
 
+import type { ConfigObject } from '../config-schema';
+
 let syncDyakuPatientsToOpenMRS: (
   fhirBaseUrl: string,
   batchSize: number,
-  config: Record<string, unknown>,
+  config: ConfigObject,
   onProgress?: (processed: number, total: number) => void,
 ) => Promise<{
   success: boolean;
@@ -13,23 +15,19 @@ let syncDyakuPatientsToOpenMRS: (
   errors: string[];
 }>;
 
-vi.mock(
-  '@openmrs/esm-framework',
-  () => ({
-    openmrsFetch: mockOpenmrsFetch,
-    useConfig: vi.fn(),
-    useConfigObject: vi.fn(),
-    useSystemSession: vi.fn(),
-    configSchema: {},
-    Type: {
-      Boolean: 'boolean',
-      Number: 'number',
-      Object: 'object',
-      String: 'string',
-    },
-  }),
-  { virtual: true },
-);
+vi.mock('@openmrs/esm-framework', () => ({
+  openmrsFetch: mockOpenmrsFetch,
+  useConfig: vi.fn(),
+  useConfigObject: vi.fn(),
+  useSystemSession: vi.fn(),
+  configSchema: {},
+  Type: {
+    Boolean: 'boolean',
+    Number: 'number',
+    Object: 'object',
+    String: 'string',
+  },
+}));
 
 beforeAll(async () => {
   const dyakuResource = await import('./dyaku-patients.resource');
@@ -85,7 +83,7 @@ describe('syncDyakuPatientsToOpenMRS', () => {
     birthDate: '1990-01-01',
   });
 
-  const mockConfig: Record<string, unknown> = {
+  const mockConfig: ConfigObject = {
     dyaku: {
       fhirBaseUrl: 'https://fhir.test',
       fhirImplementationGuideBaseUrl: 'https://fhir.test/guides/',
@@ -158,7 +156,12 @@ describe('syncDyakuPatientsToOpenMRS', () => {
   it('returns empty result when FHIR bundle has no entries', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ resourceType: 'Bundle', id: 'b1', type: 'searchset', total: 0 }),
+      json: async () => ({
+        resourceType: 'Bundle',
+        id: 'b1',
+        type: 'searchset',
+        total: 0,
+      }),
     });
 
     const result = await syncDyakuPatientsToOpenMRS('https://fhir.test', 50, mockConfig);

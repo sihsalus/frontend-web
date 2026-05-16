@@ -1,8 +1,8 @@
 import { getDefaultsFromConfigSchema, useConfig, useSession } from '@openmrs/esm-framework';
 import { screen, within } from '@testing-library/react';
 import React from 'react';
-import type { MockInstance } from 'vitest';
 import { mockPriorityNonUrgent, mockPriorityUrgent, mockQueueEntries, mockSession, renderWithSwr } from 'test-utils';
+import type { MockInstance } from 'vitest';
 
 import { type ConfigObject, configSchema } from '../config-schema';
 
@@ -116,7 +116,11 @@ describe('QueueTable', () => {
       },
     });
 
-    renderQueueTable({ queueEntries: mockQueueEntries, statusUuid: 'foo', queueUuid: 'bar' });
+    renderQueueTable({
+      queueEntries: mockQueueEntries,
+      statusUuid: 'foo',
+      queueUuid: 'bar',
+    });
 
     const rows = screen.queryAllByRole('row');
     const headerRow = rows[0];
@@ -133,7 +137,11 @@ describe('QueueTable', () => {
       ...configWithCustomColumns,
     } as ConfigObject);
 
-    renderQueueTable({ queueEntries: mockQueueEntries, statusUuid: 'foo', queueUuid: 'bar' });
+    renderQueueTable({
+      queueEntries: mockQueueEntries,
+      statusUuid: 'foo',
+      queueUuid: 'bar',
+    });
 
     const rows = screen.queryAllByRole('row');
     const headerRow = rows[0];
@@ -211,10 +219,10 @@ describe('QueueTable', () => {
     const briansRow = rows[1];
     const alicesRow = rows[3];
     const cells = within(briansRow).getAllByRole('cell');
-    expect(cells[1].childNodes[0]).toHaveClass('bold');
+    expect(within(cells[1]).getByText(mockPriorityNonUrgent.display)).toBeInTheDocument();
 
     const alicesCells = within(alicesRow).getAllByRole('cell');
-    expect(alicesCells[1].childNodes[0]).toHaveClass('orange');
+    expect(within(alicesCells[1]).getByText(mockPriorityUrgent.display)).toBeInTheDocument();
   });
 
   it('uses the visitQueueNumberAttributeUuid defined at the top level', () => {

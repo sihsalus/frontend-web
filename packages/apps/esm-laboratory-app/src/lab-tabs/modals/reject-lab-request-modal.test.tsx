@@ -32,6 +32,7 @@ describe('RejectLabRequestModal', () => {
   const mockInvalidateLabOrders = vi.fn();
 
   beforeEach(() => {
+    vi.clearAllMocks();
     mockUseInvalidateLabOrders.mockReturnValue(mockInvalidateLabOrders);
   });
 

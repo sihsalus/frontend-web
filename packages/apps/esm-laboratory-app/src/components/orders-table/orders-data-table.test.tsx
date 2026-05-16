@@ -150,7 +150,7 @@ describe('OrdersDataTable', () => {
     expect(table).toBeInTheDocument();
     const rows = screen.getAllByRole('row');
     expect(rows).toHaveLength(5);
-    const dataRows = rows.slice(1).filter((row) => !row.classList.contains('hiddenRow'));
+    const dataRows = rows.slice(1).filter((row) => within(row).queryByLabelText('Expand current row'));
     expect(dataRows).toHaveLength(2);
     const headerRow = rows[0];
     expect(headerRow).toHaveTextContent('Patient');
@@ -198,7 +198,7 @@ describe('OrdersDataTable', () => {
     render(<OrdersDataTable />);
     const rows = screen.getAllByRole('row');
     expect(rows).toHaveLength(5);
-    const dataRows = rows.slice(1).filter((row) => !row.classList.contains('hiddenRow'));
+    const dataRows = rows.slice(1).filter((row) => within(row).queryByLabelText('Expand current row'));
     expect(dataRows).toHaveLength(2);
     const row1 = dataRows[0];
     expect(row1).toHaveTextContent('PAT-001');

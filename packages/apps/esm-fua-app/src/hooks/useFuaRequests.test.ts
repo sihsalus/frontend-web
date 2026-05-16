@@ -42,6 +42,7 @@ const mockFuaOrders = [
 ];
 
 beforeEach(() => {
+  vi.clearAllMocks();
   mockUseAppContext.mockReturnValue({ dateRange: mockDateRange });
 });
 

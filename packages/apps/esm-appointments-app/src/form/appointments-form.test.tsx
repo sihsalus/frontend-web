@@ -65,6 +65,9 @@ describe('AppointmentForm', () => {
   const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3}Z|[+-]\d{2}:\d{2})$/;
 
   beforeEach(() => {
+    vi.clearAllMocks();
+    mockSaveAppointment.mockResolvedValue({} as FetchResponse<unknown>);
+    mockOpenmrsFetch.mockResolvedValue({ data: {} } as FetchResponse<unknown>);
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
       appointmentTypes: ['Scheduled', 'WalkIn'],
@@ -126,17 +129,30 @@ describe('AppointmentForm', () => {
   it('renders a success snackbar upon successfully scheduling an appointment', async () => {
     const user = userEvent.setup();
 
-    mockOpenmrsFetch.mockResolvedValue({ data: mockUseAppointmentServiceData } as unknown as FetchResponse);
-    mockSaveAppointment.mockResolvedValue({ status: 200, statusText: 'Ok' } as FetchResponse);
+    mockOpenmrsFetch.mockResolvedValue({
+      data: mockUseAppointmentServiceData,
+    } as unknown as FetchResponse);
+    mockSaveAppointment.mockResolvedValue({
+      status: 200,
+      statusText: 'Ok',
+    } as FetchResponse);
 
     renderWithSwr(<AppointmentForm {...defaultProps} />);
 
     await waitForLoadingToFinish();
 
-    const locationSelect = screen.getByRole('combobox', { name: /select a location/i });
-    const serviceSelect = screen.getByRole('combobox', { name: /select a service/i });
-    const appointmentTypeSelect = screen.getByRole('combobox', { name: /select the type of appointment/i });
-    const providerSelect = screen.getByRole('combobox', { name: /select a provider/i });
+    const locationSelect = screen.getByRole('combobox', {
+      name: /select a location/i,
+    });
+    const serviceSelect = screen.getByRole('combobox', {
+      name: /select a service/i,
+    });
+    const appointmentTypeSelect = screen.getByRole('combobox', {
+      name: /select the type of appointment/i,
+    });
+    const providerSelect = screen.getByRole('combobox', {
+      name: /select a provider/i,
+    });
     const durationInput = screen.getByRole('spinbutton', { name: /duration/i });
     const timeInput = screen.getByRole('textbox', { name: /time/i });
     const timeFormat = screen.getByRole('combobox', { name: /time/i });
@@ -194,17 +210,27 @@ describe('AppointmentForm', () => {
       },
     };
 
-    mockOpenmrsFetch.mockResolvedValue({ data: mockUseAppointmentServiceData } as unknown as FetchResponse);
+    mockOpenmrsFetch.mockResolvedValue({
+      data: mockUseAppointmentServiceData,
+    } as unknown as FetchResponse);
     mockSaveAppointment.mockRejectedValue(error);
 
     renderWithSwr(<AppointmentForm {...defaultProps} />);
 
     await waitForLoadingToFinish();
 
-    const locationSelect = screen.getByRole('combobox', { name: /select a location/i });
-    const serviceSelect = screen.getByRole('combobox', { name: /select a service/i });
-    const appointmentTypeSelect = screen.getByRole('combobox', { name: /select the type of appointment/i });
-    const providerSelect = screen.getByRole('combobox', { name: /select a provider/i });
+    const locationSelect = screen.getByRole('combobox', {
+      name: /select a location/i,
+    });
+    const serviceSelect = screen.getByRole('combobox', {
+      name: /select a service/i,
+    });
+    const appointmentTypeSelect = screen.getByRole('combobox', {
+      name: /select the type of appointment/i,
+    });
+    const providerSelect = screen.getByRole('combobox', {
+      name: /select a provider/i,
+    });
     const durationInput = screen.getByRole('spinbutton', { name: /duration/i });
     const timeInput = screen.getByRole('textbox', { name: /time/i });
     const timeFormat = screen.getByRole('combobox', { name: /time/i });

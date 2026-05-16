@@ -1,9 +1,11 @@
+import * as XLSX from 'xlsx';
 import type { FuaRequest } from '../hooks/useFuaRequests';
 
 import { buildExportRows, exportFuasToExcel } from './fua-export';
 
 // Mock xlsx so it doesn't write real files in tests
 vi.mock('xlsx', () => ({
+  __esModule: true,
   utils: {
     json_to_sheet: vi.fn(() => ({})),
     book_new: vi.fn(() => ({})),
@@ -61,7 +63,6 @@ describe('buildExportRows', () => {
 
 describe('exportFuasToExcel', () => {
   it('calls xlsx writeFile with default filename pattern', () => {
-    const XLSX = require('xlsx');
     exportFuasToExcel([mockFua]);
     expect(XLSX.utils.json_to_sheet).toHaveBeenCalled();
     expect(XLSX.utils.book_append_sheet).toHaveBeenCalled();
@@ -69,7 +70,6 @@ describe('exportFuasToExcel', () => {
   });
 
   it('uses custom filename when provided', () => {
-    const XLSX = require('xlsx');
     exportFuasToExcel([mockFua], 'reporte.xlsx');
     expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), 'reporte.xlsx');
   });

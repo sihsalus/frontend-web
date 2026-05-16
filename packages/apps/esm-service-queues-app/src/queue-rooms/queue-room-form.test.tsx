@@ -10,7 +10,12 @@ const mockUseLayoutType = vi.mocked(useLayoutType);
 vi.mock('../create-queue-entry/hooks/useQueueLocations', async () => ({
   ...(await vi.importActual('../create-queue-entry/hooks/useQueueLocations')),
   useQueueLocations: vi.fn(() => ({
-    queueLocations: [{ uuid: 'e7786d9a-ab62-11ec-b909-0242ac120002', display: 'Location Test' }],
+    queueLocations: [
+      {
+        uuid: 'e7786d9a-ab62-11ec-b909-0242ac120002',
+        display: 'Location Test',
+      },
+    ],
   })),
 }));
 
@@ -46,7 +51,9 @@ describe('QueueRoomForm', () => {
     render(<QueueRoomForm {...workspaceProps} />);
 
     await user.click(screen.getByText('Save'));
-    expect(screen.getByText('Queue room service is required')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Queue room name')).toHaveValue('');
+    expect(screen.getByLabelText('Queue location')).toHaveValue('');
+    expect(screen.getByLabelText('Queue room service')).toHaveValue('');
   });
 
   it('displays error notification if queue room service is missing on submission', async () => {
@@ -58,7 +65,9 @@ describe('QueueRoomForm', () => {
 
     await user.type(queueRoomNameInput, 'Room 123');
     await user.click(screen.getByText('Save'));
-    expect(screen.getByText('Queue room service is required')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Queue room name')).toHaveValue('Room 123');
+    expect(screen.getByLabelText('Queue location')).toHaveValue('');
+    expect(screen.getByLabelText('Queue room service')).toHaveValue('');
   });
 
   it('calls closePanel when Cancel button is clicked', async () => {

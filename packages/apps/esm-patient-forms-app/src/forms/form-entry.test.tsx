@@ -86,7 +86,9 @@ describe('FormEntryWorkspace', () => {
       error: null,
       isLoading: false,
     });
-    mockUseVisitOrOfflineVisit.mockReturnValue({ currentVisit: mockCurrentVisit });
+    mockUseVisitOrOfflineVisit.mockReturnValue({
+      currentVisit: mockCurrentVisit,
+    });
     mockUseConfig.mockReturnValue({ htmlFormEntryForms: [] });
     mockUseConnectivity.mockReturnValue(true);
     mockUseSWR.mockReturnValue({ data: undefined, isLoading: false });
@@ -234,7 +236,7 @@ describe('FormEntryWorkspace', () => {
       .filter(([props]: Array<any>) => props.name === 'form-widget-slot')
       .at(-1)?.[0]?.state;
 
-    const normalizeEncounterUuid = (encounterUuid: string | undefined) => encounterUuid || '';
+    const normalizeEncounterUuid = (encounterUuid: unknown) => (typeof encounterUuid === 'string' ? encounterUuid : '');
 
     expect(nextState?.formUuid).toBe(initialState?.formUuid);
     expect(nextState?.patientUuid).toBe(initialState?.patientUuid);

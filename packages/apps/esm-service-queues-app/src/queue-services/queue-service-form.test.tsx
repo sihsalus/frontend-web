@@ -38,6 +38,8 @@ vi.mock('../create-queue-entry/hooks/useQueueLocations', () => ({
 
 describe('QueueServiceForm', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
+    mockSaveQueue.mockResolvedValue({ status: 201 } as any);
     mockUseLayoutType.mockReturnValue('tablet');
   });
 
@@ -46,8 +48,12 @@ describe('QueueServiceForm', () => {
     render(<QueueServiceForm {...defaultProps} />);
 
     const queueNameInput = screen.getByRole('textbox', { name: /queue name/i });
-    const serviceTypeSelect = screen.getByRole('combobox', { name: /select a service type/i });
-    const locationSelect = screen.getByRole('combobox', { name: /select a location/i });
+    const serviceTypeSelect = screen.getByRole('combobox', {
+      name: /select a service type/i,
+    });
+    const locationSelect = screen.getByRole('combobox', {
+      name: /select a location/i,
+    });
     const cancelButton = screen.getByRole('button', { name: /cancel/i });
     const saveButton = screen.getByRole('button', { name: /save/i });
     expect(cancelButton).toBeInTheDocument();
@@ -78,8 +84,12 @@ describe('QueueServiceForm', () => {
     render(<QueueServiceForm {...defaultProps} />);
 
     const queueNameInput = screen.getByRole('textbox', { name: /queue name/i });
-    const serviceTypeSelect = screen.getByRole('combobox', { name: /select a service type/i });
-    const locationSelect = screen.getByRole('combobox', { name: /select a location/i });
+    const serviceTypeSelect = screen.getByRole('combobox', {
+      name: /select a service type/i,
+    });
+    const locationSelect = screen.getByRole('combobox', {
+      name: /select a location/i,
+    });
     const saveButton = screen.getByRole('button', { name: /save/i });
 
     await user.type(queueNameInput, 'Test Queue');
@@ -108,8 +118,12 @@ describe('QueueServiceForm', () => {
     render(<QueueServiceForm {...defaultProps} />);
 
     const queueNameInput = screen.getByRole('textbox', { name: /queue name/i });
-    const serviceTypeSelect = screen.getByRole('combobox', { name: /select a service type/i });
-    const locationSelect = screen.getByRole('combobox', { name: /select a location/i });
+    const serviceTypeSelect = screen.getByRole('combobox', {
+      name: /select a service type/i,
+    });
+    const locationSelect = screen.getByRole('combobox', {
+      name: /select a location/i,
+    });
     const saveButton = screen.getByRole('button', { name: /save/i });
 
     await user.type(queueNameInput, 'Test Queue');

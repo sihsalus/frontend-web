@@ -29,12 +29,16 @@ const mockResolvedOptions = vi.fn().mockReturnValue({
   maximumFractionDigits: 2,
 });
 
-global.Intl.NumberFormat.supportedLocalesOf = vi.fn().mockReturnValue(['en-US']);
-global.Intl.NumberFormat = vi.fn().mockImplementation(() => ({
-  formatToParts: mockFormatToParts,
-  format: mockFormat,
-  resolvedOptions: mockResolvedOptions,
-})) as any;
+const MockNumberFormat = vi.fn(function MockNumberFormat() {
+  return {
+    formatToParts: mockFormatToParts,
+    format: mockFormat,
+    resolvedOptions: mockResolvedOptions,
+  };
+}) as unknown as typeof Intl.NumberFormat;
+
+MockNumberFormat.supportedLocalesOf = vi.fn().mockReturnValue(['en-US']);
+global.Intl.NumberFormat = MockNumberFormat;
 
 vi.mock('../../billing.resource', () => ({
   processBillPayment: vi.fn(),
@@ -112,8 +116,13 @@ describe('Payments', () => {
   const mockMutate = vi.fn();
 
   beforeEach(() => {
-    mockUseVisit.mockReturnValue({ currentVisit: null } as unknown as VisitReturnType);
-    mockUseConfig.mockReturnValue({ ...getDefaultsFromConfigSchema(configSchema), defaultCurrency: 'USD' });
+    mockUseVisit.mockReturnValue({
+      currentVisit: null,
+    } as unknown as VisitReturnType);
+    mockUseConfig.mockReturnValue({
+      ...getDefaultsFromConfigSchema(configSchema),
+      defaultCurrency: 'USD',
+    });
     mockUseBillableServices.mockReturnValue({
       billableServices: [],
       isLoading: false,
@@ -123,8 +132,18 @@ describe('Payments', () => {
     });
     mockUsePaymentModes.mockReturnValue({
       paymentModes: [
-        { uuid: '1', name: 'Cash', description: 'Cash payment', retired: false },
-        { uuid: '2', name: 'Credit Card', description: 'Credit Card payment', retired: false },
+        {
+          uuid: '1',
+          name: 'Cash',
+          description: 'Cash payment',
+          retired: false,
+        },
+        {
+          uuid: '2',
+          name: 'Credit Card',
+          description: 'Credit Card payment',
+          retired: false,
+        },
       ],
       isLoading: false,
       error: null,

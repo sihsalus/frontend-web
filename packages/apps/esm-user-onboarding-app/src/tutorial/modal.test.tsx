@@ -45,6 +45,8 @@ const mockTutorialData = [
 
 describe('TutorialModal', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
+
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
       tutorialData: mockTutorialData,

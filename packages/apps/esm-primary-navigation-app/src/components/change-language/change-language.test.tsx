@@ -31,6 +31,9 @@ const mockUseSession = vi.mocked(useSession);
 
 describe(`Change Language Modal`, () => {
   beforeEach(() => {
+    vi.clearAllMocks();
+    mockUpdateUserProperties.mockResolvedValue(undefined);
+    mockUpdateSessionLocale.mockResolvedValue(undefined);
     mockUseSession.mockReturnValue({
       authenticated: true,
       user: mockUser as unknown as LoggedInUser,
@@ -86,7 +89,9 @@ describe(`Change Language Modal`, () => {
   it('should display the "Save as my default language" checkbox checked by default', () => {
     render(<ChangeLanguageModal close={vi.fn()} />);
 
-    const checkbox = screen.getByRole('checkbox', { name: /Save as my default language/i });
+    const checkbox = screen.getByRole('checkbox', {
+      name: /Save as my default language/i,
+    });
     expect(checkbox).toBeChecked();
   });
 
@@ -96,7 +101,9 @@ describe(`Change Language Modal`, () => {
     render(<ChangeLanguageModal close={vi.fn()} />);
 
     // Uncheck the checkbox to only update session locale
-    const checkbox = screen.getByRole('checkbox', { name: /Save as my default language/i });
+    const checkbox = screen.getByRole('checkbox', {
+      name: /Save as my default language/i,
+    });
     await user.click(checkbox);
 
     // Change locale

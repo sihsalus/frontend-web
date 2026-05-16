@@ -80,14 +80,20 @@ describe('<WardPatientNotesWorkspace>', () => {
       location: undefined,
       obs: expect.arrayContaining([
         {
-          concept: { display: '', uuid: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' },
+          concept: {
+            display: '',
+            uuid: '162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+          },
           value: 'Sample clinical note',
         },
       ]),
       patient: mockPatientAlice.uuid,
     };
 
-    mockCreatePatientNote.mockResolvedValue({ status: 201, body: 'Condition created' });
+    mockCreatePatientNote.mockResolvedValue({
+      status: 201,
+      body: 'Condition created',
+    });
 
     renderWardPatientNotesForm();
 
@@ -100,7 +106,10 @@ describe('<WardPatientNotesWorkspace>', () => {
     await user.click(submitButton);
 
     expect(mockCreatePatientNote).toHaveBeenCalledTimes(1);
-    expect(mockCreatePatientNote).toHaveBeenCalledWith(expect.objectContaining(successPayload), new AbortController());
+    expect(mockCreatePatientNote).toHaveBeenCalledWith(
+      expect.objectContaining(successPayload),
+      expect.any(AbortController),
+    );
   });
 
   test('renders an error snackbar if there was a problem recording a visit note', async () => {

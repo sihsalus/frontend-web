@@ -52,7 +52,9 @@ vi.mock('../hooks/useCustomDataSources', () => ({
 const mockShowLabOrdersNotification = vi.fn();
 
 vi.mock('../hooks/useLabOrderNotification', () => ({
-  useLabOrderNotification: vi.fn(() => ({ showLabOrdersNotification: mockShowLabOrdersNotification })),
+  useLabOrderNotification: vi.fn(() => ({
+    showLabOrdersNotification: mockShowLabOrdersNotification,
+  })),
 }));
 
 vi.mock('../hooks/useCustomEncounterDatetime', () => ({
@@ -109,13 +111,21 @@ describe('FormRenderer', () => {
   });
 
   it('renders loading state', () => {
-    mockUseFormSchema.mockReturnValue({ schema: undefined, error: undefined, isLoading: true });
+    mockUseFormSchema.mockReturnValue({
+      schema: undefined,
+      error: undefined,
+      isLoading: true,
+    });
     render(<FormRenderer {...defaultProps} />);
     expect(screen.getByText('Loading ...')).toBeInTheDocument();
   });
 
   it('renders error state', () => {
-    mockUseFormSchema.mockReturnValue({ schema: undefined, error: new Error('fail'), isLoading: false });
+    mockUseFormSchema.mockReturnValue({
+      schema: undefined,
+      error: new Error('fail'),
+      isLoading: false,
+    });
     render(<FormRenderer {...defaultProps} />);
     expect(screen.getByText(/there was an error with this form/i)).toBeInTheDocument();
   });
@@ -259,7 +269,10 @@ describe('FormRenderer', () => {
 
     render(<FormRenderer {...defaultProps} handlePostResponse={handlePostResponse} />);
     const formEngineProps = mockFormEngine.mock.calls[0][0];
-    const submittedEncounter = { uuid: 'encounter-123' };
+    const submittedEncounter = {
+      uuid: 'encounter-123',
+      display: 'Encounter 123',
+    };
 
     await act(async () => {
       await formEngineProps.onSubmit([submittedEncounter]);

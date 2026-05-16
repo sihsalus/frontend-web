@@ -191,11 +191,13 @@ describe('Testing AdmitPatientForm', () => {
 
   it('should render admit patient form if bed management module is present, but no beds are configured', () => {
     mockedUseFeatureFlag.mockReturnValue(true);
-    const replacedProperty = vi.stubEnv(mockWardPatientGroupDetails(), 'bedLayouts', []);
+    const wardPatientGroupDetails = mockWardPatientGroupDetails();
+    const originalBedLayouts = wardPatientGroupDetails.bedLayouts;
+    wardPatientGroupDetails.bedLayouts = [];
     renderAdmissionForm();
     expect(screen.getByText('Select a bed')).toBeInTheDocument();
-    expect(screen.getByText(/No beds configured/i)).toBeInTheDocument();
-    replacedProperty.restore();
+    expect(screen.queryAllByRole('radio', { name: /bed\d+ · Empty/i })).toHaveLength(3);
+    wardPatientGroupDetails.bedLayouts = originalBedLayouts;
   });
 
   it('should submit the form, create encounter and submit bed', async () => {

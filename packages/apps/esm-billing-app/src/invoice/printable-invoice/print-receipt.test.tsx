@@ -7,6 +7,7 @@ describe('PrintReceipt', () => {
   const TEST_BILL_UUID = 'a0655e54-126b-4b88-8c7c-579cb4f331f2';
   const originalLocation = window.location;
   let mockLink: HTMLAnchorElement;
+  let setTimeoutSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     Object.defineProperty(window, 'location', {
@@ -22,6 +23,13 @@ describe('PrintReceipt', () => {
     mockLink = document.createElement('a');
     vi.spyOn(mockLink, 'click').mockImplementation(() => {});
 
+    setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((callback: TimerHandler) => {
+      if (typeof callback === 'function') {
+        callback();
+      }
+      return 0 as unknown as ReturnType<typeof setTimeout>;
+    });
+
     const originalCreateElement = document.createElement.bind(document);
     vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
       if (tagName === 'a') {
@@ -31,13 +39,11 @@ describe('PrintReceipt', () => {
       }
       return originalCreateElement(tagName);
     });
-
-    vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.useRealTimers();
+
     Object.defineProperty(window, 'location', {
       value: originalLocation,
       writable: true,
@@ -54,7 +60,7 @@ describe('PrintReceipt', () => {
   });
 
   it('shows loading state and disables button during download', async () => {
-    const user = userEvent.setup({ delay: null });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
@@ -66,7 +72,7 @@ describe('PrintReceipt', () => {
   });
 
   it('initiates download when button is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
@@ -85,7 +91,7 @@ describe('PrintReceipt', () => {
   });
 
   it('re-enables button after download completes', async () => {
-    const user = userEvent.setup({ delay: null });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
@@ -106,7 +112,7 @@ describe('PrintReceipt', () => {
   });
 
   it('prevents multiple simultaneous downloads', async () => {
-    const user = userEvent.setup({ delay: null });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
@@ -134,7 +140,7 @@ describe('PrintReceipt', () => {
   });
 
   it('handles empty bill UUID', async () => {
-    const user = userEvent.setup({ delay: null });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid="" />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
