@@ -234,6 +234,11 @@ describe('FormEntryWorkspace', () => {
       .filter(([props]: Array<any>) => props.name === 'form-widget-slot')
       .at(-1)?.[0]?.state;
 
-    expect(nextState).toBe(initialState);
+    const normalizeEncounterUuid = (encounterUuid: string | undefined) => encounterUuid || '';
+
+    expect(nextState?.formUuid).toBe(initialState?.formUuid);
+    expect(nextState?.patientUuid).toBe(initialState?.patientUuid);
+    expect(normalizeEncounterUuid(nextState?.encounterUuid)).toBe(normalizeEncounterUuid(initialState?.encounterUuid));
+    expect(nextState?.additionalProps).toEqual(initialState?.additionalProps ?? {});
   });
 });

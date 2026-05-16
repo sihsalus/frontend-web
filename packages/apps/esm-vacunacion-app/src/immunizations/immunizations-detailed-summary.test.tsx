@@ -74,6 +74,7 @@ const mockImmunizationData = [
 
 describe('ImmunizationsDetailedSummary', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     mockUseConfig.mockReturnValue({
       immunizationConceptSet: 'CIEL:984',
       fhirConceptMappings: {

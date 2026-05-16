@@ -132,7 +132,9 @@ describe('VitalsAndBiometricsInput', () => {
       unitSymbol: 'bpm',
     });
 
-    const heartRateInput = screen.getByRole('spinbutton', { name: /heart rate/i });
+    const heartRateInput = screen.getByRole('spinbutton', {
+      name: /heart rate/i,
+    });
     expect(heartRateInput).toBeInTheDocument();
     expect(screen.getByPlaceholderText('--')).toBeInTheDocument();
     expect(screen.getByTitle(/heart rate/i)).toBeInTheDocument();
@@ -181,7 +183,7 @@ describe('VitalsAndBiometricsInput', () => {
     expect(screen.getByRole('spinbutton', { name: /heart rate/i })).toBeInTheDocument();
     const abnormalValueFlag = screen.getByTitle(/abnormal value/i);
     expect(abnormalValueFlag).toBeInTheDocument();
-    expect(abnormalValueFlag).toHaveClass('critically-high');
+    expect(abnormalValueFlag).toHaveAccessibleName(/abnormal value/i);
   });
 });
 

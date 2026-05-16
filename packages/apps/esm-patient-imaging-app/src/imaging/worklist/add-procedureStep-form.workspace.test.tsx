@@ -119,7 +119,7 @@ describe('AddNewProcedureStepWorkspace', () => {
 
     await waitFor(() => {
       const description = screen.getByLabelText(/description/i);
-      expect(description).toHaveAttribute('invalidtext', 'Description is required');
+      expect(description).toHaveAttribute('invalidtext', 'Required');
     });
 
     await waitFor(() => {
@@ -150,7 +150,7 @@ describe('AddNewProcedureStepWorkspace', () => {
       target: { value: '2025-09-04' },
     });
 
-    await user.type(screen.getByLabelText(/Start time/i), '10:30');
+    await user.type(screen.getByTestId('stepStartTime'), '10:30');
     await user.selectOptions(screen.getByLabelText(/Time Format/i), 'AM');
 
     const comboBox = screen.getByTestId(/modality/i);
@@ -160,7 +160,9 @@ describe('AddNewProcedureStepWorkspace', () => {
     await user.click(option);
 
     // Submit form
-    const submitButton = screen.getByRole('button', { name: /Save and Close/i });
+    const submitButton = screen.getByRole('button', {
+      name: /Save and Close/i,
+    });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -171,7 +173,9 @@ describe('AddNewProcedureStepWorkspace', () => {
 
   it('calls promptBeforeClosing when form is dirty', async () => {
     render(<AddNewProcedureStepWorkspace {...defaultProps} />);
-    fireEvent.change(screen.getByLabelText(/AetTitle/i), { target: { value: 'Changed' } });
+    fireEvent.change(screen.getByLabelText(/AetTitle/i), {
+      target: { value: 'Changed' },
+    });
 
     await waitFor(() => {
       expect(defaultProps.promptBeforeClosing).toHaveBeenCalled();
@@ -183,13 +187,25 @@ describe('AddNewProcedureStepWorkspace', () => {
 
     render(<AddNewProcedureStepWorkspace {...defaultProps} />);
 
-    fireEvent.change(screen.getByLabelText(/AetTitle/i), { target: { value: 'Test AET' } });
-    fireEvent.change(screen.getByLabelText(/scheduledReferringPhysician/i), { target: { value: 'Dr. Smith' } });
-    fireEvent.change(screen.getByLabelText(/Description/i), { target: { value: 'Test procedure' } });
-    fireEvent.change(screen.getByTestId('stepStartDate'), { target: { value: '2025-09-04' } });
-    fireEvent.change(screen.getByLabelText(/Start time/i), { target: { value: '10:30' } });
+    fireEvent.change(screen.getByLabelText(/AetTitle/i), {
+      target: { value: 'Test AET' },
+    });
+    fireEvent.change(screen.getByLabelText(/scheduledReferringPhysician/i), {
+      target: { value: 'Dr. Smith' },
+    });
+    fireEvent.change(screen.getByLabelText(/Description/i), {
+      target: { value: 'Test procedure' },
+    });
+    fireEvent.change(screen.getByTestId('stepStartDate'), {
+      target: { value: '2025-09-04' },
+    });
+    fireEvent.change(screen.getByTestId('stepStartTime'), {
+      target: { value: '10:30' },
+    });
 
-    const submitButton = screen.getByRole('button', { name: /Save and Close/i });
+    const submitButton = screen.getByRole('button', {
+      name: /Save and Close/i,
+    });
     fireEvent.click(screen.getByText(/Save and Close/i));
     expect(submitButton).toBeDisabled();
   });

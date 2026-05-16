@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationDir": "dist",
     "emitDeclarationOnly": true,
-    "types": ["fhir", "node", "webpack-env", "@testing-library/jest-dom", "vi-namespace"]
+    "types": ["fhir", "node", "@testing-library/jest-dom", "vi-namespace"]
   },
   "include": ["src/**/*", "setup-tests.ts"]
 }

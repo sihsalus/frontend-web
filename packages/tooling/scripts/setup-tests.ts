@@ -64,3 +64,32 @@ const _IntersectionObserver = class IntersectionObserver {
 };
 (global as any).IntersectionObserver = _IntersectionObserver;
 (window as any).IntersectionObserver = _IntersectionObserver;
+
+const isLocalBackendUrl = (input: unknown): boolean => {
+  try {
+    const url =
+      typeof input === 'string' ? input : input instanceof URL ? input.toString() : (input as { url?: string })?.url;
+    return (
+      typeof url === 'string' &&
+      (url.includes('http://localhost:3000') ||
+        url.includes('https://localhost:3000') ||
+        url.includes('http://127.0.0.1:3000') ||
+        url.includes('https://127.0.0.1:3000'))
+    );
+  } catch {
+    return false;
+  }
+};
+
+if (typeof globalThis.fetch === 'function') {
+  const originalFetch = globalThis.fetch.bind(globalThis);
+  globalThis.fetch = vi.fn(async (...args: Parameters<typeof fetch>) => {
+    if (isLocalBackendUrl(args[0])) {
+      return new Response(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    return originalFetch(...args);
+  }) as typeof fetch;
+}

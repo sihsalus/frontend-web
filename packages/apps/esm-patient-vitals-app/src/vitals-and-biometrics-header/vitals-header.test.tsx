@@ -3,6 +3,7 @@ import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {
   formattedVitals,
   getByTextWithMarkup,
@@ -21,6 +22,8 @@ import { type ConfigObject, configSchema } from '../config-schema';
 import { patientVitalsBiometricsFormWorkspace } from '../constants';
 
 import VitalsHeader from './vitals-header.component';
+
+dayjs.extend(utc);
 
 const testProps = {
   patientUuid: mockPatient.id,
@@ -100,7 +103,8 @@ describe('VitalsHeader', () => {
     await waitForLoadingToFinish();
 
     expect(screen.getByText(/vitals and biometrics/i)).toBeInTheDocument();
-    expect(screen.getByText(/19-May-2021/i)).toBeInTheDocument();
+    const expectedRecordedDate = dayjs.utc(formattedVitals[0].date).local().format('DD-MMM-YYYY');
+    expect(screen.getByText(new RegExp(expectedRecordedDate, 'i'))).toBeInTheDocument();
     expect(screen.getByText(/vitals history/i)).toBeInTheDocument();
     expect(screen.getByText(/record vitals/i)).toBeInTheDocument();
 
@@ -209,7 +213,11 @@ describe('VitalsHeader', () => {
 
     mockUseConfig.mockReturnValue({
       ...(getDefaultsFromConfigSchema(configSchema) as Record<string, unknown>),
-      vitals: { ...mockVitalsConfig.vitals, useFormEngine: true, formName: 'Triage' },
+      vitals: {
+        ...mockVitalsConfig.vitals,
+        useFormEngine: true,
+        formName: 'Triage',
+      },
     } as unknown as ConfigObject);
 
     renderWithSwr(<VitalsHeader {...testProps} />);
@@ -342,7 +350,10 @@ describe('VitalsHeader', () => {
       data: formattedVitals,
     } as ReturnType<typeof useVitalsAndBiometrics>);
 
-    const minorPatient = { ...mockFhirPatient, birthDate: '2020-01-01' } as fhir.Patient;
+    const minorPatient = {
+      ...mockFhirPatient,
+      birthDate: '2020-01-01',
+    } as fhir.Patient;
     renderWithSwr(<VitalsHeader {...testProps} patient={minorPatient} />);
     await waitForLoadingToFinish();
 
@@ -355,7 +366,9 @@ describe('VitalsHeader', () => {
       ...mockVitalsConfig,
     } as ConfigObject);
 
-    mockUseVitalsAndBiometrics.mockReturnValue({ data: formattedVitals } as ReturnType<typeof useVitalsAndBiometrics>);
+    mockUseVitalsAndBiometrics.mockReturnValue({
+      data: formattedVitals,
+    } as ReturnType<typeof useVitalsAndBiometrics>);
     renderWithSwr(<VitalsHeader {...testProps} />);
     await waitForLoadingToFinish();
 

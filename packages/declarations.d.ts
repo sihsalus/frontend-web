@@ -1,29 +1,38 @@
 /// <reference types="vitest/globals" />
 
-declare module '*.scss' {
+declare module "*.scss" {
   const styles: { [className: string]: string };
   export default styles;
 }
 
-declare module '*.css' {
+declare module "*.css" {
   const styles: { [className: string]: string };
   export default styles;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const value: string;
   export default value;
 }
 
-declare module '*.svg' {
+declare module "*.svg" {
   const value: string;
   export default value;
 }
 
-declare const require: {
-  (moduleName: string): any;
-  context: (directory: string, useSubdirectories?: boolean, regExp?: RegExp, mode?: string) => any;
-};
+declare const require: NodeJS.Require;
+
+declare namespace NodeJS {
+  interface Require {
+    (moduleName: string): any;
+    context(
+      directory: string,
+      useSubdirectories?: boolean,
+      regExp?: RegExp,
+      mode?: string,
+    ): any;
+  }
+}
 
 declare var spaBase: string;
 declare function getOpenmrsSpaBase(): string;

@@ -188,12 +188,23 @@ const FormView: React.FC<FormViewProps> = ({
                   </TableHead>
                   <TableBody>
                     {rows.map((row, index) => {
+                      const formInfo = results.find(
+                        (result) =>
+                          result.form.display === row.cells[0].value || result.form.name === row.cells[0].value,
+                      );
+
                       return (
                         <TableRow key={row.id}>
                           <TableCell>
                             <button
                               type="button"
-                              onClick={() => launchFormWorkspace(results[index])}
+                              onClick={() => {
+                                if (!formInfo) {
+                                  return;
+                                }
+
+                                launchFormWorkspace(formInfo);
+                              }}
                               className={styles.formNameButton}
                             >
                               {row.cells[0].value}
@@ -203,7 +214,7 @@ const FormView: React.FC<FormViewProps> = ({
                             <button
                               type="button"
                               onClick={() =>
-                                launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)
+                                formInfo && launchFormWorkspace(formInfo, formInfo.associatedEncounters?.[0]?.uuid)
                               }
                               className={styles.formNameButton}
                             >
@@ -218,7 +229,7 @@ const FormView: React.FC<FormViewProps> = ({
                                 aria-label={t('editForm', 'Edit form')}
                                 iconDescription={t('editForm', 'Edit form')}
                                 onClick={() =>
-                                  launchFormWorkspace(results[index], first(results[index].associatedEncounters)?.uuid)
+                                  formInfo && launchFormWorkspace(formInfo, formInfo.associatedEncounters?.[0]?.uuid)
                                 }
                                 size={isTablet ? 'lg' : 'sm'}
                                 kind="ghost"

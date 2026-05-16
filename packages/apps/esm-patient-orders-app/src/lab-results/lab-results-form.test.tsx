@@ -53,6 +53,7 @@ const testProps = {
 
 describe('LabResultsForm', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     mockUseOrderConceptByUuid.mockReturnValue({
       concept: {
         uuid: 'concept-uuid',

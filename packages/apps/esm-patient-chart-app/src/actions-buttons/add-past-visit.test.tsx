@@ -1,10 +1,13 @@
 vi.mock('@carbon/react', async () => {
   const actual = await vi.importActual('@carbon/react');
-  const React = await vi.importActual('react');
+  const React = await vi.importActual<typeof import('react')>('react');
 
   return {
     ...actual,
-    OverflowMenuItem: React.forwardRef(function MockOverflowMenuItem({ itemText, onClick, ...props }, ref) {
+    OverflowMenuItem: React.forwardRef<
+      HTMLButtonElement,
+      React.ComponentPropsWithoutRef<'button'> & { itemText?: React.ReactNode }
+    >(function MockOverflowMenuItem({ itemText, onClick, ...props }, ref) {
       return (
         <button {...props} onClick={onClick} ref={ref} role="menuitem" type="button">
           {itemText}
@@ -29,7 +32,9 @@ describe('AddPastVisitOverflowMenuItem', () => {
 
     render(React.createElement(AddPastVisitOverflowMenuItem));
 
-    const addPastVisitButton = screen.getByRole('menuitem', { name: /Add past visit/ });
+    const addPastVisitButton = screen.getByRole('menuitem', {
+      name: /Add past visit/,
+    });
     expect(addPastVisitButton).toBeInTheDocument();
 
     await user.click(addPastVisitButton);

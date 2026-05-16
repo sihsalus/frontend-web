@@ -11,7 +11,7 @@ const defaultProps = {
   closeWorkspaceWithSavedChanges: vi.fn(),
   patientUuid: mockPatient.id,
   promptBeforeClosing: vi.fn(),
-  setTitle: vi.fn,
+  setTitle: vi.fn(),
 };
 
 const mockPastVisits = {
@@ -21,9 +21,17 @@ const mockPastVisits = {
         uuid: '1f0b35e2-ab94-4f96-a439-ba67e4fe22b0',
         encounters: [],
         patient: { uuid: mockPatient.id },
-        visitType: { uuid: 'e89b4b06-8d7a-40e6-b5ad-d3209f47040b', name: 'ECH', display: 'ECH' },
+        visitType: {
+          uuid: 'e89b4b06-8d7a-40e6-b5ad-d3209f47040b',
+          name: 'ECH',
+          display: 'ECH',
+        },
         attributes: [],
-        location: { uuid: '7fdfa2cb-bc95-405a-88c6-32b7673c0453', name: 'Laboratory', display: 'Laboratory' },
+        location: {
+          uuid: '7fdfa2cb-bc95-405a-88c6-32b7673c0453',
+          name: 'Laboratory',
+          display: 'Laboratory',
+        },
         startDatetime: '2021-09-07T14:44:00.000+0000',
         stopDatetime: '2021-09-07T16:26:28.000+0000',
       },
@@ -31,7 +39,11 @@ const mockPastVisits = {
         uuid: '2fcf6cbc-99e0-4b6a-9ecc-a66b455bff15',
         encounters: [],
         patient: { uuid: mockPatient.id },
-        visitType: { uuid: '7b0f5697-27e3-40c4-8bae-f4049abfb4ed', name: 'Facility Visit', display: 'Facility Visit' },
+        visitType: {
+          uuid: '7b0f5697-27e3-40c4-8bae-f4049abfb4ed',
+          name: 'Facility Visit',
+          display: 'Facility Visit',
+        },
         attributes: [],
         location: {
           uuid: '6351fcf4-e311-4a19-90f9-35667d99a8af',

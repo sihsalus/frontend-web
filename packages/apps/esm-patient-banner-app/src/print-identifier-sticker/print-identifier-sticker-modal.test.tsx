@@ -15,12 +15,16 @@ const mockedUseReactToPrint = vi.mocked(useReactToPrint);
 
 const defaultConfig: ConfigObject = getDefaultsFromConfigSchema(configSchema);
 
-vi.mock('react-to-print', async () => ({
-  ...(await vi.importActual('react-to-print')),
+vi.mock('react-to-print', () => ({
   useReactToPrint: vi.fn(),
 }));
 
-vi.mock('react-barcode', async () => vi.fn().mockReturnValue(<div data-testid="barcode" />));
+vi.mock('react-barcode', () => ({
+  default: vi.fn(() => {
+    const React = require('react');
+    return React.createElement('div', { 'data-testid': 'barcode' });
+  }),
+}));
 
 describe('PrintIdentifierStickerModal', () => {
   beforeEach(() => {

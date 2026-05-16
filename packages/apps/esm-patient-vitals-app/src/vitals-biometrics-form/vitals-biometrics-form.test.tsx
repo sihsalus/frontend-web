@@ -146,9 +146,15 @@ describe('VitalsBiometricsForm', () => {
     const bmiInput = screen.getByRole('spinbutton', { name: /bmi/i });
     const systolic = screen.getByRole('spinbutton', { name: /systolic/i });
     const pulse = screen.getByRole('spinbutton', { name: /pulse/i });
-    const oxygenSaturation = screen.getByRole('spinbutton', { name: /oxygen saturation/i });
-    const respirationRate = screen.getByRole('spinbutton', { name: /respiration rate/i });
-    const temperature = screen.getByRole('spinbutton', { name: /temperature/i });
+    const oxygenSaturation = screen.getByRole('spinbutton', {
+      name: /oxygen saturation/i,
+    });
+    const respirationRate = screen.getByRole('spinbutton', {
+      name: /respiration rate/i,
+    });
+    const temperature = screen.getByRole('spinbutton', {
+      name: /temperature/i,
+    });
     const muac = screen.getByRole('spinbutton', { name: /muac/i });
     const saveButton = screen.getByRole('button', { name: /Save and close/i });
 
@@ -187,7 +193,7 @@ describe('VitalsBiometricsForm', () => {
         temperature: temperatureValue,
         weight: weightValue,
       }),
-      new AbortController(),
+      expect.any(AbortController),
       'test-session-location',
     );
 
@@ -221,9 +227,15 @@ describe('VitalsBiometricsForm', () => {
     const weightInput = screen.getByRole('spinbutton', { name: /weight/i });
     const systolic = screen.getByRole('spinbutton', { name: /systolic/i });
     const pulse = screen.getByRole('spinbutton', { name: /pulse/i });
-    const oxygenSaturation = screen.getByRole('spinbutton', { name: /oxygen saturation/i });
-    const respirationRate = screen.getByRole('spinbutton', { name: /respiration rate/i });
-    const temperature = screen.getByRole('spinbutton', { name: /temperature/i });
+    const oxygenSaturation = screen.getByRole('spinbutton', {
+      name: /oxygen saturation/i,
+    });
+    const respirationRate = screen.getByRole('spinbutton', {
+      name: /respiration rate/i,
+    });
+    const temperature = screen.getByRole('spinbutton', {
+      name: /temperature/i,
+    });
     const muac = screen.getByRole('spinbutton', { name: /muac/i });
 
     await user.type(heightInput, heightValue.toString());
@@ -255,8 +267,12 @@ describe('VitalsBiometricsForm', () => {
 
     const systolic = screen.getByRole('spinbutton', { name: /systolic/i });
     const pulse = screen.getByRole('spinbutton', { name: /pulse/i });
-    const oxygenSaturation = screen.getByRole('spinbutton', { name: /oxygen saturation/i });
-    const temperature = screen.getByRole('spinbutton', { name: /temperature/i });
+    const oxygenSaturation = screen.getByRole('spinbutton', {
+      name: /oxygen saturation/i,
+    });
+    const temperature = screen.getByRole('spinbutton', {
+      name: /temperature/i,
+    });
 
     await user.type(systolic, '1000');
     await user.type(pulse, pulseValue.toString());

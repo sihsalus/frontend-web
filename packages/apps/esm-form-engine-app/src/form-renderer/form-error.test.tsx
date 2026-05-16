@@ -8,6 +8,7 @@ import FormError from './form-error.component';
 const mocklaunchPatientWorkspace = vi.mocked(launchPatientWorkspace);
 
 vi.mock('@openmrs/esm-patient-common-lib', () => ({
+  clinicalFormsWorkspace: 'clinical-forms-workspace',
   launchPatientWorkspace: vi.fn(),
 }));
 
@@ -29,7 +30,9 @@ describe('FormError', () => {
 
     render(<FormError closeWorkspace={closeWorkspace} />);
 
-    const closeButton = screen.getByRole('button', { name: /close this panel/i });
+    const closeButton = screen.getByRole('button', {
+      name: /close this panel/i,
+    });
 
     await user.click(closeButton);
 

@@ -16,6 +16,7 @@ vi.mock('./useAreBackendModuleInstalled', () => ({
 
 describe('useOrderStockInfo', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     mockUseAreBackendModuleInstalled.mockReturnValue({
       areModulesInstalled: true,
       isCheckingModules: false,

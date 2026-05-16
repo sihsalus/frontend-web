@@ -11,13 +11,13 @@ import MarkPatientDeceasedForm from './mark-patient-deceased-form.workspace';
 
 vi.mock('@carbon/react', async () => {
   const actual = await vi.importActual('@carbon/react');
-  const React = await vi.importActual('react');
-  const { default: dayjs } = await vi.importActual<typeof import('dayjs')>('dayjs');
+  const React = await vi.importActual<typeof import('react')>('react');
+  const dayjs = await vi.importActual<typeof import('dayjs')>('dayjs');
 
-  const MockDatePickerInput = React.forwardRef(function MockDatePickerInput(
-    { id, labelText, placeholder, style, value, onChange, ...props },
-    ref,
-  ) {
+  const MockDatePickerInput = React.forwardRef<
+    HTMLInputElement,
+    React.ComponentPropsWithoutRef<'input'> & { labelText?: React.ReactNode }
+  >(function MockDatePickerInput({ id, labelText, placeholder, style, value, onChange, ...props }, ref) {
     return (
       <>
         <label htmlFor={id}>{labelText}</label>
@@ -37,12 +37,24 @@ vi.mock('@carbon/react', async () => {
 
   return {
     ...actual,
-    DatePicker: ({ children, onChange, value }) => {
-      const child = React.Children.only(children);
+    DatePicker: ({
+      children,
+      onChange,
+      value,
+    }: {
+      children: React.ReactNode;
+      onChange?: (dates: Array<Date | undefined>) => void;
+      value?: Date | string;
+    }) => {
+      const child = React.Children.only(children) as React.ReactElement<
+        React.ComponentPropsWithoutRef<'input'> & {
+          onChange?: (...args: any[]) => void;
+        }
+      >;
       const formattedValue = value ? dayjs(value).format('DD/MM/YYYY') : '';
 
       return React.cloneElement(child, {
-        onChange: (event) => {
+        onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
           child.props.onChange?.(event);
           const parsedDate = dayjs(event.target.value, 'DD/MM/YYYY', true);
           onChange?.([parsedDate.isValid() ? parsedDate.toDate() : undefined]);
@@ -165,7 +177,9 @@ describe('MarkPatientDeceasedForm', () => {
 
     render(React.createElement(MarkPatientDeceasedForm, defaultProps));
 
-    const submitButton = screen.getByRole('button', { name: /save and close/i });
+    const submitButton = screen.getByRole('button', {
+      name: /save and close/i,
+    });
 
     await user.click(screen.getByRole('radio', { name: 'Other' }));
     expect(screen.getByRole('textbox', { name: /non-coded cause of death/i })).toBeInTheDocument();
@@ -191,8 +205,12 @@ describe('MarkPatientDeceasedForm', () => {
 
     render(React.createElement(MarkPatientDeceasedForm, defaultProps));
 
-    const submitButton = screen.getByRole('button', { name: /save and close/i });
-    const traumaticInjuryRadio = screen.getByRole('radio', { name: 'Traumatic injury' });
+    const submitButton = screen.getByRole('button', {
+      name: /save and close/i,
+    });
+    const traumaticInjuryRadio = screen.getByRole('radio', {
+      name: 'Traumatic injury',
+    });
 
     await user.click(traumaticInjuryRadio);
     await user.click(submitButton);
@@ -214,8 +232,12 @@ describe('MarkPatientDeceasedForm', () => {
 
     render(React.createElement(MarkPatientDeceasedForm, defaultProps));
 
-    const submitButton = screen.getByRole('button', { name: /save and close/i });
-    const traumaticInjuryRadio = screen.getByRole('radio', { name: 'Traumatic injury' });
+    const submitButton = screen.getByRole('button', {
+      name: /save and close/i,
+    });
+    const traumaticInjuryRadio = screen.getByRole('radio', {
+      name: 'Traumatic injury',
+    });
 
     await user.click(traumaticInjuryRadio);
     await user.click(submitButton);

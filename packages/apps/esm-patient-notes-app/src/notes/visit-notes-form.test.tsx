@@ -89,6 +89,15 @@ mockUseConfig.mockReturnValue({
   ...ConfigMock,
 });
 
+beforeEach(() => {
+  vi.clearAllMocks();
+  mockUseConfig.mockReturnValue({
+    ...getDefaultsFromConfigSchema(configSchema),
+    ...ConfigMock,
+  });
+  mockFetchDiagnosisConceptsByName.mockResolvedValue([]);
+});
+
 test('renders the visit notes form with all the relevant fields and values', () => {
   mockFetchDiagnosisConceptsByName.mockResolvedValue([]);
 
@@ -206,7 +215,7 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
   await user.click(submitButton);
 
   expect(mockSaveVisitNote).toHaveBeenCalledTimes(1);
-  expect(mockSaveVisitNote).toHaveBeenCalledWith(new AbortController(), expect.objectContaining(successPayload));
+  expect(mockSaveVisitNote).toHaveBeenCalledWith(expect.any(AbortController), expect.objectContaining(successPayload));
   mockConsoleError.mockRestore();
 });
 
@@ -464,7 +473,7 @@ test('allows saving visit note without primary diagnosis when isPrimaryDiagnosis
 
   // Should successfully save the visit note
   expect(mockSaveVisitNote).toHaveBeenCalledTimes(1);
-  expect(mockSaveVisitNote).toHaveBeenCalledWith(new AbortController(), expect.objectContaining(successPayload));
+  expect(mockSaveVisitNote).toHaveBeenCalledWith(expect.any(AbortController), expect.objectContaining(successPayload));
 
   // Reset mock for other tests
   mockUseConfig.mockReturnValue({

@@ -1,10 +1,13 @@
 vi.mock('@carbon/react', async () => {
   const actual = await vi.importActual('@carbon/react');
-  const React = await vi.importActual('react');
+  const React = await vi.importActual<typeof import('react')>('react');
 
   return {
     ...actual,
-    OverflowMenuItem: React.forwardRef(function MockOverflowMenuItem({ itemText, onClick, ...props }, ref) {
+    OverflowMenuItem: React.forwardRef<
+      HTMLButtonElement,
+      React.ComponentPropsWithoutRef<'button'> & { itemText?: React.ReactNode }
+    >(function MockOverflowMenuItem({ itemText, onClick, ...props }, ref) {
       return (
         <button {...props} onClick={onClick} ref={ref} role="menuitem" type="button">
           {itemText}
@@ -36,9 +39,15 @@ describe('StopVisitOverflowMenuItem', () => {
   it('should be able to stop current visit', async () => {
     const user = userEvent.setup();
 
-    mockUseVisit.mockReturnValue({ currentVisit: mockCurrentVisit } as ReturnType<typeof useVisit>);
+    mockUseVisit.mockReturnValue({
+      currentVisit: mockCurrentVisit,
+    } as ReturnType<typeof useVisit>);
 
-    render(React.createElement(StopVisitOverflowMenuItem, { patientUuid: mockPatient.id }));
+    render(
+      React.createElement(StopVisitOverflowMenuItem, {
+        patientUuid: mockPatient.id,
+      }),
+    );
 
     const endVisitButton = screen.getByRole('menuitem', { name: /End Visit/i });
     expect(endVisitButton).toBeInTheDocument();
@@ -49,9 +58,15 @@ describe('StopVisitOverflowMenuItem', () => {
   it('should be able to show configured label in button to stop current visit', async () => {
     const user = userEvent.setup();
 
-    mockUseVisit.mockReturnValue({ currentVisit: mockCurrentVisit } as ReturnType<typeof useVisit>);
+    mockUseVisit.mockReturnValue({
+      currentVisit: mockCurrentVisit,
+    } as ReturnType<typeof useVisit>);
 
-    render(React.createElement(StopVisitOverflowMenuItem, { patientUuid: mockPatient.id }));
+    render(
+      React.createElement(StopVisitOverflowMenuItem, {
+        patientUuid: mockPatient.id,
+      }),
+    );
 
     const endVisitButton = screen.getByRole('menuitem', { name: /End visit/ });
     expect(endVisitButton).toBeInTheDocument();

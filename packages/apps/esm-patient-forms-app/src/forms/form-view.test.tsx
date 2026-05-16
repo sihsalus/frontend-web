@@ -112,6 +112,8 @@ describe('FormView', () => {
   test('should open edit mode without requiring a current visit from the last completed column', async () => {
     const user = userEvent.setup();
 
+    mockLaunchStartVisitPrompt.mockClear();
+
     mockUseVisitOrOfflineVisit.mockReturnValue({
       currentVisit: null,
       error: null,

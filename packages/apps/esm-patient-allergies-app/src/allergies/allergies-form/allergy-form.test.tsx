@@ -43,6 +43,7 @@ const mockConcepts = {
 
 describe('AllergyForm', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     mockUseAllergens.mockReturnValue({
       isLoading: false,
       allergens: mockAllergens,

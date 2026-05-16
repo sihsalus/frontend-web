@@ -46,7 +46,7 @@ export function WorkspaceNotification({ contextKey }: WorkspaceNotificationProps
   // If we navigate away from the current context, we need to prompt if there are
   // unsaved changes.
   useEffect(() => {
-    const handleRouting = (event: Event & { detail: SingleSpaCustomEventDetail }) => {
+    const handleRouting = (event: CustomEvent<SingleSpaCustomEventDetail>) => {
       const {
         detail: { cancelNavigation, newUrl },
       } = event;
@@ -75,10 +75,10 @@ export function WorkspaceNotification({ contextKey }: WorkspaceNotificationProps
         }
       }
     };
-    window.addEventListener('single-spa:before-routing-event', handleRouting);
+    window.addEventListener('single-spa:before-routing-event', handleRouting as EventListener);
 
     return () => {
-      window.removeEventListener('single-spa:before-routing-event', handleRouting);
+      window.removeEventListener('single-spa:before-routing-event', handleRouting as EventListener);
     };
   }, []);
 

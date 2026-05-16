@@ -1,6 +1,8 @@
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {
   formattedVitals,
   mockConceptMetadata,
@@ -16,6 +18,8 @@ import { useVitalsAndBiometrics } from '../common';
 import { type ConfigObject, configSchema } from '../config-schema';
 
 import VitalsOverview from './vitals-overview.component';
+
+dayjs.extend(utc);
 
 const testProps = {
   patientUuid: mockPatient.id,
@@ -132,10 +136,9 @@ describe('VitalsOverview', () => {
     });
 
     const expectedTableRows = [
-      /19 .* May .* 2021/,
-      /10 .* May .* 2021/,
-      /07 .* May .* 2021/,
-      /08 .* Apr .* 2021/,
+      ...formattedVitals
+        .slice(0, 4)
+        .map((vital) => new RegExp(dayjs.utc(vital.date).local().format('DD .* MMM .* YYYY'), 'i')),
       /121 \/ 89/,
       /120 \/ 90/,
       /120 \/ 80/,
@@ -145,7 +148,9 @@ describe('VitalsOverview', () => {
       expect(screen.getByText(row)).toBeInTheDocument();
     });
 
-    const sortRowsButton = screen.getByRole('button', { name: /date and time/i });
+    const sortRowsButton = screen.getByRole('button', {
+      name: /date and time/i,
+    });
 
     // Sorting in descending order
     // Since the date order is already in descending order, the rows should be the same
@@ -203,7 +208,9 @@ describe('VitalsOverview', () => {
     renderWithSwr(<VitalsOverview {...testProps} />);
     await waitForLoadingToFinish();
 
-    const expandButtons = screen.queryAllByRole('button', { name: /expand current row/i });
+    const expandButtons = screen.queryAllByRole('button', {
+      name: /expand current row/i,
+    });
     if (expandButtons.length > 0) {
       await user.click(expandButtons[0]);
       const noteText = screen.queryByText(/Pt reports severe L chest pain/i);

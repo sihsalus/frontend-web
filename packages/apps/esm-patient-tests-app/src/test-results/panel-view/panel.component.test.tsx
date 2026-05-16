@@ -4,8 +4,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { type ObsRecord } from '../../types';
-
+import { getClass } from './helper';
 import LabSetPanel from './panel.component';
+
+const expectHasClass = (element: HTMLElement, className: string) => {
+  if (className) {
+    expect(element).toHaveClass(className);
+  }
+};
 
 const mockUseLayoutType = vi.mocked(useLayoutType);
 const mockIsDesktop = vi.mocked(isDesktop);
@@ -189,8 +195,8 @@ describe('LabSetPanel', () => {
     const lowTest = screen.getByRole('row', { name: /low test 2 g\/dL 12-16 g\/dL/i });
 
     expect(normalTest).toHaveClass('check');
-    expect(highTest).toHaveClass('high', 'check');
-    expect(lowTest).toHaveClass('low', 'check');
+    expectHasClass(highTest, getClass('HIGH'));
+    expectHasClass(lowTest, getClass('LOW'));
   });
 
   it('adjusts the table size based on the layout', () => {

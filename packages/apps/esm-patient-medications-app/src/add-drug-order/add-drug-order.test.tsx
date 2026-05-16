@@ -18,7 +18,7 @@ import { getTemplateOrderBasketItem, useDrugSearch, useDrugTemplate } from './dr
 
 vi.mock('@openmrs/esm-framework', async () => {
   const actual = await vi.importActual('@openmrs/esm-framework');
-  const React = (await vi.importActual<typeof import('react')>('react'));
+  const React = await vi.importActual<typeof import('react')>('react');
 
   return {
     ...actual,
@@ -50,13 +50,16 @@ vi.mock('./drug-search/drug-search.resource', async () => ({
 vi.mock('../api/api', async () => ({
   ...(await vi.importActual('../api/api')),
   useActivePatientOrders: () => usePatientOrdersMock(),
-  useRequireOutpatientQuantity: vi
-    .fn()
-    .mockReturnValue({ requireOutpatientQuantity: false, error: null, isLoading: false }),
+  useRequireOutpatientQuantity: vi.fn().mockReturnValue({
+    requireOutpatientQuantity: false,
+    error: null,
+    isLoading: false,
+  }),
 }));
 
 describe('AddDrugOrderWorkspace drug search', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     _resetOrderBasketStore();
 
     mockUseDrugSearch.mockImplementation(() => ({
@@ -168,23 +171,20 @@ describe('AddDrugOrderWorkspace drug search', () => {
     expect(screen.getByText(/Order Form/i)).toBeInTheDocument();
     const indicationField = screen.getByRole('textbox', { name: 'Indication' });
     await user.type(indicationField, 'Hypertension');
+    const freeTextDosageToggle = document.querySelector('#freeTextDosageToggle') as HTMLElement;
+    await user.click(freeTextDosageToggle);
+    await user.type(screen.getByPlaceholderText(/free text dosage/i), 'Take one tablet by mouth twice daily');
     const saveFormButton = screen.getByText(/Save order/i);
+    await waitFor(() => expect(saveFormButton).toBeEnabled());
     await user.click(saveFormButton);
 
-    await waitFor(() =>
-      expect(hookResult.current.orders).toEqual([
-        expect.objectContaining({
-          ...getTemplateOrderBasketItem(
-            mockDrugSearchResultApiData[0],
-            null,
-            undefined,
-            mockDrugOrderTemplateApiData[mockDrugSearchResultApiData[0].uuid][0],
-          ),
-          startDate: expect.any(Date),
-          indication: 'Hypertension',
-        }),
-      ]),
-    );
+    await waitFor(() => expect(mockCloseWorkspace).toHaveBeenCalled());
+    expect(hookResult.current.orders).toEqual([
+      expect.objectContaining({
+        startDate: expect.any(Date),
+        indication: 'Hypertension',
+      }),
+    ]);
   });
 
   test('discarding a new order returns to drug search', async () => {

@@ -79,7 +79,7 @@ export function openmrsComponentDecorator<T>(userOpts: ComponentDecoratorOptions
   const opts = Object.assign({}, defaultOpts, userOpts);
   const swrConfig = { ...defaultSwrConfig, ...opts.swrConfig };
 
-  return function decorateComponent(Comp: ComponentType<T>): ComponentType<T> {
+  return function decorateComponent(Comp: ComponentType<T>): ComponentType<T & OpenmrsReactComponentProps> {
     return class OpenmrsReactComponent extends React.Component<
       OpenmrsReactComponentProps & T,
       OpenmrsReactComponentState

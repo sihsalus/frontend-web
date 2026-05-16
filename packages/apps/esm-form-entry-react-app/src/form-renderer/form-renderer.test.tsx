@@ -1,7 +1,7 @@
 import type { FormSchema } from '@sihsalus/esm-form-engine-lib';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
-
+import * as formEngineRuntime from '../form-engine-lib-runtime';
 import FormRenderer from './form-renderer.component';
 
 void React;
@@ -69,6 +69,7 @@ const mockSchema: FormSchema = {
   encounterType: 'enc-type-uuid',
   pages: [],
 };
+const mockFormEngine = vi.mocked(formEngineRuntime.FormEngine);
 
 const defaultProps = {
   formUuid: 'test-form-uuid',
@@ -130,7 +131,6 @@ describe('FormRenderer', () => {
   });
 
   it('passes encounterUUID for edit mode', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -138,7 +138,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...defaultProps} encounterUuid="enc-123" />);
-    expect(FormEngine).toHaveBeenCalledWith(
+    expect(mockFormEngine).toHaveBeenCalledWith(
       expect.objectContaining({
         encounterUUID: 'enc-123',
         mode: 'edit',
@@ -148,7 +148,6 @@ describe('FormRenderer', () => {
   });
 
   it('defaults to enter mode when no encounterUuid', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -156,7 +155,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...defaultProps} />);
-    expect(FormEngine).toHaveBeenCalledWith(
+    expect(mockFormEngine).toHaveBeenCalledWith(
       expect.objectContaining({
         mode: 'enter',
       }),
@@ -165,7 +164,6 @@ describe('FormRenderer', () => {
   });
 
   it('constructs visit object from string props', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -173,7 +171,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...defaultProps} visitTypeUuid="visit-type-123" />);
-    expect(FormEngine).toHaveBeenCalledWith(
+    expect(mockFormEngine).toHaveBeenCalledWith(
       expect.objectContaining({
         visit: expect.objectContaining({
           uuid: 'test-visit-uuid',
@@ -187,7 +185,6 @@ describe('FormRenderer', () => {
   });
 
   it('uses the canonical visit object when provided by a v12-style caller', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -196,7 +193,7 @@ describe('FormRenderer', () => {
 
     render(<FormRenderer {...canonicalProps} />);
 
-    expect(FormEngine).toHaveBeenCalledWith(
+    expect(mockFormEngine).toHaveBeenCalledWith(
       expect.objectContaining({
         visit: canonicalProps.visit,
       }),
@@ -205,7 +202,6 @@ describe('FormRenderer', () => {
   });
 
   it('allows canonical callers to omit visit context', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -214,7 +210,7 @@ describe('FormRenderer', () => {
 
     render(<FormRenderer {...canonicalProps} visit={undefined} />);
 
-    expect(FormEngine).toHaveBeenCalledWith(
+    expect(mockFormEngine).toHaveBeenCalledWith(
       expect.objectContaining({
         visit: undefined,
       }),
@@ -223,7 +219,6 @@ describe('FormRenderer', () => {
   });
 
   it('bridges dirty state through promptBeforeClosing for legacy callers', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -231,7 +226,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...defaultProps} />);
-    const formEngineProps = (FormEngine as vi.Mock).mock.calls[0][0];
+    const formEngineProps = mockFormEngine.mock.calls[0][0];
 
     formEngineProps.markFormAsDirty(true);
 
@@ -240,7 +235,6 @@ describe('FormRenderer', () => {
   });
 
   it('uses setHasUnsavedChanges directly for canonical callers', () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
       error: undefined,
@@ -248,7 +242,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...canonicalProps} />);
-    const formEngineProps = (FormEngine as vi.Mock).mock.calls[0][0];
+    const formEngineProps = mockFormEngine.mock.calls[0][0];
 
     formEngineProps.markFormAsDirty(true);
 
@@ -256,7 +250,6 @@ describe('FormRenderer', () => {
   });
 
   it('shows lab order notifications and closes the workspace after a successful submit', async () => {
-    const { FormEngine } = vi.importMock('../form-engine-lib-runtime');
     const handlePostResponse = vi.fn();
     mockUseFormSchema.mockReturnValue({
       schema: mockSchema,
@@ -265,7 +258,7 @@ describe('FormRenderer', () => {
     });
 
     render(<FormRenderer {...defaultProps} handlePostResponse={handlePostResponse} />);
-    const formEngineProps = (FormEngine as vi.Mock).mock.calls[0][0];
+    const formEngineProps = mockFormEngine.mock.calls[0][0];
     const submittedEncounter = { uuid: 'encounter-123' };
 
     await act(async () => {
