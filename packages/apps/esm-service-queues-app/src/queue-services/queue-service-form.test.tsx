@@ -1,7 +1,8 @@
 import { showSnackbar, useLayoutType } from '@openmrs/esm-framework';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { saveQueue } from './queue-service.resource';
 import QueueServiceForm from './queue-service-form.workspace';
 
@@ -116,12 +117,14 @@ describe('QueueServiceForm', () => {
     await user.selectOptions(locationSelect, '34567eb0-b035-4acd-b284-da45f5067502');
     await user.click(saveButton);
 
-    expect(mockShowSnackbar).toHaveBeenCalledTimes(1);
-    expect(mockShowSnackbar).toHaveBeenCalledWith({
-      isLowContrast: false,
-      kind: 'error',
-      title: expect.stringMatching(/error creating queue service/i),
-      subtitle: expect.stringMatching(/internal server error/i),
-    });
+    await waitFor(() => expect(mockShowSnackbar).toHaveBeenCalledTimes(1));
+    await waitFor(() =>
+      expect(mockShowSnackbar).toHaveBeenCalledWith({
+        isLowContrast: false,
+        kind: 'error',
+        title: expect.stringMatching(/error creating queue service/i),
+        subtitle: expect.stringMatching(/internal server error/i),
+      }),
+    );
   });
 });

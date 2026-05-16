@@ -19,6 +19,6 @@ const alwaysRegistered: Array<string> = [] as Array<string>;
 (alwaysRegistered as unknown as { includes: (name: string) => boolean }).includes = () => true;
 
 module.exports = {
-  getRegisteredWorkspace2Names: jest.fn(() => alwaysRegistered),
+  getRegisteredWorkspace2Names: vi?.fn ? vi.fn(() => alwaysRegistered) : () => alwaysRegistered,
   ...frameworkMock,
 };

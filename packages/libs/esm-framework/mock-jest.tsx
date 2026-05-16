@@ -3,6 +3,7 @@ import * as utils from '@openmrs/esm-utils/mock';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { NEVER } from 'rxjs';
+import { vi } from 'vitest';
 
 window.i18next = { ...window.i18next, language: 'en' };
 
@@ -30,87 +31,87 @@ export function setupPaths(config: any) {
 }
 
 /* esm-dynamic-loading */
-export const importDynamic = jest.fn();
+export const importDynamic = vi.fn();
 
 /* esm-error-handling */
-export const createErrorHandler = () => jest.fn().mockReturnValue(NEVER);
+export const createErrorHandler = () => vi.fn().mockReturnValue(NEVER);
 
-export const reportError = jest.fn().mockImplementation((error) => {
+export const reportError = vi.fn().mockImplementation((error) => {
   throw error;
 });
 
 /* esm-feature-flags */
-export const registerFeatureFlags = jest.fn();
-export const getFeatureFlag = jest.fn().mockReturnValue(true);
-export const subscribeToFeatureFlag = jest.fn((_name: string, callback) => callback(true));
+export const registerFeatureFlags = vi.fn();
+export const getFeatureFlag = vi.fn().mockReturnValue(true);
+export const subscribeToFeatureFlag = vi.fn((_name: string, callback) => callback(true));
 
 /* esm-navigation */
 export { interpolateString, interpolateUrl } from '@openmrs/esm-navigation';
-export const navigate = jest.fn();
-export const getHistory = jest.fn(() => ['https://o3.openmrs.org/home']);
-export const clearHistory = jest.fn();
-export const goBackInHistory = jest.fn();
+export const navigate = vi.fn();
+export const getHistory = vi.fn(() => ['https://o3.openmrs.org/home']);
+export const clearHistory = vi.fn();
+export const goBackInHistory = vi.fn();
 
 /* esm-offline */
-export const useConnectivity = jest.fn().mockReturnValue(true);
-export const subscribeConnectivity = jest.fn();
+export const useConnectivity = vi.fn().mockReturnValue(true);
+export const subscribeConnectivity = vi.fn();
 
 /* esm-styleguide */
-export const showNotification = jest.fn();
-export const showActionableNotification = jest.fn();
-export const showToast = jest.fn();
-export const showSnackbar = jest.fn();
-export const showModal = jest.fn();
+export const showNotification = vi.fn();
+export const showActionableNotification = vi.fn();
+export const showToast = vi.fn();
+export const showSnackbar = vi.fn();
+export const showModal = vi.fn();
 
-export const LeftNavMenu = jest.fn(() => <div>Left Nav Menu</div>);
-export const setLeftNav = jest.fn();
-export const unsetLeftNav = jest.fn();
-export const ResponsiveWrapper = jest.fn(({ children }) => <>{children}</>);
-export const ErrorState = jest.fn(() => <div>Error State</div>);
+export const LeftNavMenu = vi.fn(() => <div>Left Nav Menu</div>);
+export const setLeftNav = vi.fn();
+export const unsetLeftNav = vi.fn();
+export const ResponsiveWrapper = vi.fn(({ children }) => <>{children}</>);
+export const ErrorState = vi.fn(() => <div>Error State</div>);
 
-export const CustomOverflowMenu = jest.fn(({ menuTitle, children }) => (
+export const CustomOverflowMenu = vi.fn(({ menuTitle, children }) => (
   <div>
     <button>{menuTitle}</button>
     {children}
   </div>
 ));
-export const CustomOverflowMenuItem = jest.fn(({ itemText, ...props }) => (
+export const CustomOverflowMenuItem = vi.fn(({ itemText, ...props }) => (
   <button role="menuitem" {...props}>
     {itemText}
   </button>
 ));
-export const PatientBannerActionsMenu = jest.fn(() => <div>Patient Banner Actions Menu</div>);
-export const PatientBannerContactDetails = jest.fn(() => <div>Patient Banner Contact Details</div>);
-export const PatientBannerPatientInfo = jest.fn(() => <div>Patient Banner Patient Info</div>);
-export const PatientBannerPatientIdentifiers = jest.fn(() => <div>Patient Banner Patient Identifier</div>);
-export const PatientBannerToggleContactDetailsButton = jest.fn(() => (
+export const PatientBannerActionsMenu = vi.fn(() => <div>Patient Banner Actions Menu</div>);
+export const PatientBannerContactDetails = vi.fn(() => <div>Patient Banner Contact Details</div>);
+export const PatientBannerPatientInfo = vi.fn(() => <div>Patient Banner Patient Info</div>);
+export const PatientBannerPatientIdentifiers = vi.fn(() => <div>Patient Banner Patient Identifier</div>);
+export const PatientBannerToggleContactDetailsButton = vi.fn(() => (
   <div>Patient Banner Toggle Contact Details Button</div>
 ));
-export const PatientPhoto = jest.fn(() => <div>Patient Photo</div>);
-export const usePatientPhoto = jest.fn(() => ({
+export const PatientPhoto = vi.fn(() => <div>Patient Photo</div>);
+export const usePatientPhoto = vi.fn(() => ({
   isLoading: true,
   data: null,
   error: null,
 }));
 
-export const ActionMenuButton = jest.fn(({ handler }) => <button onClick={handler}>Action Menu Button</button>);
-export const ActionMenuButton2 = jest.fn(({ label, tagContent, icon }) => (
+export const ActionMenuButton = vi.fn(({ handler }) => <button onClick={handler}>Action Menu Button</button>);
+export const ActionMenuButton2 = vi.fn(({ label, tagContent, icon }) => (
   <button>
     {icon} {tagContent} {label}
   </button>
 ));
-export const ActionMenu = jest.fn(() => <div>Action Menu</div>);
-export const WorkspaceContainer = jest.fn(() => <div>Workspace Container</div>);
-export const closeWorkspace = jest.fn();
-export const launchWorkspace = jest.fn();
-export const launchWorkspace2 = jest.fn();
-export const launchWorkspaceGroup = jest.fn();
-export const closeWorkspaceGroup2 = jest.fn();
-export const navigateAndLaunchWorkspace = jest.fn();
-export const useWorkspaces = jest.fn();
-export const useWorkspace2Context = jest.fn();
+export const ActionMenu = vi.fn(() => <div>Action Menu</div>);
+export const WorkspaceContainer = vi.fn(() => <div>Workspace Container</div>);
+export const closeWorkspace = vi.fn();
+export const launchWorkspace = vi.fn();
+export const launchWorkspace2 = vi.fn();
+export const launchWorkspaceGroup = vi.fn();
+export const closeWorkspaceGroup2 = vi.fn();
+export const navigateAndLaunchWorkspace = vi.fn();
+export const useWorkspaces = vi.fn();
+export const useWorkspace2Context = vi.fn();
 
-export const OpenmrsDatePicker = jest.fn(({ id, labelText, value, onChange, isInvalid, invalidText }) => (
+export const OpenmrsDatePicker = vi.fn(({ id, labelText, value, onChange, isInvalid, invalidText }) => (
   <>
     <label htmlFor={id}>{labelText}</label>
     <input
@@ -123,7 +124,7 @@ export const OpenmrsDatePicker = jest.fn(({ id, labelText, value, onChange, isIn
   </>
 ));
 
-export const OpenmrsDateRangePicker = jest.fn(({ id, labelText, value = [], onChange, isInvalid, invalidText }) => {
+export const OpenmrsDateRangePicker = vi.fn(({ id, labelText, value = [], onChange, isInvalid, invalidText }) => {
   const [inputValue, setInputValue] = useState(() => {
     const [start, end] = value;
     const formattedStart = start ? dayjs(start).format('DD/MM/YYYY') : 'dd/mm/yyyy';
@@ -131,7 +132,7 @@ export const OpenmrsDateRangePicker = jest.fn(({ id, labelText, value = [], onCh
     return `${formattedStart}–${formattedEnd}`;
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     setInputValue(raw);
 
@@ -161,7 +162,7 @@ export {
   selectPreferredName,
 } from '@openmrs/esm-utils';
 
-export const age = jest.fn((arg) => utils.age(arg));
+export const age = vi.fn((arg) => utils.age(arg));
 
 export function isVersionSatisfied() {
   return true;

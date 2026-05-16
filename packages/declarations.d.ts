@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/globals" />
 
 declare module '*.scss' {
   const styles: { [className: string]: string };
@@ -27,3 +27,17 @@ declare const require: {
 
 declare var spaBase: string;
 declare function getOpenmrsSpaBase(): string;
+
+// Minimal ambient declarations for Vitest globals used across tests.
+declare global {
+  const vi: any;
+  namespace vi {
+    // vi.Mock is used in a few places for casting; provide a permissive alias.
+    type Mock = any;
+    function fn(...args: any[]): any;
+    function mocked<T>(t: T): T;
+    function importActual<T = any>(path: string): Promise<T>;
+  }
+}
+
+export {};

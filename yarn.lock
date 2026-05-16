@@ -10572,7 +10572,6 @@ __metadata:
     "@sihsalus/esm-rbac": "workspace:*"
     "@sihsalus/esm-sihsalus-shared": "workspace:*"
     classnames: "npm:^2.3.2"
-    jest: "npm:^29.7.0"
     lodash-es: "npm:^4.17.15"
     openmrs: "npm:*"
     react-hook-form: "npm:^7.54.0"

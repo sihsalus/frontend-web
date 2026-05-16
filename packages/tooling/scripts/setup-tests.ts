@@ -1,9 +1,12 @@
 import '@testing-library/jest-dom';
 import { TextDecoder, TextEncoder } from 'util';
-import { vi } from 'vitest';
 
-vi.mock('single-spa', () => ({
-  navigateToUrl: vi.fn(),
+// Use the global `vi` (provided by test runner) instead of importing from 'vitest'
+// so TypeScript doesn't need to resolve the module during `tsc` checks.
+const vi: any = (globalThis as any).vi ?? (global as any).vi ?? { fn: () => {}, mocked: (x: any) => x, mock: () => {} };
+
+vi.mock?.('single-spa', () => ({
+  navigateToUrl: vi.fn?.(),
 }));
 
 declare global {
