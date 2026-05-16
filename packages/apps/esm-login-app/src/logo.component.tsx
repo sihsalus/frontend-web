@@ -3,7 +3,7 @@ import { type TFunction } from 'i18next';
 import React from 'react';
 
 import { type ConfigSchema } from './config-schema';
-import styles from './login/login.scss';
+import styles from './login/login.module.scss';
 
 const Logo: React.FC<{ t: TFunction }> = ({ t }) => {
   const { logo } = useConfig<ConfigSchema>();

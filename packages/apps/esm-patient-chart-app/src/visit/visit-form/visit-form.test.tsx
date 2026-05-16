@@ -34,7 +34,7 @@ import StartVisitForm from './visit-form.workspace';
 vi.mock('@carbon/react', async () => {
   const actual = await vi.importActual('@carbon/react');
   const React = await vi.importActual<typeof import('react')>('react');
-  const dayjs = await vi.importActual<typeof import('dayjs')>('dayjs');
+  const { default: dayjs } = await vi.importActual<{ default: typeof import('dayjs') }>('dayjs');
 
   const MockDatePickerInput = React.forwardRef<
     HTMLInputElement,

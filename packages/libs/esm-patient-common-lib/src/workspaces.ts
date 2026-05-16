@@ -243,11 +243,12 @@ export function useLaunchWorkspaceRequiringVisit<T extends object>(
   maybeWorkspaceName?: string,
 ): (workspaceProps?: T, windowProps?: object, groupProps?: object) => void {
   const workspaceName = maybeWorkspaceName ?? patientUuidOrWorkspaceName;
-  const patientUuid = maybeWorkspaceName ? patientUuidOrWorkspaceName : undefined;
-  const { patientUuid: storedPatientUuid } = usePatientChartStore(patientUuid);
+  const patientUuid = maybeWorkspaceName ? patientUuidOrWorkspaceName : null;
+  const { patientUuid: storedPatientUuid } = usePatientChartStore(patientUuid ?? undefined);
   const { systemVisitEnabled } = useSystemVisitSetting();
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid ?? storedPatientUuid);
-  const startVisitIfNeeded = useStartVisitIfNeeded(patientUuid);
+  const activePatientUuid = patientUuid ?? storedPatientUuid ?? '';
+  const { currentVisit } = useVisitOrOfflineVisit(activePatientUuid);
+  const startVisitIfNeeded = useStartVisitIfNeeded(patientUuid ?? undefined);
 
   return useCallback(
     (workspaceProps?: T, windowProps?: object, groupProps?: object): void => {

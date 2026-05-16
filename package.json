@@ -63,7 +63,7 @@
     "react-dom": "^18.3.1",
     "swc-loader": "0.2.7",
     "turbo": "^2.9.1",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "4.1.0"
   },
   "lint-staged": {
@@ -72,6 +72,7 @@
   },
   "packageManager": "yarn@4.13.0",
   "resolutions": {
+    "typescript": "6.0.3",
     "@rspack/core": "1.7.11",
     "@rspack/cli": "1.7.11",
     "@babel/plugin-transform-modules-systemjs": "7.29.4",

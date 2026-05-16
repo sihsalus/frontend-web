@@ -54,7 +54,7 @@
     "@rspack/cli": "1.7.11",
     "i18next": "^25.0.0",
     "openmrs": "*",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
 }

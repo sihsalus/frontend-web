@@ -1,5 +1,8 @@
-import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
+import { getDefaultsFromConfigSchema, reportError, useConfig } from '@openmrs/esm-framework';
 import { render, screen } from '@testing-library/react';
+
+const mockReportError = vi.mocked(reportError);
+
 import { Form, Formik } from 'formik';
 import React from 'react';
 
@@ -171,8 +174,10 @@ describe('Field', () => {
 
   it('should render AddressComponent component when name prop is "address"', () => {
     vi.mock('./address/address-hierarchy.resource', async () => ({
-      ...(await vi.importActual('../address-hierarchy.resource')),
-      useOrderedAddressHierarchyLevels: vi.fn(),
+      ...(await vi.importActual('./address/address-hierarchy.resource')),
+      useOrderedAddressHierarchyLevels: vi
+        .fn()
+        .mockReturnValue({ orderedFields: [], isLoadingFieldOrder: false, errorFetchingFieldOrder: null }),
     }));
 
     mockUseConfig.mockReturnValue({
@@ -269,24 +274,16 @@ describe('Field', () => {
   });
 
   it('should return null and report an error for an invalid field name', () => {
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(esmPatientRegistrationSchema),
       fieldDefinitions: [{ id: 'weight' }] as RegistrationConfig['fieldDefinitions'],
     });
 
-    let error = null;
+    render(<Field name="invalidField" />);
 
-    try {
-      render(<Field name="invalidField" />);
-    } catch (err) {
-      error = err;
-    }
-
-    expect(error).toMatch(/Invalid field name 'invalidField'. Valid options are /);
+    expect(mockReportError).toHaveBeenCalledWith(
+      expect.stringMatching(/Invalid field name 'invalidField'. Valid options are /),
+    );
     expect(screen.queryByTestId('invalid-field')).not.toBeInTheDocument();
-
-    consoleError.mockRestore();
   });
 });

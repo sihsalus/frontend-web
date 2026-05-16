@@ -3,6 +3,7 @@
 import { ExtensionSlot, UserHasAccess, useSession } from '@openmrs/esm-framework';
 import { type PostDataPrepFunction, useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import { _resetOrderBasketStore } from '@openmrs/esm-patient-common-lib/src/orders/store';
+import { getPatientChartStore } from '@openmrs/esm-patient-common-lib/src/store/patient-chart-store';
 import { render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -61,6 +62,12 @@ describe('AddDrugOrderWorkspace drug search', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     _resetOrderBasketStore();
+    getPatientChartStore().setState({
+      patient: mockFhirPatient,
+      patientUuid: mockFhirPatient.id,
+      visitContext: null,
+      mutateVisitContext: null,
+    });
 
     mockUseDrugSearch.mockImplementation(() => ({
       isLoading: false,

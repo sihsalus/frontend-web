@@ -3,6 +3,10 @@ declare module '*.scss' {
   export default styles;
 }
 
+declare module 'geopattern' {
+  const value: any;
+  export default value;
+}
 
 declare namespace NodeJS {
   interface Require {

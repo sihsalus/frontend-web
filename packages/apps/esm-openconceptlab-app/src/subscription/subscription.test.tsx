@@ -14,7 +14,7 @@ const mockDeleteSubscription = vi.mocked(deleteSubscription);
 const mockShowNotification = vi.mocked(showNotification);
 
 vi.mock('./subscription.resource', async () => {
-  const originalModule = vi.importActual<Record<string, unknown>>('./subscription.resource');
+  const originalModule = await vi.importActual<Record<string, unknown>>('./subscription.resource');
 
   return {
     ...originalModule,

@@ -1,13 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import React, { act } from 'react';
+import React from 'react';
 import PrintReceipt from './print-receipt.component';
 
 describe('PrintReceipt', () => {
   const TEST_BILL_UUID = 'a0655e54-126b-4b88-8c7c-579cb4f331f2';
   const originalLocation = window.location;
   let mockLink: HTMLAnchorElement;
-  let setTimeoutSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     Object.defineProperty(window, 'location', {
@@ -22,13 +20,6 @@ describe('PrintReceipt', () => {
 
     mockLink = document.createElement('a');
     vi.spyOn(mockLink, 'click').mockImplementation(() => {});
-
-    setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((callback: TimerHandler) => {
-      if (typeof callback === 'function') {
-        callback();
-      }
-      return 0 as unknown as ReturnType<typeof setTimeout>;
-    });
 
     const originalCreateElement = document.createElement.bind(document);
     vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
@@ -60,27 +51,29 @@ describe('PrintReceipt', () => {
   });
 
   it('shows loading state and disables button during download', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    button.click();
+
+    await waitFor(() => {
+      expect(button).toBeDisabled();
+    });
 
     expect(button).toBeDisabled();
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
     expect(screen.queryByText(/print receipt/i)).not.toBeInTheDocument();
+
+    await new Promise((resolve) => setTimeout(resolve, 1100));
   });
 
   it('initiates download when button is clicked', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    button.click();
 
-    act(() => {
-      vi.advanceTimersByTime(1000);
-    });
+    await new Promise((resolve) => setTimeout(resolve, 1100));
 
     await waitFor(() => {
       expect(mockLink.click).toHaveBeenCalled();
@@ -91,17 +84,16 @@ describe('PrintReceipt', () => {
   });
 
   it('re-enables button after download completes', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    button.click();
 
-    expect(button).toBeDisabled();
-
-    act(() => {
-      vi.advanceTimersByTime(1000);
+    await waitFor(() => {
+      expect(button).toBeDisabled();
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 1100));
 
     await waitFor(() => {
       expect(button).toBeEnabled();
@@ -112,20 +104,19 @@ describe('PrintReceipt', () => {
   });
 
   it('prevents multiple simultaneous downloads', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
 
-    await user.click(button);
-    await user.click(button);
-    await user.click(button);
+    button.click();
+    button.click();
+    button.click();
 
-    expect(button).toBeDisabled();
-
-    act(() => {
-      vi.advanceTimersByTime(1000);
+    await waitFor(() => {
+      expect(button).toBeDisabled();
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 1100));
 
     await waitFor(() => {
       expect(button).toBeEnabled();
@@ -140,15 +131,12 @@ describe('PrintReceipt', () => {
   });
 
   it('handles empty bill UUID', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid="" />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    button.click();
 
-    act(() => {
-      vi.advanceTimersByTime(1000);
-    });
+    await new Promise((resolve) => setTimeout(resolve, 1100));
 
     await waitFor(() => {
       expect(mockLink.click).toHaveBeenCalled();

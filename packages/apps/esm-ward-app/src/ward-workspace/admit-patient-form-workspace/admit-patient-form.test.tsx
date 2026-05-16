@@ -194,10 +194,13 @@ describe('Testing AdmitPatientForm', () => {
     const wardPatientGroupDetails = mockWardPatientGroupDetails();
     const originalBedLayouts = wardPatientGroupDetails.bedLayouts;
     wardPatientGroupDetails.bedLayouts = [];
-    renderAdmissionForm();
-    expect(screen.getByText('Select a bed')).toBeInTheDocument();
-    expect(screen.queryAllByRole('radio', { name: /bed\d+ · Empty/i })).toHaveLength(3);
-    wardPatientGroupDetails.bedLayouts = originalBedLayouts;
+    try {
+      renderAdmissionForm();
+      expect(screen.getByText('Select a bed')).toBeInTheDocument();
+      expect(screen.queryAllByRole('radio', { name: /bed\d+ · Empty/i })).toHaveLength(0);
+    } finally {
+      wardPatientGroupDetails.bedLayouts = originalBedLayouts;
+    }
   });
 
   it('should submit the form, create encounter and submit bed', async () => {
