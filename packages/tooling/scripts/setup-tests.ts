@@ -71,7 +71,8 @@ const isLocalBackendUrl = (input: unknown): boolean => {
       typeof input === 'string' ? input : input instanceof URL ? input.toString() : (input as { url?: string })?.url;
     return (
       typeof url === 'string' &&
-      (url.includes('http://localhost:3000') ||
+      (url.startsWith('/openmrs') ||
+        url.includes('http://localhost:3000') ||
         url.includes('https://localhost:3000') ||
         url.includes('http://127.0.0.1:3000') ||
         url.includes('https://127.0.0.1:3000'))

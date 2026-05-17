@@ -1,19 +1,15 @@
+import { getGroupByWindowName, getWindowByWorkspaceName, workspace2Store } from '@openmrs/esm-extensions';
+import { getGlobalStore, navigate, showModal, useFeatureFlag, type Visit } from '@openmrs/esm-framework';
 import {
   closeWorkspace,
   closeWorkspaceGroup2,
   type DefaultWorkspaceProps,
-  getGlobalStore,
   getRegisteredWorkspace2Names,
   launchWorkspace,
   launchWorkspace2,
-  navigate,
   navigateAndLaunchWorkspace,
-  showModal,
-  useFeatureFlag,
-  type Visit,
   type Workspace2DefinitionProps,
-} from '@openmrs/esm-framework';
-import { getGroupByWindowName, getWindowByWorkspaceName, workspace2Store } from '@openmrs/esm-framework/src/internal';
+} from '@openmrs/esm-styleguide';
 import { useCallback } from 'react';
 
 import { launchStartVisitPrompt } from './launchStartVisitPrompt';

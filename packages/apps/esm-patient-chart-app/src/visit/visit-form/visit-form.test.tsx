@@ -12,7 +12,7 @@ import {
   useVisitTypes,
   type Visit,
 } from '@openmrs/esm-framework';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -526,8 +526,27 @@ describe('Visit form', () => {
   });
 
   it('prefills visit attributes from matching patient person attributes', async () => {
-    const user = userEvent.setup();
-
+    mockUseConfig.mockReturnValue({
+      ...getDefaultsFromConfigSchema(esmPatientChartSchema),
+      visitAttributeTypes: [
+        {
+          uuid: visitAttributes.punctuality.uuid,
+          required: false,
+          displayInThePatientBanner: true,
+        },
+        {
+          uuid: visitAttributes.insurancePolicyNumber.uuid,
+          required: false,
+          displayInThePatientBanner: true,
+        },
+      ],
+      defaultVisitAttributesFromPersonAttributes: [
+        {
+          personAttributeTypeUuid: '374b130f-7457-476f-87b1-f182aa77c434',
+          visitAttributeTypeUuid: visitAttributes.insurancePolicyNumber.uuid,
+        },
+      ],
+    });
     mockUsePersonAttributesForVisitDefaults.mockReturnValue({
       attributes: [
         {
@@ -548,21 +567,23 @@ describe('Visit form', () => {
     const insuranceNumberInput = screen.getByRole('textbox', {
       name: 'Insurance Policy Number (optional)',
     });
-    expect(insuranceNumberInput).toHaveValue('SIS-183299');
+    await waitFor(() => expect(insuranceNumberInput).toHaveValue('SIS-183299'));
 
-    await user.click(screen.getByLabelText(/Outpatient visit/i));
+    fireEvent.click(screen.getByLabelText(/Outpatient visit/i));
 
     const locationPicker = screen.getByRole('combobox', {
       name: /Select a location/i,
     });
-    await user.selectOptions(locationPicker, 'Inpatient Ward');
+    fireEvent.change(locationPicker, { target: { value: mockLocations.data.results[1].uuid } });
 
-    await user.click(screen.getByRole('button', { name: /Start visit/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Start visit/i }));
 
-    expect(mockCreateVisitAttribute).toHaveBeenCalledWith(
-      visitUuid,
-      visitAttributes.insurancePolicyNumber.uuid,
-      'SIS-183299',
+    await waitFor(() =>
+      expect(mockCreateVisitAttribute).toHaveBeenCalledWith(
+        visitUuid,
+        visitAttributes.insurancePolicyNumber.uuid,
+        'SIS-183299',
+      ),
     );
   });
 

@@ -62,6 +62,7 @@ const AppointmentsTable: React.FC = () => {
   const { appointmentQueueEntries, isLoading } = useAppointments();
   const [filteredRows, setFilteredRows] = useState(appointmentQueueEntries);
   const { results, currentPage, goTo } = usePagination(filteredRows ?? [], 20);
+  const searchClassName = typeof styles.search === 'string' ? styles.search : undefined;
 
   const handleFilter = ({ rowIds, headers, cellsById, inputValue, getCellId }: FilterProps): Array<string> => {
     return rowIds.filter((rowId) =>
@@ -247,7 +248,7 @@ const AppointmentsTable: React.FC = () => {
                 </div>
 
                 <TableToolbarSearch
-                  className={styles.search}
+                  className={searchClassName}
                   expanded
                   onChange={onInputChange}
                   placeholder={t('searchThisList', 'Search this list')}
@@ -258,20 +259,30 @@ const AppointmentsTable: React.FC = () => {
             <Table {...getTableProps()} className={styles.queueTable}>
               <TableHead>
                 <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                  ))}
+                  {headers.map((header) => {
+                    const { key, ...headerProps } = getHeaderProps({ header });
+                    return (
+                      <TableHeader key={key} {...headerProps}>
+                        {header.header}
+                      </TableHeader>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row, index) => {
                   return (
                     <React.Fragment key={row.id}>
-                      <TableRow {...getRowProps({ row })}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
-                        ))}
-                      </TableRow>
+                      {(() => {
+                        const { key, ...rowProps } = getRowProps({ row });
+                        return (
+                          <TableRow key={key} {...rowProps}>
+                            {row.cells.map((cell) => (
+                              <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
+                            ))}
+                          </TableRow>
+                        );
+                      })()}
                     </React.Fragment>
                   );
                 })}

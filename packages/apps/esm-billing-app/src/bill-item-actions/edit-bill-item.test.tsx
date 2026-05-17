@@ -91,15 +91,6 @@ const mockItem = {
 describe('EditBillItem', () => {
   beforeAll(() => {
     vi.spyOn(globalThis, 'fetch').mockImplementation(async (...args: Parameters<typeof fetch>) => {
-      // eslint-disable-next-line no-console
-      console.error('DEBUG_FETCH_CALL', ...args);
-      if (args[0] && args[0] instanceof Request) {
-        // eslint-disable-next-line no-console
-        console.error('DEBUG_FETCH_URL', args[0].url);
-      } else {
-        // eslint-disable-next-line no-console
-        console.error('DEBUG_FETCH_URL', args[0]);
-      }
       return new Response(JSON.stringify({}), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

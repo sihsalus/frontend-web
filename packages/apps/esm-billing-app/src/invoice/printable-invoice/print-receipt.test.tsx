@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import PrintReceipt from './print-receipt.component';
 
@@ -8,6 +8,8 @@ describe('PrintReceipt', () => {
   let mockLink: HTMLAnchorElement;
 
   beforeEach(() => {
+    vi.useFakeTimers();
+
     Object.defineProperty(window, 'location', {
       value: {
         ...originalLocation,
@@ -19,7 +21,10 @@ describe('PrintReceipt', () => {
     });
 
     mockLink = document.createElement('a');
-    vi.spyOn(mockLink, 'click').mockImplementation(() => {});
+    mockLink.addEventListener('click', (event) => event.preventDefault());
+    vi.spyOn(mockLink, 'click').mockImplementation(() => {
+      mockLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    });
 
     const originalCreateElement = document.createElement.bind(document);
     vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
@@ -34,6 +39,7 @@ describe('PrintReceipt', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
 
     Object.defineProperty(window, 'location', {
       value: originalLocation,
@@ -54,30 +60,29 @@ describe('PrintReceipt', () => {
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    button.click();
-
-    await waitFor(() => {
-      expect(button).toBeDisabled();
+    act(() => {
+      button.click();
     });
 
     expect(button).toBeDisabled();
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
     expect(screen.queryByText(/print receipt/i)).not.toBeInTheDocument();
 
-    await new Promise((resolve) => setTimeout(resolve, 1100));
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
   });
 
   it('initiates download when button is clicked', async () => {
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    button.click();
-
-    await new Promise((resolve) => setTimeout(resolve, 1100));
-
-    await waitFor(() => {
-      expect(mockLink.click).toHaveBeenCalled();
+    act(() => {
+      button.click();
+      vi.advanceTimersByTime(1000);
     });
+
+    expect(mockLink.click).toHaveBeenCalled();
 
     expect(mockLink.href).toContain(TEST_BILL_UUID);
     expect(mockLink.href).toContain('receipt');
@@ -87,17 +92,17 @@ describe('PrintReceipt', () => {
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    button.click();
-
-    await waitFor(() => {
-      expect(button).toBeDisabled();
+    act(() => {
+      button.click();
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 1100));
+    expect(button).toBeDisabled();
 
-    await waitFor(() => {
-      expect(button).toBeEnabled();
+    act(() => {
+      vi.advanceTimersByTime(1000);
     });
+
+    expect(button).toBeEnabled();
 
     expect(screen.getByText(/print receipt/i)).toBeInTheDocument();
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
@@ -108,19 +113,19 @@ describe('PrintReceipt', () => {
 
     const button = screen.getByRole('button', { name: /print receipt/i });
 
-    button.click();
-    button.click();
-    button.click();
-
-    await waitFor(() => {
-      expect(button).toBeDisabled();
+    act(() => {
+      button.click();
+      button.click();
+      button.click();
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 1100));
+    expect(button).toBeDisabled();
 
-    await waitFor(() => {
-      expect(button).toBeEnabled();
+    act(() => {
+      vi.advanceTimersByTime(1000);
     });
+
+    expect(button).toBeEnabled();
   });
 
   it('renders printer icon', () => {
@@ -134,12 +139,11 @@ describe('PrintReceipt', () => {
     render(<PrintReceipt billUuid="" />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    button.click();
-
-    await new Promise((resolve) => setTimeout(resolve, 1100));
-
-    await waitFor(() => {
-      expect(mockLink.click).toHaveBeenCalled();
+    act(() => {
+      button.click();
+      vi.advanceTimersByTime(1000);
     });
+
+    expect(mockLink.click).toHaveBeenCalled();
   });
 });

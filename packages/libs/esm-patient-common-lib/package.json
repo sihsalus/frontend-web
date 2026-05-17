@@ -35,11 +35,15 @@
     "uuid": "^8.3.2"
   },
   "peerDependencies": {
+    "@openmrs/esm-extensions": "workspace:*",
     "@openmrs/esm-framework": "workspace:*",
+    "@openmrs/esm-styleguide": "workspace:*",
     "react": "18.x",
     "single-spa": "6.x"
   },
   "devDependencies": {
+    "@openmrs/esm-extensions": "workspace:*",
+    "@openmrs/esm-styleguide": "workspace:*",
     "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
