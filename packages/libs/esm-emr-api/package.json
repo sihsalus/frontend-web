@@ -55,7 +55,7 @@
   "dependencies": {
     "@openmrs/esm-offline": "workspace:*",
     "@types/fhir": "0.0.31",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.18.1"
   },
   "peerDependencies": {
     "@openmrs/esm-api": "9.x",

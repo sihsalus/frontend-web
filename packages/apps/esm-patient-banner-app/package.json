@@ -39,7 +39,7 @@
   "dependencies": {
     "@carbon/react": "^1.83.0",
     "@openmrs/esm-patient-common-lib": "workspace:*",
-    "lodash-es": "^4.17.23",
+    "lodash-es": "^4.18.1",
     "react-barcode": "^1.5.3",
     "react-to-print": "^3.1.1"
   },

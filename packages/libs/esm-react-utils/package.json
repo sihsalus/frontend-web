@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@openmrs/esm-extensions": "workspace:*",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.18.1",
     "single-spa-react": "^6.0.2"
   },
   "peerDependencies": {
