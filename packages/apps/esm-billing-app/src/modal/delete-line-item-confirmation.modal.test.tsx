@@ -134,8 +134,10 @@ describe('DeleteLineItem Modal', () => {
 
     await user.click(deleteButton);
 
-    expect(deleteButton).toBeDisabled();
-    expect(screen.getByText(/deleting/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /deleting/i })).toBeDisabled();
+      expect(screen.getByText(/deleting/i)).toBeInTheDocument();
+    });
 
     await waitFor(() => {
       expect(mockCloseModal).toHaveBeenCalled();
@@ -280,7 +282,7 @@ describe('DeleteLineItem Modal', () => {
       expect(mockShowSnackbar).toHaveBeenCalledWith(expect.objectContaining({ kind: 'error' }));
     });
 
-    expect(deleteButton).toBeEnabled();
+    expect(screen.getByRole('button', { name: /delete/i })).toBeEnabled();
   });
 
   it('trims void reason before sending to API', async () => {

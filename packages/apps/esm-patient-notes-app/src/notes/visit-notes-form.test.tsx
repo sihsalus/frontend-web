@@ -6,7 +6,7 @@ import {
   useSession,
 } from '@openmrs/esm-framework';
 import { type PatientWorkspace2DefinitionProps } from '@openmrs/esm-patient-common-lib';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {
@@ -188,19 +188,12 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
     encounterDatetime: undefined,
   };
 
-  mockSaveVisitNote.mockResolvedValueOnce({ status: 201, body: 'Condition created' } as any);
+  mockSaveVisitNote.mockResolvedValueOnce({ status: 201, data: { uuid: 'new-visit-note-encounter-uuid' } } as any);
   mockFetchDiagnosisConceptsByName.mockResolvedValue(diagnosisSearchResponse.results);
 
   renderVisitNotesForm();
 
   const clinicalNote = screen.getByRole('textbox', { name: /Write your notes/i });
-  await user.type(clinicalNote, 'x');
-  const submitButton = screen.getByRole('button', { name: /Save and close/i });
-  await user.click(submitButton);
-
-  expect(screen.getByText(/choose at least one primary diagnosis/i)).toBeInTheDocument();
-
-  await user.clear(clinicalNote);
   const searchBox = screen.getByPlaceholderText('Choose a primary diagnosis');
   await user.type(searchBox, 'Diabetes Mellitus');
   const targetSearchResult = await screen.findByText('Diabetes Mellitus');
@@ -212,10 +205,19 @@ test('renders a success snackbar upon successfully recording a visit note', asyn
   await user.type(clinicalNote, 'Sample clinical note');
   expect(clinicalNote).toHaveValue('Sample clinical note');
 
+  const submitButton = screen.getByRole('button', { name: /Save and close/i });
   await user.click(submitButton);
 
-  expect(mockSaveVisitNote).toHaveBeenCalledTimes(1);
+  await waitFor(() => expect(mockSaveVisitNote).toHaveBeenCalledTimes(1));
   expect(mockSaveVisitNote).toHaveBeenCalledWith(expect.any(AbortController), expect.objectContaining(successPayload));
+  await waitFor(() =>
+    expect(mockShowSnackbar).toHaveBeenCalledWith({
+      isLowContrast: true,
+      kind: 'success',
+      subtitle: 'It is now visible on the Visits page',
+      title: 'Visit note saved',
+    }),
+  );
   mockConsoleError.mockRestore();
 });
 

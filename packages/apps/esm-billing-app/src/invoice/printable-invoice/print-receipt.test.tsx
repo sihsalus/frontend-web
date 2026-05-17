@@ -1,15 +1,15 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import React, { act } from 'react';
+import { act, render, screen } from '@testing-library/react';
+import React from 'react';
 import PrintReceipt from './print-receipt.component';
 
 describe('PrintReceipt', () => {
   const TEST_BILL_UUID = 'a0655e54-126b-4b88-8c7c-579cb4f331f2';
   const originalLocation = window.location;
   let mockLink: HTMLAnchorElement;
-  let setTimeoutSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    vi.useFakeTimers();
+
     Object.defineProperty(window, 'location', {
       value: {
         ...originalLocation,
@@ -21,13 +21,9 @@ describe('PrintReceipt', () => {
     });
 
     mockLink = document.createElement('a');
-    vi.spyOn(mockLink, 'click').mockImplementation(() => {});
-
-    setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((callback: TimerHandler) => {
-      if (typeof callback === 'function') {
-        callback();
-      }
-      return 0 as unknown as ReturnType<typeof setTimeout>;
+    mockLink.addEventListener('click', (event) => event.preventDefault());
+    vi.spyOn(mockLink, 'click').mockImplementation(() => {
+      mockLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     });
 
     const originalCreateElement = document.createElement.bind(document);
@@ -43,6 +39,7 @@ describe('PrintReceipt', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
 
     Object.defineProperty(window, 'location', {
       value: originalLocation,
@@ -60,42 +57,44 @@ describe('PrintReceipt', () => {
   });
 
   it('shows loading state and disables button during download', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    act(() => {
+      button.click();
+    });
 
     expect(button).toBeDisabled();
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
     expect(screen.queryByText(/print receipt/i)).not.toBeInTheDocument();
-  });
-
-  it('initiates download when button is clicked', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
-
-    const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
 
     act(() => {
       vi.advanceTimersByTime(1000);
     });
+  });
 
-    await waitFor(() => {
-      expect(mockLink.click).toHaveBeenCalled();
+  it('initiates download when button is clicked', async () => {
+    render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
+
+    const button = screen.getByRole('button', { name: /print receipt/i });
+    act(() => {
+      button.click();
+      vi.advanceTimersByTime(1000);
     });
+
+    expect(mockLink.click).toHaveBeenCalled();
 
     expect(mockLink.href).toContain(TEST_BILL_UUID);
     expect(mockLink.href).toContain('receipt');
   });
 
   it('re-enables button after download completes', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
+    act(() => {
+      button.click();
+    });
 
     expect(button).toBeDisabled();
 
@@ -103,23 +102,22 @@ describe('PrintReceipt', () => {
       vi.advanceTimersByTime(1000);
     });
 
-    await waitFor(() => {
-      expect(button).toBeEnabled();
-    });
+    expect(button).toBeEnabled();
 
     expect(screen.getByText(/print receipt/i)).toBeInTheDocument();
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
   });
 
   it('prevents multiple simultaneous downloads', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid={TEST_BILL_UUID} />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
 
-    await user.click(button);
-    await user.click(button);
-    await user.click(button);
+    act(() => {
+      button.click();
+      button.click();
+      button.click();
+    });
 
     expect(button).toBeDisabled();
 
@@ -127,9 +125,7 @@ describe('PrintReceipt', () => {
       vi.advanceTimersByTime(1000);
     });
 
-    await waitFor(() => {
-      expect(button).toBeEnabled();
-    });
+    expect(button).toBeEnabled();
   });
 
   it('renders printer icon', () => {
@@ -140,18 +136,14 @@ describe('PrintReceipt', () => {
   });
 
   it('handles empty bill UUID', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<PrintReceipt billUuid="" />);
 
     const button = screen.getByRole('button', { name: /print receipt/i });
-    await user.click(button);
-
     act(() => {
+      button.click();
       vi.advanceTimersByTime(1000);
     });
 
-    await waitFor(() => {
-      expect(mockLink.click).toHaveBeenCalled();
-    });
+    expect(mockLink.click).toHaveBeenCalled();
   });
 });

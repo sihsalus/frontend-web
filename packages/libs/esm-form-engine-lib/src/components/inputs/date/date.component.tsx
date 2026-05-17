@@ -1,5 +1,5 @@
 import { Layer, TimePicker } from '@carbon/react';
-import { OpenmrsDatePicker } from '@openmrs/esm-framework';
+import { OpenmrsDatePicker } from '@openmrs/esm-styleguide';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';

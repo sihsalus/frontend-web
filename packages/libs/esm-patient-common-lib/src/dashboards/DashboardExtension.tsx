@@ -1,5 +1,6 @@
 import { Tooltip } from '@carbon/react';
-import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
+import { ConfigurableLink } from '@openmrs/esm-framework';
+import { MaybeIcon } from '@openmrs/esm-styleguide';
 import classNames from 'classnames';
 import { last } from 'lodash-es';
 import { useMemo } from 'react';

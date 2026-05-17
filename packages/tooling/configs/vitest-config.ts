@@ -52,17 +52,38 @@ function normalizeAppSetupFiles(setupFiles?: TestOptions['setupFiles']) {
   return Array.isArray(setupFiles) ? [sharedSetupFile, ...setupFiles] : [sharedSetupFile, setupFiles];
 }
 
+const plainScssPlugin = {
+  name: 'identity-plain-scss',
+  enforce: 'pre' as const,
+  load(id: string) {
+    if (!id.endsWith('.scss') && !id.endsWith('.css')) return null;
+    if (id.endsWith('.module.scss') || id.endsWith('.module.css')) return null;
+    return `
+      const styles = new Proxy({}, {
+        get: (_target, property) => typeof property === 'string' ? property : '',
+      });
+      export default styles;
+    `;
+  },
+};
+
 export function defineWorkspaceVitestConfig(config: VitestConfigLike = {}) {
   return defineConfig(
     mergeConfig(
       {
+        plugins: [plainScssPlugin],
         resolve: {
           alias: createVitestAliases(packagesRoot, sharedWorkspaceTestAliases),
         },
         test: {
           environment: 'happy-dom',
-          mockClear: true,
+          clearMocks: true,
           globals: true,
+          css: {
+            modules: {
+              classNameStrategy: 'non-scoped',
+            },
+          },
         },
       },
       config,

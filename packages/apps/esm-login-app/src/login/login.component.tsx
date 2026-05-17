@@ -17,7 +17,7 @@ import { type ConfigSchema } from '../config-schema';
 import Logo from '../logo.component';
 
 import { LanguageSwitcher } from './language-switcher.component';
-import styles from './login.scss';
+import styles from './login.module.scss';
 
 export interface LoginReferrer {
   referrer?: string;

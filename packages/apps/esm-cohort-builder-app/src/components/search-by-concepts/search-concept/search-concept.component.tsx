@@ -19,6 +19,7 @@ export const SearchConcept: React.FC<SearchConceptProps> = ({ concept, searchTex
   const [searchError, setSearchError] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchResultsEmpty, setIsSearchResultsEmpty] = useState(false);
+  const columnClassName = typeof styles.column === 'string' ? styles.column : undefined;
 
   const onSearch = async (search: string) => {
     setSearchResults([]);
@@ -71,7 +72,7 @@ export const SearchConcept: React.FC<SearchConceptProps> = ({ concept, searchTex
 
   return (
     <div>
-      <Column className={styles.column}>
+      <Column className={columnClassName}>
         <div className={styles.searchContainer}>
           <Search
             closeButtonLabelText={t('clearSearch', 'Clear search')}

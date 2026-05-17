@@ -1,9 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { reportError } from '@openmrs/esm-framework';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import type { MockInstance } from 'vitest';
 
 import { useConceptAnswers } from '../field.resource';
+
+const mockReportError = vi.mocked(reportError);
 
 import { CodedPersonAttributeField } from './coded-person-attribute-field.component';
 
@@ -45,48 +48,54 @@ describe('CodedPersonAttributeField', () => {
     consoleSpy.mockRestore();
   });
 
-  it('renders an error if there is no concept answer set provided', () => {
-    expect(() => {
-      render(
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          <Form>
-            <CodedPersonAttributeField
-              answerConceptSetUuid={null}
-              customConceptAnswers={[]}
-              id="attributeId"
-              label={personAttributeType.display}
-              personAttributeType={personAttributeType}
-              required={false}
-            />
-          </Form>
-        </Formik>,
+  it('renders an error if there is no concept answer set provided', async () => {
+    render(
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        <Form>
+          <CodedPersonAttributeField
+            answerConceptSetUuid={null}
+            customConceptAnswers={[]}
+            id="attributeId"
+            label={personAttributeType.display}
+            personAttributeType={personAttributeType}
+            required={false}
+          />
+        </Form>
+      </Formik>,
+    );
+
+    await waitFor(() => {
+      expect(mockReportError).toHaveBeenCalledWith(
+        expect.stringMatching(/has been defined without an answer concept set UUID/i),
       );
-    }).toThrow(expect.stringMatching(/has been defined without an answer concept set UUID/i));
+    });
   });
 
-  it('renders an error if the concept answer set does not have any concept answers', () => {
+  it('renders an error if the concept answer set does not have any concept answers', async () => {
     mockUseConceptAnswers.mockReturnValue({
       data: [],
       isLoading: false,
       error: null,
     });
 
-    expect(() => {
-      render(
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          <Form>
-            <CodedPersonAttributeField
-              id="attributeId"
-              personAttributeType={personAttributeType}
-              answerConceptSetUuid={answerConceptSetUuid}
-              label={personAttributeType.display}
-              customConceptAnswers={[]}
-              required={false}
-            />
-          </Form>
-        </Formik>,
-      );
-    }).toThrow(expect.stringMatching(/does not have any concept answers/i));
+    render(
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        <Form>
+          <CodedPersonAttributeField
+            id="attributeId"
+            personAttributeType={personAttributeType}
+            answerConceptSetUuid={answerConceptSetUuid}
+            label={personAttributeType.display}
+            customConceptAnswers={[]}
+            required={false}
+          />
+        </Form>
+      </Formik>,
+    );
+
+    await waitFor(() => {
+      expect(mockReportError).toHaveBeenCalledWith(expect.stringMatching(/does not have any concept answers/i));
+    });
   });
 
   it('renders the conceptAnswers as select options', () => {

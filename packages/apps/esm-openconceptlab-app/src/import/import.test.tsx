@@ -13,7 +13,7 @@ const mockShowSnackbar = vi.mocked(showSnackbar);
 const mockStartImportWithSubscription = vi.mocked(startImportWithSubscription);
 
 vi.mock('./import.resource', async () => {
-  const originalModule = vi.importActual<Record<string, unknown>>('./import.resource');
+  const originalModule = await vi.importActual<Record<string, unknown>>('./import.resource');
 
   return {
     ...originalModule,
@@ -64,7 +64,7 @@ describe('Import component', () => {
 
     await user.click(screen.getByText('Import from Subscription'));
 
-    expect(mockStartImportWithSubscription).toHaveBeenCalledWith(new AbortController());
+    expect(mockStartImportWithSubscription).toHaveBeenCalledWith(expect.any(AbortController));
     expect(mockStartImportWithSubscription).toHaveBeenCalledTimes(1);
 
     expect(mockShowSnackbar).toHaveBeenCalledWith(

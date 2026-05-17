@@ -93,6 +93,7 @@ function QueueTableSection() {
   const currentLocationUuid = useSelectedQueueLocationUuid();
   const selectedQueueStatus = useSelectedQueueStatus();
   const [searchTerm, setSearchTerm] = useState('');
+  const searchClassName = typeof styles.search === 'string' ? styles.search : undefined;
 
   const searchCriteria = useMemo(
     () => ({
@@ -151,7 +152,7 @@ function QueueTableSection() {
         <>
           <QueueDropdownFilter /> <StatusDropdownFilter />
           <TableToolbarSearch
-            className={styles.search}
+            className={searchClassName}
             onChange={(value) => setSearchTerm(typeof value === 'string' ? value : value.currentTarget.value)}
             placeholder={t('searchThisList', 'Search this list')}
             size={isDesktop(layout) ? 'sm' : 'lg'}

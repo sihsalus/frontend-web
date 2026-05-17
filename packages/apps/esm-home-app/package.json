@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "openmrs": "*",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
 }

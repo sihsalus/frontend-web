@@ -103,7 +103,7 @@
     "typedoc": "^0.28.5",
     "typedoc-plugin-markdown": "^4.6.3",
     "typedoc-plugin-no-inherit": "^1.6.1",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.2"
   },
   "stableVersion": "9.0.2"

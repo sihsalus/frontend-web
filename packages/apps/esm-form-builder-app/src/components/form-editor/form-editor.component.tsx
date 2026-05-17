@@ -274,8 +274,17 @@ const FormEditorContent: React.FC<TranslationFnProps> = ({ t }) => {
     }
   }, [blockRenderingWithErrors, errors.length, renderSchemaChanges, selectedLanguageCode]);
 
-  const handleSchemaImport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
+  const handleSchemaImport = (
+    event: React.SyntheticEvent<HTMLElement>,
+    data?: { addedFiles: Array<{ file: File }> },
+  ) => {
+    const file =
+      data?.addedFiles[0]?.file ?? (event.target instanceof HTMLInputElement ? event.target.files?.item(0) : undefined);
+
+    if (!file) {
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = (e) => {

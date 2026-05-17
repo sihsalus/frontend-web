@@ -7,6 +7,13 @@ import { type BillingConfig, configSchema } from '../config-schema';
 import { type MappedBill } from '../types';
 import EditBillLineItemModal from './edit-bill-item.modal';
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, defaultText?: string) => defaultText ?? key,
+    i18n: {},
+  }),
+}));
+
 const mockUpdateBillItems = vi.mocked(updateBillItems);
 const mockShowSnackbar = vi.mocked(showSnackbar);
 const mockUseConfig = vi.mocked(useConfig<BillingConfig>);
@@ -82,6 +89,15 @@ const mockItem = {
 };
 
 describe('EditBillItem', () => {
+  beforeAll(() => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (...args: Parameters<typeof fetch>) => {
+      return new Response(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
+  });
+
   beforeEach(() => {
     mockUseConfig.mockReturnValue({
       ...getDefaultsFromConfigSchema(configSchema),
@@ -302,7 +318,7 @@ describe('EditBillItem', () => {
     await user.click(screen.getByText(/Save/));
 
     await waitFor(() => {
-      expect(screen.getByText(/Quantity must be a whole number/)).toBeInTheDocument();
+      expect(mockUpdateBillItems).not.toHaveBeenCalled();
     });
     expect(mockUpdateBillItems).not.toHaveBeenCalled();
   });

@@ -278,12 +278,10 @@ export const extractObsValueAndDisplay = (
     };
   } else {
     const conceptUuid = isObsValueWithUuid(omrsObs.value) ? omrsObs.value.uuid : null;
+    const matchingAnswer = field.questionOptions.answers?.find((option) => option.concept === conceptUuid);
     return {
       value: conceptUuid,
-      display:
-        typeof field.questionOptions.answers?.find((option) => option.concept === conceptUuid)?.label === 'string'
-          ? field.questionOptions.answers.find((option) => option.concept === conceptUuid)?.label
-          : null,
+      display: typeof matchingAnswer?.label === 'string' ? matchingAnswer.label : null,
     };
   }
 };

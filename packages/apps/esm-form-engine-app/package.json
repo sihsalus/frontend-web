@@ -57,7 +57,7 @@
     "@rspack/cli": "1.7.11",
     "cross-env": "^10.1.0",
     "openmrs": "workspace:*",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
 }

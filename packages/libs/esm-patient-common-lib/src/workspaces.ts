@@ -1,19 +1,15 @@
+import { getGroupByWindowName, getWindowByWorkspaceName, workspace2Store } from '@openmrs/esm-extensions';
+import { getGlobalStore, navigate, showModal, useFeatureFlag, type Visit } from '@openmrs/esm-framework';
 import {
   closeWorkspace,
   closeWorkspaceGroup2,
   type DefaultWorkspaceProps,
-  getGlobalStore,
   getRegisteredWorkspace2Names,
   launchWorkspace,
   launchWorkspace2,
-  navigate,
   navigateAndLaunchWorkspace,
-  showModal,
-  useFeatureFlag,
-  type Visit,
   type Workspace2DefinitionProps,
-} from '@openmrs/esm-framework';
-import { getGroupByWindowName, getWindowByWorkspaceName, workspace2Store } from '@openmrs/esm-framework/src/internal';
+} from '@openmrs/esm-styleguide';
 import { useCallback } from 'react';
 
 import { launchStartVisitPrompt } from './launchStartVisitPrompt';
@@ -243,11 +239,12 @@ export function useLaunchWorkspaceRequiringVisit<T extends object>(
   maybeWorkspaceName?: string,
 ): (workspaceProps?: T, windowProps?: object, groupProps?: object) => void {
   const workspaceName = maybeWorkspaceName ?? patientUuidOrWorkspaceName;
-  const patientUuid = maybeWorkspaceName ? patientUuidOrWorkspaceName : undefined;
-  const { patientUuid: storedPatientUuid } = usePatientChartStore(patientUuid);
+  const patientUuid = maybeWorkspaceName ? patientUuidOrWorkspaceName : null;
+  const { patientUuid: storedPatientUuid } = usePatientChartStore(patientUuid ?? undefined);
   const { systemVisitEnabled } = useSystemVisitSetting();
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid ?? storedPatientUuid);
-  const startVisitIfNeeded = useStartVisitIfNeeded(patientUuid);
+  const activePatientUuid = patientUuid ?? storedPatientUuid ?? '';
+  const { currentVisit } = useVisitOrOfflineVisit(activePatientUuid);
+  const startVisitIfNeeded = useStartVisitIfNeeded(patientUuid ?? undefined);
 
   return useCallback(
     (workspaceProps?: T, windowProps?: object, groupProps?: object): void => {

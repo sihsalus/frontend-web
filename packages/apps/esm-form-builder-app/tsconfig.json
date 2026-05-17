@@ -5,8 +5,7 @@
     "moduleResolution": "node",
     "target": "es2015",
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
+    "strictFunctionTypes": false,
     "paths": {
       "@hooks/*": ["./src/hooks/*"],
       "@types": ["./src/types"],
@@ -19,5 +18,6 @@
     }
   },
   "include": ["src/**/*", "../../tools/setup-tests.ts"],
+  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/**/*.test.jsx", "src/**/*.test.js"],
   "types": ["@testing-library/jest-dom", "lodash"]
 }

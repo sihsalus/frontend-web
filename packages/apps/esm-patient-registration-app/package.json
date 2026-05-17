@@ -58,7 +58,7 @@
     "i18next": "^25.0.0",
     "i18next-parser": "^9.0.2",
     "openmrs": "*",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
 }

@@ -292,9 +292,9 @@ function FormsList({ forms, isValidating, mutate, t }: FormsListProps) {
   const handleFilter = ({ selectedItem }: { selectedItem: string }) => setFilter(selectedItem);
 
   const handleSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement> | '', value?: string) => {
       goTo(1);
-      setSearchString(e.target.value);
+      setSearchString(value ?? (event ? event.target.value : ''));
     },
     [goTo, setSearchString],
   );

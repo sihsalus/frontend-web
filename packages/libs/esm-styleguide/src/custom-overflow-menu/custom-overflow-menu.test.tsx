@@ -186,11 +186,14 @@ describe('CustomOverflowMenuItem', () => {
 
 describe('useCustomOverflowMenu', () => {
   it('should throw error when used outside CustomOverflowMenu', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     const TestComponent = () => {
       useCustomOverflowMenu();
       return null;
     };
 
     expect(() => render(<TestComponent />)).toThrow('useCustomOverflowMenu must be used within a CustomOverflowMenu');
+    expect(consoleError).toHaveBeenCalled();
   });
 });

@@ -64,7 +64,7 @@
     "@types/uuid": "^9.0.4",
     "eslint": "^10.2.0",
     "openmrs": "workspace:*",
-    "typescript": "^6.0.0",
+    "typescript": "6.0.3",
     "vitest": "^4.1.0"
   }
 }

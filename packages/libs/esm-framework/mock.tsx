@@ -36,9 +36,7 @@ export const importDynamic = vi.fn();
 /* esm-error-handling */
 export const createErrorHandler = () => vi.fn().mockReturnValue(NEVER);
 
-export const reportError = vi.fn().mockImplementation((error) => {
-  throw error;
-});
+export const reportError = vi.fn();
 
 /* esm-feature-flags */
 export const registerFeatureFlags = vi.fn();

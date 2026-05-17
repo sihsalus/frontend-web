@@ -88,6 +88,7 @@ describe('LocationPickerView', () => {
     mockUseDefaultLocation.mockImplementation(((/* isUpdateFlow */) => {
       const React = require('react') as typeof import('react');
       const [savePreference, setSavePreference] = React.useState(Boolean(mockedStoredDefaultLocation));
+      const defaultLocationUuid = mockedValidatedDefaultLocation ?? undefined;
 
       return {
         defaultLocation: mockedValidatedDefaultLocation,
@@ -104,7 +105,7 @@ describe('LocationPickerView', () => {
             ]
           : [],
         updateDefaultLocation: async (locationUuid?: string, saveDefaultLocation?: boolean) => {
-          if (savePreference && locationUuid === mockedValidatedDefaultLocation) {
+          if (savePreference && locationUuid === defaultLocationUuid) {
             return;
           }
 
